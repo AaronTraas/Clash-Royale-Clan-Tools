@@ -8,9 +8,11 @@ import json
 import pprint
 import requests
 import urllib
-
+import jinja2
 
 def get_clan(api_key, clan_id):
+    """Grab clan data from API."""
+
     # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV'
     url = 'https://api.clashroyale.com/v1/clans/' + urllib.quote_plus(clan_id)
     headers = {
@@ -22,7 +24,8 @@ def get_clan(api_key, clan_id):
 
     return clan
 
-def make_request(api_key, clan_id):
+def build_dashboard(api_key, clan_id):
+    """Render clan dashboard."""
 
     clan = get_clan(api_key, clan_id)
 

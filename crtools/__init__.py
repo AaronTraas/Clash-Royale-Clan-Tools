@@ -7,8 +7,11 @@ import sys
 import crtools
 
 def main():
+
+    # prime API key to False for testing later
     api_key = False
 
+    # Look for config file. If config file exists, load it, and try to extract API key from config file
     config_file_name = expanduser('~/.crtools')
     if os.path.isfile(config_file_name):
         with open(config_file_name) as f:
@@ -16,11 +19,12 @@ def main():
             parser.read(config_file_name)
             api_key = parser.get('API', 'api_key')
 
+    # if API key has not been set (is False), then API key needs to be specified as a command line argument
     api_key_required = False  
     if api_key == False:
         api_key_required = True
 
-    """Entry point for the application script"""
+    # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
                             description = "Tools for creating a clan maagement dashboard for Clash Royale")
     parser.add_argument("clan_id",
@@ -32,8 +36,11 @@ def main():
 
     args = parser.parse_args()
 
-    #api_key = 
+    # grab API key and clan ID from arguments if applicable
+    if args.api_key:
+        api_key = args.api_key
     clan_id = args.clan_id
 
-    crtools.make_request( api_key, clan_id )
+    # Build the dashboard
+    crtools.build_dashboard( api_key, clan_id )
 
