@@ -10,17 +10,18 @@ Syntax
 
 Python tools for creating a clan maagement dashboard for Clash Royale
 
-usage: crtools [-h] [--api_key KEY] clan_id
+usage: crtools [-h] [--out OUTPUT-PATH] [--api_key KEY] clan_id
 
 Tools for creating a clan maagement dashboard for Clash Royale
 
 positional arguments:
-  clan_id        Clan ID from Clash Royale. If it starts with a '#', clan ID
-                 must be quoted.
+  clan_id            Clan ID from Clash Royale. If it starts with a '#', clan
+                     ID must be quoted.
 
 optional arguments:
-  -h, --help     show this help message and exit
-  --api_key KEY  API key for developer.clashroyale.com
+  -h, --help         show this help message and exit
+  --out OUTPUT-PATH  Output path for HTML.
+  --api_key KEY      API key for developer.clashroyale.com
 
 ==================================================
 Optional config file
