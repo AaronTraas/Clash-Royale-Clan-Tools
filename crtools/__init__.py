@@ -29,6 +29,10 @@ def main():
                             description = "Tools for creating a clan maagement dashboard for Clash Royale")
     parser.add_argument("clan_id",
                         help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.")
+    parser.add_argument("--out",
+                        metavar  = "OUTPUT-PATH",
+                        default  = "./crtools-out",
+                        help     = "Output path for HTML.")
     parser.add_argument("--api_key",
                         metavar  = "KEY",
                         help     = "API key for developer.clashroyale.com",
@@ -40,7 +44,8 @@ def main():
     if args.api_key:
         api_key = args.api_key
     clan_id = args.clan_id
+    output_path = args.out
 
     # Build the dashboard
-    crtools.build_dashboard( api_key, clan_id )
+    crtools.build_dashboard(api_key, clan_id, output_path)
 

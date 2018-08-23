@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Dashboard | {{clan_name}}</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+        {% for header in member_headers %}
+            <th>{{header|e}}</th>
+        {% endfor %}
+        </tr>
+    {% for member in members %}
+        <tr>
+        {% for value in member %}
+            <td>{{value|e}}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
