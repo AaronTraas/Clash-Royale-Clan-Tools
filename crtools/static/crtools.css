@@ -1,0 +1,61 @@
+html, body {
+    background-color: #000;    
+    overflow-x: hidden;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header {
+    background-color: #fff;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    padding-right: 72px;
+}
+
+main {
+    background-color: #f2f2f2;
+    overflow-x: scroll;
+}
+
+main > article, header > .inner, footer > .inner {
+    max-width: 960px;
+    margin: 0 auto;    
+    padding: 22px;
+}
+
+footer {
+    color: #fff;
+    background-color: #000;
+    min-height: 185px;
+}
+
+footer ul, 
+footer ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer ul li::after {
+    content: '|';
+    display: inline-block;
+    padding: 0 16px;
+}
+
+footer ul li:last-child::after {
+    content: none;
+    display: none;
+}

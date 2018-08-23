@@ -1,0 +1,14 @@
+<table width="100%">
+    <tr>
+    {% for header in member_headers %}
+        <th>{{header|e}}</th>
+    {% endfor %}
+    </tr>
+{% for member in members %}
+    <tr>
+    {% for value in member %}
+        <td>{{value|e}}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>

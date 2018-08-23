@@ -55,12 +55,17 @@ def get_warlog(api_key, clan_id):
 
     return warlog['items']
 
-def render_dashboard(members, clan_name):
+def render_html_page(env, page_title, content, clan_name):
+    template = env.get_template('page.html.j2')
+    return template.render(
+            page_title = page_title,
+            content = content,
+            clan_name = clan_name
+        )
+
+
+def render_dashboard(env, members, clan_name):
     """Render clan dashboard."""
-    env = Environment(
-        loader=PackageLoader('crtools', 'templates'),
-        autoescape=select_autoescape(['html', 'xml'])
-    )
 
     template_vars = {
         'members' : members, 
@@ -68,8 +73,13 @@ def render_dashboard(members, clan_name):
         'member_headers' : ['Rank', 'Name', 'Donations', 'Donations Recieved']
     }
 
-    template = env.get_template('dashboard.html.j2')
-    return template.render(template_vars)
+    template = env.get_template('table.html.j2')
+    return render_html_page( 
+            env, 
+            page_title = "Dashboard for " + clan_name,
+            content    = template.render(template_vars),
+            clan_name  = clan_name
+        )
 
 def build_dashboard(api_key, clan_id, output_path):
     """Compile and render clan dashboard."""
@@ -81,6 +91,9 @@ def build_dashboard(api_key, clan_id, output_path):
     log_path = os.path.join(output_path, 'log')
     os.makedirs(output_path)
     os.makedirs(log_path)
+
+    # copy static assets to output path
+    shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(output_path, 'static'))
 
     # Get clan data from API. Write to log.
     clan = get_clan(api_key, clan_id)
@@ -95,7 +108,12 @@ def build_dashboard(api_key, clan_id, output_path):
     for member in clan['memberList']:
         member_dash.append([member['clanRank'], member['name'], member['donations'], member['donationsReceived']])
 
-    dashboard_html = render_dashboard(member_dash, clan['name'])
+    env = Environment(
+        loader=PackageLoader('crtools', 'templates'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+
+    dashboard_html = render_dashboard(env, member_dash, clan['name'])
     write_object_to_file(os.path.join(output_path, 'index.html'), dashboard_html)
  
 
