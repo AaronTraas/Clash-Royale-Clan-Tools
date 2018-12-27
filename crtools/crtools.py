@@ -12,6 +12,7 @@ import pprint
 import requests
 import shutil
 import urllib
+import urllib.parse
 
 def write_object_to_file(file_path, obj): 
     """ Writes contents of object to file. If object is a string, write it 
@@ -30,7 +31,7 @@ def get_clan(api_key, clan_id):
     """Grab clan data from API."""
 
     # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.quote_plus(clan_id)
+    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id)
     headers = {
         'Accept': 'application/json',
         'authorization': 'Bearer ' + api_key
@@ -45,7 +46,7 @@ def get_warlog(api_key, clan_id):
     """Grab war log data from API."""
 
     # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.quote_plus(clan_id) + '/warlog'
+    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog'
     headers = {
         'Accept': 'application/json',
         'authorization': 'Bearer ' + api_key
@@ -81,6 +82,22 @@ def render_dashboard(env, members, clan_name):
             clan_name  = clan_name
         )
 
+def member_warlog(member_tag, warlog):
+    member_warlog = []
+
+    for war in warlog:
+        participation = {}
+        pprint.pprint(war)
+        for member in war['participants']:
+            if member['tag'] == member_tag:
+                participation = {
+                    'battlesPlayed': member['battlesPlayed'],
+                    'wins': member['wins'],
+                    'collectionDayBattlesPlayed': member['collectionDayBattlesPlayed']
+                }
+        member_warlog.append(participation)
+    return member_warlog
+
 def build_dashboard(api_key, clan_id, output_path):
     """Compile and render clan dashboard."""
 
@@ -106,7 +123,8 @@ def build_dashboard(api_key, clan_id, output_path):
     # grab importent fields from member list for dashboard
     member_dash = []
     for member in clan['memberList']:
-        member_dash.append([member['clanRank'], member['name'], member['donations'], member['donationsReceived']])
+        member_row = [member['clanRank'], member['name'], member['donations'], member['donationsReceived']] + member_warlog(member['tag'], warlog)
+        member_dash.append(member_row)
 
     env = Environment(
         loader=PackageLoader('crtools', 'templates'),
