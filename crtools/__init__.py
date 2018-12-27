@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 import os
 from os.path import expanduser
 import sys
 
-import crtools
+from .crtools import build_dashboard
 
 def main():
 
@@ -47,5 +47,5 @@ def main():
     output_path = args.out
 
     # Build the dashboard
-    crtools.build_dashboard(api_key, clan_id, output_path)
+    build_dashboard(api_key, clan_id, output_path)
 
