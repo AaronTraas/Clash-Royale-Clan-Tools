@@ -4,6 +4,8 @@ Clash Royale Clan Tools
 
 This is a tool for creating a dashboard for clan participation in ClashRoyale. See https://developer.clashroyale.com to sign up for a developer account and create an API key to use with this.
 
+For an example dashboard created for the clan Agrassar (#JY8YVV), see: https://agrassar.com/
+
 ==================================================
 Installation
 ==================================================
