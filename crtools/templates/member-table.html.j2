@@ -1,0 +1,51 @@
+<table width="100%">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Member</th>
+            <th>Donations</th>
+        {% for date in war_dates %}
+            <th>{{date}}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for member in members %}
+        <tr>
+            <td style="text-align: center">
+                {% if member.clanRank > member.previousClanRank %}
+                <span class="rank-up">
+                {% elif member.clanRank < member.previousClanRank %}
+                <span class="rank-down">
+                {% else %}
+                <span>
+                {% endif %}          
+                   {{member.clanRank}}
+                </span>
+            </td>
+            <td>
+                <strong>{{member.name}}</strong><br />
+                <small>{{member.tag}}</small>
+            </td>
+            <td style="text-align: center">{{member.donations}}</td>
+        {% for war in member.warlog %}
+            {% if war.collectionDayBattlesPlayed is defined %}
+                {% if war.battlesPlayed == 0 %}
+                <td class="war war-bad">
+                {% elif war.collectionDayBattlesPlayed == 3 %}
+                <td class="war war-good">
+                {% else %}
+                <td class="war">
+                {% endif %}          
+                    <div><em>collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
+                        <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
+                    </div>
+                </td>
+            {% else %}
+                <td class="war war-na">N/A</td>
+            {% endif %}          
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

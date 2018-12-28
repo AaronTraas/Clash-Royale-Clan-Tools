@@ -13,15 +13,62 @@ header h1 {
     font-weight: bold;
     padding-right: 72px;
 }
+header h1 em {
+    font-weight: normal;
+}
 
 main {
     background-color: #f2f2f2;
     overflow-x: scroll;
 }
 
+table th {
+    text-align: center;
+}
+
+table .war {
+    background-color: #ffbb43;
+    font-size: 12px;
+    font-weight: bold;
+}
+table .war-bad {
+    background-color: #c13525;
+    color: #fff;
+}
+
+table .war-good {
+    background-color: #b6e9d1;
+}
+
+table .war-na {
+    background-color: transparent;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+    font-weight: normal;
+}
+table .war em {
+    font-weight: normal;
+}
+
+
+table .rank-up:before,
+table .rank-down:before {
+    content: '';
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 12px;
+    height: 12px;
+}
+table .rank-up:before {
+    background-image: url(arrow-up.svg);
+}
+table .rank-down:before {
+    background-image: url(arrow-down.svg);
+}
+
 main > article, header > .inner, footer > .inner {
-    max-width: 960px;
-    margin: 0 auto;    
     padding: 22px;
 }
 
