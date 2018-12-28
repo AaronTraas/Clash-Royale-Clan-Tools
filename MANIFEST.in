@@ -1,0 +1,3 @@
+include README.rst
+include crtools/static/*
+include crtools/templates/*
