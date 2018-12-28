@@ -6,7 +6,6 @@ __docformat__ = 'reStructuredText'
 
 import codecs
 from datetime import datetime
-import dateutil.parser
 from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import os
@@ -61,7 +60,7 @@ def warlog_dates(warlog):
 
     war_dates = []
     for war in warlog:
-        war_dates.append(dateutil.parser.parse(war['createdDate']).strftime("%m-%d"))
+        war_dates.append(datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S').strftime("%m-%d"))
     return war_dates
 
 
