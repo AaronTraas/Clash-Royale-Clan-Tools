@@ -101,7 +101,7 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_st
             clan_stats       = clan_stats
         )
 
-def build_dashboard(api_key, clan_id, favicon_path, description_path, output_path):
+def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path):
     """Compile and render clan dashboard."""
 
     # remove output directory if previeously created to cleanup. Then 
@@ -115,6 +115,13 @@ def build_dashboard(api_key, clan_id, favicon_path, description_path, output_pat
 
     # copy static assets to output path
     shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(output_path, 'static'))
+
+    logo_out_path = os.path.join(output_path, 'clan_logo.png')
+    if logo_path:
+        logo_path = os.path.expanduser(logo_path)
+        shutil.copyfile(logo_path, logo_out_path)
+    else:
+        shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_out_path)        
 
     favicon_out_path = os.path.join(output_path, 'favicon.ico')
     if favicon_path:

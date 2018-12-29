@@ -13,6 +13,7 @@ def main():
     clan_id = False
     output_path = './crtools-out'
     favicon_path = False
+    logo_path = False
     description_path = False
 
     # Look for config file. If config file exists, load it, and try to extract API key from config file
@@ -29,6 +30,8 @@ def main():
                 output_path = parser.get('Paths', 'out')
             if parser.has_option('Paths', 'favicon'):
                 favicon_path = parser.get('Paths', 'favicon')
+            if parser.has_option('Paths', 'clan_logo'):
+                logo_path = parser.get('Paths', 'clan_logo')
             if parser.has_option('Paths', 'description_html'):
                 description_path = parser.get('Paths', 'description_html')
 
@@ -66,5 +69,5 @@ def main():
     print(output_path)
 
     # Build the dashboard
-    build_dashboard(api_key, clan_id, favicon_path, description_path, output_path)
+    build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path)
 
