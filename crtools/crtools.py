@@ -26,7 +26,6 @@ def write_object_to_file(file_path, obj):
             string = json.dumps(obj, indent=4)
         f.write(string)
 
-
 def get_clan(api_key, clan_id):
     """Grab clan data from API."""
 
@@ -44,7 +43,7 @@ def get_clan(api_key, clan_id):
 def get_warlog(api_key, clan_id):
     """Grab war log data from API."""
 
-    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog'
+    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog?limit=8'
     url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog?limit=8'
     headers = {
         'Accept': 'application/json',
@@ -83,18 +82,16 @@ def member_warlog(member_tag, warlog):
 def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_stats, war_dates):
     """Render clan dashboard."""
 
-    member_template_vars = {
-        'members' : members, 
-        'clan_name' : clan_name, 
-        'war_dates' : war_dates
-    }
+    member_table = env.get_template('member-table.html.j2').render(
+        members   = members, 
+        clan_name = clan_name, 
+        war_dates = war_dates
+    )
 
-    template_members = env.get_template('member-table.html.j2')
-    template_page = env.get_template('page.html.j2')
-    return template_page.render(
+    return env.get_template('page.html.j2').render(
             page_title       = clan_name + "Clan Dashboard",
             update_date      = datetime.now().strftime('%c'),
-            content          = template_members.render(member_template_vars),
+            content          = member_table,
             clan_name        = clan_name,
             clan_id          = clan_id,
             clan_description = clan_description,
@@ -116,6 +113,8 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
     # copy static assets to output path
     shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(output_path, 'static'))
 
+    # If logo_path is provided, grab logo from path given, and put it where 
+    # it needs to go. Otherwise, grab the default from the static folder
     logo_out_path = os.path.join(output_path, 'clan_logo.png')
     if logo_path:
         logo_path = os.path.expanduser(logo_path)
@@ -123,6 +122,8 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
     else:
         shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_out_path)        
 
+    # If favicon_path is provided, grab favicon from path given, and put it  
+    # where it needs to go. Otherwise, grab the default from the static folder
     favicon_out_path = os.path.join(output_path, 'favicon.ico')
     if favicon_path:
         favicon_path = os.path.expanduser(favicon_path)
@@ -150,7 +151,6 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
     # grab importent fields from member list for dashboard
     member_dash = []
     for member in clan['memberList']:
-        #member_row = [member['clanRank'], member['name'], member['donations'], member['donationsReceived']] + member_warlog(member['tag'], warlog)
         member_row = member
         member_row['warlog'] = member_warlog(member['tag'], warlog)
         member_dash.append(member_row)
