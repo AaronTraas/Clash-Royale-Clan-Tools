@@ -24,16 +24,22 @@ def main():
             parser.read(config_file_name)
             if parser.has_option('API', 'api_key'):
                 api_key = parser.get('API', 'api_key')
+                print("CRTools Config: found API key: [not shown]")
             if parser.has_option('API', 'clan'):
                 clan_id = parser.get('API', 'clan')
+                print("CRTools Config: found clan ID: '{}'".format(clan_id))
             if parser.has_option('Paths', 'out'):
                 output_path = parser.get('Paths', 'out')
+                print("CRTools Config: found output path: '{}'".format(output_path))
             if parser.has_option('Paths', 'favicon'):
                 favicon_path = parser.get('Paths', 'favicon')
+                print("CRTools Config: found favicon path: '{}'".format(favicon_path))
             if parser.has_option('Paths', 'clan_logo'):
                 logo_path = parser.get('Paths', 'clan_logo')
+                print("CRTools Config: found logo path: '{}'".format(logo_path))
             if parser.has_option('Paths', 'description_html'):
                 description_path = parser.get('Paths', 'description_html')
+                print("CRTools Config: found description HTML file: '{}'".format(description_path))
 
     # if API key has not been set (is False), then API key needs to be specified as a command line argument
     api_key_required = clan_id_required = False  
@@ -66,8 +72,6 @@ def main():
     if args.out:
         output_path = args.out
     
-    print(output_path)
-
     # Build the dashboard
     build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path)
 
