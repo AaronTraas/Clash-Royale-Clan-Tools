@@ -10,15 +10,11 @@ clan=#JY8YVV
 # your output path. Where you want the static website to live.
 out=/var/www/html
 
+# Path to the logo artwork for clan. Must be PNG. Recommended at least 64x64 pixels.
+favicon=~/myclan/logo.png
+
 # Path to the favicon file you want to use for this
 favicon=~/myclan/favicon.ico
 
 # Path to a file that contains arbitrary HTML for the site.
-html_body=~/myclan/body.html
-
-# Path to a custom stylesheet
-stylesheet=~/myclan/custom.css
-
-[FooterLinks]
-# This section contains links you would want to go into the footer. Create arbitrary links.
-Discord=https://discord.gg
+description_html=~/myclan/body.html
