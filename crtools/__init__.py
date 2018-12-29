@@ -10,6 +10,10 @@ def main():
 
     # prime API key to False for testing later
     api_key = False
+    clan_id = False
+    output_path = './crtools-out'
+    favicon_path = False
+    description_path = False
 
     # Look for config file. If config file exists, load it, and try to extract API key from config file
     config_file_name = expanduser('~/.crtools')
@@ -17,21 +21,32 @@ def main():
         with open(config_file_name) as f:
             parser = SafeConfigParser()
             parser.read(config_file_name)
-            api_key = parser.get('API', 'api_key')
+            if parser.has_option('API', 'api_key'):
+                api_key = parser.get('API', 'api_key')
+            if parser.has_option('API', 'clan'):
+                clan_id = parser.get('API', 'clan')
+            if parser.has_option('Paths', 'out'):
+                output_path = parser.get('Paths', 'out')
+            if parser.has_option('Paths', 'favicon'):
+                favicon_path = parser.get('Paths', 'favicon')
+            if parser.has_option('Paths', 'description_html'):
+                description_path = parser.get('Paths', 'description_html')
 
     # if API key has not been set (is False), then API key needs to be specified as a command line argument
-    api_key_required = False  
+    api_key_required = clan_id_required = False  
     if api_key == False:
         api_key_required = True
+    if clan_id == False:
+        clan_id_required = True
 
     # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
                             description = "Tools for creating a clan maagement dashboard for Clash Royale")
-    parser.add_argument("clan_id",
-                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.")
+    parser.add_argument("--clan",
+                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.",
+                        required = clan_id_required)
     parser.add_argument("--out",
                         metavar  = "OUTPUT-PATH",
-                        default  = "./crtools-out",
                         help     = "Output path for HTML.")
     parser.add_argument("--api_key",
                         metavar  = "KEY",
@@ -43,9 +58,13 @@ def main():
     # grab API key and clan ID from arguments if applicable
     if args.api_key:
         api_key = args.api_key
-    clan_id = args.clan_id
-    output_path = args.out
+    if args.clan:
+        clan_id = args.clan
+    if args.out:
+        output_path = args.out
+    
+    print(output_path)
 
     # Build the dashboard
-    build_dashboard(api_key, clan_id, output_path)
+    build_dashboard(api_key, clan_id, favicon_path, description_path, output_path)
 

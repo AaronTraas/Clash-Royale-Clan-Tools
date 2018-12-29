@@ -11,7 +11,8 @@ header {
 header h1 {
     font-size: 24px;
     font-weight: bold;
-    padding-right: 72px;
+    margin: 0;
+    padding: 10px 72px 10px 0;
 }
 header h1 em {
     font-weight: normal;
@@ -22,38 +23,98 @@ main {
     overflow-x: scroll;
 }
 
-table th {
+#hero {
+    background-color: #563d7c;
+    color: #fff;
+    display: flex;
+    padding: 44px 22px;
+}
+
+#hero > * {
+    margin: 0 15px 0 0;
+}
+#hero > *:last-child {
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    #hero {
+        display: block;
+    }
+    #hero > * {
+        margin: 0;
+    }
+}
+
+#clan-stats {
+    min-width: 300px;
+}
+#clan-stats .table-wrap {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.3);
+}
+#clan-stats table {
+    width: 100%;
+    margin: 0;
+}
+#clan-stats table thead th {
+    text-align: center;
+    background-color: rgba(255,255,255,0.4);
+}
+#clan-stats table tbody tr:last-child th,
+#clan-stats table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#clan-description h1 {
+    font-size: 32px;
+}
+#clan-description h2 {
+    font-size: 22px;
+}
+#clan-description h3 {
+    font-size: 18px;
+}
+
+#members th:first-child, #members td:first-child {
+  padding-left: 0; 
+}
+#members th:last-child, #members td:last-child {
+  padding-right: 0; 
+}
+
+#members table th {
     text-align: center;
 }
 
-table .war {
+#members table .war {
     background-color: #ffbb43;
     font-size: 12px;
     font-weight: bold;
 }
-table .war-bad {
+#members table .war-bad {
     background-color: #c13525;
     color: #fff;
 }
 
-table .war-good {
+#members table .war-good {
     background-color: #b6e9d1;
 }
 
-table .war-na {
+#members table .war-na {
     background-color: transparent;
     color: #999;
     font-size: 12px;
     text-align: center;
     font-weight: normal;
 }
-table .war em {
+#members table .war em {
     font-weight: normal;
 }
 
-
-table .rank-up:before,
-table .rank-down:before {
+#members table .rank-up:before,
+#members table .rank-down:before {
     content: '';
     display: inline-block;
     background-repeat: no-repeat;
@@ -61,10 +122,10 @@ table .rank-down:before {
     width: 12px;
     height: 12px;
 }
-table .rank-up:before {
+#members table .rank-up:before {
     background-image: url(arrow-up.svg);
 }
-table .rank-down:before {
+#members table .rank-down:before {
     background-image: url(arrow-down.svg);
 }
 

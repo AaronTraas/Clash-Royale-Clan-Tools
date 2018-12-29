@@ -6,6 +6,8 @@
 
     <title>{{page_title}} | CRtools</title>
 
+    <link rel="icon" href="favicon.ico"/>
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/normalize.css">
     <link rel="stylesheet" type="text/css" href="static/skeleton.css">
@@ -14,12 +16,23 @@
 </head>
 <body>
     <header><div class="inner">
-        <h1>CRTools Dashboard for {{clan_name}} <em>({{clan_id}})</em></h1>
-        <p><em>Last update: {{update_date}}</em></p>
+        <h1>{{clan_name}} Clan Dashboard</h1>
     </div></header>
     <main>
-        <article>
-            {{content}}    
+        <article id="hero">
+            <div id="clan-description">
+                {{clan_description}}
+            </div>
+            <div id="clan-stats">
+                <div class="table-wrap">
+                {{clan_stats}}
+                </div>
+            </div>
+        </article>
+        <article id="members">
+            <h2>Member list and stats</h2>
+            <p><small><em>Last update: {{update_date}}</em></small></p>
+           {{content}}
         </article>
     </main>
 
@@ -27,7 +40,6 @@
         <ul>
             <li><a rel="external" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools">Github</a></li>
             <li><a rel="external" target="_blank" href="https://developer.clashroyale.com/">Clash Royale API</a></li>
-            
         </ul>
     </div></footer>
 

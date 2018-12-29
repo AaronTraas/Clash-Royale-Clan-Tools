@@ -80,39 +80,33 @@ def member_warlog(member_tag, warlog):
         member_warlog.append(participation)
     return member_warlog
 
-def render_html_page(env, page_title, content, clan_name, clan_id):
-    template = env.get_template('page.html.j2')
-    return template.render(
-            page_title = page_title,
-            update_date = datetime.now().strftime('%c'),
-            content = content,
-            clan_name = clan_name,
-            clan_id    = clan_id
-        )
-
-def render_dashboard(env, members, clan_name, clan_id, war_dates):
+def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_stats, war_dates):
     """Render clan dashboard."""
 
-    template_vars = {
+    member_template_vars = {
         'members' : members, 
         'clan_name' : clan_name, 
         'war_dates' : war_dates
     }
 
-    template = env.get_template('member-table.html.j2')
-    return render_html_page( 
-            env, 
-            page_title = "Dashboard for " + clan_name,
-            content    = template.render(template_vars),
-            clan_name  = clan_name,
-            clan_id    = clan_id
+    template_members = env.get_template('member-table.html.j2')
+    template_page = env.get_template('page.html.j2')
+    return template_page.render(
+            page_title       = clan_name + "Clan Dashboard",
+            update_date      = datetime.now().strftime('%c'),
+            content          = template_members.render(member_template_vars),
+            clan_name        = clan_name,
+            clan_id          = clan_id,
+            clan_description = clan_description,
+            clan_stats       = clan_stats
         )
 
-def build_dashboard(api_key, clan_id, output_path):
+def build_dashboard(api_key, clan_id, favicon_path, description_path, output_path):
     """Compile and render clan dashboard."""
 
     # remove output directory if previeously created to cleanup. Then 
     # create output path and log path.
+    output_path = os.path.expanduser(output_path)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
     log_path = os.path.join(output_path, 'log')
@@ -122,9 +116,25 @@ def build_dashboard(api_key, clan_id, output_path):
     # copy static assets to output path
     shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(output_path, 'static'))
 
+    favicon_out_path = os.path.join(output_path, 'favicon.ico')
+    if favicon_path:
+        favicon_path = os.path.expanduser(favicon_path)
+        shutil.copyfile(favicon_path, favicon_out_path)
+    else:
+        shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_out_path)        
+
     # Get clan data from API. Write to log.
     clan = get_clan(api_key, clan_id)
     write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
+
+    clan_description = clan['description']
+    if description_path:
+        description_path = os.path.expanduser(description_path)
+        if os.path.isfile(description_path):
+            with open(description_path, 'r') as myfile:
+                clan_description = myfile.read()
+        else:
+            clan_description = "ERROR: File '{}' does not exist.".format(description_path)
 
     # Get war log data from API. Write to log.
     warlog = get_warlog(api_key, clan_id)
@@ -143,6 +153,8 @@ def build_dashboard(api_key, clan_id, output_path):
         autoescape=select_autoescape(['html', 'xml'])
     )
 
-    dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], warlog_dates(warlog))
+    template = env.get_template('clan-stats-table.html.j2')
+    stats_html = template.render( clan )
+    dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, stats_html, warlog_dates(warlog))
     write_object_to_file(os.path.join(output_path, 'index.html'), dashboard_html)
  
