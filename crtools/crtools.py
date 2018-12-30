@@ -43,8 +43,8 @@ def get_clan(api_key, clan_id):
 def get_warlog(api_key, clan_id):
     """Grab war log data from API."""
 
-    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog?limit=8'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog?limit=8'
+    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog'
+    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog'
     headers = {
         'Accept': 'application/json',
         'authorization': 'Bearer ' + api_key
@@ -71,11 +71,7 @@ def member_warlog(member_tag, warlog):
         participation = ''
         for member in war['participants']:
             if member['tag'] == member_tag:
-                participation = {
-                    'battlesPlayed': member['battlesPlayed'],
-                    'wins': member['wins'],
-                    'collectionDayBattlesPlayed': member['collectionDayBattlesPlayed']
-                }
+                participation = member
         member_warlog.append(participation)
     return member_warlog
 

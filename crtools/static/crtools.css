@@ -9,7 +9,8 @@ body {
   line-height: 1.6;
   font-weight: 400;
   font-family: 'Open Sans', sans-serif;
-  color: #222; }
+  color: #222; 
+}
 html, body {
     background-color: #000;    
     overflow-x: hidden;
@@ -57,28 +58,50 @@ p {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
-  color: #1EAEDB; }
+  color: #1EAEDB; 
+}
 a:hover {
-  color: #0FA0CE; }
+  color: #0FA0CE; 
+}
 
 
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: circle inside; }
+  list-style: circle inside; 
+}
 ol {
-  list-style: decimal inside; }
+  list-style: decimal inside; 
+}
 ol, ul {
   padding-left: 0;
-  margin-top: 0; }
-ul ul,
-ul ol,
-ol ol,
-ol ul {
+  margin-top: 0; 
+}
+ul ul, ul ol, ol ol, ol ul {
   margin: 1.5rem 0 1.5rem 3rem;
-  font-size: 90%; }
+  font-size: 90%; 
+}
 li {
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem; 
+}
+
+dl, dt, dd {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+dt, dd {
+    display: inline;
+}
+dt {
+    font-weight: normal;
+}
+dt:after {
+    content: ': ';
+}
+dd {
+    font-weight: bold;
+}
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -97,19 +120,6 @@ th, td {
     width: 100%;
     overflow-x: auto;
 }
-
-/* Spacing
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-pre,
-blockquote,
-dl,
-figure,
-table,
-p,
-ul,
-ol,
-form {
-  margin-bottom: 2.5rem; }
 
 /* Page Header
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -211,12 +221,19 @@ header h1 em {
     text-align: center;
 }
 #members table .war {
+    position: relative;
     background-color: #ffbb43;
     font-size: 12px;
     font-weight: bold;
     text-align: center;
-    border-left: 1px solid #f2f2f2;
 }
+#members table .good,
+#members table .ok,
+#members table .bad {
+    border-left: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+}
+
 #members table .bad {
     background-color: #c13525;
     color: #fff;
@@ -235,6 +252,43 @@ header h1 em {
 }
 #members table .war em {
     font-weight: normal;
+}
+
+#members table .war .war-tooltip {
+    background: #ddd;
+    color: #222;
+    font-size: 12px;
+    display: none;
+    position: absolute;
+    border: 1px solid #222;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    border-radius: 3px;
+    padding: 4px 6px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    top: 100%;
+    right: 6px;
+    z-index: 100;
+}
+#members table .war .war-tooltip:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #ddd;
+    top: -4px; 
+    right: 6px;
+    border-top: 1px solid #222;
+    border-left: 1px solid #222;
+    transform: rotate(45deg);
+}
+
+#members table .war.show-tooltip .war-tooltip {
+    display: block;
+}
+
+#members table .war .war-tooltip dl > div {
+    white-space: nowrap;
 }
 
 #members table .rank-up,

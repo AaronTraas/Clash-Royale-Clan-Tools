@@ -21,7 +21,7 @@
                         {% else %}
                         <span>
                         {% endif %}          
-                           {{member.clanRank}}
+                           <strong>{{member.clanRank}}</strong>
                         </span>
                     </td>
                     <td>
@@ -35,7 +35,7 @@
                     {% else %}
                     <td class="donations">
                     {% endif %}          
-                        {{member.donations}}
+                        <strong>{{member.donations}}</strong>
                     </td>
                 {% for war in member.warlog %}
                     {% if war.collectionDayBattlesPlayed is defined %}
@@ -46,13 +46,26 @@
                         {% else %}
                         <td class="war ok">
                         {% endif %}          
-                            <div data-role="war" data-war-member="{{war.name}}" data-war-cards-earned="{{war.cardsEarned}}" data-war-battles="{{war.battlesPlayed}}" data-war-collection-battles="{{war.collectionDayBattlesPlayed}}" data-war-wins="{{war.wins}}">
+                            <div data-role="war">
                                 <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
                                 <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
                             </div>
+                            <div class="war-tooltip">
+                                <dl>
+                                    <div><dt>Collection day battles</dd><dd>{{war.collectionDayBattlesPlayed}}</dd></dt>
+                                    <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
+                                    <div><dt>War day battles:</dt><dd>{{war.battlesPlayed}}</dd></div>
+                                    <div><dt>War day wins:</dt><dd>{{war.wins}}</dd></div>
+                                </dl>
+                            </div>
                         </td>
                     {% else %}
-                        <td class="war na">N/A</td>
+                        <td class="war na">
+                            N/A
+                            <div class="war-tooltip">
+                                <strong>{{member.name}}</strong> did not participate in this war.
+                            </div>
+                        </td>
                     {% endif %}          
                 {% endfor %}
                 </tr>
