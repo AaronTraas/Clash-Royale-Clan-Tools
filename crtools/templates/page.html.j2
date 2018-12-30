@@ -30,7 +30,7 @@
         </article>
         <article id="members">
             <h2>Member list and stats</h2>
-            <p><small><em>Last update: {{update_date}}</em></small></p>
+            <div><small><em>Last update: {{update_date}}</em></small></div>
            {{content}}
         </article>
     </main>
@@ -43,5 +43,24 @@
     </div></footer>
 
     <a class="github-fork-ribbon right-top" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+    
+    <script>
+        // requestAnimFrame polyfill
+        window.requestAnimationFrame = (function(){
+            return  window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame   ||
+            window.mozRequestAnimationFrame      ||
+            function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+            };
+        })();
+
+        // delay startup of app until first render if possible.
+        window.requestAnimationFrame( function() {
+            var element = document.createElement( 'script' );
+            element.setAttribute( 'src', 'static/crtools.js' );
+            document.body.appendChild( element );
+        });
+    </script>
 </body>
 </html>
