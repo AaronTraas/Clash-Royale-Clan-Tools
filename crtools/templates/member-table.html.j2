@@ -1,9 +1,9 @@
 <table width="100%">
     <thead>
         <tr>
-            <th>Rank</th>
-            <th>Member</th>
-            <th>Donations</th>
+            <th class="condensed">Rank</th>
+            <th class="condensed">Member</th>
+            <th class="condensed">Donations</th>
         {% for date in war_dates %}
             <th>{{date}}</th>
         {% endfor %}
@@ -24,7 +24,7 @@
                 </span>
             </td>
             <td>
-                <strong>{{member.name}}</strong><br />
+                <strong class="condensed">{{member.name}}</strong><br />
                 <small>{{member.tag}}</small>
             </td>
             <td style="text-align: center">{{member.donations}}</td>
@@ -37,7 +37,8 @@
                 {% else %}
                 <td class="war">
                 {% endif %}          
-                    <div><em>collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
+                    <div>
+                        <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
                         <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
                     </div>
                 </td>
