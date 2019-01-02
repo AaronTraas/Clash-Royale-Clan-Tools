@@ -11,6 +11,7 @@ import json
 import os
 import requests
 import shutil
+import tempfile
 import urllib
 import urllib.parse
 from ._version import __version__
@@ -100,67 +101,82 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_mi
 def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path):
     """Compile and render clan dashboard."""
 
-    # remove output directory if previeously created to cleanup. Then 
-    # create output path and log path.
-    output_path = os.path.expanduser(output_path)
-    if os.path.exists(output_path):
-        shutil.rmtree(output_path)
-    log_path = os.path.join(output_path, 'log')
-    os.makedirs(output_path)
-    os.makedirs(log_path)
+    # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
+    # when we're done. We don't want to pollute the user's disk.
+    try:
+        # Create temporary directory. All file writes, until the very end,
+        # will happen in this directory, so that no matter what we do, it
+        # won't hose existing stuff.
+        tempdir = tempfile.mkdtemp("traasorg")
+        
+        log_path = os.path.join(tempdir, 'log')
+        os.makedirs(log_path)
 
-    # copy static assets to output path
-    shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(output_path, 'static'))
+        # copy static assets to output path
+        shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
 
-    # If logo_path is provided, grab logo from path given, and put it where 
-    # it needs to go. Otherwise, grab the default from the static folder
-    logo_out_path = os.path.join(output_path, 'clan_logo.png')
-    if logo_path:
-        logo_path = os.path.expanduser(logo_path)
-        shutil.copyfile(logo_path, logo_out_path)
-    else:
-        shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_out_path)        
-
-    # If favicon_path is provided, grab favicon from path given, and put it  
-    # where it needs to go. Otherwise, grab the default from the static folder
-    favicon_out_path = os.path.join(output_path, 'favicon.ico')
-    if favicon_path:
-        favicon_path = os.path.expanduser(favicon_path)
-        shutil.copyfile(favicon_path, favicon_out_path)
-    else:
-        shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_out_path)        
-
-    # Get clan data from API. Write to log.
-    clan = get_clan(api_key, clan_id)
-    write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
-
-    clan_description = clan['description']
-    if description_path:
-        description_path = os.path.expanduser(description_path)
-        if os.path.isfile(description_path):
-            with open(description_path, 'r') as myfile:
-                clan_description = myfile.read()
+        # If logo_path is provided, grab logo from path given, and put it where 
+        # it needs to go. Otherwise, grab the default from the static folder
+        logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
+        if logo_path:
+            logo_src_path = os.path.expanduser(logo_path)
+            shutil.copyfile(logo_src_path, logo_dest_path)
         else:
-            clan_description = "ERROR: File '{}' does not exist.".format(description_path)
+            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_dest_path)        
 
-    # Get war log data from API. Write to log.
-    warlog = get_warlog(api_key, clan_id)
-    write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+        # If favicon_path is provided, grab favicon from path given, and put it  
+        # where it needs to go. Otherwise, grab the default from the static folder
+        favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
+        if favicon_path:
+            favicon_src_path = os.path.expanduser(favicon_path)
+            shutil.copyfile(favicon_src_path, favicon_dest_path)
+        else:
+            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
 
-    # grab importent fields from member list for dashboard
-    member_dash = []
-    for member in clan['memberList']:
-        member_row = member
-        member_row['warlog'] = member_warlog(member['tag'], warlog)
-        member_dash.append(member_row)
+        # Get clan data from API. Write to log.
+        clan = get_clan(api_key, clan_id)
+        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
 
-    env = Environment(
-        loader=PackageLoader('crtools', 'templates'),
-        autoescape=select_autoescape(['html', 'xml'])
-    )
+        clan_description = clan['description']
+        if description_path:
+            description_path = os.path.expanduser(description_path)
+            if os.path.isfile(description_path):
+                with open(description_path, 'r') as myfile:
+                    clan_description = myfile.read()
+            else:
+                clan_description = "ERROR: File '{}' does not exist.".format(description_path)
 
-    template = env.get_template('clan-stats-table.html.j2')
-    stats_html = template.render( clan )
-    dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog))
-    write_object_to_file(os.path.join(output_path, 'index.html'), dashboard_html)
- 
+        # Get war log data from API. Write to log.
+        warlog = get_warlog(api_key, clan_id)
+        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+
+        # grab importent fields from member list for dashboard
+        member_dash = []
+        for member in clan['memberList']:
+            member_row = member
+            member_row['warlog'] = member_warlog(member['tag'], warlog)
+            member_dash.append(member_row)
+
+        env = Environment(
+            loader=PackageLoader('crtools', 'templates'),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
+
+        template = env.get_template('clan-stats-table.html.j2')
+        stats_html = template.render( clan )
+        dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog))
+        write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
+        
+        # remove output directory if previeously created to cleanup. Then 
+        # create output path and log path.
+        output_path = os.path.expanduser(output_path)
+        if os.path.exists(output_path):
+            shutil.copystat(output_path, tempdir)
+            shutil.rmtree(output_path)
+
+        # Copy entire contents of temp directory to output directory
+        shutil.copytree(tempdir, output_path)
+    finally:
+        # Ensure that temporary directory gets deleted no matter what
+        shutil.rmtree(tempdir)
+
