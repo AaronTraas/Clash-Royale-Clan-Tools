@@ -226,6 +226,12 @@ body > header h1 em {
     #members header > div {
         display: block;
     }
+    #members header .filters {
+        text-align: left;
+    }
+    #members header .filters label {
+        display: block;
+    }
 }
 
 /* Member table
