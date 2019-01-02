@@ -4,6 +4,7 @@
             <thead>
                 <tr>
                     <th colspan="2" class="condensed">Member</th>
+                    <th class="condensed">Trophies</th>
                     <th class="condensed">Dona&shy;tions</th>
                 {% for date in war_dates %}
                     <th>{{date}}</th>
@@ -24,9 +25,37 @@
                            <strong>{{member.clanRank}}</strong>
                         </span>
                     </td>
-                    <td>
+                    <td data-tooltip="true">
                         <strong class="condensed">{{member.name}}</strong><br />
                         <small>{{member.role}}</small>
+                        <div class="tooltip">
+                            <dl>
+                                <div><dt>Name</dt><dd>{{member.name}}</dd></div>
+                                <div><dt>Tag</dt><dd>{{member.tag}}</dd></div>
+                                <div><dt>Clan Role</dt><dd>{{member.role}}</dd></div>
+                                <div><dt>XP Level</dt><dd>{{member.expLevel}}</dd></div>
+                                <div><dt>Trophies</dt><dd>{{member.trophies}}</dd></div>
+                                <div>
+                                    <dt>Clan Rank</dt>
+                                    <dd>
+                                        {{member.clanRank}}
+                                    {% if member.clanRank != member.previousClanRank %}
+                                        (prev: {{member.previousClanRank}})
+                                    {% endif %}          
+                                    </dd>
+                                </div>
+                                <div><dt>Arena</dt><dd>{{member.arena.name}}</dd></div>
+                                <div><dt>Donations</dt><dd>{{member.donations}}</dd></div>
+                                <div><dt>Trophies</dt><dd>{{member.donationsReceived}}</dd></div>
+                            </dl>
+                        </div>
+                    </td>
+                    {% if member.trophies < min_trophies %}
+                    <td class="trophies ok">
+                    {% else %}
+                    <td class="trophies">
+                    {% endif %}          
+                        <strong>{{member.trophies}}</strong>
                     </td>
                     {% if member.donations == 0 %}
                     <td class="donations bad">
@@ -40,19 +69,19 @@
                 {% for war in member.warlog %}
                     {% if war.collectionDayBattlesPlayed is defined %}
                         {% if war.battlesPlayed == 0 %}
-                        <td class="war bad">
+                        <td class="war bad" data-tooltip="true">
                         {% elif war.collectionDayBattlesPlayed == 3 %}
-                        <td class="war good">
+                        <td class="war good" data-tooltip="true">
                         {% else %}
-                        <td class="war ok">
+                        <td class="war ok" data-tooltip="true">
                         {% endif %}          
                             <div data-role="war">
                                 <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
                                 <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
                             </div>
-                            <div class="war-tooltip">
+                            <div class="tooltip">
                                 <dl>
-                                    <div><dt>Collection day battles</dd><dd>{{war.collectionDayBattlesPlayed}}</dd></dt>
+                                    <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
                                     <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
                                     <div><dt>War day battles:</dt><dd>{{war.battlesPlayed}}</dd></div>
                                     <div><dt>War day wins:</dt><dd>{{war.wins}}</dd></div>
@@ -60,9 +89,9 @@
                             </div>
                         </td>
                     {% else %}
-                        <td class="war na">
+                        <td class="war na" data-tooltip="true">
                             N/A
-                            <div class="war-tooltip">
+                            <div class="tooltip">
                                 <strong>{{member.name}}</strong> did not participate in this war.
                             </div>
                         </td>

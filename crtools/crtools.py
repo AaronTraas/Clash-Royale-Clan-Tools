@@ -44,7 +44,7 @@ def get_warlog(api_key, clan_id):
     """Grab war log data from API."""
 
     # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog'
+    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog?limit=20'
     headers = {
         'Accept': 'application/json',
         'authorization': 'Bearer ' + api_key
@@ -75,13 +75,14 @@ def member_warlog(member_tag, warlog):
         member_warlog.append(participation)
     return member_warlog
 
-def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_stats, war_dates):
+def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates):
     """Render clan dashboard."""
 
     member_table = env.get_template('member-table.html.j2').render(
-        members   = members, 
-        clan_name = clan_name, 
-        war_dates = war_dates
+        members      = members, 
+        clan_name    = clan_name, 
+        min_trophies = clan_min_trophies, 
+        war_dates    = war_dates
     )
 
     return env.get_template('page.html.j2').render(
@@ -158,6 +159,6 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
 
     template = env.get_template('clan-stats-table.html.j2')
     stats_html = template.render( clan )
-    dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, stats_html, warlog_dates(warlog))
+    dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog))
     write_object_to_file(os.path.join(output_path, 'index.html'), dashboard_html)
  

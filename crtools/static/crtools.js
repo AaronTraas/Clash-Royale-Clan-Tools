@@ -1,6 +1,4 @@
-console.log('loaded');
-
-var war_participations = document.querySelectorAll('td.war');
+var war_participations = document.querySelectorAll('[data-tooltip]');
 
 war_participations.forEach(function(element) {
 	element.addEventListener('click', function(e) {

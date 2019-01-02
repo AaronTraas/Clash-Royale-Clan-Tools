@@ -217,11 +217,11 @@ header h1 em {
     text-align: center;
 }
 
-#members table .donations {
+#members table .donations,
+#members table .trophies {
     text-align: center;
 }
 #members table .war {
-    position: relative;
     background-color: #ffbb43;
     font-size: 12px;
     font-weight: bold;
@@ -238,7 +238,9 @@ header h1 em {
     background-color: #c13525;
     color: #fff;
 }
-
+#members table .ok {
+    background-color: #ffbb43;
+}
 #members table .good {
     background-color: #b6e9d1;
 }
@@ -254,7 +256,11 @@ header h1 em {
     font-weight: normal;
 }
 
-#members table .war .war-tooltip {
+[data-tooltip] {
+    position: relative;
+}
+
+#members .tooltip {
     background: #ddd;
     color: #222;
     font-size: 12px;
@@ -264,12 +270,11 @@ header h1 em {
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
     border-radius: 3px;
     padding: 4px 6px;
-    font-family: 'Open Sans Condensed', sans-serif;
     top: 100%;
     right: 6px;
     z-index: 100;
 }
-#members table .war .war-tooltip:before {
+#members .tooltip:before {
     content: '';
     display: block;
     position: absolute;
@@ -283,11 +288,26 @@ header h1 em {
     transform: rotate(45deg);
 }
 
-#members table .war.show-tooltip .war-tooltip {
+#members .tooltip dl {
+    display: table;
+}
+#members .tooltip dl > div {
+    display: table-row;
+}
+#members .tooltip dl > div > dt,
+#members .tooltip dl > div > dd {
+    display: table-cell;
+}
+#members .tooltip dl > div > dt {
+    font-family: 'Open Sans Condensed', sans-serif;
+    padding-right: 4px;
+}
+
+#members table .show-tooltip .tooltip {
     display: block;
 }
 
-#members table .war .war-tooltip dl > div {
+#members table .tooltip dl > div {
     white-space: nowrap;
 }
 
