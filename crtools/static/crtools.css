@@ -221,6 +221,12 @@ body > header h1 em {
     text-align: right;
     white-space: nowrap;
 }
+@media (max-width: 640px) {
+    #members header,
+    #members header > div {
+        display: block;
+    }
+}
 
 /* Member table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
