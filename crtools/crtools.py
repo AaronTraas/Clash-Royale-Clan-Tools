@@ -13,6 +13,7 @@ import requests
 import shutil
 import urllib
 import urllib.parse
+from ._version import __version__
 
 def write_object_to_file(file_path, obj): 
     """ Writes contents of object to file. If object is a string, write it 
@@ -86,6 +87,7 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_mi
     )
 
     return env.get_template('page.html.j2').render(
+            version          = __version__,
             page_title       = clan_name + "Clan Dashboard",
             update_date      = datetime.now().strftime('%c'),
             content          = member_table,
