@@ -70,12 +70,38 @@ def member_warlog(member_tag, warlog):
 
     member_warlog = []
     for war in warlog:
-        participation = ''
+        participation = {'status': 'na'}
         for member in war['participants']:
             if member['tag'] == member_tag:
+                if member['collectionDayBattlesPlayed'] == 0:
+                    member['status'] = 'na'
+                elif member['battlesPlayed'] == 0:
+                    member['status'] = 'bad'
+                elif member['collectionDayBattlesPlayed'] < 3:
+                    member['status'] = 'ok'
+                else:
+                    member['status'] = 'good'
                 participation = member
         member_warlog.append(participation)
     return member_warlog
+
+def member_danger(member, member_warlog):
+    good = ok = bad = 0
+    for war in member_warlog:
+        if war != None:
+            if war['status'] == 'good':
+                good += 1
+            elif war['status'] == 'ok':
+                ok += 1
+            elif war['status'] == 'bad':
+                bad += 1
+
+    if bad > good:
+        return True
+    if good == 0 and member['donations'] == 0:
+        return True
+
+    return False
 
 def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates):
     """Render clan dashboard."""
@@ -155,6 +181,13 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         for member in clan['memberList']:
             member_row = member
             member_row['warlog'] = member_warlog(member['tag'], warlog)
+            member_row['danger'] = member_danger(member, member_row['warlog'])
+            if member['role'] == 'leader' or member['role'] == 'coLeader':
+                member_row['leadership'] = True
+            else: 
+                member_row['leadership'] = False
+            if member['role'] == 'coLeader':
+                member['role'] = 'co-leader'
             member_dash.append(member_row)
 
         env = Environment(

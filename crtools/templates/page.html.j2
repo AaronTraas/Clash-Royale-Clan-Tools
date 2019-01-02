@@ -29,8 +29,22 @@
             </div>
         </article>
         <article id="members">
-            <h2>Member list and stats</h2>
-            <div><small><em>Last update: {{update_date}}</em></small></div>
+            <header>
+                <div class="labels">
+                    <h2>Member list and stats</h2>
+                    <div><small><em>Last update: {{update_date}}</em></small></div>
+                </div>
+                <div class="filters">
+                    <label>
+                        Filter:
+                        <select id="member-filter">
+                            <option value="none">None</option>
+                            <option value="leadership">Leadership</option>
+                            <option value="danger">In danger</option>
+                        </select>
+                    </label>
+                </div>
+            </header>
            {{content}}
         </article>
     </main>

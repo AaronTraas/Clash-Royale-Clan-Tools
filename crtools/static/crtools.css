@@ -121,13 +121,23 @@ th, td {
     overflow-x: auto;
 }
 
+/* Forms
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+label {
+    display: inline-block;
+}
+select {
+  border: 1px solid #ccc;
+  height: 34px;
+}
+
 /* Page Header
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-header {
+body > header {
     background-color: #fff;
 }
 
-header h1 {
+body > header h1 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
@@ -135,7 +145,7 @@ header h1 {
     background: url(../clan_logo.png) no-repeat left center;
     background-size: contain;
 }
-header h1 em {
+body > header h1 em {
     font-weight: normal;
 }
 
@@ -197,6 +207,21 @@ header h1 em {
     padding-bottom: 0;
 }
 
+/* Member list section
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#members header {
+    display: table-row;
+    width: 100%;
+}
+#members header > div {
+    display: table-cell;
+    width: 100%;
+}
+#members header .filters {
+    text-align: right;
+    white-space: nowrap;
+}
+
 /* Member table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #members h2 {
@@ -217,14 +242,17 @@ header h1 em {
     text-align: center;
 }
 
+#members table .member-role {
+    text-transform: capitalize;
+}
+
 #members table .donations,
 #members table .trophies {
     text-align: center;
 }
 #members table .war {
-    background-color: #ffbb43;
-    font-size: 12px;
     font-weight: bold;
+    font-size: 12px;
     text-align: center;
 }
 #members table .good,
@@ -246,10 +274,7 @@ header h1 em {
 }
 
 #members table .na {
-    background-color: transparent;
     color: #999;
-    font-size: 12px;
-    text-align: center;
     font-weight: normal;
 }
 #members table .war em {
@@ -364,6 +389,17 @@ header h1 em {
     #members table .rank-down:before {
         right: -10px;
     }
+}
+
+
+/* Member table filters
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#member-table[data-filter="leadership"] tr[data-leadership="False"] {
+    display: none;
+}
+
+#member-table[data-filter="danger"] tr[data-danger="False"] {
+    display: none;
 }
 
 /* Page footer

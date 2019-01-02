@@ -1,6 +1,6 @@
 <div class="table-scroll">
     <div class="table-scroll-inner">
-        <table width="100%">
+        <table id="member-table" width="100%" data-filter="none">
             <thead>
                 <tr>
                     <th colspan="2" class="condensed">Member</th>
@@ -13,7 +13,7 @@
             </thead>
             <tbody>
             {% for member in members %}
-                <tr>
+                <tr data-danger="{{member.danger}}" data-leadership="{{member.leadership}}">
                     <td style="text-align: center">
                         {% if member.clanRank < member.previousClanRank %}
                         <span class="rank-up">
@@ -27,7 +27,7 @@
                     </td>
                     <td data-tooltip="true">
                         <strong class="condensed">{{member.name}}</strong><br />
-                        <small>{{member.role}}</small>
+                        <small class="member-role">{{member.role}}</small>
                         <div class="tooltip">
                             <dl>
                                 <div><dt>Name</dt><dd>{{member.name}}</dd></div>
@@ -67,35 +67,27 @@
                         <strong>{{member.donations}}</strong>
                     </td>
                 {% for war in member.warlog %}
+                    <td class="war {{war.status}}" data-tooltip="true">
                     {% if war.collectionDayBattlesPlayed is defined %}
-                        {% if war.battlesPlayed == 0 %}
-                        <td class="war bad" data-tooltip="true">
-                        {% elif war.collectionDayBattlesPlayed == 3 %}
-                        <td class="war good" data-tooltip="true">
-                        {% else %}
-                        <td class="war ok" data-tooltip="true">
-                        {% endif %}          
-                            <div data-role="war">
-                                <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
-                                <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
-                            </div>
-                            <div class="tooltip">
-                                <dl>
-                                    <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
-                                    <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
-                                    <div><dt>War day battles:</dt><dd>{{war.battlesPlayed}}</dd></div>
-                                    <div><dt>War day wins:</dt><dd>{{war.wins}}</dd></div>
-                                </dl>
-                            </div>
-                        </td>
+                        <div data-role="war">
+                            <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
+                            <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
+                        </div>
+                        <div class="tooltip">
+                            <dl>
+                                <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
+                                <div><dt>War day battles:</dt><dd>{{war.battlesPlayed}}</dd></div>
+                                <div><dt>War day wins:</dt><dd>{{war.wins}}</dd></div>
+                            </dl>
+                        </div>
                     {% else %}
-                        <td class="war na" data-tooltip="true">
-                            N/A
-                            <div class="tooltip">
-                                <strong>{{member.name}}</strong> did not participate in this war.
-                            </div>
-                        </td>
+                        N/A
+                        <div class="tooltip">
+                            <strong>{{member.name}}</strong> did not participate in this war.
+                        </div>
                     {% endif %}          
+                    </td>
                 {% endfor %}
                 </tr>
             {% endfor %}
