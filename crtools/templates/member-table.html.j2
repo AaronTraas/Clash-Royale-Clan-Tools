@@ -14,9 +14,9 @@
             {% for member in members %}
                 <tr>
                     <td style="text-align: center">
-                        {% if member.clanRank > member.previousClanRank %}
+                        {% if member.clanRank < member.previousClanRank %}
                         <span class="rank-up">
-                        {% elif member.clanRank < member.previousClanRank %}
+                        {% elif member.clanRank > member.previousClanRank %}
                         <span class="rank-down">
                         {% else %}
                         <span>
