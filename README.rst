@@ -64,6 +64,12 @@ This is an INI file. As of current version, there's only one possible parameter:
   # Path to a file that contains arbitrary HTML for the site.
   description_html=~/myclan/body.html
 
+  [www]
+  # Canonical URL for this site. Used for setting the rel=canonical
+  # link in the web site, as well as generating the robots.txt
+  # and sitemap.xml
+  canonical_url=https://yourclan.com/
+
 For more details, see crtools.ini
 
 ==================================================
