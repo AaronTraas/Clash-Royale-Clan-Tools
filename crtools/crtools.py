@@ -5,7 +5,7 @@ __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
 import codecs
-from datetime import datetime
+from datetime import datetime, date
 from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import os
@@ -85,8 +85,8 @@ def member_warlog(member_tag, warlog):
         member_warlog.append(participation)
     return member_warlog
 
-def member_danger(member, member_warlog):
-    good = ok = bad = 0
+def member_rating(member, member_warlog, days_from_donation_reset):
+    good = ok = bad = na = 0
     for war in member_warlog:
         if war != None:
             if war['status'] == 'good':
@@ -95,13 +95,20 @@ def member_danger(member, member_warlog):
                 ok += 1
             elif war['status'] == 'bad':
                 bad += 1
+            else:
+                na += 1
 
-    if bad > good:
-        return True
-    if good == 0 and member['donations'] == 0:
-        return True
+    # then calculate score based on based on 20/day. We exempt them the first day
+    donation_score = 0;
+    if days_from_donation_reset > 1:
+        target_donations = 12 * (days_from_donation_reset - 1)
+        donation_score = member['donations'] - target_donations
 
-    return False
+        # bigger penalty for 0 donations
+        if member['donations'] == 0:
+            donation_score -= (days_from_donation_reset - 1) * 10;
+
+    return (good * 20) + (ok) + (bad * -30) + (na * -1) + donation_score
 
 def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates):
     """Render clan dashboard."""
@@ -113,14 +120,25 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_mi
         war_dates    = war_dates
     )
 
+    members_by_score = newlist = sorted(members, key=lambda k: k['rating']) 
+
+    suggestions = [];
+    for index, member in enumerate(members_by_score):
+        if member['rating'] < 0:
+            if index < len(members) - 46:
+                suggestions.append('Kick <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
+            elif member['role'] != 'member':
+                suggestions.append('Demote <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
+
     return env.get_template('page.html.j2').render(
             version          = __version__,
             page_title       = clan_name + "Clan Dashboard",
             update_date      = datetime.now().strftime('%c'),
-            content          = member_table,
+            member_table     = member_table,
             clan_name        = clan_name,
             clan_id          = clan_id,
             clan_description = clan_description,
+            suggestions      = suggestions,
             clan_stats       = clan_stats
         )
 
@@ -176,12 +194,33 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         warlog = get_warlog(api_key, clan_id)
         write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
+        # calculate the number of days since the donation last sunday, for donation tracking purposes:
+        today = date.today().toordinal()
+        sunday = today - (today % 7)
+        days_from_donation_reset = today - sunday
+
         # grab importent fields from member list for dashboard
         member_dash = []
         for member in clan['memberList']:
             member_row = member
+
+            member['donation_status'] = 'normal'
+            if member['donations'] > (days_from_donation_reset) * 40:
+                member['donation_status'] = 'good'
+            if days_from_donation_reset > 1:
+                if member['donations'] == 0:
+                    member['donation_status'] = 'bad'
+                elif member['donations'] < (days_from_donation_reset-1) * 10:
+                    member['donation_status'] = 'ok'
+
             member_row['warlog'] = member_warlog(member['tag'], warlog)
-            member_row['danger'] = member_danger(member, member_row['warlog'])
+            
+            member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset)
+            if member_row['rating'] > 0:
+                member_row['danger'] = False
+            else:
+                member_row['danger'] = True
+
             if member['role'] == 'leader' or member['role'] == 'coLeader':
                 member_row['leadership'] = True
             else: 

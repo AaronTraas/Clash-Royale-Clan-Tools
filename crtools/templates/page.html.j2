@@ -18,7 +18,7 @@
         <h1>{{clan_name}} Clan Dashboard</h1>
     </div></header>
     <main>
-        <article id="hero">
+        <section id="hero">
             <div id="clan-description">
                 {{clan_description}}
             </div>
@@ -27,8 +27,8 @@
                 {{clan_stats}}
                 </div>
             </div>
-        </article>
-        <article id="members">
+        </section>
+        <section id="members">
             <header>
                 <div class="labels">
                     <h2>Member list and stats</h2>
@@ -45,8 +45,28 @@
                     </label>
                 </div>
             </header>
-           {{content}}
-        </article>
+            <article>
+                {{member_table}}
+            </article>
+
+            <h3 id="suggestions">Suggested actions for leadership:</h3>
+            <article>
+                <ul>
+                {% for suggestion in suggestions %}
+                    <li>{{suggestion}}</li>
+                {% endfor %}
+                </ul>
+                <p>
+                    Score for each individual is derived from war participation and 
+                    donations. Anyone with a score below 0 will be recommended for 
+                    kicking and demotion, depending on the number of people in the clan.
+                </p>
+                <p>
+                    If you want to stay off this list, donate at least <strong>10 cards per 
+                    day,</strong> and participate fully in <strong>1 out of every 10 wars</strong>.
+                </p>
+            </article>
+        </section>
     </main>
 
     <footer><div class="inner">

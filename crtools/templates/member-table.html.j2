@@ -13,7 +13,7 @@
             </thead>
             <tbody>
             {% for member in members %}
-                <tr data-danger="{{member.danger}}" data-leadership="{{member.leadership}}">
+                <tr data-rating="{{member.rating}}" data-danger="{{member.danger}}" data-leadership="{{member.leadership}}">
                     <td style="text-align: center">
                         {% if member.clanRank < member.previousClanRank %}
                         <span class="rank-up">
@@ -33,6 +33,7 @@
                                 <div><dt>Name</dt><dd>{{member.name}}</dd></div>
                                 <div><dt>Tag</dt><dd>{{member.tag}}</dd></div>
                                 <div><dt>Clan Role</dt><dd>{{member.role}}</dd></div>
+                                <div><dt>Clan Score</dt><dd>{{member.rating}}</dd></div>
                                 <div><dt>XP Level</dt><dd>{{member.expLevel}}</dd></div>
                                 <div><dt>Trophies</dt><dd>{{member.trophies}}</dd></div>
                                 <div>
@@ -57,13 +58,7 @@
                     {% endif %}          
                         <strong>{{member.trophies}}</strong>
                     </td>
-                    {% if member.donations == 0 %}
-                    <td class="donations bad">
-                    {% elif member.donations > 300 %}
-                    <td class="donations good">
-                    {% else %}
-                    <td class="donations">
-                    {% endif %}          
+                    <td class="donations {{member.donation_status}}">
                         <strong>{{member.donations}}</strong>
                     </td>
                 {% for war in member.warlog %}
