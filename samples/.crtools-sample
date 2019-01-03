@@ -10,8 +10,9 @@ clan=#JY8YVV
 # your output path. Where you want the static website to live.
 out=/var/www/html
 
-# Path to the logo artwork for clan. Must be PNG. Recommended at least 64x64 pixels.
-favicon=~/myclan/logo.png
+# Path to the logo artwork for clan. Must be PNG. Recommended at least 
+# 64x64 pixels.
+clan_logo=~/myclan/logo.png
 
 # Path to the favicon file you want to use for this
 favicon=~/myclan/favicon.ico
@@ -20,4 +21,7 @@ favicon=~/myclan/favicon.ico
 description_html=~/myclan/body.html
 
 [www]
+# Canonical URL for this site. Used for setting the rel=canonical
+# link in the web site, as well as generating the robots.txt
+# and sitemap.xml
 canonical_url=https://yourclan.com/

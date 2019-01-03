@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from configparser import SafeConfigParser
 import os
 from os.path import expanduser
@@ -27,22 +27,16 @@ def main():
             parser.read(config_file_name)
             if parser.has_option('API', 'api_key'):
                 api_key = parser.get('API', 'api_key')
-                #print("CRTools Config: found API key: [not shown]")
             if parser.has_option('API', 'clan'):
                 clan_id = parser.get('API', 'clan')
-                #print("CRTools Config: found clan ID: '{}'".format(clan_id))
             if parser.has_option('Paths', 'out'):
                 output_path = parser.get('Paths', 'out')
-                #print("CRTools Config: found output path: '{}'".format(output_path))
             if parser.has_option('Paths', 'favicon'):
                 favicon_path = parser.get('Paths', 'favicon')
-                #print("CRTools Config: found favicon path: '{}'".format(favicon_path))
             if parser.has_option('Paths', 'clan_logo'):
                 logo_path = parser.get('Paths', 'clan_logo')
-                #print("CRTools Config: found logo path: '{}'".format(logo_path))
             if parser.has_option('Paths', 'description_html'):
                 description_path = parser.get('Paths', 'description_html')
-                #print("CRTools Config: found description HTML file: '{}'".format(description_path))
             if parser.has_option('www', 'canonical_url'):
                 canonical_url = parser.get('www', 'canonical_url')
 
@@ -55,17 +49,32 @@ def main():
 
     # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
-                            description = "Tools for creating a clan maagement dashboard for Clash Royale")
-    parser.add_argument("--clan",
-                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.",
-                        required = clan_id_required)
-    parser.add_argument("--out",
-                        metavar  = "OUTPUT-PATH",
-                        help     = "Output path for HTML.")
+                            description = """A tool for creating a dashboard for clan participation in 
+                                             ClashRoyale. See https://developer.clashroyale.com to sign up 
+                                             for a developer account and create an API key to use with this."""
+                            )
     parser.add_argument("--api_key",
                         metavar  = "KEY",
                         help     = "API key for developer.clashroyale.com",
                         required = api_key_required)
+    parser.add_argument("--clan",
+                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.",
+                        required = clan_id_required)
+    parser.add_argument("--out",
+                        metavar  = "PATH",
+                        help     = "Output path for HTML.")
+    parser.add_argument("--favicon",
+                        metavar  = "PATH",
+                        help     = "Source path for favicon.ico. If provided, we will copy to the output directory.")
+    parser.add_argument("--clan_logo",
+                        metavar  = "PATH",
+                        help     = "Source path for clan logo PNG. Recommended at least 64x64 pizels. If provided, we will copy to the output directory.")
+    parser.add_argument("--description",
+                        metavar  = "PATH",
+                        help     = "Source path snippet of HTML to replace the clan description. Should not be a complete HTML document. Sample here: https://github.com/AaronTraas/crtools-agrassar-assets/blob/master/description.html\n\nIf provided, we will copy to the output directory.")
+    parser.add_argument("--canonical_url",
+                        metavar  = "URL",
+                        help     = "Canonical URL for this site. Used for setting the rel=canonical link in the web site, as well as generating the robots.txt and sitemap.xml")
 
     args = parser.parse_args()
 
@@ -76,6 +85,14 @@ def main():
         clan_id = args.clan
     if args.out:
         output_path = args.out
+    if args.favicon:
+        favicon_path = args.out
+    if args.clan_logo:
+        logo_path = args.out
+    if args.description:
+        description_path = args.out
+    if args.canonical_url:
+        canonical_url = args.out
     
     # Build the dashboard
     build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path, canonical_url)

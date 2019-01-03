@@ -1,8 +1,10 @@
 ==================================================
-Clash Royale Clan Tools
+crtools -- Clash Royale Clan Dashboard generator
 ==================================================
 
-This is a tool for creating a dashboard for clan participation in ClashRoyale. See https://developer.clashroyale.com to sign up for a developer account and create an API key to use with this.
+This is a tool for creating a dashboard for clan participation in ClashRoyale.
+See https://developer.clashroyale.com to sign up for a developer account and
+create an API key to use with this.
 
 For an example dashboard created for the clan Agrassar (#JY8YVV), see: https://agrassar.com/
 
@@ -10,7 +12,8 @@ For an example dashboard created for the clan Agrassar (#JY8YVV), see: https://a
 Installation
 ==================================================
 
-This requires Python 3 and setup tools installed on your machine. See https://packaging.python.org/tutorials/installing-packages/ for details.
+This requires Python 3 and setup tools installed on your machine. See
+https://packaging.python.org/tutorials/installing-packages/ for details.
 
 Once setuptools is installed, run the following in your shell:
 
@@ -22,16 +25,29 @@ Once setuptools is installed, run the following in your shell:
 Syntax
 ==================================================
 
-Python tools for creating a clan maagement dashboard for Clash Royale
-
-usage: crtools [-h] [--clan CLAN] [--out OUTPUT-PATH] [--api_key KEY]
+usage: crtools [-h] [--api_key KEY] [--clan CLAN] [--out PATH]
+               [--favicon PATH] [--clan_logo PATH] [--description PATH]
+               [--canonical_url URL]
 
 optional arguments:
-  -h, --help         show this help message and exit
-  --clan CLAN        Clan ID from Clash Royale. If it starts with a '#', clan
-                     ID must be quoted.
-  --out OUTPUT-PATH  Output path for HTML.
-  --api_key KEY      API key for developer.clashroyale.com
+  -h, --help           show this help message and exit
+  --api_key KEY        API key for developer.clashroyale.com
+  --clan CLAN          Clan ID from Clash Royale. If it starts with a '#',
+                       clan ID must be quoted.
+  --out PATH           Output path for HTML.
+  --favicon PATH       Source path for favicon.ico. If provided, we will copy
+                       to the output directory.
+  --clan_logo PATH     Source path for clan logo PNG. Recommended at least
+                       64x64 pizels. If provided, we will copy to the output
+                       directory.
+  --description PATH   Source path snippet of HTML to replace the clan
+                       description. Should not be a complete HTML document.
+                       Sample here: https://github.com/AaronTraas/crtools-
+                       agrassar-assets/blob/master/description.html If
+                       provided, we will copy to the output directory.
+  --canonical_url URL  Canonical URL for this site. Used for setting the
+                       rel=canonical link in the web site, as well as
+                       generating the robots.txt and sitemap.xml
 
 ==================================================
 Optional config file
@@ -39,7 +55,8 @@ Optional config file
 
 crtools looks for a config file in your home directory called .crtools
 
-This is an INI file. As of current version, there's only one possible parameter: api_key. The file should look like:
+This is an INI file. As of current version, there's only one possible
+parameter: api_key. The file should look like:
 
 .. code:: ini
 
@@ -55,8 +72,9 @@ This is an INI file. As of current version, there's only one possible parameter:
   # your output path. Where you want the static website to live.
   out=/var/www/html
 
-  # Path to the logo artwork for clan. Must be PNG. Recommended at least 64x64 pixels.
-  favicon=~/myclan/logo.png
+  # Path to the logo artwork for clan. Must be PNG. Recommended at 
+  # least 64x64 pixels.
+  clan_logo=~/myclan/logo.png
 
   # Path to the favicon file you want to use for this
   favicon=~/myclan/favicon.ico
@@ -94,4 +112,5 @@ For example:
 
   0 * * * * crtools --out=/var/www/html \#JY8YVV
 
-Note the '\' character before the # -- that's important. A '#' is a comment in most shells/scripting languages. You need to escape it to run it.
+Note the '\' character before the # -- that's important. A '#' is a comment in
+most shells/scripting languages. You need to escape it to run it.
