@@ -60,13 +60,13 @@ The algorithm as follows:
 
 2. are we at least 1 day after the reset?
 
-	a. if yes, multiply :code:`TARGET_DONATIONS_PER_DAY` by the days since the reset to get the target donations for each member.
-
-	b. if no, the target donations is zero
+   a) if yes, multiply :code:`TARGET_DONATIONS_PER_DAY` by the days since the reset to 
+      get the target donations for each member.
+   b) if no, the target donations is zero
 
 3. for each member
 	
-	a. we subract the target donations per day from the member's `donations` field value 
+   a) we subract the target donations per day from the member's `donations` field value 
 
 Which could leave us with a positive or negative score, based on whether they meet or fail to meet their target. 
 
