@@ -5,7 +5,7 @@ __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
 import codecs
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import os
@@ -240,7 +240,7 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
         if canonical_url != False:
-            lastmod = datetime.now().isoformat()
+            lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
             sitemap_xml = env.get_template('sitemap.xml.j2').render(
                     url     = canonical_url,
                     lastmod = lastmod
