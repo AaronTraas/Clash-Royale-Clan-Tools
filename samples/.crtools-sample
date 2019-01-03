@@ -18,3 +18,6 @@ favicon=~/myclan/favicon.ico
 
 # Path to a file that contains arbitrary HTML for the site.
 description_html=~/myclan/body.html
+
+[www]
+canonical_url=https://yourclan.com/

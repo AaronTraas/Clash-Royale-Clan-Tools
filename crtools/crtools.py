@@ -110,7 +110,7 @@ def member_rating(member, member_warlog, days_from_donation_reset):
 
     return (good * 20) + (ok) + (bad * -30) + (na * -1) + donation_score
 
-def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates):
+def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates, canonical_url):
     """Render clan dashboard."""
 
     member_table = env.get_template('member-table.html.j2').render(
@@ -132,8 +132,8 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_mi
 
     return env.get_template('page.html.j2').render(
             version          = __version__,
-            page_title       = clan_name + "Clan Dashboard",
             update_date      = datetime.now().strftime('%c'),
+            canonical_url    = canonical_url,
             member_table     = member_table,
             clan_name        = clan_name,
             clan_id          = clan_id,
@@ -142,7 +142,7 @@ def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_mi
             clan_stats       = clan_stats
         )
 
-def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path):
+def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path, canonical_url):
     """Compile and render clan dashboard."""
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -236,9 +236,21 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
 
         template = env.get_template('clan-stats-table.html.j2')
         stats_html = template.render( clan )
-        dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog))
+        dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog), canonical_url)
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
+        if canonical_url != False:
+            lastmod = datetime.now().isoformat()
+            sitemap_xml = env.get_template('sitemap.xml.j2').render(
+                    url     = canonical_url,
+                    lastmod = lastmod
+                )
+            robots_txt = env.get_template('robots.txt.j2').render(
+                    canonical_url = canonical_url
+                )
+            write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
+            write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
+
         # remove output directory if previeously created to cleanup. Then 
         # create output path and log path.
         output_path = os.path.expanduser(output_path)

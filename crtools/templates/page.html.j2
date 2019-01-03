@@ -4,10 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <title>{{page_title}} | CRtools</title>
+    <meta name="generator" content="crtools {{version}}" />
+   
+    <title>{{clan_name}} Clan Dashboard | crtools</title>
 
     <link rel="icon" href="favicon.ico"/>
-
+    {% if canonical_url != False %}
+    <link rel="canonical" href="{{canonical_url}}" />
+    {% endif %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,300i,700,700i">
     <link rel="stylesheet" href="static/normalize.css">
     <link rel="stylesheet" href="static/crtools.css?version={{version}}">

@@ -17,6 +17,7 @@ def main():
     favicon_path = False
     logo_path = False
     description_path = False
+    canonical_url = False
 
     # Look for config file. If config file exists, load it, and try to extract API key from config file
     config_file_name = expanduser('~/.crtools')
@@ -42,6 +43,8 @@ def main():
             if parser.has_option('Paths', 'description_html'):
                 description_path = parser.get('Paths', 'description_html')
                 #print("CRTools Config: found description HTML file: '{}'".format(description_path))
+            if parser.has_option('www', 'canonical_url'):
+                canonical_url = parser.get('www', 'canonical_url')
 
     # if API key has not been set (is False), then API key needs to be specified as a command line argument
     api_key_required = clan_id_required = False  
@@ -75,5 +78,5 @@ def main():
         output_path = args.out
     
     # Build the dashboard
-    build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path)
+    build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path, canonical_url)
 
