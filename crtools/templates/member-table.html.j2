@@ -25,7 +25,7 @@
                         <span class="rank-down">
                         {% else %}
                         <span>
-                        {% endif %}          
+                        {% endif %}
                            <strong>{{member.clanRank}}</strong>
                         </span>
                     </td>
@@ -66,7 +66,10 @@
                         <strong>{{member.trophies}}</strong>
                     </td>
                     <td class="donations {{member.donation_status}}">
-                        <strong>{{member.donations}}</strong>
+                        <strong>{{member.donations}}</strong><br />
+                        {% if member.donations_daily > 0 %}
+                            <small>{{member.donations_daily}}/day</small>
+                        {% endif %}          
                     </td>
                 {% for war in member.warlog %}
                     <td class="war {{war.status}}" data-tooltip="true">

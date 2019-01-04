@@ -84,30 +84,34 @@ def member_warlog(member_tag, warlog):
         member_warlog.append(participation)
     return member_warlog
 
-def member_rating(member, member_warlog, days_from_donation_reset):
-    good = ok = bad = na = 0
-    for war in member_warlog:
-        if war != None:
-            if war['status'] == 'good':
-                good += 1
-            elif war['status'] == 'ok':
-                ok += 1
-            elif war['status'] == 'bad':
-                bad += 1
-            else:
-                na += 1
-
-    # then calculate score based on based on 20/day. We exempt them the first day
+def member_rating(member, member_warlog, days_from_donation_reset, config):
+    # calculate score based `days_from_donation_reset`.
     donation_score = 0;
-    if days_from_donation_reset > 1:
-        target_donations = 12 * (days_from_donation_reset - 1)
-        donation_score = member['donations'] - target_donations
+    target_donations = config['min_donations_per_day'] * (days_from_donation_reset)
+    donation_score = member['donations'] - target_donations
+
+    # exempt additional penalties if at least a day hasn't passed
+    if days_from_donation_reset >= 1:
+        donation_score = round(donation_score / days_from_donation_reset)
 
         # bigger penalty for 0 donations
         if member['donations'] == 0:
-            donation_score -= (days_from_donation_reset - 1) * 10;
+            donation_score -= config['donations_zero_penalty'];
 
-    return (good * 20) + (ok) + (bad * -30) + (na * -1) + donation_score
+    # calculate score based on war participation
+    war_score = 0;
+    for war in member_warlog:
+        if war != None:
+            if war['status'] == 'good':
+                war_score += config['points_mulitplier_good']
+            elif war['status'] == 'ok':
+                war_score += config['points_mulitplier_ok']
+            elif war['status'] == 'bad':
+                war_score += config['points_mulitplier_bad']
+            else:
+                war_score += config['points_mulitplier_na']
+
+    return war_score + donation_score
 
 def render_dashboard(clan, warlog, config, clan_description):
     """Render clan dashboard."""
@@ -131,17 +135,19 @@ def render_dashboard(clan, warlog, config, clan_description):
         if days_from_donation_reset > 1:
             if member['donations'] == 0:
                 member['donation_status'] = 'bad'
-            elif member['donations'] < (days_from_donation_reset-1) * 10:
+            elif member['donations'] < (days_from_donation_reset-1) * config['min_donations_per_day']:
                 member['donation_status'] = 'ok'
+
+        member_row['donations_daily'] = round(member['donations'] / (days_from_donation_reset))
 
         member_row['warlog'] = member_warlog(member['tag'], warlog)
         
-        member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset)
+        member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset, config)
         if member_row['rating'] > 0:
             member_row['danger'] = False
-            if member_row['rating'] > 400:
+            if member_row['rating'] > config['score_threshold_promote']:
                 member_row['status'] = 'good'
-            elif member_row['rating'] < 30:
+            elif member_row['rating'] < config['score_threshold_warn']:
                 member_row['status'] = 'ok'
             else:
                 member_row['status'] = 'normal'

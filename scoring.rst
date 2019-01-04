@@ -15,9 +15,12 @@ form the score. After we calculate the `Total Score`_, we then make
 There are a list of constants that can be changed in the configuration of 
 this application that will tweak how the scoring will be applied. These are:
 
-TARGET_DONATIONS_PER_DAY
+MINIMUM_DONATIONS_PER_DAY
 	The minimum number of donations per day each member must make on average
 	to have a positive score. Default is 10.
+
+ZERO_DONATIONS_PENALTY
+    The penalty in points for having zero donations
 
 CLAN_MINIMUM_MEMBERS
 	The minimum number of members the clan wishes to maintain. This is used 
@@ -56,18 +59,16 @@ Donations reset on Sunday. And we have as an input constant :code:`TARGET_DONATI
 
 The algorithm as follows:
 
-1. calculate the number of days since the reset
+1. :code:`days` := the number of days since the reset
 
-2. are we at least 1 day after the reset?
+2. for each member
 
-   a) if yes, multiply :code:`TARGET_DONATIONS_PER_DAY` by the days since 
-      the reset to get the target donations for each member.
-   b) if no, the target donations is zero
+   a) :code:`minimumDonations` := :code:`days` * :code:`MINIMUM_DONATIONS_PER_DAY`
+   b) :code:`scoreFromDonations` := :code:`minimumDonations` - member's donations
+   c) are we at least 1 day after the reset? If yes:
 
-3. for each member
-	
-   a) we subract the target donations per day from the member's `donations` 
-      field value 
+      i. :code:`scoreFromDonations` := :code:`scoreFromDonations` / :code:`days`
+      ii. if :code:`days`, :code:`scoreFromDonations` := :code:`scoreFromDonations` + :code:`ZERO_DONATIONS_PENALTY`
 
 Which could leave us with a positive or negative score, based on whether 
 they meet or fail to meet their target. 

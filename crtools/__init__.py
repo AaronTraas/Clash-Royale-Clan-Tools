@@ -10,19 +10,27 @@ from .crtools import build_dashboard
 def main():
     # Create config dict with defaults
     config = {
-        'version' :          __version__,
-        'api_key' :          False,
-        'clan_id' :          False,
-        'output_path' :      './crtools-out',
-        'favicon_path' :     False,
-        'logo_path' :        False,
-        'description_path' : False,
-        'canonical_url' :    False,
-        'temp_dir_name' :    'crtools',
-        'env' :              Environment(
-                                loader=PackageLoader('crtools', 'templates'),
-                                autoescape=select_autoescape(['html', 'xml'])
-                            )
+        'version' :                 __version__,
+        'api_key' :                 False,
+        'clan_id' :                 False,
+        'output_path' :             './crtools-out',
+        'favicon_path' :            False,
+        'logo_path' :               False,
+        'description_path' :        False,
+        'canonical_url' :           False,
+        'points_mulitplier_good' :  20,
+        'points_mulitplier_ok' :    1,
+        'points_mulitplier_bad' :   -30,
+        'points_mulitplier_na' :    -1,
+        'min_donations_per_day' :   12,
+        'donations_zero_penalty' :  10,
+        'score_threshold_promote' : 200,
+        'score_threshold_warn' :    30,
+        'temp_dir_name' :           'crtools',
+            'env' :                 Environment(
+                                        loader=PackageLoader('crtools', 'templates'),
+                                        autoescape=select_autoescape(['html', 'xml'])
+                                    )
     }
 
     # Look for config file. If config file exists, load it, and try to 
