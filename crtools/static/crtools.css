@@ -21,7 +21,12 @@ main {
 }
 
 main > section, header > .inner, footer > .inner {
-    padding: 15px;
+    padding: 22px;
+}
+@media (max-width: 700px) {
+    main > section, header > .inner, footer > .inner {
+        padding: 15px;
+    }
 }
 
 /* Typography
