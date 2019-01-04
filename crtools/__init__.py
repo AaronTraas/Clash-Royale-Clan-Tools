@@ -1,50 +1,57 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from configparser import SafeConfigParser
+from jinja2 import Environment, PackageLoader, select_autoescape
 import os
-from os.path import expanduser
 import sys
-from ._version import __version__
 
+from ._version import __version__
 from .crtools import build_dashboard
 
 def main():
-    print("crtools {}".format(__version__))
+    # Create config dict with defaults
+    config = {
+        'version' :          __version__,
+        'api_key' :          False,
+        'clan_id' :          False,
+        'output_path' :      './crtools-out',
+        'favicon_path' :     False,
+        'logo_path' :        False,
+        'description_path' : False,
+        'canonical_url' :    False,
+        'temp_dir_name' :    'crtools',
+        'env' :              Environment(
+                                loader=PackageLoader('crtools', 'templates'),
+                                autoescape=select_autoescape(['html', 'xml'])
+                            )
+    }
 
-    # prime API key to False for testing later
-    api_key = False
-    clan_id = False
-    output_path = './crtools-out'
-    favicon_path = False
-    logo_path = False
-    description_path = False
-    canonical_url = False
-
-    # Look for config file. If config file exists, load it, and try to extract API key from config file
-    config_file_name = expanduser('~/.crtools')
+    # Look for config file. If config file exists, load it, and try to 
+    # extract API key from config file
+    config_file_name = os.path.expanduser('~/.crtools')
     if os.path.isfile(config_file_name):
-        with open(config_file_name) as f:
-            parser = SafeConfigParser()
-            parser.read(config_file_name)
-            if parser.has_option('API', 'api_key'):
-                api_key = parser.get('API', 'api_key')
-            if parser.has_option('API', 'clan'):
-                clan_id = parser.get('API', 'clan')
-            if parser.has_option('Paths', 'out'):
-                output_path = parser.get('Paths', 'out')
-            if parser.has_option('Paths', 'favicon'):
-                favicon_path = parser.get('Paths', 'favicon')
-            if parser.has_option('Paths', 'clan_logo'):
-                logo_path = parser.get('Paths', 'clan_logo')
-            if parser.has_option('Paths', 'description_html'):
-                description_path = parser.get('Paths', 'description_html')
-            if parser.has_option('www', 'canonical_url'):
-                canonical_url = parser.get('www', 'canonical_url')
+        parser = SafeConfigParser()
+        parser.read(config_file_name)
+        if parser.has_option('API', 'api_key'):
+            config['api_key'] = parser.get('API', 'api_key')
+        if parser.has_option('API', 'clan'):
+            config['clan_id'] = parser.get('API', 'clan')
+        if parser.has_option('Paths', 'out'):
+            config['output_path'] = parser.get('Paths', 'out')
+        if parser.has_option('Paths', 'favicon'):
+            config['favicon_path'] = parser.get('Paths', 'favicon')
+        if parser.has_option('Paths', 'clan_logo'):
+            config['logo_path'] = parser.get('Paths', 'clan_logo')
+        if parser.has_option('Paths', 'description_html'):
+            config['description_path'] = parser.get('Paths', 'description_html')
+        if parser.has_option('www', 'canonical_url'):
+            config['canonical_url'] = parser.get('www', 'canonical_url')
 
-    # if API key has not been set (is False), then API key needs to be specified as a command line argument
+    # if API key has not been set (is False), then API key needs to be 
+    # specified as a command line argument
     api_key_required = clan_id_required = False  
-    if api_key == False:
+    if ['api_key'] == False:
         api_key_required = True
-    if clan_id == False:
+    if config['clan_id'] == False:
         clan_id_required = True
 
     # parse command line arguments
@@ -80,20 +87,20 @@ def main():
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:
-        api_key = args.api_key
+        config['api_key'] = args.api_key
     if args.clan:
-        clan_id = args.clan
+        config['clan_id'] = args.clan
     if args.out:
-        output_path = args.out
+        config['output_path'] = args.out
     if args.favicon:
-        favicon_path = args.out
+        config['favicon_path'] = args.out
     if args.clan_logo:
-        logo_path = args.out
+        config['logo_path'] = args.out
     if args.description:
-        description_path = args.out
+        config['description_path'] = args.out
     if args.canonical_url:
-        canonical_url = args.out
+        config['canonical_url'] = args.out
     
     # Build the dashboard
-    build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path, canonical_url)
+    build_dashboard(config)
 

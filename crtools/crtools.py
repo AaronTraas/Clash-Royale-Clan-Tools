@@ -6,7 +6,6 @@ __docformat__ = 'reStructuredText'
 
 import codecs
 from datetime import datetime, date, timezone
-from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import os
 import requests
@@ -110,39 +109,77 @@ def member_rating(member, member_warlog, days_from_donation_reset):
 
     return (good * 20) + (ok) + (bad * -30) + (na * -1) + donation_score
 
-def render_dashboard(env, members, clan_name, clan_id, clan_description, clan_min_trophies, clan_stats, war_dates, canonical_url):
+def render_dashboard(clan, warlog, config, clan_description):
     """Render clan dashboard."""
 
-    member_table = env.get_template('member-table.html.j2').render(
-        members      = members, 
-        clan_name    = clan_name, 
-        min_trophies = clan_min_trophies, 
-        war_dates    = war_dates
+    template = config['env'].get_template('clan-stats-table.html.j2')
+    stats_html = template.render( clan )
+
+    # calculate the number of days since the donation last sunday, for donation tracking purposes:
+    today = date.today().toordinal()
+    sunday = today - (today % 7)
+    days_from_donation_reset = today - sunday
+
+    # grab importent fields from member list for dashboard
+    member_dash = []
+    for member in clan['memberList']:
+        member_row = member
+
+        member['donation_status'] = 'normal'
+        if member['donations'] > (days_from_donation_reset) * 40:
+            member['donation_status'] = 'good'
+        if days_from_donation_reset > 1:
+            if member['donations'] == 0:
+                member['donation_status'] = 'bad'
+            elif member['donations'] < (days_from_donation_reset-1) * 10:
+                member['donation_status'] = 'ok'
+
+        member_row['warlog'] = member_warlog(member['tag'], warlog)
+        
+        member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset)
+        if member_row['rating'] > 0:
+            member_row['danger'] = False
+        else:
+            member_row['danger'] = True
+
+        if member['role'] == 'leader' or member['role'] == 'coLeader':
+            member_row['leadership'] = True
+        else: 
+            member_row['leadership'] = False
+        if member['role'] == 'coLeader':
+            member['role'] = 'co-leader'
+        member_dash.append(member_row)
+
+    member_table = config['env'].get_template('member-table.html.j2').render(
+        members      = member_dash, 
+        clan_name    = clan['name'], 
+        min_trophies = clan['requiredTrophies'], 
+        war_dates    = warlog_dates(warlog)
     )
 
-    members_by_score = newlist = sorted(members, key=lambda k: k['rating']) 
+    members_by_score = newlist = sorted(member_dash, key=lambda k: k['rating']) 
 
     suggestions = [];
     for index, member in enumerate(members_by_score):
         if member['rating'] < 0:
-            if index < len(members) - 46:
+            if index < len(members_by_score) - 46:
                 suggestions.append('Kick <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
             elif member['role'] != 'member':
                 suggestions.append('Demote <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
 
-    return env.get_template('page.html.j2').render(
+    return config['env'].get_template('page.html.j2').render(
             version          = __version__,
             update_date      = datetime.now().strftime('%c'),
-            canonical_url    = canonical_url,
+            canonical_url    = config['canonical_url'],
             member_table     = member_table,
-            clan_name        = clan_name,
-            clan_id          = clan_id,
+            clan_name        = clan['name'],
+            clan_id          = clan['tag'],
             clan_description = clan_description,
             suggestions      = suggestions,
-            clan_stats       = clan_stats
+            clan_stats       = stats_html
         )
 
-def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path, output_path, canonical_url):
+def build_dashboard(config):
     """Compile and render clan dashboard."""
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -151,7 +188,7 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         # Create temporary directory. All file writes, until the very end,
         # will happen in this directory, so that no matter what we do, it
         # won't hose existing stuff.
-        tempdir = tempfile.mkdtemp("traasorg")
+        tempdir = tempfile.mkdtemp(config['temp_dir_name'])
         
         log_path = os.path.join(tempdir, 'log')
         os.makedirs(log_path)
@@ -162,8 +199,8 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         # If logo_path is provided, grab logo from path given, and put it where 
         # it needs to go. Otherwise, grab the default from the static folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
-        if logo_path:
-            logo_src_path = os.path.expanduser(logo_path)
+        if config['logo_path']:
+            logo_src_path = os.path.expanduser(config['logo_path'])
             shutil.copyfile(logo_src_path, logo_dest_path)
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_dest_path)        
@@ -171,19 +208,19 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
         # If favicon_path is provided, grab favicon from path given, and put it  
         # where it needs to go. Otherwise, grab the default from the static folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
-        if favicon_path:
-            favicon_src_path = os.path.expanduser(favicon_path)
+        if config['favicon_path']:
+            favicon_src_path = os.path.expanduser(config['favicon_path'])
             shutil.copyfile(favicon_src_path, favicon_dest_path)
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
 
         # Get clan data from API. Write to log.
-        clan = get_clan(api_key, clan_id)
+        clan = get_clan(config['api_key'], config['clan_id'])
         write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
 
         clan_description = clan['description']
-        if description_path:
-            description_path = os.path.expanduser(description_path)
+        if config['description_path']:
+            description_path = os.path.expanduser(config['description_path'])
             if os.path.isfile(description_path):
                 with open(description_path, 'r') as myfile:
                     clan_description = myfile.read()
@@ -191,69 +228,27 @@ def build_dashboard(api_key, clan_id, logo_path, favicon_path, description_path,
                 clan_description = "ERROR: File '{}' does not exist.".format(description_path)
 
         # Get war log data from API. Write to log.
-        warlog = get_warlog(api_key, clan_id)
+        warlog = get_warlog(config['api_key'], config['clan_id'])
         write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
-        # calculate the number of days since the donation last sunday, for donation tracking purposes:
-        today = date.today().toordinal()
-        sunday = today - (today % 7)
-        days_from_donation_reset = today - sunday
-
-        # grab importent fields from member list for dashboard
-        member_dash = []
-        for member in clan['memberList']:
-            member_row = member
-
-            member['donation_status'] = 'normal'
-            if member['donations'] > (days_from_donation_reset) * 40:
-                member['donation_status'] = 'good'
-            if days_from_donation_reset > 1:
-                if member['donations'] == 0:
-                    member['donation_status'] = 'bad'
-                elif member['donations'] < (days_from_donation_reset-1) * 10:
-                    member['donation_status'] = 'ok'
-
-            member_row['warlog'] = member_warlog(member['tag'], warlog)
-            
-            member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset)
-            if member_row['rating'] > 0:
-                member_row['danger'] = False
-            else:
-                member_row['danger'] = True
-
-            if member['role'] == 'leader' or member['role'] == 'coLeader':
-                member_row['leadership'] = True
-            else: 
-                member_row['leadership'] = False
-            if member['role'] == 'coLeader':
-                member['role'] = 'co-leader'
-            member_dash.append(member_row)
-
-        env = Environment(
-            loader=PackageLoader('crtools', 'templates'),
-            autoescape=select_autoescape(['html', 'xml'])
-        )
-
-        template = env.get_template('clan-stats-table.html.j2')
-        stats_html = template.render( clan )
-        dashboard_html = render_dashboard(env, member_dash, clan['name'], clan['tag'], clan_description, clan['requiredTrophies'], stats_html, warlog_dates(warlog), canonical_url)
+        dashboard_html = render_dashboard(clan, warlog, config, clan_description)
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
-        if canonical_url != False:
+        if config['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
-            sitemap_xml = env.get_template('sitemap.xml.j2').render(
-                    url     = canonical_url,
+            sitemap_xml = config['env'].get_template('sitemap.xml.j2').render(
+                    url     = config['canonical_url'],
                     lastmod = lastmod
                 )
-            robots_txt = env.get_template('robots.txt.j2').render(
-                    canonical_url = canonical_url
+            robots_txt = config['env'].get_template('robots.txt.j2').render(
+                    canonical_url = config['canonical_url']
                 )
             write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
             write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
 
         # remove output directory if previeously created to cleanup. Then 
         # create output path and log path.
-        output_path = os.path.expanduser(output_path)
+        output_path = os.path.expanduser(config['output_path'])
         if os.path.exists(output_path):
             shutil.copystat(output_path, tempdir)
             shutil.rmtree(output_path)

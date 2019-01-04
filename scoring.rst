@@ -3,8 +3,8 @@ Clan scoring computation
 ==================================================
 
 We generate a clan "score" that tells us whether to promote, demote, or kick
-players. Since within the game, there's no easy way to get a full view of 
-everything, and there's a lot of information to keep track of, this is a 
+players. Since within the game, there's no easy way to get a full view of
+everything, and there's a lot of information to keep track of, this is a
 handy shorthand.
 
 There are two primary components to the score: `War Participation`_ and 
@@ -60,15 +60,17 @@ The algorithm as follows:
 
 2. are we at least 1 day after the reset?
 
-   a) if yes, multiply :code:`TARGET_DONATIONS_PER_DAY` by the days since the reset to 
-      get the target donations for each member.
+   a) if yes, multiply :code:`TARGET_DONATIONS_PER_DAY` by the days since 
+      the reset to get the target donations for each member.
    b) if no, the target donations is zero
 
 3. for each member
 	
-   a) we subract the target donations per day from the member's `donations` field value 
+   a) we subract the target donations per day from the member's `donations` 
+      field value 
 
-Which could leave us with a positive or negative score, based on whether they meet or fail to meet their target. 
+Which could leave us with a positive or negative score, based on whether 
+they meet or fail to meet their target. 
 
 
 War Participation
@@ -112,7 +114,7 @@ The member's total score is:
 	**Donation Score** + **Collection Day Score** + **War Day Score**. 
 
 Kick and Demote Recommendations
--------------------------------
+===============================
 
 If no members are at or below zero, we recommend nothing.
 
