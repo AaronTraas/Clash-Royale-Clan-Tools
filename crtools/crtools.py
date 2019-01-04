@@ -139,7 +139,14 @@ def render_dashboard(clan, warlog, config, clan_description):
         member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset)
         if member_row['rating'] > 0:
             member_row['danger'] = False
+            if member_row['rating'] > 400:
+                member_row['status'] = 'good'
+            elif member_row['rating'] < 30:
+                member_row['status'] = 'ok'
+            else:
+                member_row['status'] = 'normal'
         else:
+            member_row['status'] = 'bad'
             member_row['danger'] = True
 
         if member['role'] == 'leader' or member['role'] == 'coLeader':

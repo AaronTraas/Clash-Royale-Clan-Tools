@@ -4,6 +4,10 @@
             <thead>
                 <tr>
                     <th colspan="2" class="condensed">Member</th>
+                    <th data-tooltip="true" class="condensed">
+                        Score
+                        <div class="tooltip"><strong>Score</strong> is a measurement of a member's overall participation, factoring donations and war performance.</div>
+                    </th>
                     <th class="condensed">Trophies</th>
                     <th class="condensed">Dona&shy;tions</th>
                 {% for date in war_dates %}
@@ -50,6 +54,9 @@
                                 <div><dt>Trophies</dt><dd>{{member.donationsReceived}}</dd></div>
                             </dl>
                         </div>
+                    </td>
+                    <td class="score {{member.status}}">
+                        <strong>{{member.rating}}</strong>
                     </td>
                     {% if member.trophies < min_trophies %}
                     <td class="trophies ok">

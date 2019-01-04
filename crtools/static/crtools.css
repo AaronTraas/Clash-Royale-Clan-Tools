@@ -277,6 +277,7 @@ body > header h1 em {
     text-transform: capitalize;
 }
 
+#members table .score,
 #members table .donations,
 #members table .trophies {
     text-align: center;
@@ -319,7 +320,10 @@ body > header h1 em {
 #members .tooltip {
     background: #ddd;
     color: #222;
+    font-family: 'Open Sans Condensed', sans-serif;
     font-size: 12px;
+    font-weight: normal;
+    min-width: 90px;
     display: none;
     position: absolute;
     border: 1px solid #222;
