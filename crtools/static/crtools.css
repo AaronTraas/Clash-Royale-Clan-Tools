@@ -38,10 +38,10 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 { font-size: 5.0rem; line-height: 1.2;  letter-spacing: -.1rem; }
 h2 { font-size: 4.2rem; line-height: 1.25; letter-spacing: -.1rem; }
-h3 { font-size: 3.6rem; line-height: 1.3;  letter-spacing: -.1rem; }
-h4 { font-size: 3.0rem; line-height: 1.35; letter-spacing: -.08rem; }
-h5 { font-size: 2.4rem; line-height: 1.5;  letter-spacing: -.05rem; }
-h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 0; }
+h3 { font-size: 3.0rem; line-height: 1.3;  letter-spacing: -.1rem; }
+h4 { font-size: 1.8rem; line-height: 1.35; letter-spacing: -.08rem; font-weight: bold; }
+h5 { font-size: 1.5rem; line-height: 1.5;  letter-spacing: -.05rem; }
+h6 { font-size: 1.2rem; line-height: 1.6;  letter-spacing: 0; }
 
 @media (max-width: 550px) {
     body {
@@ -50,9 +50,6 @@ h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 0; }
     h1 { font-size: 4.0rem; }
     h2 { font-size: 2.6rem; }
     h3 { font-size: 2.2rem; }
-    h4 { font-size: 2.0rem; }
-    h5 { font-size: 1.8rem; }
-    h6 { font-size: 1.5rem; }
 }
 p {
   margin-top: 0; }
@@ -63,6 +60,12 @@ p {
 
 .nobr {
     white-space: nowrap;
+}
+
+@media (max-width: 550px) {
+    .no-mobile {
+        display: none;
+    }
 }
 
 /* Links
@@ -139,6 +142,28 @@ label {
 select {
   border: 1px solid #ccc;
   height: 34px;
+}
+
+/* Grid
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.row {
+    display: flex;
+}
+.row > * {
+    margin-right: 22px;
+    flex: 1;
+}
+.row > *:last-child {
+    margin-right: 0;
+}
+
+@media (max-width: 700px) {
+    .row {
+        display: block;
+    }
+    .row > * {
+        margin-right: 0;
+    }
 }
 
 /* Page Header
@@ -230,33 +255,47 @@ body > header h1 em {
     display: table-row;
     width: 100%;
 }
-#members header > div {
+#members header > * {
     display: table-cell;
+    vertical-align: middle;
     width: 100%;
 }
 #members header .filters {
-    text-align: right;
     white-space: nowrap;
 }
-@media (max-width: 640px) {
-    #members header,
-    #members header > div {
-        display: block;
-    }
-    #members header .filters {
-        text-align: left;
-    }
-    #members header .filters label {
-        display: block;
+@media (max-width: 700px) {
+    #members header .filters select {
+        height: 26px;
     }
 }
 
 #members article {
+    position: relative;
     background-color: #fff;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
     padding: 15px;
-    margin: 8px 0 22px 0;
+    margin-top: 44px;
+    margin-bottom: 22px;
 }
+
+#members article > header {
+    position: absolute;
+    top: -44px;
+    left: 0;
+}
+
+#members article > header h2 {
+    font-size: 3.0rem;
+}
+@media (max-width: 700px) {
+    #members article > header {
+        top: -30px;
+    }
+    #members article > header h2 {
+        font-size: 2.0rem;
+    }
+}
+
 
 /* Member table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -292,6 +331,7 @@ body > header h1 em {
     font-size: 12px;
     text-align: center;
 }
+
 #members table .good,
 #members table .ok,
 #members table .bad {
@@ -299,21 +339,11 @@ body > header h1 em {
     border-bottom: 1px solid #f2f2f2;
 }
 
-#members table .bad {
-    background-color: #c13525;
-    color: #fff;
-}
-#members table .ok {
-    background-color: #ffbb43;
-}
-#members table .good {
-    background-color: #b6e9d1;
-}
-
 #members table .na {
     color: #999;
     font-weight: normal;
 }
+
 #members table .war em {
     font-weight: normal;
 }
@@ -431,6 +461,36 @@ body > header h1 em {
     }
 }
 
+/* Score colors
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.bad {
+    background-color: #c13525;
+    color: #fff;
+}
+.ok {
+    background-color: #ffbb43;
+}
+.good {
+    background-color: #b6e9d1;
+}
+
+.na {
+    color: #999;
+}
+
+strong.good,
+strong.ok,
+strong.bad,
+strong.na {
+    display: inline-block;
+    border-radius: 4px;
+    white-space: nowrap;
+    padding: 0 6px;
+}
+
+strong.na {
+    border: 1px dotted #999;
+}
 
 /* Member table filters
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

@@ -96,7 +96,7 @@ def member_rating(member, member_warlog, days_from_donation_reset, config):
 
         # bigger penalty for 0 donations
         if member['donations'] == 0:
-            donation_score -= config['donations_zero_penalty'];
+            donation_score += config['donations_zero_penalty'];
 
     # calculate score based on war participation
     war_score = 0;
@@ -181,15 +181,15 @@ def render_dashboard(clan, warlog, config, clan_description):
                 suggestions.append('Demote <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
 
     return config['env'].get_template('page.html.j2').render(
-            version          = __version__,
-            update_date      = datetime.now().strftime('%c'),
-            canonical_url    = config['canonical_url'],
-            member_table     = member_table,
-            clan_name        = clan['name'],
-            clan_id          = clan['tag'],
-            clan_description = clan_description,
-            suggestions      = suggestions,
-            clan_stats       = stats_html
+            version           = __version__,
+            config            = config,
+            update_date       = datetime.now().strftime('%c'),
+            member_table      = member_table,
+            clan_name         = clan['name'],
+            clan_id           = clan['tag'],
+            clan_description  = clan_description,
+            suggestions       = suggestions,
+            clan_stats        = stats_html
         )
 
 def build_dashboard(config):

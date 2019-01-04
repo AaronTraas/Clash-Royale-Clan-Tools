@@ -10,7 +10,7 @@
 
     <link rel="icon" href="favicon.ico"/>
     {% if canonical_url != False %}
-    <link rel="canonical" href="{{canonical_url}}" />
+    <link rel="canonical" href="{{config.canonical_url}}" />
     {% endif %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,300i,700,700i">
     <link rel="stylesheet" href="static/normalize.css">
@@ -30,46 +30,82 @@
                 <div class="table-wrap">
                 {{clan_stats}}
                 </div>
+                <em>Last update: {{update_date}}</em>
             </div>
         </section>
         <section id="members">
-            <header>
-                <div class="labels">
-                    <h2>Member list and stats</h2>
-                    <div><small><em>Last update: {{update_date}}</em></small></div>
-                </div>
-                <div class="filters">
-                    <label>
-                        Filter:
-                        <select id="member-filter">
-                            <option value="none">None</option>
-                            <option value="leadership">Leadership</option>
-                            <option value="danger">In danger</option>
-                        </select>
-                    </label>
-                </div>
-            </header>
             <article>
+                <header>
+                    <h2>Member list <span class="no-mobile">and stats</span></h2>
+                    <div class="filters">
+                        <label>
+                            Filter:
+                            <select id="member-filter">
+                                <option value="none">None</option>
+                                <option value="leadership">Leadership</option>
+                                <option value="danger">In danger</option>
+                            </select>
+                        </label>
+                    </div>
+                </header>
                 {{member_table}}
             </article>
 
-            <h3 id="suggestions">Suggested actions for leadership:</h3>
-            <article>
-                <ul>
-                {% for suggestion in suggestions %}
-                    <li>{{suggestion}}</li>
-                {% endfor %}
-                </ul>
-                <p>
-                    Score for each individual is derived from war participation and 
-                    donations. Anyone with a score below 0 will be recommended for 
-                    kicking and demotion, depending on the number of people in the clan.
-                </p>
-                <p>
-                    If you want to stay off this list, donate at least <strong>10 cards per 
-                    day,</strong> and participate fully in <strong>1 out of every 10 wars</strong>.
-                </p>
-            </article>
+            <div class="row">
+                <article id="suggestions">
+                    <header>
+                        <h2>Suggested actions for leadership:</h2>
+                    </header>
+                    <ul>
+                    {% for suggestion in suggestions %}
+                        <li>{{suggestion}}</li>
+                    {% endfor %}
+                    </ul>
+                    <hr />
+                    <p>
+                        Score for each individual is derived from war participation and 
+                        donations. Anyone with a <strong class="bad">score below 0</strong> will be recommended for 
+                        kicking and demotion, depending on the number of people in the clan.
+                    </p>
+                    <p>
+                        A member who achieves <strong class="good">{{config.score_threshold_promote}} points</strong>
+                        is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
+                    </p>
+                </article>
+                <article>
+                    <header>
+                        <h2>Score Calculation</h2>
+                    </header>
+                    <p>
+                        Score is made of two components: <strong>donation score</strong> 
+                        and <strong>war participation score</strong>
+                    </p>
+                    <h4>Donation Score:</h4>
+                    <p>
+                        You are expected to donate <strong>{{config.min_donations_per_day}}
+                        cards per day</strong>, on average. If you make more, you will 
+                        gain points. If you make fewer, you will lose points. If you have 
+                        zero, you will be penalized 
+                        <strong class="bad">{{config.donations_zero_penalty}} points</strong>
+                    </p>
+                    <h4>War Participation Score:</h4>
+                    For each of the last 10 wars:
+                    <ul>
+                        <li>
+                            War battle + 3 collection battles: <strong class="good">{{"{0:+}".format(config.points_mulitplier_good)}} points</strong>
+                        </li>
+                        <li>
+                            War battle + 1-2 collection battles: <strong class="ok">{{"{0:+}".format(config.points_mulitplier_ok)}} points</strong>
+                        </li>
+                        <li>
+                            Did not complete war battle: <strong class="bad">{{"{0:+}".format(config.points_mulitplier_bad)}} points</strong>
+                        </li>
+                        <li>
+                            Did not participate: <strong class="na">{{"{0:+}".format(config.points_mulitplier_na)}} points</strong>
+                        </li>
+                    </ul>
+                </article>
+            </div>
         </section>
     </main>
 
