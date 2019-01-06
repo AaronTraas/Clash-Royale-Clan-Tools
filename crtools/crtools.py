@@ -121,8 +121,9 @@ def render_dashboard(clan, warlog, config, clan_description):
 
     # calculate the number of days since the donation last sunday, for donation tracking purposes:
     today = datetime.utcnow().toordinal()
-    sunday = today - (today % 7)
-    days_from_donation_reset = today - sunday
+    days_from_donation_reset = 7 - (today % 7)
+
+    print(days_from_donation_reset)
 
     # grab importent fields from member list for dashboard
     member_dash = []
@@ -138,8 +139,8 @@ def render_dashboard(clan, warlog, config, clan_description):
             elif member['donations'] < (days_from_donation_reset-1) * config['min_donations_per_day']:
                 member['donation_status'] = 'ok'
             member_row['donations_daily'] = round(member['donations'] / (days_from_donation_reset))
-
-        member_row['donations_daily'] = member['donations']
+        else:
+            member_row['donations_daily'] = member['donations']
 
         member_row['warlog'] = member_warlog(member['tag'], warlog)
         
