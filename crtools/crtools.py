@@ -8,10 +8,18 @@ import codecs
 from datetime import datetime, date, timezone
 from jinja2 import Environment, PackageLoader, select_autoescape
 import json
+import math
 import os
 import shutil
 import tempfile
 from ._version import __version__
+
+WAR_LEAGUE_LOOKUP = {
+    0    : { 'loss':  80, 'win': 160 },
+    600  : { 'loss': 160, 'win': 320 },
+    1500 : { 'loss': 280, 'win': 560 },
+    3000 : { 'loss': 440, 'win': 880 }
+}
 
 def write_object_to_file(file_path, obj): 
     """ Writes contents of object to file. If object is a string, write it 
@@ -34,7 +42,7 @@ def warlog_dates(warlog):
     return war_dates
 
 
-def member_warlog(member_tag, warlog):
+def member_warlog(member_tag, warlog, cardsPerCollectionBattleWin):
     """ Return war participation records for a given member by member tag. """
 
     member_warlog = []
@@ -51,7 +59,10 @@ def member_warlog(member_tag, warlog):
                 else:
                     member['status'] = 'good'
                 participation = member
+                participation['collectionBattleWins'] = math.floor(member['cardsEarned'] / cardsPerCollectionBattleWin)
+                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
         member_warlog.append(participation)
+
     return member_warlog
 
 def member_score(member, member_warlog, days_from_donation_reset, config):
@@ -74,14 +85,21 @@ def member_score(member, member_warlog, days_from_donation_reset, config):
     war_score = 0;
     for war in member_warlog:
         if war != None:
-            if war['status'] == 'good':
-                war_score += config['score']['war_good']
-            elif war['status'] == 'ok':
-                war_score += config['score']['war_ok']
-            elif war['status'] == 'bad':
-                war_score += config['score']['war_bad']
-            else:
-                war_score += config['score']['war_na']
+            #import pprint; pprint.pprint(war)
+
+            if 'battlesPlayed' in war:
+                if war['battlesPlayed'] >= 1:
+                    war_score += war['battlesPlayed'] * config['score']['war_battle_played']
+                    war_score += war['wins'] * config['score']['war_battle_won']
+                    war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
+                else:
+                    war_score += config['score']['war_battle_played']
+
+                war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
+                war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
+
+            else: 
+                war_score += config['score']['war_non_participation']
 
     total_score = war_score + donation_score
     if (member['role'] == 'leader') and (total_score < 0):
@@ -107,7 +125,7 @@ def get_suggestions(members, config):
                 else:
                     demote_target = 'Elder'
                 suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
-        elif (member['score'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
+        elif (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
             suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     if len(suggestions) == 0:
@@ -115,7 +133,37 @@ def get_suggestions(members, config):
 
     return suggestions
 
-def process_members(members, warlog, config):
+def get_scoring_rules(config):
+    rules = [
+        {'name': '...participate in the war?', 'yes': config['score']['war_participation'], 'no': config['score']['war_non_participation'] },
+        {'name': '...complete each collection battle? (per battle)', 'yes': config['score']['collect_battle_played'], 'no': config['score']['collect_battle_incomplete']},
+        {'name': '...win each collection battle? (per battle)', 'yes': config['score']['collect_battle_won'], 'no': config['score']['collect_battle_lost']},
+        {'name': '...complete war day battle?', 'yes': config['score']['war_battle_played'], 'no': config['score']['war_battle_incomplete']},
+        {'name': '...win war day battle? (per battle)', 'yes': config['score']['war_battle_won'], 'no': config['score']['war_battle_lost']}
+    ]
+
+    for rule in rules:
+        if 'yes' in rule:
+            if rule['yes'] > 0:
+                rule['yes_status'] = 'good'
+            elif rule['yes'] < 0:
+                rule['yes_status'] = 'bad'
+            else:
+                rule['yes_status'] = 'normal'
+
+        if 'no' in rule:
+            if rule['no'] > 0:
+                rule['no_status'] = 'good'
+            elif rule['no'] < 0:
+                rule['no_status'] = 'bad'
+            else:
+                rule['no_status'] = 'normal'
+
+    return rules
+
+    
+
+def process_members(clan, warlog, config):
     """ Process member list, adding calculated meta-data for rendering of 
     status in the clan member table. """
 
@@ -125,7 +173,13 @@ def process_members(members, warlog, config):
     if days_from_donation_reset == 7:
         days_from_donation_reset = 0
 
+    cardsPerCollectionBattleWin = 0
+    for score, lookupTable in WAR_LEAGUE_LOOKUP.items():
+        if clan['clanWarTrophies'] >= score:
+            cardsPerCollectionBattleWin = lookupTable['win']
+
     # grab importent fields from member list for dashboard
+    members = clan['memberList']
     members_processed = []
     for member in members:
         # calculate the number of daily donations, and the donation status 
@@ -143,15 +197,15 @@ def process_members(members, warlog, config):
             member['donations_daily'] = member['donations']
 
         # get member warlog and add it to the record
-        member['warlog'] = member_warlog(member['tag'], warlog)
-        
+        member['warlog'] = member_warlog(member['tag'], warlog, cardsPerCollectionBattleWin)
+
         # get member score
         member['score'] = member_score(member, member['warlog'], days_from_donation_reset, config)
         
         # based on member score, infer an overall member status, which is 
         # either 'good', 'ok', 'bad', or 'normal'
         if member['score'] >= 0:
-            if member['score'] > config['score']['threshold_promote']:
+            if member['score'] >= config['score']['threshold_promote']:
                 member['status'] = 'good'
             elif member['score'] < config['score']['threshold_warn']:
                 member['status'] = 'ok'
@@ -222,7 +276,7 @@ def build_dashboard(api, config):
             else:
                 clan_description_html = "ERROR: File '{}' does not exist.".format(description_path)
 
-        members_processed = process_members(clan['memberList'], warlog, config)
+        members_processed = process_members(clan, warlog, config)
 
         # Create environment for template parser
         env = Environment(
@@ -244,7 +298,8 @@ def build_dashboard(api, config):
                 member_table      = member_table_html,
                 clan              = clan,
                 clan_description  = clan_description_html,
-                suggestions       = get_suggestions(members_processed, config)
+                suggestions       = get_suggestions(members_processed, config),
+                scoring_rules     = get_scoring_rules(config)
             )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         

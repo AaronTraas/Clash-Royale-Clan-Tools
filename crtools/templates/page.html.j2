@@ -92,7 +92,7 @@
                     </header>
                     <p>
                         Score is made of two components: <strong>donation score</strong> 
-                        and <strong>war participation score</strong>
+                        and <strong>war participation score</strong>.
                     </p>
                     <h4>Donation Score:</h4>
                     <p>
@@ -103,21 +103,24 @@
                         <strong class="bad">{{config.score.donations_zero}} points</strong>
                     </p>
                     <h4>War Participation Score:</h4>
-                    For each of the last 10 wars:
-                    <ul>
-                        <li>
-                            War battle + 3 collection battles: <strong class="good">{{"{0:+}".format(config.score.war_good)}} points</strong>
-                        </li>
-                        <li>
-                            War battle + 1-2 collection battles: <strong class="ok">{{"{0:+}".format(config.score.war_ok)}} points</strong>
-                        </li>
-                        <li>
-                            Did not complete war battle: <strong class="bad">{{"{0:+}".format(config.score.war_bad)}} points</strong>
-                        </li>
-                        <li>
-                            Did not participate: <strong class="na">{{"{0:+}".format(config.score.war_na)}} points</strong>
-                        </li>
-                    </ul>
+                    <table class="rules">
+                        <thead>
+                            <tr>
+                                <th>For each of the last 10 wars, did member...</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for rule in scoring_rules %}
+                            <tr>
+                                <td>{{rule.name}}</td>
+                                <td class="yes"><strong class="{{rule.yes_status}}">{{"{0:+}".format(rule.yes)}}</strong></td>
+                                <td class="no"><strong class="{{rule.no_status}}">{{"{0:+}".format(rule.no)}}</strong></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </article>
             </div>
         </section>

@@ -1,9 +1,3 @@
-"""Conversion of audio podcast to video, primarily for Youtube upload
-
-See:
-https://github.com/AaronTraas/podcast2video
-"""
-
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
@@ -49,7 +43,6 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Other Audience',
         'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
     ],
 

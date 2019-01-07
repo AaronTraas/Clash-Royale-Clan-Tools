@@ -25,15 +25,21 @@ def main():
             'canonical_url' :       False,
         },
         'score' : {
-            'min_clan_size' :       46,
-            'war_good' :            20,
-            'war_ok' :              1,
-            'war_bad' :             -30,
-            'war_na' :              -1,
-            'min_donations_daily' : 12,
-            'donations_zero' :      -40,
-            'threshold_promote' :   160,
-            'threshold_warn' :      30
+            'min_clan_size' :               46,
+            'war_battle_played' :           15,
+            'war_battle_incomplete' :       -30,
+            'war_battle_won' :              5,
+            'war_battle_lost' :             0,
+            'collect_battle_played' :       0,
+            'collect_battle_incomplete' :   -5,
+            'collect_battle_won' :          2,
+            'collect_battle_lost' :         0,
+            'war_participation' :           0,
+            'war_non_participation' :       -1,
+            'min_donations_daily' :         12,
+            'donations_zero' :              -40,
+            'threshold_promote' :           160,
+            'threshold_warn' :              30
         }
     }
 

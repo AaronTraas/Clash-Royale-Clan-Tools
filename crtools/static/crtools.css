@@ -502,6 +502,18 @@ strong.na {
     display: none;
 }
 
+/* Rules table
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rules {
+    width: 100%;
+}
+
+.rules .yes, 
+.rules .no {
+    text-align: center;
+}
+
+
 /* Page footer
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 footer {
