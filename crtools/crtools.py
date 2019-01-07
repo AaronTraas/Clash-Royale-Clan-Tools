@@ -136,10 +136,10 @@ def render_dashboard(clan, warlog, config, clan_description):
         member['donation_status'] = 'normal'
         if member['donations'] > (days_from_donation_reset) * 40:
             member['donation_status'] = 'good'
-        if days_from_donation_reset > 1:
+        if days_from_donation_reset >= 1:
             if member['donations'] == 0:
                 member['donation_status'] = 'bad'
-            elif member['donations'] < (days_from_donation_reset-1) * config['min_donations_per_day']:
+            elif member['donations'] < (days_from_donation_reset-1) * config['score']['min_donations_daily']:
                 member['donation_status'] = 'ok'
             member_row['donations_daily'] = round(member['donations'] / (days_from_donation_reset))
         else:
