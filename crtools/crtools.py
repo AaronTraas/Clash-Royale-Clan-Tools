@@ -111,7 +111,11 @@ def member_rating(member, member_warlog, days_from_donation_reset, config):
             else:
                 war_score += config['points_mulitplier_na']
 
-    return war_score + donation_score
+    total_score = war_score + donation_score
+    if (member['role'] == 'leader') and (total_score < 0):
+        total_score = 0
+
+    return total_score
 
 def render_dashboard(clan, warlog, config, clan_description):
     """Render clan dashboard."""
@@ -144,7 +148,7 @@ def render_dashboard(clan, warlog, config, clan_description):
         member_row['warlog'] = member_warlog(member['tag'], warlog)
         
         member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset, config)
-        if member_row['rating'] > 0:
+        if member_row['rating'] >= 0:
             member_row['danger'] = False
             if member_row['rating'] > config['score_threshold_promote']:
                 member_row['status'] = 'good'
