@@ -87,7 +87,7 @@ def member_warlog(member_tag, warlog):
 def member_rating(member, member_warlog, days_from_donation_reset, config):
     # calculate score based `days_from_donation_reset`.
     donation_score = 0;
-    target_donations = config['min_donations_per_day'] * (days_from_donation_reset)
+    target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
     donation_score = member['donations'] - target_donations
 
     # exempt additional penalties if at least a day hasn't passed
@@ -96,20 +96,20 @@ def member_rating(member, member_warlog, days_from_donation_reset, config):
 
         # bigger penalty for 0 donations
         if member['donations'] == 0:
-            donation_score += config['donations_zero_penalty'];
+            donation_score += config['score']['donations_zero'];
 
     # calculate score based on war participation
     war_score = 0;
     for war in member_warlog:
         if war != None:
             if war['status'] == 'good':
-                war_score += config['points_mulitplier_good']
+                war_score += config['score']['war_good']
             elif war['status'] == 'ok':
-                war_score += config['points_mulitplier_ok']
+                war_score += config['score']['war_ok']
             elif war['status'] == 'bad':
-                war_score += config['points_mulitplier_bad']
+                war_score += config['score']['war_bad']
             else:
-                war_score += config['points_mulitplier_na']
+                war_score += config['score']['war_na']
 
     total_score = war_score + donation_score
     if (member['role'] == 'leader') and (total_score < 0):
@@ -150,9 +150,9 @@ def render_dashboard(clan, warlog, config, clan_description):
         member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset, config)
         if member_row['rating'] >= 0:
             member_row['danger'] = False
-            if member_row['rating'] > config['score_threshold_promote']:
+            if member_row['rating'] > config['score']['threshold_promote']:
                 member_row['status'] = 'good'
-            elif member_row['rating'] < config['score_threshold_warn']:
+            elif member_row['rating'] < config['score']['threshold_warn']:
                 member_row['status'] = 'ok'
             else:
                 member_row['status'] = 'normal'
@@ -184,7 +184,7 @@ def render_dashboard(clan, warlog, config, clan_description):
                 suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
             elif member['role'] != 'member':
                 suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
-        elif (member['rating'] > config['score_threshold_promote']) and (member['role'] == 'member'):
+        elif (member['rating'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
             suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['rating']))
 
 
@@ -209,7 +209,7 @@ def build_dashboard(config):
         # Create temporary directory. All file writes, until the very end,
         # will happen in this directory, so that no matter what we do, it
         # won't hose existing stuff.
-        tempdir = tempfile.mkdtemp(config['temp_dir_name'])
+        tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         
         log_path = os.path.join(tempdir, 'log')
         os.makedirs(log_path)
@@ -220,8 +220,8 @@ def build_dashboard(config):
         # If logo_path is provided, grab logo from path given, and put it where 
         # it needs to go. Otherwise, grab the default from the static folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
-        if config['logo_path']:
-            logo_src_path = os.path.expanduser(config['logo_path'])
+        if config['paths']['clan_logo']:
+            logo_src_path = os.path.expanduser(config['paths']['clan_logo'])
             shutil.copyfile(logo_src_path, logo_dest_path)
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_dest_path)        
@@ -229,19 +229,19 @@ def build_dashboard(config):
         # If favicon_path is provided, grab favicon from path given, and put it  
         # where it needs to go. Otherwise, grab the default from the static folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
-        if config['favicon_path']:
-            favicon_src_path = os.path.expanduser(config['favicon_path'])
+        if config['paths']['favicon']:
+            favicon_src_path = os.path.expanduser(config['paths']['favicon'])
             shutil.copyfile(favicon_src_path, favicon_dest_path)
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
 
         # Get clan data from API. Write to log.
-        clan = get_clan(config['api_key'], config['clan_id'])
+        clan = get_clan(config['api']['api_key'], config['api']['clan_id'])
         write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
 
         clan_description = clan['description']
-        if config['description_path']:
-            description_path = os.path.expanduser(config['description_path'])
+        if config['paths']['description_html']:
+            description_path = os.path.expanduser(config['paths']['description_html'])
             if os.path.isfile(description_path):
                 with open(description_path, 'r') as myfile:
                     clan_description = myfile.read()
@@ -249,27 +249,27 @@ def build_dashboard(config):
                 clan_description = "ERROR: File '{}' does not exist.".format(description_path)
 
         # Get war log data from API. Write to log.
-        warlog = get_warlog(config['api_key'], config['clan_id'])
+        warlog = get_warlog(config['api']['api_key'], config['api']['clan_id'])
         write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
         dashboard_html = render_dashboard(clan, warlog, config, clan_description)
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
-        if config['canonical_url'] != False:
+        if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
             sitemap_xml = config['env'].get_template('sitemap.xml.j2').render(
-                    url     = config['canonical_url'],
+                    url     = config['www']['canonical_url'],
                     lastmod = lastmod
                 )
             robots_txt = config['env'].get_template('robots.txt.j2').render(
-                    canonical_url = config['canonical_url']
+                    canonical_url = config['www']['canonical_url']
                 )
             write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
             write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
 
         # remove output directory if previeously created to cleanup. Then 
         # create output path and log path.
-        output_path = os.path.expanduser(config['output_path'])
+        output_path = os.path.expanduser(config['paths']['out'])
         if os.path.exists(output_path):
             shutil.copystat(output_path, tempdir)
             shutil.rmtree(output_path)

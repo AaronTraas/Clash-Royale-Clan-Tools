@@ -10,24 +10,31 @@ from .crtools import build_dashboard
 def main():
     # Create config dict with defaults
     config = {
-        'version' :                 __version__,
-        'api_key' :                 False,
-        'clan_id' :                 False,
-        'output_path' :             './crtools-out',
-        'favicon_path' :            False,
-        'logo_path' :               False,
-        'description_path' :        False,
-        'canonical_url' :           False,
-        'points_mulitplier_good' :  20,
-        'points_mulitplier_ok' :    1,
-        'points_mulitplier_bad' :   -30,
-        'points_mulitplier_na' :    -1,
-        'min_donations_per_day' :   12,
-        'donations_zero_penalty' :  -40,
-        'score_threshold_promote' : 160,
-        'score_threshold_warn' :    30,
-        'temp_dir_name' :           'crtools',
-            'env' :                 Environment(
+        'api' : {
+            'api_key' :             False,
+            'clan_id' :             False,
+        },
+        'paths' : {
+            'out' :                 './crtools-out',
+            'favicon' :             False,
+            'clan_logo' :           False,
+            'description_html' :    False,
+            'temp_dir_name' :       'crtools'
+        },
+        'www' : {
+            'canonical_url' :       False,
+        },
+        'score' : {
+            'war_good' :            20,
+            'war_ok' :              1,
+            'war_bad' :             -30,
+            'war_na' :              -1,
+            'min_donations_daily' : 12,
+            'donations_zero' :      -40,
+            'threshold_promote' :   160,
+            'threshold_warn' :      30
+        },
+        'env' :                     Environment(
                                         loader=PackageLoader('crtools', 'templates'),
                                         autoescape=select_autoescape(['html', 'xml'])
                                     )
@@ -39,27 +46,21 @@ def main():
     if os.path.isfile(config_file_name):
         parser = SafeConfigParser()
         parser.read(config_file_name)
-        if parser.has_option('API', 'api_key'):
-            config['api_key'] = parser.get('API', 'api_key')
-        if parser.has_option('API', 'clan'):
-            config['clan_id'] = parser.get('API', 'clan')
-        if parser.has_option('Paths', 'out'):
-            config['output_path'] = parser.get('Paths', 'out')
-        if parser.has_option('Paths', 'favicon'):
-            config['favicon_path'] = parser.get('Paths', 'favicon')
-        if parser.has_option('Paths', 'clan_logo'):
-            config['logo_path'] = parser.get('Paths', 'clan_logo')
-        if parser.has_option('Paths', 'description_html'):
-            config['description_path'] = parser.get('Paths', 'description_html')
-        if parser.has_option('www', 'canonical_url'):
-            config['canonical_url'] = parser.get('www', 'canonical_url')
+        for section in parser.sections():
+            section_key = section.lower()
+            if section_key in config:
+                #print('"{}" found in config; valid section'.format(section_key))
+                for (key, value) in parser.items(section):
+                    if key in config[section_key]:
+                        config[section_key][key] = value
+
 
     # if API key has not been set (is False), then API key needs to be 
     # specified as a command line argument
     api_key_required = clan_id_required = False  
-    if ['api_key'] == False:
+    if config['api']['api_key'] == False:
         api_key_required = True
-    if config['clan_id'] == False:
+    if config['api']['clan_id'] == False:
         clan_id_required = True
 
     # parse command line arguments
@@ -95,19 +96,21 @@ def main():
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:
-        config['api_key'] = args.api_key
+        config['api']['api_key'] = args.api_key
     if args.clan:
-        config['clan_id'] = args.clan
+        config['api']['clan_id'] = args.clan
     if args.out:
-        config['output_path'] = args.out
+        config['paths']['out'] = args.out
     if args.favicon:
-        config['favicon_path'] = args.out
+        config['paths']['favicon'] = args.out
     if args.clan_logo:
-        config['logo_path'] = args.out
+        config['paths']['clan_logo'] = args.out
     if args.description:
-        config['description_path'] = args.out
+        config['paths']['description_html'] = args.out
     if args.canonical_url:
-        config['canonical_url'] = args.out
+        config['www']['canonical_url'] = args.out
+
+    #import pprint; pprint.pprint(config); return
     
     # Build the dashboard
     build_dashboard(config)

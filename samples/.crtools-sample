@@ -4,7 +4,7 @@
 api_key=<YOUR-API-KEY>
 
 # Your clan tag
-clan=#JY8YVV
+clan_id=#JY8YVV
 
 [Paths]
 # your output path. Where you want the static website to live.

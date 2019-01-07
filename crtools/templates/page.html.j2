@@ -9,8 +9,8 @@
     <title>{{clan_name}} Clan Dashboard | crtools</title>
 
     <link rel="icon" href="favicon.ico"/>
-    {% if canonical_url != False %}
-    <link rel="canonical" href="{{config.canonical_url}}" />
+    {% if config.www.canonical_url != False %}
+    <link rel="canonical" href="{{config.www.canonical_url}}" />
     {% endif %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,300i,700,700i">
     <link rel="stylesheet" href="static/normalize.css">
@@ -68,7 +68,7 @@
                         kicking and demotion, depending on the number of people in the clan.
                     </p>
                     <p>
-                        A member who achieves <strong class="good">{{config.score_threshold_promote}} points</strong>
+                        A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
                         is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
                     </p>
                 </article>
@@ -82,26 +82,26 @@
                     </p>
                     <h4>Donation Score:</h4>
                     <p>
-                        You are expected to donate <strong>{{config.min_donations_per_day}}
+                        You are expected to donate <strong>{{config.score.min_donations_daily}}
                         cards per day</strong>, on average. If you make more, you will 
                         gain points. If you make fewer, you will lose points. If you have 
                         zero, you will be penalized 
-                        <strong class="bad">{{config.donations_zero_penalty}} points</strong>
+                        <strong class="bad">{{config.score.donations_zero}} points</strong>
                     </p>
                     <h4>War Participation Score:</h4>
                     For each of the last 10 wars:
                     <ul>
                         <li>
-                            War battle + 3 collection battles: <strong class="good">{{"{0:+}".format(config.points_mulitplier_good)}} points</strong>
+                            War battle + 3 collection battles: <strong class="good">{{"{0:+}".format(config.score.war_good)}} points</strong>
                         </li>
                         <li>
-                            War battle + 1-2 collection battles: <strong class="ok">{{"{0:+}".format(config.points_mulitplier_ok)}} points</strong>
+                            War battle + 1-2 collection battles: <strong class="ok">{{"{0:+}".format(config.score.war_ok)}} points</strong>
                         </li>
                         <li>
-                            Did not complete war battle: <strong class="bad">{{"{0:+}".format(config.points_mulitplier_bad)}} points</strong>
+                            Did not complete war battle: <strong class="bad">{{"{0:+}".format(config.score.war_bad)}} points</strong>
                         </li>
                         <li>
-                            Did not participate: <strong class="na">{{"{0:+}".format(config.points_mulitplier_na)}} points</strong>
+                            Did not participate: <strong class="na">{{"{0:+}".format(config.score.war_na)}} points</strong>
                         </li>
                     </ul>
                 </article>
