@@ -1,11 +1,11 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from configparser import SafeConfigParser
-from jinja2 import Environment, PackageLoader, select_autoescape
 import os
 import sys
 
 from ._version import __version__
 from .crtools import build_dashboard
+from .api import ClashRoyaleAPI
 
 def main():
     # Create config dict with defaults
@@ -34,11 +34,7 @@ def main():
             'donations_zero' :      -40,
             'threshold_promote' :   160,
             'threshold_warn' :      30
-        },
-        'env' :                     Environment(
-                                        loader=PackageLoader('crtools', 'templates'),
-                                        autoescape=select_autoescape(['html', 'xml'])
-                                    )
+        }
     }
 
     # Look for config file. If config file exists, load it, and try to 
@@ -73,8 +69,7 @@ def main():
     parser = ArgumentParser(prog        = "crtools",
                             description = """A tool for creating a dashboard for clan participation in 
                                              ClashRoyale. See https://developer.clashroyale.com to sign up 
-                                             for a developer account and create an API key to use with this."""
-                            )
+                                             for a developer account and create an API key to use with this.""")
     parser.add_argument("--api_key",
                         metavar  = "KEY",
                         help     = "API key for developer.clashroyale.com",
@@ -116,8 +111,8 @@ def main():
     if args.canonical_url:
         config['www']['canonical_url'] = args.out
 
-    #import pprint; pprint.pprint(config); return
-    
+    api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
+
     # Build the dashboard
-    build_dashboard(config)
+    build_dashboard(api, config)
 

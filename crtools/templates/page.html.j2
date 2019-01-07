@@ -6,7 +6,7 @@
 
     <meta name="generator" content="crtools {{version}}" />
    
-    <title>{{clan_name}} Clan Dashboard | crtools</title>
+    <title>{{clan.name}} Clan Dashboard | crtools</title>
 
     <link rel="icon" href="favicon.ico"/>
     {% if config.www.canonical_url != False %}
@@ -19,7 +19,7 @@
 </head>
 <body>
     <header><div class="inner">
-        <h1>{{clan_name}} Clan Dashboard</h1>
+        <h1>{{clan.name}} Clan Dashboard</h1>
     </div></header>
     <main>
         <section id="hero">
@@ -28,7 +28,21 @@
             </div>
             <div id="clan-stats">
                 <div class="table-wrap">
-                {{clan_stats}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Clan Stats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th>Clan Name</th><td>{{clan.name}}</td></tr>
+                        <tr><th>Clan Tag</th><td>{{clan.tag}}</td></tr>
+                        <tr><th>Clan Score</th><td>{{clan.clanScore}}</td></tr>
+                        <tr><th>War Trophies</th><td>{{clan.clanWarTrophies}}</td></tr>
+                        <tr><th>Required Trophies</th><td>{{clan.requiredTrophies}}</td></tr>
+                        <tr><th>Weekly donations</th><td>{{clan.donationsPerWeek}}</td></tr>
+                    </tbody>
+                </table>
                 </div>
                 <em>Last update: {{update_date}}</em>
             </div>

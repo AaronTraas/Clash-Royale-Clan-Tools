@@ -6,13 +6,11 @@ __docformat__ = 'reStructuredText'
 
 import codecs
 from datetime import datetime, date, timezone
+from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import os
-import requests
 import shutil
 import tempfile
-import urllib
-import urllib.parse
 from ._version import __version__
 
 def write_object_to_file(file_path, obj): 
@@ -26,34 +24,6 @@ def write_object_to_file(file_path, obj):
         else:
             string = json.dumps(obj, indent=4)
         f.write(string)
-
-def get_clan(api_key, clan_id):
-    """Grab clan data from API."""
-
-    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id)
-    headers = {
-        'Accept': 'application/json',
-        'authorization': 'Bearer ' + api_key
-    }
-    r = requests.get(url, headers=headers)
-    clan = json.loads(r.text)
-
-    return clan
-
-def get_warlog(api_key, clan_id):
-    """Grab war log data from API."""
-
-    # curl -X GET --header 'Accept: application/json' --header "authorization: Bearer <API token>" 'https://api.clashroyale.com/v1/clans/%23JY8YVV/warlog'
-    url = 'https://api.clashroyale.com/v1/clans/' + urllib.parse.quote_plus(clan_id) + '/warlog?limit=20'
-    headers = {
-        'Accept': 'application/json',
-        'authorization': 'Bearer ' + api_key
-    }
-    r = requests.get(url, headers=headers)
-    warlog = json.loads(r.text)
-
-    return warlog['items']
 
 def warlog_dates(warlog):
     """ Return list of date strings from warlog. One entry per war. """
@@ -139,20 +109,11 @@ def get_suggestions(members, config):
 
     return suggestions
 
-def render_dashboard(clan, warlog, config, clan_description):
-    """Render clan dashboard."""
-
-    template = config['env'].get_template('clan-stats-table.html.j2')
-    stats_html = template.render( clan )
-
-    # calculate the number of days since the donation last sunday, for donation tracking purposes:
-    days_from_donation_reset = datetime.utcnow().isoweekday()
-    if days_from_donation_reset == 7:
-        days_from_donation_reset = 0
+def process_members(members, warlog, config, days_from_donation_reset):
 
     # grab importent fields from member list for dashboard
-    member_dash = []
-    for member in clan['memberList']:
+    members_processed = []
+    for member in members:
         member_row = member
 
         member['donation_status'] = 'normal'
@@ -188,28 +149,11 @@ def render_dashboard(clan, warlog, config, clan_description):
             member_row['leadership'] = False
         if member['role'] == 'coLeader':
             member['role'] = 'co-leader'
-        member_dash.append(member_row)
+        members_processed.append(member_row)
 
-    member_table = config['env'].get_template('member-table.html.j2').render(
-        members      = member_dash, 
-        clan_name    = clan['name'], 
-        min_trophies = clan['requiredTrophies'], 
-        war_dates    = warlog_dates(warlog)
-    )
+    return members_processed
 
-    return config['env'].get_template('page.html.j2').render(
-            version           = __version__,
-            config            = config,
-            update_date       = datetime.now().strftime('%c'),
-            member_table      = member_table,
-            clan_name         = clan['name'],
-            clan_id           = clan['tag'],
-            clan_description  = clan_description,
-            suggestions       = get_suggestions(member_dash, config),
-            clan_stats        = stats_html
-        )
-
-def build_dashboard(config):
+def build_dashboard(api, config):
     """Compile and render clan dashboard."""
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -219,9 +163,17 @@ def build_dashboard(config):
         # will happen in this directory, so that no matter what we do, it
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
+
+        # Create environment for template parser
+        env = Environment(
+                loader=PackageLoader('crtools', 'templates'),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
         
-        log_path = os.path.join(tempdir, 'log')
-        os.makedirs(log_path)
+
+        # Get clan data and war log from API.
+        clan = api.get_clan()
+        warlog = api.get_warlog()
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
@@ -244,33 +196,54 @@ def build_dashboard(config):
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
 
-        # Get clan data from API. Write to log.
-        clan = get_clan(config['api']['api_key'], config['api']['clan_id'])
-        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
-
-        clan_description = clan['description']
+        clan_description_html = clan['description']
         if config['paths']['description_html']:
             description_path = os.path.expanduser(config['paths']['description_html'])
             if os.path.isfile(description_path):
                 with open(description_path, 'r') as myfile:
-                    clan_description = myfile.read()
+                    clan_description_html = myfile.read()
             else:
-                clan_description = "ERROR: File '{}' does not exist.".format(description_path)
+                clan_description_html = "ERROR: File '{}' does not exist.".format(description_path)
 
-        # Get war log data from API. Write to log.
-        warlog = get_warlog(config['api']['api_key'], config['api']['clan_id'])
-        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
-        dashboard_html = render_dashboard(clan, warlog, config, clan_description)
+        # calculate the number of days since the donation last sunday, for donation tracking purposes:
+        days_from_donation_reset = datetime.utcnow().isoweekday()
+        if days_from_donation_reset == 7:
+            days_from_donation_reset = 0
+
+        members_processed = process_members(clan['memberList'], warlog, config, days_from_donation_reset)
+
+        member_table_html = env.get_template('member-table.html.j2').render(
+            members      = members_processed, 
+            clan_name    = clan['name'], 
+            min_trophies = clan['requiredTrophies'], 
+            war_dates    = warlog_dates(warlog)
+        )
+
+        dashboard_html = env.get_template('page.html.j2').render(
+                version           = __version__,
+                config            = config,
+                update_date       = datetime.now().strftime('%c'),
+                member_table      = member_table_html,
+                clan              = clan,
+                clan_description  = clan_description_html,
+                suggestions       = get_suggestions(members_processed, config)
+            )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
+        # archive outputs of API for debugging
+        log_path = os.path.join(tempdir, 'log')
+        os.makedirs(log_path)
+        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
+        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+
         if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
-            sitemap_xml = config['env'].get_template('sitemap.xml.j2').render(
+            sitemap_xml = env.get_template('sitemap.xml.j2').render(
                     url     = config['www']['canonical_url'],
                     lastmod = lastmod
                 )
-            robots_txt = config['env'].get_template('robots.txt.j2').render(
+            robots_txt = env.get_template('robots.txt.j2').render(
                     canonical_url = config['www']['canonical_url']
                 )
             write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
