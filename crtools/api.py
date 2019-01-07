@@ -1,3 +1,7 @@
+#!/usr/bin/python
+
+"""Lightweight wrapper for the Clash Royale API V1 (https://api.clashroyale.com)."""
+
 import json
 import requests
 import urllib

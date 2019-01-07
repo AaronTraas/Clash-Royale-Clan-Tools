@@ -54,7 +54,9 @@ def member_warlog(member_tag, warlog):
         member_warlog.append(participation)
     return member_warlog
 
-def member_rating(member, member_warlog, days_from_donation_reset, config):
+def member_score(member, member_warlog, days_from_donation_reset, config):
+    """ Calculates a member's score based on war participation and donations. """
+
     # calculate score based `days_from_donation_reset`.
     donation_score = 0;
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
@@ -88,34 +90,46 @@ def member_rating(member, member_warlog, days_from_donation_reset, config):
     return total_score
 
 def get_suggestions(members, config):
-    members_by_score = sorted(members, key=lambda k: (k['rating'], k['trophies']))
+    """ Returns list of suggestions for the clan leadership to perform. 
+    Suggestions are to kick, demote, or promote. Suggestions are based on 
+    user score, and various thresholds in configuration. """
+
+    members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
 
     suggestions = []
     for index, member in enumerate(members_by_score):
-        if member['rating'] < 0:
+        if member['score'] < 0:
             if index < len(members_by_score) - config['score']['min_clan_size']:
-                suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
+                suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
             elif member['role'] != 'member':
                 if member['role'] == 'elder':
                     demote_target = 'Member'
                 else:
                     demote_target = 'Elder'
-                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
-        elif (member['rating'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
-            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['rating']))
+                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
+        elif (member['score'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
+            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     if len(suggestions) == 0:
         suggestions.append('No suggestions at this time. The clan is in good order.')
 
     return suggestions
 
-def process_members(members, warlog, config, days_from_donation_reset):
+def process_members(members, warlog, config):
+    """ Process member list, adding calculated meta-data for rendering of 
+    status in the clan member table. """
+
+    # calculate the number of days since the donation last sunday, for 
+    # donation tracking purposes:
+    days_from_donation_reset = datetime.utcnow().isoweekday()
+    if days_from_donation_reset == 7:
+        days_from_donation_reset = 0
 
     # grab importent fields from member list for dashboard
     members_processed = []
     for member in members:
-        member_row = member
-
+        # calculate the number of daily donations, and the donation status 
+        # based on threshold set in config
         member['donation_status'] = 'normal'
         if member['donations'] > (days_from_donation_reset) * 40:
             member['donation_status'] = 'good'
@@ -124,32 +138,39 @@ def process_members(members, warlog, config, days_from_donation_reset):
                 member['donation_status'] = 'bad'
             elif member['donations'] < (days_from_donation_reset-1) * config['score']['min_donations_daily']:
                 member['donation_status'] = 'ok'
-            member_row['donations_daily'] = round(member['donations'] / (days_from_donation_reset))
+            member['donations_daily'] = round(member['donations'] / (days_from_donation_reset))
         else:
-            member_row['donations_daily'] = member['donations']
+            member['donations_daily'] = member['donations']
 
-        member_row['warlog'] = member_warlog(member['tag'], warlog)
+        # get member warlog and add it to the record
+        member['warlog'] = member_warlog(member['tag'], warlog)
         
-        member_row['rating'] = member_rating(member, member_row['warlog'], days_from_donation_reset, config)
-        if member_row['rating'] >= 0:
-            member_row['danger'] = False
-            if member_row['rating'] > config['score']['threshold_promote']:
-                member_row['status'] = 'good'
-            elif member_row['rating'] < config['score']['threshold_warn']:
-                member_row['status'] = 'ok'
+        # get member score
+        member['score'] = member_score(member, member['warlog'], days_from_donation_reset, config)
+        
+        # based on member score, infer an overall member status, which is 
+        # either 'good', 'ok', 'bad', or 'normal'
+        if member['score'] >= 0:
+            if member['score'] > config['score']['threshold_promote']:
+                member['status'] = 'good'
+            elif member['score'] < config['score']['threshold_warn']:
+                member['status'] = 'ok'
             else:
-                member_row['status'] = 'normal'
+                member['status'] = 'normal'
         else:
-            member_row['status'] = 'bad'
-            member_row['danger'] = True
+            member['status'] = 'bad'
 
+        # Figure out whether member is on the leadership team by role
         if member['role'] == 'leader' or member['role'] == 'coLeader':
-            member_row['leadership'] = True
+            member['leadership'] = True
         else: 
-            member_row['leadership'] = False
+            member['leadership'] = False
+
+        # Format 'co-leader" in sane way'
         if member['role'] == 'coLeader':
             member['role'] = 'co-leader'
-        members_processed.append(member_row)
+
+        members_processed.append(member)
 
     return members_processed
 
@@ -163,13 +184,6 @@ def build_dashboard(api, config):
         # will happen in this directory, so that no matter what we do, it
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
-
-        # Create environment for template parser
-        env = Environment(
-                loader=PackageLoader('crtools', 'templates'),
-                autoescape=select_autoescape(['html', 'xml'])
-            )
-        
 
         # Get clan data and war log from API.
         clan = api.get_clan()
@@ -196,6 +210,9 @@ def build_dashboard(api, config):
         else:
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
 
+        # if external clan description file is specified, read that file and use it for 
+        # the clan description section. If not, use the clan description returned by
+        # the API
         clan_description_html = clan['description']
         if config['paths']['description_html']:
             description_path = os.path.expanduser(config['paths']['description_html'])
@@ -205,13 +222,13 @@ def build_dashboard(api, config):
             else:
                 clan_description_html = "ERROR: File '{}' does not exist.".format(description_path)
 
+        members_processed = process_members(clan['memberList'], warlog, config)
 
-        # calculate the number of days since the donation last sunday, for donation tracking purposes:
-        days_from_donation_reset = datetime.utcnow().isoweekday()
-        if days_from_donation_reset == 7:
-            days_from_donation_reset = 0
-
-        members_processed = process_members(clan['memberList'], warlog, config, days_from_donation_reset)
+        # Create environment for template parser
+        env = Environment(
+                loader=PackageLoader('crtools', 'templates'),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
 
         member_table_html = env.get_template('member-table.html.j2').render(
             members      = members_processed, 
