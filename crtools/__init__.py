@@ -24,7 +24,7 @@ def main():
         'points_mulitplier_na' :    -1,
         'min_donations_per_day' :   12,
         'donations_zero_penalty' :  -40,
-        'score_threshold_promote' : 200,
+        'score_threshold_promote' : 160,
         'score_threshold_warn' :    30,
         'temp_dir_name' :           'crtools',
             'env' :                 Environment(

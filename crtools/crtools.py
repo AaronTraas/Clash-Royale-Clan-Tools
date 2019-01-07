@@ -171,15 +171,18 @@ def render_dashboard(clan, warlog, config, clan_description):
         war_dates    = warlog_dates(warlog)
     )
 
-    members_by_score = newlist = sorted(member_dash, key=lambda k: k['rating']) 
+    members_by_score = sorted(member_dash, key=lambda k: (k['rating'], k['trophies']))
 
-    suggestions = [];
+    suggestions = []
     for index, member in enumerate(members_by_score):
         if member['rating'] < 0:
             if index < len(members_by_score) - 46:
-                suggestions.append('Kick <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
+                suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
             elif member['role'] != 'member':
-                suggestions.append('Demote <strong>{}</strong> (score: {})'.format(member['name'], member['rating']))
+                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
+        elif (member['rating'] > config['score_threshold_promote']) and (member['role'] == 'member'):
+            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['rating']))
+
 
     return config['env'].get_template('page.html.j2').render(
             version           = __version__,
