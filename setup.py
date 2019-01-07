@@ -11,15 +11,15 @@ from codecs import open
 from os import path
 import re
 
-from crtools._version import __version__
-
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-verstr = __version__
+# single-sourcing the version
+with open(path.join(here, 'crtools/_version.py')) as f:
+    exec(f.read())
 
 setup(
     name='crtools',
