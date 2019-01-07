@@ -25,6 +25,7 @@ def main():
             'canonical_url' :       False,
         },
         'score' : {
+            'min_clan_size' :       46,
             'war_good' :            20,
             'war_ok' :              1,
             'war_bad' :             -30,
@@ -46,13 +47,18 @@ def main():
     if os.path.isfile(config_file_name):
         parser = SafeConfigParser()
         parser.read(config_file_name)
+
+        # Map the contents of the ini file with the structure for the config object found above.
         for section in parser.sections():
             section_key = section.lower()
             if section_key in config:
-                #print('"{}" found in config; valid section'.format(section_key))
                 for (key, value) in parser.items(section):
                     if key in config[section_key]:
-                        config[section_key][key] = value
+                        # if the value represents an integer, convert from string to int
+                        try: 
+                            config[section_key][key] = int(value)
+                        except ValueError:
+                            config[section_key][key] = value
 
 
     # if API key has not been set (is False), then API key needs to be 

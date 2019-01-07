@@ -117,6 +117,28 @@ def member_rating(member, member_warlog, days_from_donation_reset, config):
 
     return total_score
 
+def get_suggestions(members, config):
+    members_by_score = sorted(members, key=lambda k: (k['rating'], k['trophies']))
+
+    suggestions = []
+    for index, member in enumerate(members_by_score):
+        if member['rating'] < 0:
+            if index < len(members_by_score) - config['score']['min_clan_size']:
+                suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
+            elif member['role'] != 'member':
+                if member['role'] == 'elder':
+                    demote_target = 'Member'
+                else:
+                    demote_target = 'Elder'
+                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
+        elif (member['rating'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
+            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['rating']))
+
+    if len(suggestions) == 0:
+        suggestions.append('No suggestions at this time. The clan is in good order.')
+
+    return suggestions
+
 def render_dashboard(clan, warlog, config, clan_description):
     """Render clan dashboard."""
 
@@ -175,19 +197,6 @@ def render_dashboard(clan, warlog, config, clan_description):
         war_dates    = warlog_dates(warlog)
     )
 
-    members_by_score = sorted(member_dash, key=lambda k: (k['rating'], k['trophies']))
-
-    suggestions = []
-    for index, member in enumerate(members_by_score):
-        if member['rating'] < 0:
-            if index < len(members_by_score) - 46:
-                suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
-            elif member['role'] != 'member':
-                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['rating']))
-        elif (member['rating'] > config['score']['threshold_promote']) and (member['role'] == 'member'):
-            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['rating']))
-
-
     return config['env'].get_template('page.html.j2').render(
             version           = __version__,
             config            = config,
@@ -196,7 +205,7 @@ def render_dashboard(clan, warlog, config, clan_description):
             clan_name         = clan['name'],
             clan_id           = clan['tag'],
             clan_description  = clan_description,
-            suggestions       = suggestions,
+            suggestions       = get_suggestions(member_dash, config),
             clan_stats        = stats_html
         )
 
