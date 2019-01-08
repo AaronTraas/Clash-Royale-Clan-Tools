@@ -93,7 +93,7 @@ def member_score(member, member_warlog, days_from_donation_reset, config):
                     war_score += war['wins'] * config['score']['war_battle_won']
                     war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
                 else:
-                    war_score += config['score']['war_battle_played']
+                    war_score += config['score']['war_battle_incomplete']
 
                 war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
                 war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
@@ -133,6 +133,14 @@ def get_suggestions(members, config):
 
     return suggestions
 
+def get_score_rule_status( score ):
+    if score > 0:
+        return 'good'
+    elif score < 0:
+        return 'bad'
+    else:
+        return 'normal'
+
 def get_scoring_rules(config):
     rules = [
         {'name': '...participate in the war?', 'yes': config['score']['war_participation'], 'no': config['score']['war_non_participation'] },
@@ -143,25 +151,10 @@ def get_scoring_rules(config):
     ]
 
     for rule in rules:
-        if 'yes' in rule:
-            if rule['yes'] > 0:
-                rule['yes_status'] = 'good'
-            elif rule['yes'] < 0:
-                rule['yes_status'] = 'bad'
-            else:
-                rule['yes_status'] = 'normal'
+        rule['yes_status'] = get_score_rule_status(rule['yes'])
+        rule['no_status'] = get_score_rule_status(rule['no'])
 
-        if 'no' in rule:
-            if rule['no'] > 0:
-                rule['no_status'] = 'good'
-            elif rule['no'] < 0:
-                rule['no_status'] = 'bad'
-            else:
-                rule['no_status'] = 'normal'
-
-    return rules
-
-    
+    return rules  
 
 def process_members(clan, warlog, config):
     """ Process member list, adding calculated meta-data for rendering of 
