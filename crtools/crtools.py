@@ -266,7 +266,7 @@ def build_dashboard(api, config):
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
 
         # If logo_path is provided, grab logo from path given, and put it where 
-        # it needs to go. Otherwise, grab the default from the static folder
+        # it needs to go. Otherwise, grab the default from the template folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
         if config['paths']['clan_logo']:
             logo_src_path = os.path.expanduser(config['paths']['clan_logo'])
@@ -275,7 +275,7 @@ def build_dashboard(api, config):
             shutil.copyfile(os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png'), logo_dest_path)        
 
         # If favicon_path is provided, grab favicon from path given, and put it  
-        # where it needs to go. Otherwise, grab the default from the static folder
+        # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
         if config['paths']['favicon']:
             favicon_src_path = os.path.expanduser(config['paths']['favicon'])
