@@ -14,11 +14,23 @@ import shutil
 import tempfile
 from ._version import __version__
 
+ARENA_LEAGUE_LOOKUP = {
+    'League 1' : { 'id':  'arena-league-challenger-1' },
+    'League 2' : { 'id':  'arena-league-challenger-2' },
+    'League 3' : { 'id':  'arena-league-challenger-3' },
+    'League 4' : { 'id':  'arena-league-master-1' },
+    'League 5' : { 'id':  'arena-league-master-1' },
+    'League 6' : { 'id':  'arena-league-master-1' },
+    'League 7' : { 'id':  'arena-league-champion' },
+    'League 8' : { 'id':  'arena-league-grand-champion' },
+    'League 9' : { 'id':  'arena-league-ultimate-champion' }
+}
+
 WAR_LEAGUE_LOOKUP = {
-    0    : { 'loss':  80, 'win': 160 },
-    600  : { 'loss': 160, 'win': 320 },
-    1500 : { 'loss': 280, 'win': 560 },
-    3000 : { 'loss': 440, 'win': 880 }
+    0    : { 'id': 'war-league-bronze',    'name': 'Bronze League',    'loss':  80, 'win': 160 },
+    600  : { 'id': 'war-league-silver',    'name': 'Silver League',    'loss': 160, 'win': 320 },
+    1500 : { 'id': 'war-league-gold',      'name': 'Gold League',      'loss': 280, 'win': 560 },
+    3000 : { 'id': 'war-league-legendary', 'name': 'Legendary League', 'loss': 440, 'win': 880 }
 }
 
 def write_object_to_file(file_path, obj): 
@@ -171,6 +183,13 @@ def process_members(clan, warlog, config):
         if clan['clanWarTrophies'] >= score:
             cardsPerCollectionBattleWin = lookupTable['win']
 
+            ###########################################################
+            # FIXME -- this shouldn't be here. We shouldn't be 
+            # modifying the clan object in this function. 
+            clan['war_league'] = lookupTable['id']
+            clan['war_league_name'] = lookupTable['name']
+            ###########################################################
+
     # grab importent fields from member list for dashboard
     members = clan['memberList']
     members_processed = []
@@ -206,6 +225,13 @@ def process_members(clan, warlog, config):
                 member['status'] = 'normal'
         else:
             member['status'] = 'bad'
+
+        if member['trophies'] >= clan['requiredTrophies']:
+            member['trophies_status'] = 'normal'
+        else:
+            member['trophies_status'] = 'ok'
+        if member['arena']['name'] in ARENA_LEAGUE_LOOKUP:
+            member['arena_league'] = ARENA_LEAGUE_LOOKUP[member['arena']['name']]['id']
 
         # Figure out whether member is on the leadership team by role
         if member['role'] == 'leader' or member['role'] == 'coLeader':
@@ -246,7 +272,7 @@ def build_dashboard(api, config):
             logo_src_path = os.path.expanduser(config['paths']['clan_logo'])
             shutil.copyfile(logo_src_path, logo_dest_path)
         else:
-            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-logo.png'), logo_dest_path)        
+            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png'), logo_dest_path)        
 
         # If favicon_path is provided, grab favicon from path given, and put it  
         # where it needs to go. Otherwise, grab the default from the static folder
@@ -255,7 +281,7 @@ def build_dashboard(api, config):
             favicon_src_path = os.path.expanduser(config['paths']['favicon'])
             shutil.copyfile(favicon_src_path, favicon_dest_path)
         else:
-            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'static/crtools-favicon.ico'), favicon_dest_path)        
+            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico'), favicon_dest_path)        
 
         # if external clan description file is specified, read that file and use it for 
         # the clan description section. If not, use the clan description returned by

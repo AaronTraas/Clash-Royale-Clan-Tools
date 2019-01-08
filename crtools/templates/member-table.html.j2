@@ -58,14 +58,14 @@
                     <td class="score {{member.status}}">
                         <strong>{{member.score}}</strong>
                     </td>
-                    {% if member.trophies < min_trophies %}
-                    <td class="trophies ok">
-                    {% else %}
-                    <td class="trophies">
-                    {% endif %}          
+                    <td class="trophies {{member.trophies_status}}">
+                        {% if member.arena_league is defined %}
+                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/{{member.arena_league}}.svg" />
+                        {% endif %}
                         <strong>{{member.trophies}}</strong>
                     </td>
                     <td class="donations {{member.donation_status}}">
+                        <img src="static/images/cards.svg" />
                         <strong>{{member.donations}}</strong><br />
                         {% if member.donations_daily > 0 %}
                             <small>{{member.donations_daily}}/day</small>
@@ -79,13 +79,13 @@
                             {% if war.battlesPlayed > 0 %}
                                 {% for battle in range(0, war.battlesPlayed) %}
                                     {% if war.wins >= battle+1 %}
-                                    <img class="war-battle" src="static/war-battle-win.svg" />
+                                    <img class="war-battle" src="static/images/war-battle-win.svg" />
                                     {% else %}
-                                    <img class="war-battle" src="static/war-battle-loss.svg" />
+                                    <img class="war-battle" src="static/images/war-battle-loss.svg" />
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
-                                <img class="war-battle" src="static/war-battle-incomplete.svg" />
+                                <img class="war-battle" src="static/images/war-battle-incomplete.svg" />
                             {% endif %}
                             </div>
                         </div>

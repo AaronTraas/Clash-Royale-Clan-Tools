@@ -280,6 +280,11 @@ body > header h1 em {
     border-bottom: none;
 }
 
+img.war-league {
+    height: 22px;
+    vertical-align: text-top;
+}
+
 /* Clan description region
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #clan-description > *:last-child {
@@ -334,7 +339,6 @@ body > header h1 em {
     }
 }
 
-
 /* Member table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #members h2, #members h3, #members h4 {
@@ -364,6 +368,19 @@ body > header h1 em {
 #members table .trophies {
     text-align: center;
 }
+
+#members .trophies > img {
+    height: 22px;
+    vertical-align: text-top;
+}
+
+#members .donations > img {
+    height: 14px;
+}
+#members .donations.bad > img {
+    display: none;
+}
+
 #members table .war {
     font-weight: bold;
     font-size: 12px;
@@ -485,10 +502,10 @@ body > header h1 em {
     right: -8px;
 }
 #members table .rank-up:before {
-    background-image: url(arrow-up.svg);
+    background-image: url(images/arrow-up.svg);
 }
 #members table .rank-down:before {
-    background-image: url(arrow-down.svg);
+    background-image: url(images/arrow-down.svg);
 }
 
 @media (max-width: 700px) {
