@@ -73,10 +73,21 @@
                     </td>
                 {% for war in member.warlog %}
                     <td class="war {{war.status}}" data-tooltip="true">
-                    {% if war.collectionDayBattlesPlayed is defined %}
+                    {% if war.battlesPlayed is defined %}
                         <div data-role="war">
-                            <em class="condensed">collect:</em>&nbsp;{{war.collectionDayBattlesPlayed}}</div>
-                            <div><em>war:&nbsp;</em>{{war.battlesPlayed}}</div>
+                            <div>
+                            {% if war.battlesPlayed > 0 %}
+                                {% for battle in range(0, war.battlesPlayed) %}
+                                    {% if war.wins >= battle+1 %}
+                                    <img class="war-battle" src="static/war-battle-win.svg" />
+                                    {% else %}
+                                    <img class="war-battle" src="static/war-battle-loss.svg" />
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <img class="war-battle" src="static/war-battle-incomplete.svg" />
+                            {% endif %}
+                            </div>
                         </div>
                         <div class="tooltip">
                             <dl>

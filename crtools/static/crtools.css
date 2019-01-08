@@ -364,6 +364,7 @@ body > header h1 em {
     font-weight: bold;
     font-size: 12px;
     text-align: center;
+    white-space: nowrap;
 }
 
 #members table .good,
@@ -384,6 +385,9 @@ body > header h1 em {
 
 [data-tooltip] {
     position: relative;
+}
+#members [data-tooltip]:hover .tooltip{
+    display: block;
 }
 
 #members .tooltip {
@@ -436,6 +440,10 @@ body > header h1 em {
     display: block;
 }
 
+#members img.war-battle {
+    height: 18px;
+}
+
 #members table .tooltip dl > div {
     white-space: nowrap;
 }
@@ -478,20 +486,6 @@ body > header h1 em {
     }
     #members table td {
         font-size: 12px;
-    }
-    .war > div {
-        display: none;
-    }
-    #members table .war.bad:after {
-        content: '✗';
-    }
-    #members table .war.ok:after,
-    #members table .war.good:after {
-        content: '✓';
-    }
-    #members table .rank-up:before,
-    #members table .rank-down:before {
-        right: -10px;
     }
 }
 
