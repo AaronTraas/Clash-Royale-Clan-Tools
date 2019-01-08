@@ -77,6 +77,24 @@ a:hover {
   color: #0FA0CE; 
 }
 
+.button {
+    display: inline-block;
+    background-color: #0689fc;
+    border-radius: 6px;
+    line-height: 18px;
+    padding: 16px 44px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    text-shadow: 0 2px rgba(0,0,0,0.15);
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 22px;
+}
+.button:hover {
+    color: #fff;
+}
 
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -199,6 +217,22 @@ body > header h1 em {
 }
 #hero > *:last-child {
     margin: 0;
+}
+
+#hero .last-update {
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+#hero .join-cta {
+    text-align: center;
+    margin: 4px 22px;
+}
+#hero .join-cta h3 {
+    font-size: 2.0rem;
+    margin-bottom: 8px;
 }
 
 @media (max-width: 700px) {

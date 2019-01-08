@@ -28,23 +28,29 @@
             </div>
             <div id="clan-stats">
                 <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="2">Clan Stats</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><th>Clan Name</th><td>{{clan.name}}</td></tr>
-                        <tr><th>Clan Tag</th><td>{{clan.tag}}</td></tr>
-                        <tr><th>Clan Score</th><td>{{clan.clanScore}}</td></tr>
-                        <tr><th>War Trophies</th><td>{{clan.clanWarTrophies}}</td></tr>
-                        <tr><th>Required Trophies</th><td>{{clan.requiredTrophies}}</td></tr>
-                        <tr><th>Weekly donations</th><td>{{clan.donationsPerWeek}}</td></tr>
-                    </tbody>
-                </table>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">Clan Stats</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><th>Clan Name</th><td>{{clan.name}}</td></tr>
+                            <tr><th>Clan Tag</th><td>{{clan.tag}}</td></tr>
+                            <tr><th>Clan Score</th><td>{{clan.clanScore}}</td></tr>
+                            <tr><th>War Trophies</th><td>{{clan.clanWarTrophies}}</td></tr>
+                            <tr><th>Required Trophies</th><td>{{clan.requiredTrophies}}</td></tr>
+                            <tr><th>Weekly donations</th><td>{{clan.donationsPerWeek}}</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <em>Last update: {{update_date}}</em>
+                <p class="last-update">Last update: {{update_date}}</p>
+                {% if clan.members < 50 %}
+                <div class="join-cta">
+                    <h3>Looking for a clan?</h3> 
+                    <a class="button join" href="https://link.clashroyale.com/invite/clan/en?tag=JY8YVV">Join us!</a>
+                </div>
+                {% endif %}
             </div>
         </section>
         <section id="members">
