@@ -112,5 +112,16 @@ For example:
 
   0 * * * * crtools --out=/var/www/html \#JY8YVV
 
-Note the '\' character before the # -- that's important. A '#' is a comment in
-most shells/scripting languages. You need to escape it to run it.
+Note the '\' character before the # -- that's important. A '#' is a comment 
+in most shells/scripting languages. You need to escape it to run it.
+
+==================================================
+Image rights
+==================================================
+
+All images included in this repository were created by the team, and are 
+included in the GPL license. The SVGs were all created in Inkscape.
+
+It was important to us to make sure the entirety of this application is
+open source, and not subject to takedown request. We will not ever 
+extract assets from the game or from any other web properties. 

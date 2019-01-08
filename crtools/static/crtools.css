@@ -44,15 +44,19 @@ h5 { font-size: 1.5rem; line-height: 1.5;  letter-spacing: -.05rem; }
 h6 { font-size: 1.2rem; line-height: 1.6;  letter-spacing: 0; }
 
 @media (max-width: 550px) {
-    body {
-        font-size: 1.3em;
-    }
+    body { font-size: 1.3em; }
     h1 { font-size: 4.0rem; }
     h2 { font-size: 2.6rem; }
     h3 { font-size: 2.2rem; }
 }
 p {
-  margin-top: 0; }
+  margin-top: 0; 
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #E1E1E1;
+}
 
 .condensed {
     font-family: 'Open Sans Condensed', sans-serif;
@@ -99,7 +103,7 @@ a:hover {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: circle inside; 
+  list-style: disc inside; 
 }
 ol {
   list-style: decimal inside; 
@@ -387,7 +391,7 @@ body > header h1 em {
     position: relative;
 }
 #members [data-tooltip]:hover .tooltip{
-    display: block;
+    visibility: visible;
 }
 
 #members .tooltip {
@@ -397,7 +401,7 @@ body > header h1 em {
     font-size: 12px;
     font-weight: normal;
     min-width: 90px;
-    display: none;
+    display: block;
     position: absolute;
     border: 1px solid #222;
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
@@ -406,6 +410,11 @@ body > header h1 em {
     top: 100%;
     right: 6px;
     z-index: 100;
+    visibility: hidden;
+}
+#members .tooltip.invert {
+    bottom: 100%;
+    top: unset;
 }
 #members .tooltip:before {
     content: '';
@@ -419,6 +428,13 @@ body > header h1 em {
     border-top: 1px solid #222;
     border-left: 1px solid #222;
     transform: rotate(45deg);
+}
+#members .tooltip.invert:before {
+    bottom: -4px; 
+    top: unset; 
+    border: none;
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
 }
 
 #members .tooltip dl {
@@ -438,6 +454,7 @@ body > header h1 em {
 
 #members table .show-tooltip .tooltip {
     display: block;
+    visibility: visible;
 }
 
 #members img.war-battle {
