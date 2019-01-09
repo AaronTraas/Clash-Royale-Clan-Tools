@@ -65,26 +65,27 @@ def warlog_dates(warlog):
         war_dates.append(datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S').strftime("%m-%d"))
     return war_dates
 
-
-def member_warlog(member, clan, warlog, config):
-    """ Return war participation records for a given member by member tag. """
-    member_tag = member['tag']
-
-    league_lookup = ARENA_LEAGUE_LOOKUP[member['arena']['name']]
-    collection_win_lookup = league_lookup['collection_win']
-
-    cardsPerCollectionBattleWin = 0
+def get_war_league_from_score(clan_score):
+    league = 'ERROR'
     for score, lookupTable in WAR_LEAGUE_LOOKUP.items():
-        if clan['clanWarTrophies'] >= score:
-            war_league_id = lookupTable['id']
-            cardsPerCollectionBattleWin = collection_win_lookup[war_league_id]
+        if clan_score >= score:
+            league = lookupTable
 
-            ###########################################################
-            # FIXME -- this shouldn't be here. We shouldn't be 
-            # modifying the clan object in this function. 
-            clan['war_league'] = war_league_id
-            clan['war_league_name'] = lookupTable['name']
-            ###########################################################
+    return league
+
+def get_war_league_from_war(war, clan_tag):
+    standing = war['standings']
+
+    clan_score = 0
+    for clan in standing:
+        if clan['clan']['tag'] == clan_tag:
+            clan_score = clan['clan']['clanScore']
+
+    return get_war_league_from_score(clan_score)
+
+def member_warlog(clan_member, clan, warlog, config):
+    """ Return war participation records for a given member by member tag. """
+    member_tag = clan_member['tag']
 
     member_warlog = []
     for war in warlog:
@@ -100,6 +101,12 @@ def member_warlog(member, clan, warlog, config):
                 else:
                     member['status'] = 'good'
                 participation = member
+                participation['war_league'] = get_war_league_from_war(war, clan['tag'])['id']
+
+                league_lookup = ARENA_LEAGUE_LOOKUP[clan_member['arena']['name']]
+                collection_win_lookup = league_lookup['collection_win']
+                cardsPerCollectionBattleWin = collection_win_lookup[participation['war_league']]
+
                 participation['collectionBattleWins'] = math.floor(member['cardsEarned'] / cardsPerCollectionBattleWin)
                 participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
                 participation['score'] = war_score(participation, config)
@@ -315,6 +322,11 @@ def build_dashboard(api, config):
                 clan_description_html = "ERROR: File '{}' does not exist.".format(description_path)
 
         members_processed = process_members(clan, warlog, config)
+
+        # figure out clan war league from clan score
+        league = get_war_league_from_score(clan['clanWarTrophies'])
+        clan['war_league']      = league['id']
+        clan['war_league_name'] = league['name']
 
         # Create environment for template parser
         env = Environment(
