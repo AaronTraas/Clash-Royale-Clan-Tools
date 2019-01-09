@@ -7,8 +7,11 @@
                     <th>Score</th>
                     <th>Trophies</th>
                     <th>Dona&shy;tions</th>
-                {% for date in war_dates %}
-                    <th class="nobr">{{date}}</th>
+                {% for label in war_labels %}
+                    <th class="nobr">
+                        {{label.date}}
+                        <img class="war-league" title="{{label.league.name}}" src="static/images/war-league-{{label.league.id}}.svg" />
+                    </th>
                 {% endfor %}
                 </tr>
             </thead>

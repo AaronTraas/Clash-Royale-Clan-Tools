@@ -303,6 +303,12 @@ img.war-league {
     vertical-align: middle;
     width: 100%;
 }
+
+#members thead img.war-league {
+    height: 14px;
+    vertical-align: -1px;
+}
+
 #members header .filters {
     white-space: nowrap;
 }

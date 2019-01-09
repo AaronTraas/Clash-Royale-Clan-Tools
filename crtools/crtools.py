@@ -57,13 +57,17 @@ def write_object_to_file(file_path, obj):
             string = json.dumps(obj, indent=4)
         f.write(string)
 
-def warlog_dates(warlog):
+def warlog_labels(warlog, clan_tag):
     """ Return list of date strings from warlog. One entry per war. """
 
-    war_dates = []
+    labels = []
     for war in warlog:
-        war_dates.append(datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S').strftime("%m-%d"))
-    return war_dates
+        label = {
+            'date'   : datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S').strftime("%m/%d"),
+            'league' : get_war_league_from_war(war, clan_tag)
+        }
+        labels.append(label)
+    return labels
 
 def get_war_league_from_score(clan_score):
     league = 'ERROR'
@@ -346,7 +350,7 @@ def build_dashboard(api, config):
             members      = members_processed, 
             clan_name    = clan['name'], 
             min_trophies = clan['requiredTrophies'], 
-            war_dates    = warlog_dates(warlog)
+            war_labels    = warlog_labels(warlog, clan['tag'])
         )
 
         dashboard_html = env.get_template('page.html.j2').render(
