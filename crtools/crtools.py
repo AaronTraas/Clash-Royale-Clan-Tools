@@ -107,7 +107,9 @@ def member_warlog(clan_member, clan, warlog, config):
                 collection_win_lookup = league_lookup['collection_win']
                 cardsPerCollectionBattleWin = collection_win_lookup[participation['war_league']]
 
-                participation['collectionBattleWins'] = math.floor(member['cardsEarned'] / cardsPerCollectionBattleWin)
+                participation['collection_win_cards'] = cardsPerCollectionBattleWin
+
+                participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
                 participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
                 participation['score'] = war_score(participation, config)
         member_warlog.append(participation)
@@ -284,9 +286,15 @@ def build_dashboard(api, config):
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
+        # archive outputs of API for debugging
+        log_path = os.path.join(tempdir, 'log')
+        os.makedirs(log_path)
+
         # Get clan data and war log from API.
         clan = api.get_clan()
         warlog = api.get_warlog()
+        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
+        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
@@ -353,11 +361,8 @@ def build_dashboard(api, config):
             )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
-        # archive outputs of API for debugging
-        log_path = os.path.join(tempdir, 'log')
-        os.makedirs(log_path)
-        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
-        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+        write_object_to_file(os.path.join(log_path, 'clan_processed.json'), json.dumps(clan, indent=4))
+        write_object_to_file(os.path.join(log_path, 'warlog_processed.json'), json.dumps(warlog, indent=4))
 
         if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
