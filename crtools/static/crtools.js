@@ -29,7 +29,6 @@ function fixTooltipOrientation() {
 	});
 }
 
-window.addEventListener('resize', fixTooltipOrientation);
 fixTooltipOrientation();
 
 var filter_dropdown = document.getElementById('member-filter');

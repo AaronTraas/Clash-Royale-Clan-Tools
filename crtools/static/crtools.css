@@ -374,8 +374,9 @@ img.war-league {
     vertical-align: text-top;
 }
 
-#members .donations > img {
+#members .donations > img {   
     height: 14px;
+    vertical-align: -10%;
 }
 #members .donations.bad > img {
     display: none;
@@ -386,6 +387,21 @@ img.war-league {
     font-size: 12px;
     text-align: center;
     white-space: nowrap;
+}
+#members .war-cards {
+    white-space: nowrap;
+    font-weight: normal;
+    margin-top: 3px;
+}
+#members .war-cards:before {   
+    content: '';
+    display: inline-block;
+    background: url(images/cards.svg) no-repeat;
+    width: 12px;
+    height: 12px;
+    background-size: contain;
+    vertical-align: -2px;
+    margin-right: -2px;
 }
 
 #members table .good,
@@ -428,6 +444,8 @@ img.war-league {
     right: 6px;
     z-index: 100;
     visibility: hidden;
+    white-space: normal;
+    text-align: left;
 }
 #members .tooltip.invert {
     bottom: 100%;
@@ -453,6 +471,9 @@ img.war-league {
     border-bottom: 1px solid #222;
     border-right: 1px solid #222;
 }
+#members .tooltip strong {
+    border: none;
+}
 
 #members .tooltip dl {
     display: table;
@@ -467,6 +488,9 @@ img.war-league {
 #members .tooltip dl > div > dt {
     font-family: 'Open Sans Condensed', sans-serif;
     padding-right: 4px;
+}
+#members .tooltip dl > div > dd {
+    font-family: 'Open Sans', sans-serif;
 }
 
 #members table .show-tooltip .tooltip {

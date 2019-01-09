@@ -54,12 +54,12 @@ def warlog_dates(warlog):
     return war_dates
 
 
-def member_warlog(member_tag, warlog, cardsPerCollectionBattleWin):
+def member_warlog(member_tag, warlog, cardsPerCollectionBattleWin, config):
     """ Return war participation records for a given member by member tag. """
 
     member_warlog = []
     for war in warlog:
-        participation = {'status': 'na'}
+        participation = {'status': 'na', 'score': config['score']['war_non_participation']}
         for member in war['participants']:
             if member['tag'] == member_tag:
                 if member['collectionDayBattlesPlayed'] == 0:
@@ -73,15 +73,13 @@ def member_warlog(member_tag, warlog, cardsPerCollectionBattleWin):
                 participation = member
                 participation['collectionBattleWins'] = math.floor(member['cardsEarned'] / cardsPerCollectionBattleWin)
                 participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
+                participation['score'] = war_score(participation, config)
         member_warlog.append(participation)
 
     return member_warlog
 
-def member_score(member, member_warlog, days_from_donation_reset, config):
-    """ Calculates a member's score based on war participation and donations. """
-
+def donations_score(member, days_from_donation_reset, config):
     # calculate score based `days_from_donation_reset`.
-    donation_score = 0;
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
     donation_score = member['donations'] - target_donations
 
@@ -93,31 +91,24 @@ def member_score(member, member_warlog, days_from_donation_reset, config):
         if member['donations'] == 0:
             donation_score += config['score']['donations_zero'];
 
-    # calculate score based on war participation
+    return donation_score
+
+def war_score(war, config):
     war_score = 0;
-    for war in member_warlog:
-        if war != None:
-            #import pprint; pprint.pprint(war)
+    if 'battlesPlayed' in war:
+        if war['battlesPlayed'] >= 1:
+            war_score += war['battlesPlayed'] * config['score']['war_battle_played']
+            war_score += war['wins'] * config['score']['war_battle_won']
+            war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
+        else:
+            war_score += config['score']['war_battle_incomplete']
 
-            if 'battlesPlayed' in war:
-                if war['battlesPlayed'] >= 1:
-                    war_score += war['battlesPlayed'] * config['score']['war_battle_played']
-                    war_score += war['wins'] * config['score']['war_battle_won']
-                    war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
-                else:
-                    war_score += config['score']['war_battle_incomplete']
+        war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
+        war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
+    else: 
+        war_score += config['score']['war_non_participation']
 
-                war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
-                war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
-
-            else: 
-                war_score += config['score']['war_non_participation']
-
-    total_score = war_score + donation_score
-    if (member['role'] == 'leader') and (total_score < 0):
-        total_score = 0
-
-    return total_score
+    return war_score
 
 def get_suggestions(members, config):
     """ Returns list of suggestions for the clan leadership to perform. 
@@ -209,10 +200,21 @@ def process_members(clan, warlog, config):
             member['donations_daily'] = member['donations']
 
         # get member warlog and add it to the record
-        member['warlog'] = member_warlog(member['tag'], warlog, cardsPerCollectionBattleWin)
+        member['warlog'] = member_warlog(member['tag'], warlog, cardsPerCollectionBattleWin, config)
+
+        member['donation_score'] = donations_score(member, days_from_donation_reset, config)
+
+        # calculate score based on war participation
+        member['war_score'] = 0;
+        for war in member['warlog']:
+            member['war_score'] += war['score']
 
         # get member score
-        member['score'] = member_score(member, member['warlog'], days_from_donation_reset, config)
+        member['score'] = member['war_score'] + member['donation_score']
+
+        # it's good to be the king -- leader score floor of zero
+        if (member['role'] == 'leader') and (member['score'] < 0):
+            member['score'] = 0
         
         # based on member score, infer an overall member status, which is 
         # either 'good', 'ok', 'bad', or 'normal'
