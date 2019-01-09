@@ -49,8 +49,8 @@
                         </div>
                     </td>
                     <td class="trophies {{member.trophies_status}}">
-                        {% if member.arena_league is defined %}
-                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/{{member.arena_league}}.svg" />
+                        {% if 'arena-' not in member.arena_league %}
+                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arena_league}}.svg" />
                         {% endif %}
                         <strong>{{member.trophies}}</strong>
                     </td>
@@ -92,6 +92,7 @@
                         <div class="tooltip">
                             <dl>
                                 <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>Collection day wins</dt><dd>{{war.collectionBattleWins}}</dd></div>
                                 <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
                                 <div><dt>War day battles</dt><dd>{{war.battlesPlayed}}</dd></div>
                                 <div><dt>War day wins</dt><dd>{{war.wins}}</dd></div>
