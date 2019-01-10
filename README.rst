@@ -25,12 +25,13 @@ Once setuptools is installed, run the following in your shell:
 Syntax
 ==================================================
 
-usage: crtools [-h] [--api_key KEY] [--clan CLAN] [--out PATH]
-               [--favicon PATH] [--clan_logo PATH] [--description PATH]
-               [--canonical_url URL]
+usage: crtools [-h] [--config CONFIG-FILE] [--api_key KEY] [--clan TAG]
+               [--out PATH] [--favicon PATH] [--clan_logo PATH]
+               [--description PATH] [--canonical_url URL]
 
 optional arguments:
   -h, --help           show this help message and exit
+  --config FILE        configuration file for this app.
   --api_key KEY        API key for developer.clashroyale.com
   --clan CLAN          Clan ID from Clash Royale. If it starts with a '#',
                        clan ID must be quoted.
@@ -88,7 +89,7 @@ parameter: api_key. The file should look like:
   # and sitemap.xml
   canonical_url=https://yourclan.com/
 
-For more details, see crtools.ini
+For more details, see samples/crtools.ini
 
 ==================================================
 Suggested usage on a Linux web server

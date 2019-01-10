@@ -12,6 +12,7 @@ import math
 import os
 import shutil
 import tempfile
+from slugify import slugify
 
 from .api import ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
@@ -397,8 +398,14 @@ def build_dashboard(api, config):
             shutil.copystat(output_path, tempdir)
             shutil.rmtree(output_path)
 
-        # Copy entire contents of temp directory to output directory
-        shutil.copytree(tempdir, output_path)
+        try:
+            # Copy entire contents of temp directory to output directory
+            shutil.copytree(tempdir, output_path)
+        except PermissionError:
+            clan_slug = slugify(clan['name'])
+            default_output_path = os.path.join(os.path.expanduser('~'), 'crtools-{}'.format(clan_slug))
+            print('Permission error: could not write output to: \n\t{}\nas requested; writing to: \n\t{}'.format(output_path,default_output_path))
+            shutil.copytree(tempdir, default_output_path)
 
     except ClashRoyaleAPIAuthenticationError as e: 
         print('developer.clashroyale.com authentication error: {}'.format(e))
