@@ -1,4 +1,5 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import copy
 from configparser import SafeConfigParser
 import os
 import sys
@@ -7,45 +8,55 @@ from ._version import __version__
 from .crtools import build_dashboard
 from .api import ClashRoyaleAPI
 
-def main():
-    # Create config dict with defaults
-    config = {
-        'api' : {
-            'api_key' :             False,
-            'clan_id' :             False,
-        },
-        'paths' : {
-            'out' :                 './crtools-out',
-            'favicon' :             False,
-            'clan_logo' :           False,
-            'description_html' :    False,
-            'temp_dir_name' :       'crtools'
-        },
-        'www' : {
-            'canonical_url' :       False,
-        },
-        'score' : {
-            'min_clan_size' :               46,
-            'war_battle_played' :           15,
-            'war_battle_incomplete' :       -30,
-            'war_battle_won' :              5,
-            'war_battle_lost' :             0,
-            'collect_battle_played' :       0,
-            'collect_battle_incomplete' :   -5,
-            'collect_battle_won' :          2,
-            'collect_battle_lost' :         0,
-            'war_participation' :           0,
-            'war_non_participation' :       -1,
-            'min_donations_daily' :         12,
-            'donations_zero' :              -40,
-            'threshold_promote' :           160,
-            'threshold_warn' :              30
-        }
+# Create config dict with defaults
+config_defaults = {
+    'api' : {
+        'api_key' :             False,
+        'clan_id' :             False,
+    },
+    'paths' : {
+        'out' :                 './crtools-out',
+        'favicon' :             False,
+        'clan_logo' :           False,
+        'description_html' :    False,
+        'temp_dir_name' :       'crtools'
+    },
+    'www' : {
+        'canonical_url' :       False,
+    },
+    'score' : {
+        'min_clan_size' :               46,
+        'war_battle_played' :           15,
+        'war_battle_incomplete' :       -30,
+        'war_battle_won' :              5,
+        'war_battle_lost' :             0,
+        'collect_battle_played' :       0,
+        'collect_battle_incomplete' :   -5,
+        'collect_battle_won' :          2,
+        'collect_battle_lost' :         0,
+        'war_participation' :           0,
+        'war_non_participation' :       -1,
+        'min_donations_daily' :         12,
+        'donations_zero' :              -40,
+        'threshold_promote' :           160,
+        'threshold_warn' :              30
     }
+}
 
-    # Look for config file. If config file exists, load it, and try to 
-    # extract API key from config file
-    config_file_name = os.path.expanduser('~/.crtools')
+def load_config_file(config_file_name=None):
+    """ Look for config file. If config file exists, load it, and try to 
+    extract config from config file"""
+
+    config = copy.deepcopy(config_defaults)
+
+    if config_file_name != None:
+        os.path.expanduser(config_file_name)
+        if os.path.isfile(config_file_name) == False:
+            config_file_name = os.path.expanduser('~/.crtools')
+    else:
+        config_file_name = os.path.expanduser('~/.crtools')
+
+
     if os.path.isfile(config_file_name):
         parser = SafeConfigParser()
         parser.read(config_file_name)
@@ -61,28 +72,24 @@ def main():
                             config[section_key][key] = int(value)
                         except ValueError:
                             config[section_key][key] = value
+    return config
 
 
-    # if API key has not been set (is False), then API key needs to be 
-    # specified as a command line argument
-    api_key_required = clan_id_required = False  
-    if config['api']['api_key'] == False:
-        api_key_required = True
-    if config['api']['clan_id'] == False:
-        clan_id_required = True
-
+def main():
     # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
                             description = """A tool for creating a dashboard for clan participation in 
                                              ClashRoyale. See https://developer.clashroyale.com to sign up 
                                              for a developer account and create an API key to use with this.""")
+    parser.add_argument("--config",
+                        metavar  = "CONFIG-FILE",
+                        help     = "configuration file for this app.")
     parser.add_argument("--api_key",
                         metavar  = "KEY",
-                        help     = "API key for developer.clashroyale.com",
-                        required = api_key_required)
+                        help     = "API key for developer.clashroyale.com")
     parser.add_argument("--clan",
-                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.",
-                        required = clan_id_required)
+                        metavar  = "TAG",
+                        help    = "Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.")
     parser.add_argument("--out",
                         metavar  = "PATH",
                         help     = "Output path for HTML.")
@@ -100,6 +107,13 @@ def main():
                         help     = "Canonical URL for this site. Used for setting the rel=canonical link in the web site, as well as generating the robots.txt and sitemap.xml")
 
     args = parser.parse_args()
+
+    if args.config:
+        config_file_name = args.config
+    else:
+        config_file_name = None
+
+    config = load_config_file(config_file_name)
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:
@@ -121,4 +135,3 @@ def main():
 
     # Build the dashboard
     build_dashboard(api, config)
-
