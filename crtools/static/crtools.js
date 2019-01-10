@@ -14,7 +14,6 @@ tooltip_owners.forEach(function(element) {
 });
 
 function fixTooltipOrientation() {
-	console.log('fixTooltipOrientation()')
 	var table_scroll_tooltip_owners = document.querySelectorAll('.table-scroll table [data-tooltip]');
 	table_scroll_tooltip_owners.forEach(function(element) {
 		var tooltip = element.getElementsByClassName('tooltip')[0];

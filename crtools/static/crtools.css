@@ -287,6 +287,9 @@ img.war-league {
 
 /* Clan description region
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+#clan-description {
+    flex: 1;
+}
 #clan-description > *:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
@@ -590,7 +593,8 @@ strong.na {
     display: none;
 }
 
-#member-table[data-filter="danger"] tr[data-danger="False"] {
+#member-table[data-filter="danger"] tr[data-status="good"],
+#member-table[data-filter="danger"] tr[data-status="normal"] {
     display: none;
 }
 
