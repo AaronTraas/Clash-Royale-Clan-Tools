@@ -12,6 +12,8 @@ import math
 import os
 import shutil
 import tempfile
+
+from .api import ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
 
 ARENA_LEAGUE_LOOKUP = {
@@ -306,20 +308,28 @@ def build_dashboard(api, config):
         # If logo_path is provided, grab logo from path given, and put it where 
         # it needs to go. Otherwise, grab the default from the template folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
+        logo_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png')
         if config['paths']['clan_logo']:
-            logo_src_path = os.path.expanduser(config['paths']['clan_logo'])
-            shutil.copyfile(logo_src_path, logo_dest_path)
-        else:
-            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png'), logo_dest_path)        
+            logo_src_path_test = os.path.expanduser(config['paths']['clan_logo'])
+            if os.path.isfile(logo_src_path_test):
+                logo_src_path = logo_src_path_test
+            else:
+                print('[WARNING] custom logo file "{}" not found'.format(logo_src_path_test))
+
+        shutil.copyfile(logo_src_path, logo_dest_path)
 
         # If favicon_path is provided, grab favicon from path given, and put it  
         # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
+        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico');
         if config['paths']['favicon']:
-            favicon_src_path = os.path.expanduser(config['paths']['favicon'])
-            shutil.copyfile(favicon_src_path, favicon_dest_path)
-        else:
-            shutil.copyfile(os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico'), favicon_dest_path)        
+            favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
+            if os.path.isfile(favicon_src_path_test):
+                favicon_src_path = favicon_src_path_test
+            else:
+                print('[WARNING] custom favicon file "{}" not found'.format(favicon_src_path_test))
+        
+        shutil.copyfile(favicon_src_path, favicon_dest_path)        
 
         # if external clan description file is specified, read that file and use it for 
         # the clan description section. If not, use the clan description returned by
@@ -389,7 +399,20 @@ def build_dashboard(api, config):
 
         # Copy entire contents of temp directory to output directory
         shutil.copytree(tempdir, output_path)
+
+    except ClashRoyaleAPIAuthenticationError as e: 
+        print('developer.clashroyale.com authentication error: {}'.format(e))
+        if not config['api']['api_key']:
+            print(' - API key not provided')
+        else:
+            print(' - API key not valid')
+
+    except ClashRoyaleAPIClanNotFound as e: 
+        print('developer.clashroyale.com: {}'.format(e))
+
+    except ClashRoyaleAPIError as e: 
+        print('developer.clashroyale.com error: {}'.format(e))
+
     finally:
         # Ensure that temporary directory gets deleted no matter what
         shutil.rmtree(tempdir)
-
