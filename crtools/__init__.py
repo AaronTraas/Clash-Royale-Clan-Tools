@@ -6,7 +6,6 @@ import sys
 
 from ._version import __version__
 from .crtools import build_dashboard
-from .api import ClashRoyaleAPI
 
 # Create config dict with defaults
 config_defaults = {
@@ -40,6 +39,9 @@ config_defaults = {
         'donations_zero' :              -40,
         'threshold_promote' :           160,
         'threshold_warn' :              30
+    },
+    'crtools' : {
+        'debug' : False
     }
 }
 
@@ -68,10 +70,19 @@ def load_config_file(config_file_name=None):
                 for (key, value) in parser.items(section):
                     if key in config[section_key]:
                         # if the value represents an integer, convert from string to int
-                        try: 
-                            config[section_key][key] = int(value)
+                        try:
+                            value = int(value)
                         except ValueError:
-                            config[section_key][key] = value
+                            pass  
+
+                        # if set to "true" or "false" or similar, convert to boolean
+                        if isinstance(value, str):
+                            if value.lower() in ['true', 'yes', 'on']:
+                                value = True
+                            elif value.lower() in ['false', 'no', 'off']:
+                                value = False
+                        config[section_key][key] = value
+
     return config
 
 
@@ -104,7 +115,7 @@ def main():
                         help     = "Source path snippet of HTML to replace the clan description. Should not be a complete HTML document. Sample here: https://github.com/AaronTraas/crtools-agrassar-assets/blob/master/description.html\n\nIf provided, we will copy to the output directory.")
     parser.add_argument("--canonical_url",
                         metavar  = "URL",
-                        help     = "Canonical URL for this site. Used for setting the rel=canonical link in the web site, as well as generating the robots.txt and sitemap.xml")
+                        help     = "Canonical URL for this site. Used for setting the rel=\"canonical\" link in the web site, as well as generating the robots.txt and sitemap.xml")
 
     args = parser.parse_args()
 
@@ -112,7 +123,6 @@ def main():
         config_file_name = args.config
     else:
         config_file_name = None
-
     config = load_config_file(config_file_name)
 
     # grab API key and clan ID from arguments if applicable
@@ -131,7 +141,5 @@ def main():
     if args.canonical_url:
         config['www']['canonical_url'] = args.out
 
-    api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
-
     # Build the dashboard
-    build_dashboard(api, config)
+    build_dashboard(config)

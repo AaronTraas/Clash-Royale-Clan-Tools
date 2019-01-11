@@ -14,7 +14,7 @@ import shutil
 import tempfile
 from slugify import slugify
 
-from .api import ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
+from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
 
 ARENA_LEAGUE_LOOKUP = {
@@ -90,7 +90,7 @@ def get_war_league_from_war(war, clan_tag):
 
     return get_war_league_from_score(clan_score)
 
-def member_warlog(clan_member, clan, warlog, config):
+def member_warlog(config, clan_member, clan, warlog):
     """ Return war participation records for a given member by member tag. """
     member_tag = clan_member['tag']
 
@@ -99,15 +99,15 @@ def member_warlog(clan_member, clan, warlog, config):
         participation = {'status': 'na', 'score': config['score']['war_non_participation']}
         for member in war['participants']:
             if member['tag'] == member_tag:
+                participation = member.copy()
                 if member['collectionDayBattlesPlayed'] == 0:
-                    member['status'] = 'na'
+                    participation['status'] = 'na'
                 elif member['battlesPlayed'] == 0:
-                    member['status'] = 'bad'
+                    participation['status'] = 'bad'
                 elif member['collectionDayBattlesPlayed'] < 3:
-                    member['status'] = 'ok'
+                    participation['status'] = 'ok'
                 else:
-                    member['status'] = 'good'
-                participation = member
+                    participation['status'] = 'good'
                 participation['war_league'] = get_war_league_from_war(war, clan['tag'])['id']
 
                 league_lookup = ARENA_LEAGUE_LOOKUP[clan_member['arena']['name']]
@@ -118,12 +118,12 @@ def member_warlog(clan_member, clan, warlog, config):
 
                 participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
                 participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
-                participation['score'] = war_score(participation, config)
+                participation['score'] = war_score(config, participation)
         member_warlog.append(participation)
 
     return member_warlog
 
-def donations_score(member, days_from_donation_reset, config):
+def donations_score(config, member, days_from_donation_reset):
     # calculate score based `days_from_donation_reset`.
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
     donation_score = member['donations'] - target_donations
@@ -138,7 +138,7 @@ def donations_score(member, days_from_donation_reset, config):
 
     return donation_score
 
-def war_score(war, config):
+def war_score(config, war):
     war_score = 0;
     if 'battlesPlayed' in war:
         if war['battlesPlayed'] >= 1:
@@ -155,7 +155,7 @@ def war_score(war, config):
 
     return war_score
 
-def get_suggestions(members, config):
+def get_suggestions(config, members):
     """ Returns list of suggestions for the clan leadership to perform. 
     Suggestions are to kick, demote, or promote. Suggestions are based on 
     user score, and various thresholds in configuration. """
@@ -181,7 +181,7 @@ def get_suggestions(members, config):
 
     return suggestions
 
-def get_score_rule_status( score ):
+def get_score_rule_status(score):
     if score > 0:
         return 'good'
     elif score < 0:
@@ -204,7 +204,7 @@ def get_scoring_rules(config):
 
     return rules  
 
-def process_members(clan, warlog, config):
+def process_members(config, clan, warlog):
     """ Process member list, adding calculated meta-data for rendering of 
     status in the clan member table. """
 
@@ -215,9 +215,10 @@ def process_members(clan, warlog, config):
         days_from_donation_reset = 0
 
     # grab importent fields from member list for dashboard
-    members = clan['memberList']
+    members = clan['memberList'].copy()
     members_processed = []
-    for member in members:
+    for member_src in members:
+        member = member_src.copy()
         # calculate the number of daily donations, and the donation status 
         # based on threshold set in config
         member['donation_status'] = 'normal'
@@ -233,9 +234,9 @@ def process_members(clan, warlog, config):
             member['donations_daily'] = member['donations']
 
         # get member warlog and add it to the record
-        member['warlog'] = member_warlog(member, clan, warlog, config)
+        member['warlog'] = member_warlog(config, member, clan, warlog)
 
-        member['donation_score'] = donations_score(member, days_from_donation_reset, config)
+        member['donation_score'] = donations_score(config, member, days_from_donation_reset)
 
         # calculate score based on war participation
         member['war_score'] = 0;
@@ -282,7 +283,7 @@ def process_members(clan, warlog, config):
 
     return members_processed
 
-def build_dashboard(api, config):
+def build_dashboard(config):
     """Compile and render clan dashboard."""
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -293,15 +294,11 @@ def build_dashboard(api, config):
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
-        # archive outputs of API for debugging
-        log_path = os.path.join(tempdir, 'log')
-        os.makedirs(log_path)
+        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
         clan = api.get_clan()
         warlog = api.get_warlog()
-        write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
-        write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
@@ -335,16 +332,16 @@ def build_dashboard(api, config):
         # if external clan description file is specified, read that file and use it for 
         # the clan description section. If not, use the clan description returned by
         # the API
-        clan_description_html = clan['description']
+        clan_description_html = '<h1>{name} ({tag})</h1><h3>{description}</h3>'.format(**clan)
         if config['paths']['description_html']:
             description_path = os.path.expanduser(config['paths']['description_html'])
             if os.path.isfile(description_path):
                 with open(description_path, 'r') as myfile:
                     clan_description_html = myfile.read()
             else:
-                clan_description_html = "ERROR: File '{}' does not exist.".format(description_path)
+                print('[WARNING] custom description file "{}" not found'.format(description_path))
 
-        members_processed = process_members(clan, warlog, config)
+        members_processed = process_members(config, clan, warlog)
 
         # figure out clan war league from clan score
         league = get_war_league_from_score(clan['clanWarTrophies'])
@@ -371,14 +368,11 @@ def build_dashboard(api, config):
                 member_table      = member_table_html,
                 clan              = clan,
                 clan_description  = clan_description_html,
-                suggestions       = get_suggestions(members_processed, config),
+                suggestions       = get_suggestions(config, members_processed),
                 scoring_rules     = get_scoring_rules(config)
             )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
-        write_object_to_file(os.path.join(log_path, 'clan_processed.json'), json.dumps(clan, indent=4))
-        write_object_to_file(os.path.join(log_path, 'warlog_processed.json'), json.dumps(warlog, indent=4))
-
         if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
             sitemap_xml = env.get_template('sitemap.xml.j2').render(
@@ -390,6 +384,14 @@ def build_dashboard(api, config):
                 )
             write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
             write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
+
+        # archive outputs of API for debugging
+        if(config['crtools']['debug'] == True):
+            log_path = os.path.join(tempdir, 'log')
+            os.makedirs(log_path)
+            write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
+            write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+            write_object_to_file(os.path.join(log_path, 'members-processed.json'), json.dumps(members_processed, indent=4))
 
         # remove output directory if previeously created to cleanup. Then 
         # create output path and log path.
