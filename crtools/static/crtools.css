@@ -587,6 +587,13 @@ img.war-league {
 #members table tr[data-vacation="True"] .good {
     background-color: #d8f3e6;
 }
+#members table tr[data-vacation="True"] .bad,
+#members table tr[data-vacation="True"] .ok,
+#members table tr[data-vacation="True"] .good {
+    border-left: none;
+    border-bottom: 1px solid #E1E1E1
+}
+
 #members table tr[data-vacation="True"] .donations,
 #members table tr[data-vacation="True"] .score {
     background-color: #ddd;
@@ -606,6 +613,14 @@ img.war-league {
     position: absolute;
     text-indent: unset;
     left: 0;
+}
+#members table tr[data-vacation="True"] .score > strong {
+    display: none;
+}
+
+#members table tr[data-vacation="True"] .score:after {
+    content: 'N/A';
+    font-size: 80%;
 }
 
 @media (max-width: 700px) {
