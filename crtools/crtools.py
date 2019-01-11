@@ -164,7 +164,7 @@ def get_suggestions(config, members):
 
     suggestions = []
     for index, member in enumerate(members_by_score):
-        if member['score'] < 0:
+        if (member['score'] < 0) and not (member['tag'] in config['members']['safe']) and not (member['tag'] in config['members']['vacation']):
             if index < len(members_by_score) - config['score']['min_clan_size']:
                 suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
             elif member['role'] != 'member':
@@ -250,6 +250,9 @@ def process_members(config, clan, warlog):
         if (member['role'] == 'leader') and (member['score'] < 0):
             member['score'] = 0
         
+        member['vacation'] = member['tag'] in config['members']['vacation']
+        member['safe'] = member['tag'] in config['members']['safe']
+
         # based on member score, infer an overall member status, which is 
         # either 'good', 'ok', 'bad', or 'normal'
         if member['score'] >= 0:

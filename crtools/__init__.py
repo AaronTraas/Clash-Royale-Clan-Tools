@@ -40,6 +40,10 @@ config_defaults = {
         'threshold_promote' :           160,
         'threshold_warn' :              30
     },
+    'members': {
+        'vacation' : [],
+        'safe' :     []
+    },
     'crtools' : {
         'debug' : False
     }
@@ -69,20 +73,25 @@ def load_config_file(config_file_name=None):
             if section_key in config:
                 for (key, value) in parser.items(section):
                     if key in config[section_key]:
-                        # if the value represents an integer, convert from string to int
-                        try:
-                            value = int(value)
-                        except ValueError:
-                            pass  
+                        if isinstance(config[section_key][key], list):
+                            value = value.split(',');
+                            value = [x.strip() for x in value]
+                        else:
+                            # if the value represents an integer, convert from string to int
+                            try:
+                                value = int(value)
+                            except ValueError:
+                                pass  
 
-                        # if set to "true" or "false" or similar, convert to boolean
-                        if isinstance(value, str):
-                            if value.lower() in ['true', 'yes', 'on']:
-                                value = True
-                            elif value.lower() in ['false', 'no', 'off']:
-                                value = False
+                            # if set to "true" or "false" or similar, convert to boolean
+                            if isinstance(value, str):
+                                if value.lower() in ['true', 'yes', 'on']:
+                                    value = True
+                                elif value.lower() in ['false', 'no', 'off']:
+                                    value = False
                         config[section_key][key] = value
 
+    #import pprint; pprint.pprint(config)
     return config
 
 

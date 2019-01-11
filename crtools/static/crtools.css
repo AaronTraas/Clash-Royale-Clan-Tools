@@ -4,8 +4,8 @@ are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
+
   font-size: 62.5%; 
-  font-family: 'Open Sans', sans-serif;
 }
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
@@ -17,6 +17,7 @@ html, body {
     background-color: #000;    
     overflow-x: hidden;
     margin: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 main {
@@ -570,6 +571,41 @@ img.war-league {
 }
 #members table .rank-down:before {
     background-image: url(images/arrow-down.svg);
+}
+
+#members table tr[data-vacation="True"] {
+    background-color: #ddd;
+    color: #999;
+}
+#members table tr[data-vacation="True"] .bad {
+    background-color: #d2b0ac;
+    color: #999;
+}
+#members table tr[data-vacation="True"] .ok {
+    background-color: #f5ce89;
+}
+#members table tr[data-vacation="True"] .good {
+    background-color: #d8f3e6;
+}
+#members table tr[data-vacation="True"] .donations,
+#members table tr[data-vacation="True"] .score {
+    background-color: #ddd;
+}
+#members table tr[data-vacation="True"] td img {
+    opacity: .3;
+}
+#members table tr[data-vacation="True"] .member-role {
+    display: block;
+    position: relative;
+    color: #ddd;
+}
+#members table tr[data-vacation="True"] .member-role:after {
+    content: 'On Vacation';
+    color: #222;
+    font-weight: bold;
+    position: absolute;
+    text-indent: unset;
+    left: 0;
 }
 
 @media (max-width: 700px) {
