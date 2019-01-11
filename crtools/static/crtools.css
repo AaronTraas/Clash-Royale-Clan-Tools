@@ -2,18 +2,21 @@
 html is set to 62.5% so that all the REM measurements throughout Skeleton
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
   font-size: 62.5%; 
+  font-family: 'Open Sans', sans-serif;
 }
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  font-family: 'Open Sans', sans-serif;
   color: #222; 
 }
 html, body {
     background-color: #000;    
     overflow-x: hidden;
+    margin: 0;
 }
 
 main {
@@ -53,11 +56,13 @@ p {
   margin-top: 0; 
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #E1E1E1;
+b, strong {
+  font-weight: bold;
 }
 
+small {
+  font-size: 80%;
+}
 .condensed {
     font-family: 'Open Sans Condensed', sans-serif;
 }
@@ -72,13 +77,29 @@ hr {
     }
 }
 
+/* Content objects
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+hr {
+    border: none;
+    border-top: 1px solid #E1E1E1;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+img {
+    border: 0;
+}
+
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
   color: #1EAEDB; 
 }
+a:active,
 a:hover {
   color: #0FA0CE; 
+  outline: 0;
 }
 
 .button {
@@ -140,6 +161,11 @@ dd {
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 th, td {
   padding: 8px 14px;
   text-align: left;
@@ -162,8 +188,13 @@ label {
     display: inline-block;
 }
 select {
-  border: 1px solid #ccc;
-  height: 34px;
+    color: inherit;
+    font: inherit;
+    margin: 0; 
+    text-transform: none;
+
+    border: 1px solid #ccc;
+    height: 34px;
 }
 
 /* Grid
@@ -645,3 +676,61 @@ footer ul li:last-child::after {
     content: none;
     display: none;
 }
+
+/* Github ribbon
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.github-fork-ribbon {
+  font-family: sans-serif;
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    text-indent: -999999px;
+    pointer-events: none;
+}
+
+.github-fork-ribbon:before, .github-fork-ribbon:after {
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 20px;
+
+    top: 41px;
+    right: -41px;
+
+    transform: rotate(45deg);
+}
+
+.github-fork-ribbon:before {
+    content: "";
+
+    padding: 5px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.15));
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.5);
+
+    pointer-events: auto;
+}
+
+.github-fork-ribbon:after {
+    content: "Fork me on GitHub";
+
+    line-height: 21px;
+    color: #fff;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    text-indent: 0;
+
+    padding: 2px 0;
+    margin: 2px 0;
+
+    border-width: 1px 0;
+    border-style: dotted;
+    border-color: rgba(255,255,255,0.7);
+}
+
