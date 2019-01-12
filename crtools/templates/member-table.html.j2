@@ -46,28 +46,28 @@
                         <strong>{{member.score}}</strong>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>Score from donations</dt><dd>{{"{0:+}".format(member.donation_score)}}</strong></dd></div>
-                                <div><dt>Score from war participation</dt><dd>{{"{0:+}".format(member.war_score)}}</strong></dd></div>
+                                <div><dt>Score from donations</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
+                                <div><dt>Score from war participation</dt><dd>{{"{0:+}".format(member.warScore)}}</strong></dd></div>
                             </dl>
                         </div>
                     </td>
-                    <td class="trophies {{member.trophies_status}}">
-                        {% if 'arena-' not in member.arena_league %}
-                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arena_league}}.svg" />
+                    <td class="trophies {{member.trophiesStatus}}">
+                        {% if 'arena-' not in member.arenaLeague %}
+                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arenaLeague}}.svg" />
                         {% endif %}
                         <strong>{{member.trophies}}</strong>
                     </td>
-                    <td class="donations {{member.donation_status}}" data-tooltip="true">
+                    <td class="donations {{member.donationStatus}}" data-tooltip="true">
                         <img src="static/images/cards.svg" />
                         <strong>{{member.donations}}</strong><br />
-                        {% if member.donations_daily > 0 %}
-                            <small>{{member.donations_daily}}/day</small>
+                        {% if member.donationsDaily > 0 %}
+                            <small>{{member.donationsDaily}}/day</small>
                         {% endif %}
                         <div class="tooltip">
                             <dl>
                                 <div><dt>Cards given</dt><dd>{{member.donations}}</dd></div>
                                 <div><dt>Cards recieved</dt><dd>{{member.donationsReceived}}</dd></div>
-                                <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donation_score)}}</strong></dd></div>
+                                <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
                         </div>
                     </td>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>War league</dt><dd>{{war.war_league}}</dd></div>
+                                <div><dt>War league</dt><dd>{{war.warLeague}}</dd></div>
                                 <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
                                 <div><dt>Collection day wins</dt><dd>{{war.collectionBattleWins}}</dd></div>
                                 <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
