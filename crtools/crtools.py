@@ -72,6 +72,8 @@ def warlog_labels(warlog, clan_tag):
     return labels
 
 def get_war_league_from_score(clan_score):
+    """ Figure out which war league a clan trophy count corresponds to, 
+    and return war league details. """
     league = 'ERROR'
     for score, lookupTable in WAR_LEAGUE_LOOKUP.items():
         if clan_score >= score:
@@ -80,6 +82,7 @@ def get_war_league_from_score(clan_score):
     return league
 
 def get_war_league_from_war(war, clan_tag):
+    """ Figure out which war league a clan was in during a given war. """
     standing = war['standings']
 
     clan_score = 0
@@ -123,6 +126,8 @@ def member_warlog(config, clan_member, clan, warlog):
     return member_warlog
 
 def donations_score(config, member, days_from_donation_reset):
+    """ Calculate the score for a given member's daily donations. """
+
     # calculate score based `days_from_donation_reset`.
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
     donation_score = member['donations'] - target_donations
@@ -138,6 +143,8 @@ def donations_score(config, member, days_from_donation_reset):
     return donation_score
 
 def war_score(config, war):
+    """ Tally the score for a given war """
+
     war_score = 0;
     if 'battlesPlayed' in war:
         if war['battlesPlayed'] >= 1:
@@ -180,15 +187,18 @@ def get_suggestions(config, members):
 
     return suggestions
 
-def get_score_rule_status(score):
-    if score > 0:
-        return 'good'
-    elif score < 0:
-        return 'bad'
-    else:
-        return 'normal'
 
 def get_scoring_rules(config):
+    """ Get list of scoring rules to display on the site """
+
+    def get_score_rule_status(score):
+        if score > 0:
+            return 'good'
+        elif score < 0:
+            return 'bad'
+        else:
+            return 'normal'
+   
     rules = [
         {'name': '...participate in the war?', 'yes': config['score']['war_participation'], 'no': config['score']['war_non_participation'] },
         {'name': '...complete each collection battle? (per battle)', 'yes': config['score']['collect_battle_played'], 'no': config['score']['collect_battle_incomplete']},
