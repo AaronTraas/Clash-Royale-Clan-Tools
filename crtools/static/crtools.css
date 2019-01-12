@@ -5,16 +5,16 @@ html {
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 
-  font-size: 62.5%; 
+  font-size: 62.5%;
 }
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  color: #222; 
+  color: #222;
 }
 html, body {
-    background-color: #000;    
+    background-color: #000;
     overflow-x: hidden;
     margin: 0;
     font-family: 'Open Sans', sans-serif;
@@ -54,7 +54,7 @@ h6 { font-size: 1.2rem; line-height: 1.6;  letter-spacing: 0; }
     h3 { font-size: 2.2rem; }
 }
 p {
-  margin-top: 0; 
+  margin-top: 0;
 }
 
 b, strong {
@@ -95,11 +95,11 @@ img {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
-  color: #1EAEDB; 
+  color: #1EAEDB;
 }
 a:active,
 a:hover {
-  color: #0FA0CE; 
+  color: #0FA0CE;
   outline: 0;
 }
 
@@ -125,21 +125,21 @@ a:hover {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: disc inside; 
+  list-style: disc inside;
 }
 ol {
-  list-style: decimal inside; 
+  list-style: decimal inside;
 }
 ol, ul {
   padding-left: 0;
-  margin-top: 0; 
+  margin-top: 0;
 }
 ul ul, ul ol, ol ol, ol ul {
   margin: 1.5rem 0 1.5rem 3rem;
-  font-size: 90%; 
+  font-size: 90%;
 }
 li {
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
 
 dl, dt, dd {
@@ -170,7 +170,7 @@ table {
 th, td {
   padding: 8px 14px;
   text-align: left;
-  border-bottom: 1px solid #E1E1E1; 
+  border-bottom: 1px solid #E1E1E1;
 }
 
 @media (max-width: 700px) {
@@ -191,7 +191,7 @@ label {
 select {
     color: inherit;
     font: inherit;
-    margin: 0; 
+    margin: 0;
     text-transform: none;
 
     border: 1px solid #ccc;
@@ -392,7 +392,7 @@ img.war-league {
 }
 
 #members th:first-child, #members td:first-child {
-  padding-left: 0; 
+  padding-left: 0;
 }
 
 #members table th {
@@ -415,7 +415,7 @@ img.war-league {
     vertical-align: text-top;
 }
 
-#members .donations > img {   
+#members .donations > img {
     height: 14px;
     vertical-align: -10%;
 }
@@ -434,7 +434,7 @@ img.war-league {
     font-weight: normal;
     margin-top: 3px;
 }
-#members .war-cards:before {   
+#members .war-cards:before {
     content: '';
     display: inline-block;
     background: url(images/cards.svg) no-repeat;
@@ -499,15 +499,15 @@ img.war-league {
     width: 6px;
     height: 6px;
     background-color: #ddd;
-    top: -4px; 
+    top: -4px;
     right: 6px;
     border-top: 1px solid #222;
     border-left: 1px solid #222;
     transform: rotate(45deg);
 }
 #members .tooltip.invert:before {
-    bottom: -4px; 
-    top: unset; 
+    bottom: -4px;
+    top: unset;
     border: none;
     border-bottom: 1px solid #222;
     border-right: 1px solid #222;
@@ -625,7 +625,7 @@ img.war-league {
 
 @media (max-width: 700px) {
     #members th:first-child, #members td:first-child {
-      padding-left: 4px; 
+      padding-left: 4px;
     }
     #members th, #members td {
         line-height: 1.1em;
@@ -686,7 +686,7 @@ strong.na {
     width: 100%;
 }
 
-.rules .yes, 
+.rules .yes,
 .rules .no {
     text-align: center;
 }
@@ -699,7 +699,7 @@ footer {
     background-color: #000;
 }
 
-footer ul, 
+footer ul,
 footer ul li {
     list-style: none;
     padding: 0;

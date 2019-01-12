@@ -17,10 +17,10 @@ https://packaging.python.org/tutorials/installing-packages/ for details.
 
 Once setuptools is installed, run the following in your shell:
 
-.. code:: 
+.. code::
 
   python3 setup.py install
-  
+
 ==================================================
 Syntax
 ==================================================
@@ -73,7 +73,7 @@ parameter: api_key. The file should look like:
   # your output path. Where you want the static website to live.
   out=/var/www/html
 
-  # Path to the logo artwork for clan. Must be PNG. Recommended at 
+  # Path to the logo artwork for clan. Must be PNG. Recommended at
   # least 64x64 pixels.
   clan_logo=~/myclan/logo.png
 
@@ -106,23 +106,23 @@ Assuming root is going to be running the script:
 .. code::
 
   0 * * * * crtools --out=[YOUR-DOC-ROOT] [YOUR-CLAN-TAG]
-  
+
 For example:
 
 .. code::
 
   0 * * * * crtools --out=/var/www/html \#JY8YVV
 
-Note the '\' character before the # -- that's important. A '#' is a comment 
+Note the '\' character before the # -- that's important. A '#' is a comment
 in most shells/scripting languages. You need to escape it to run it.
 
 ==================================================
 Image rights
 ==================================================
 
-All images included in this repository were created by the team, and are 
+All images included in this repository were created by the team, and are
 included in the GPL license. The SVGs were all created in Inkscape.
 
 It was important to us to make sure the entirety of this application is
-open source, and not subject to takedown request. We will not ever 
-extract assets from the game or from any other web properties. 
+open source, and not subject to takedown request. We will not ever
+extract assets from the game or from any other web properties.

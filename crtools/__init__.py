@@ -50,7 +50,7 @@ config_defaults = {
 }
 
 def load_config_file(config_file_name=None):
-    """ Look for config file. If config file exists, load it, and try to 
+    """ Look for config file. If config file exists, load it, and try to
     extract config from config file"""
 
     config = copy.deepcopy(config_defaults)
@@ -81,7 +81,7 @@ def load_config_file(config_file_name=None):
                             try:
                                 value = int(value)
                             except ValueError:
-                                pass  
+                                pass
 
                             # if set to "true" or "false" or similar, convert to boolean
                             if isinstance(value, str):
@@ -98,8 +98,8 @@ def load_config_file(config_file_name=None):
 def main():
     # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
-                            description = """A tool for creating a dashboard for clan participation in 
-                                             ClashRoyale. See https://developer.clashroyale.com to sign up 
+                            description = """A tool for creating a dashboard for clan participation in
+                                             ClashRoyale. See https://developer.clashroyale.com to sign up
                                              for a developer account and create an API key to use with this.""")
     parser.add_argument("--config",
                         metavar  = "CONFIG-FILE",

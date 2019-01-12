@@ -47,8 +47,8 @@ WAR_LEAGUE_LOOKUP = {
     3000 : { 'id': 'legendary', 'name': 'Legendary League' }
 }
 
-def write_object_to_file(file_path, obj): 
-    """ Writes contents of object to file. If object is a string, write it 
+def write_object_to_file(file_path, obj):
+    """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
 
     # open file for UTF-8 output, and write contents of object to file
@@ -72,7 +72,7 @@ def warlog_labels(warlog, clan_tag):
     return labels
 
 def get_war_league_from_score(clan_score):
-    """ Figure out which war league a clan trophy count corresponds to, 
+    """ Figure out which war league a clan trophy count corresponds to,
     and return war league details. """
     league = 'ERROR'
     for score, lookupTable in WAR_LEAGUE_LOOKUP.items():
@@ -156,14 +156,14 @@ def war_score(config, war):
 
         war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
         war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
-    else: 
+    else:
         war_score += config['score']['war_non_participation']
 
     return war_score
 
 def get_suggestions(config, members):
-    """ Returns list of suggestions for the clan leadership to perform. 
-    Suggestions are to kick, demote, or promote. Suggestions are based on 
+    """ Returns list of suggestions for the clan leadership to perform.
+    Suggestions are to kick, demote, or promote. Suggestions are based on
     user score, and various thresholds in configuration. """
 
     members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
@@ -198,7 +198,7 @@ def get_scoring_rules(config):
             return 'bad'
         else:
             return 'normal'
-   
+
     rules = [
         {'name': '...participate in the war?', 'yes': config['score']['war_participation'], 'no': config['score']['war_non_participation'] },
         {'name': '...complete each collection battle? (per battle)', 'yes': config['score']['collect_battle_played'], 'no': config['score']['collect_battle_incomplete']},
@@ -211,13 +211,13 @@ def get_scoring_rules(config):
         rule['yes_status'] = get_score_rule_status(rule['yes'])
         rule['no_status'] = get_score_rule_status(rule['no'])
 
-    return rules  
+    return rules
 
 def process_members(config, clan, warlog):
-    """ Process member list, adding calculated meta-data for rendering of 
+    """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
 
-    # calculate the number of days since the donation last sunday, for 
+    # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
     days_from_donation_reset = datetime.utcnow().isoweekday()
     if days_from_donation_reset == 7:
@@ -228,7 +228,7 @@ def process_members(config, clan, warlog):
     members_processed = []
     for member_src in members:
         member = member_src.copy()
-        # calculate the number of daily donations, and the donation status 
+        # calculate the number of daily donations, and the donation status
         # based on threshold set in config
         member['donation_status'] = 'normal'
         if member['donations'] > (days_from_donation_reset) * 40:
@@ -258,11 +258,11 @@ def process_members(config, clan, warlog):
         # it's good to be the king -- leader score floor of zero
         if (member['role'] == 'leader') and (member['score'] < 0):
             member['score'] = 0
-        
+
         member['vacation'] = member['tag'] in config['members']['vacation']
         member['safe'] = member['tag'] in config['members']['safe']
 
-        # based on member score, infer an overall member status, which is 
+        # based on member score, infer an overall member status, which is
         # either 'good', 'ok', 'bad', or 'normal'
         if member['score'] >= 0:
             if member['score'] >= config['score']['threshold_promote']:
@@ -315,7 +315,7 @@ def build_dashboard(config):
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
 
-        # If logo_path is provided, grab logo from path given, and put it where 
+        # If logo_path is provided, grab logo from path given, and put it where
         # it needs to go. Otherwise, grab the default from the template folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
         logo_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png')
@@ -328,7 +328,7 @@ def build_dashboard(config):
 
         shutil.copyfile(logo_src_path, logo_dest_path)
 
-        # If favicon_path is provided, grab favicon from path given, and put it  
+        # If favicon_path is provided, grab favicon from path given, and put it
         # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
         favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico')
@@ -338,10 +338,10 @@ def build_dashboard(config):
                 favicon_src_path = favicon_src_path_test
             else:
                 print('[WARNING] custom favicon file "{}" not found'.format(favicon_src_path_test))
-        
+
         shutil.copyfile(favicon_src_path, favicon_dest_path)
 
-        # if external clan description file is specified, read that file and use it for 
+        # if external clan description file is specified, read that file and use it for
         # the clan description section. If not, use the clan description returned by
         # the API
         clan_description_html = '<h1>{name} ({tag})</h1><h3>{description}</h3>'.format(**clan)
@@ -362,15 +362,15 @@ def build_dashboard(config):
 
         # Create environment for template parser
         env = Environment(
-                loader=PackageLoader('crtools', 'templates'),
-                autoescape=select_autoescape(['html', 'xml'])
-            )
+            loader=PackageLoader('crtools', 'templates'),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
 
         dashboard_html = env.get_template('page.html.j2').render(
             version           = __version__,
             config            = config,
             update_date       = datetime.now().strftime('%c'),
-            members           = members_processed, 
+            members           = members_processed,
             war_labels        = warlog_labels(warlog, clan['tag']),
             clan              = clan,
             clan_description  = clan_description_html,
@@ -378,8 +378,8 @@ def build_dashboard(config):
             scoring_rules     = get_scoring_rules(config)
         )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
-        
-        # If canonical URL is provided, also render the robots.txt and 
+
+        # If canonical URL is provided, also render the robots.txt and
         # sitemap.xml
         if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
@@ -402,7 +402,7 @@ def build_dashboard(config):
             write_object_to_file(os.path.join(log_path, 'members-processed.json'), json.dumps(members_processed, indent=4))
 
         try:
-            # remove output directory if previeously created to cleanup. Then 
+            # remove output directory if previeously created to cleanup. Then
             # create output path and log path.
             output_path = os.path.expanduser(config['paths']['out'])
             if os.path.exists(output_path):
@@ -424,10 +424,10 @@ def build_dashboard(config):
         else:
             print(' - API key not valid')
 
-    except ClashRoyaleAPIClanNotFound as e: 
+    except ClashRoyaleAPIClanNotFound as e:
         print('developer.clashroyale.com: {}'.format(e))
 
-    except ClashRoyaleAPIError as e: 
+    except ClashRoyaleAPIError as e:
         print('developer.clashroyale.com error: {}'.format(e))
 
     finally:

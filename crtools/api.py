@@ -43,9 +43,9 @@ class ClashRoyaleAPI:
         if r.status_code == 200:
             clan = r.json()
             return clan
-        elif r.status_code == 404: 
+        elif r.status_code == 404:
             raise ClashRoyaleAPIClanNotFound('Clan with tag "{}" not found'.format(self.clan_tag))
-        else: 
+        else:
             if(r.json()['reason'] == 'accessDenied'):
             	raise ClashRoyaleAPIAuthenticationError(r.json()['message'])
             else:
@@ -61,9 +61,9 @@ class ClashRoyaleAPI:
         if r.status_code == 200:
             warlog = r.json()
             return warlog['items']
-        elif r.status_code == 404: 
+        elif r.status_code == 404:
             raise ClashRoyaleAPIClanNotFound('Clan with tag "{}" not found'.format(self.clan_tag))
-        else: 
+        else:
             if(r.json()['reason'] == 'accessDenied'):
             	raise ClashRoyaleAPIAuthenticationError(r.json()['message'])
             else:

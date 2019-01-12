@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
     <meta name="generator" content="crtools {{version}}" />
-   
+
     <title>{{clan.name}} Clan Dashboard | crtools</title>
 
     <link rel="icon" href="favicon.ico"/>
@@ -51,7 +51,7 @@
                 <p class="last-update">Last update: {{update_date}}</p>
                 {% if clan.members < 50 %}
                 <div class="join-cta">
-                    <h3>Looking for a clan?</h3> 
+                    <h3>Looking for a clan?</h3>
                     <a class="button join" href="https://link.clashroyale.com/invite/clan/en?tag=JY8YVV">Join us!</a>
                 </div>
                 {% endif %}
@@ -88,8 +88,8 @@
                     </ul>
                     <hr />
                     <p>
-                        Score for each individual is derived from war participation and 
-                        donations. Anyone with a <strong class="bad">score below 0</strong> will be recommended for 
+                        Score for each individual is derived from war participation and
+                        donations. Anyone with a <strong class="bad">score below 0</strong> will be recommended for
                         kicking and demotion, depending on the number of people in the clan.
                     </p>
                     <p>
@@ -97,21 +97,21 @@
                         is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
                     </p>
                 </article>
-                
+
                 <article>
                     <header>
                         <h2>Score Calculation</h2>
                     </header>
                     <p>
-                        Score is made of two components: <strong>donation score</strong> 
+                        Score is made of two components: <strong>donation score</strong>
                         and <strong>war participation score</strong>.
                     </p>
                     <h4>Donation Score:</h4>
                     <p>
                         You are expected to donate <strong>{{config.score.min_donations_daily}}
-                        cards per day</strong>, on average. If you make more, you will 
-                        gain points. If you make fewer, you will lose points. If you have 
-                        zero, you will be penalized 
+                        cards per day</strong>, on average. If you make more, you will
+                        gain points. If you make fewer, you will lose points. If you have
+                        zero, you will be penalized
                         <strong class="bad">{{config.score.donations_zero}} points</strong>
                     </p>
                     <h4>War Participation Score:</h4>
@@ -146,7 +146,7 @@
     </div></footer>
 
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>
-    
+
     <script>
         // requestAnimFrame polyfill
         window.requestAnimationFrame = (function(){
