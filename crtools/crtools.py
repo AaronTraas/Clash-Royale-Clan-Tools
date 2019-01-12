@@ -12,7 +12,6 @@ import math
 import os
 import shutil
 import tempfile
-from slugify import slugify
 
 from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
@@ -322,7 +321,7 @@ def build_dashboard(config):
         # If favicon_path is provided, grab favicon from path given, and put it  
         # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
-        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico');
+        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico')
         if config['paths']['favicon']:
             favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
             if os.path.isfile(favicon_src_path_test):
@@ -330,7 +329,7 @@ def build_dashboard(config):
             else:
                 print('[WARNING] custom favicon file "{}" not found'.format(favicon_src_path_test))
         
-        shutil.copyfile(favicon_src_path, favicon_dest_path)        
+        shutil.copyfile(favicon_src_path, favicon_dest_path)
 
         # if external clan description file is specified, read that file and use it for 
         # the clan description section. If not, use the clan description returned by
@@ -357,25 +356,21 @@ def build_dashboard(config):
                 autoescape=select_autoescape(['html', 'xml'])
             )
 
-        member_table_html = env.get_template('member-table.html.j2').render(
-            members      = members_processed, 
-            clan_name    = clan['name'], 
-            min_trophies = clan['requiredTrophies'], 
-            war_labels    = warlog_labels(warlog, clan['tag'])
-        )
-
         dashboard_html = env.get_template('page.html.j2').render(
-                version           = __version__,
-                config            = config,
-                update_date       = datetime.now().strftime('%c'),
-                member_table      = member_table_html,
-                clan              = clan,
-                clan_description  = clan_description_html,
-                suggestions       = get_suggestions(config, members_processed),
-                scoring_rules     = get_scoring_rules(config)
-            )
+            version           = __version__,
+            config            = config,
+            update_date       = datetime.now().strftime('%c'),
+            members           = members_processed, 
+            war_labels        = warlog_labels(warlog, clan['tag']),
+            clan              = clan,
+            clan_description  = clan_description_html,
+            suggestions       = get_suggestions(config, members_processed),
+            scoring_rules     = get_scoring_rules(config)
+        )
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
         
+        # If canonical URL is provided, also render the robots.txt and 
+        # sitemap.xml
         if config['www']['canonical_url'] != False:
             lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
             sitemap_xml = env.get_template('sitemap.xml.j2').render(
@@ -396,23 +391,23 @@ def build_dashboard(config):
             write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
             write_object_to_file(os.path.join(log_path, 'members-processed.json'), json.dumps(members_processed, indent=4))
 
-        # remove output directory if previeously created to cleanup. Then 
-        # create output path and log path.
-        output_path = os.path.expanduser(config['paths']['out'])
-        if os.path.exists(output_path):
-            shutil.copystat(output_path, tempdir)
-            shutil.rmtree(output_path)
+        try:
+            # remove output directory if previeously created to cleanup. Then 
+            # create output path and log path.
+            output_path = os.path.expanduser(config['paths']['out'])
+            if os.path.exists(output_path):
+                shutil.copystat(output_path, tempdir)
+                shutil.rmtree(output_path)
+        except PermissionError:
+            print('Permission error: could not delete: \n\t{}'.format(output_path))
 
         try:
             # Copy entire contents of temp directory to output directory
             shutil.copytree(tempdir, output_path)
         except PermissionError:
-            clan_slug = slugify(clan['name'])
-            default_output_path = os.path.join(os.path.expanduser('~'), 'crtools-{}'.format(clan_slug))
-            print('Permission error: could not write output to: \n\t{}\nas requested; writing to: \n\t{}'.format(output_path,default_output_path))
-            shutil.copytree(tempdir, default_output_path)
+            print('Permission error: could not write output to: \n\t{}'.format(output_path))
 
-    except ClashRoyaleAPIAuthenticationError as e: 
+    except ClashRoyaleAPIAuthenticationError as e:
         print('developer.clashroyale.com authentication error: {}'.format(e))
         if not config['api']['api_key']:
             print(' - API key not provided')
