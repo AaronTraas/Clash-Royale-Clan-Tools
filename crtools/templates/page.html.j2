@@ -22,7 +22,12 @@
     <main>
         <section id="hero">
             <div id="clan-description">
-                {{clan_description}}
+            {% if clan_hero %}
+                {{clan_hero}}
+            {% else %}
+                <h1>{{clan.name}} ({{clan.tag}})</h1>
+                <h3>{{clan.description}}
+            {% endif %}
             </div>
             <div id="clan-stats">
                 <div class="table-wrap">

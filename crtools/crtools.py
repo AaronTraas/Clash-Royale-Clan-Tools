@@ -183,7 +183,10 @@ def get_suggestions(config, members):
             suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     if len(suggestions) == 0:
-        suggestions.append('No suggestions at this time. The clan is in good order.')
+        if config['score']['min_clan_size'] >= len(members_by_score):
+            suggestions.append('<strong>Recruit new members!</strong> The team needs some fresh blood.')
+        else:
+            suggestions.append('No suggestions at this time. The clan is in good order.')
 
     return suggestions
 
@@ -278,13 +281,14 @@ def process_members(config, clan, warlog):
             member['trophies_status'] = 'normal'
         else:
             member['trophies_status'] = 'ok'
+
         if member['arena']['name'] in ARENA_LEAGUE_LOOKUP:
             member['arena_league'] = ARENA_LEAGUE_LOOKUP[member['arena']['name']]['id']
 
         # Figure out whether member is on the leadership team by role
         if member['role'] == 'leader' or member['role'] == 'coLeader':
             member['leadership'] = True
-        else: 
+        else:
             member['leadership'] = False
 
         # Format 'co-leader" in sane way'
@@ -344,12 +348,12 @@ def build_dashboard(config):
         # if external clan description file is specified, read that file and use it for
         # the clan description section. If not, use the clan description returned by
         # the API
-        clan_description_html = '<h1>{name} ({tag})</h1><h3>{description}</h3>'.format(**clan)
+        clan_hero_html = None
         if config['paths']['description_html']:
             description_path = os.path.expanduser(config['paths']['description_html'])
             if os.path.isfile(description_path):
                 with open(description_path, 'r') as myfile:
-                    clan_description_html = myfile.read()
+                    clan_hero_html = myfile.read()
             else:
                 print('[WARNING] custom description file "{}" not found'.format(description_path))
 
@@ -373,7 +377,7 @@ def build_dashboard(config):
             members           = members_processed,
             war_labels        = warlog_labels(warlog, clan['tag']),
             clan              = clan,
-            clan_description  = clan_description_html,
+            clan_hero         = clan_hero_html,
             suggestions       = get_suggestions(config, members_processed),
             scoring_rules     = get_scoring_rules(config)
         )
