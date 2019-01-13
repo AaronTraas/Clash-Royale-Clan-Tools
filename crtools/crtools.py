@@ -92,16 +92,13 @@ def get_war_league_from_war(war, clan_tag):
 
     return get_war_league_from_score(clan_score)
 
-def member_warlog(config, clan_member, clan, warlog):
-    """ Return war participation records for a given member by member tag. """
+def member_war(config, clan_member, clan, war):
     member_tag = clan_member['tag']
-
-    member_warlog = []
-    for war in warlog:
-        participation = {'status': 'na', 'score': config['score']['war_non_participation']}
-        for member in war['participants']:
-            if member['tag'] == member_tag:
-                participation = member.copy()
+    participation = {'status': 'na', 'score': config['score']['war_non_participation']}
+    for member in war['participants']:
+        if member['tag'] == member_tag:
+            participation = member.copy()
+            if 'standings' in war:
                 if member['collectionDayBattlesPlayed'] == 0:
                     participation['status'] = 'na'
                 elif member['battlesPlayed'] == 0:
@@ -110,6 +107,7 @@ def member_warlog(config, clan_member, clan, warlog):
                     participation['status'] = 'ok'
                 else:
                     participation['status'] = 'good'
+
                 participation['warLeague'] = get_war_league_from_war(war, clan['tag'])['id']
 
                 league_lookup = ARENA_LEAGUE_LOOKUP[clan_member['arena']['name']]
@@ -121,6 +119,15 @@ def member_warlog(config, clan_member, clan, warlog):
                 participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
                 participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
                 participation['score'] = war_score(config, participation)
+            else:
+                participation['status'] = 'normal'
+    return participation
+
+def member_warlog(config, clan_member, clan, warlog):
+    """ Return war participation records for a given member by member tag. """
+    member_warlog = []
+    for war in warlog:
+        participation = member_war(config, clan_member, clan, war)
         member_warlog.append(participation)
 
     return member_warlog
@@ -229,13 +236,13 @@ def get_scoring_rules(config):
 
     return rules
 
-def process_members(config, clan, warlog):
+def process_members(config, clan, warlog, current_war):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
 
     # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
-    days_from_donation_reset = datetime.utcnow().isoweekday()
+    days_from_donation_reset = datetime.utcnow().isoweekday()+1
     if days_from_donation_reset == 7:
         days_from_donation_reset = 0
 
@@ -259,6 +266,7 @@ def process_members(config, clan, warlog):
             member['donationsDaily'] = member['donations']
 
         # get member warlog and add it to the record
+        member['currentWar'] = member_war(config, member, clan, current_war)
         member['warlog'] = member_warlog(config, member, clan, warlog)
 
         member['donationScore'] = donations_score(config, member, days_from_donation_reset)
@@ -334,11 +342,12 @@ def build_dashboard(config):
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
-        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
+        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'], config['crtools']['debug'])
 
         # Get clan data and war log from API.
         clan = api.get_clan()
         warlog = api.get_warlog()
+        current_war = api.get_current_war()
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
@@ -381,7 +390,7 @@ def build_dashboard(config):
             else:
                 print('[WARNING] custom description file "{}" not found'.format(description_path))
 
-        members_processed = process_members(config, clan, warlog)
+        members_processed = process_members(config, clan, warlog, current_war)
         clan_processed = process_clan(config, clan)
 
         # Create environment for template parser
@@ -425,6 +434,7 @@ def build_dashboard(config):
             os.makedirs(log_path)
             write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
             write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
+            write_object_to_file(os.path.join(log_path, 'currentwar.json'), json.dumps(current_war, indent=4))
             write_object_to_file(os.path.join(log_path, 'clan-processed.json'), json.dumps(clan_processed, indent=4))
             write_object_to_file(os.path.join(log_path, 'members-processed.json'), json.dumps(members_processed, indent=4))
 

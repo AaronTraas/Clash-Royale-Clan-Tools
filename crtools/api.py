@@ -24,48 +24,63 @@ class ClashRoyaleAPI:
 
     CLAN_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}'
     WARLOG_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}/warlog'
+    CURRENT_WAR_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}/currentwar'
 
-    def __init__(self, api_key, clan_tag):
+    api_key = False
+    clan_tag = False
+    debug = False
+
+    def __init__(self, api_key, clan_tag, debug=False):
         self.api_key = api_key
         self.clan_tag = clan_tag
+        self.debug = debug
 
         self.headers = {
             'Accept': 'application/json',
             'authorization': 'Bearer ' + api_key
         }
 
-    def get_clan(self):
-        """Grab clan data from API."""
-
-        url = self.CLAN_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
-        r = requests.get(url, headers=self.headers)
+    def __api_call(self, endpoint):
+        # Make request and handle errors. If request returns a valid object,
+        # return that object.
+        r = requests.get(endpoint, headers=self.headers)
 
         if r.status_code == 200:
-            clan = r.json()
-            return clan
+            return r.json()
         elif r.status_code == 404:
             raise ClashRoyaleAPIClanNotFound('Clan with tag "{}" not found'.format(self.clan_tag))
         else:
             if(r.json()['reason'] == 'accessDenied'):
-            	raise ClashRoyaleAPIAuthenticationError(r.json()['message'])
+                raise ClashRoyaleAPIAuthenticationError(r.json()['message'])
             else:
-            	raise ClashRoyaleAPIError(r.content);
+                raise ClashRoyaleAPIError(r.content);
             return False
+
+    def __debug(self, msg):
+        if self.debug:
+            print('[ClashRoyaleAPI]: {}'.format(msg))
+
+    def get_clan(self):
+        """Grab clan data from API."""
+
+        self.__debug('Retrieving clan data for "{}"'.format(self.clan_tag))
+        endpoint = self.CLAN_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
+        return self.__api_call(endpoint)
 
     def get_warlog(self):
         """Grab war log data from API."""
 
-        url = self.WARLOG_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
-        r = requests.get(url, headers=self.headers)
-
-        if r.status_code == 200:
-            warlog = r.json()
-            return warlog['items']
-        elif r.status_code == 404:
-            raise ClashRoyaleAPIClanNotFound('Clan with tag "{}" not found'.format(self.clan_tag))
+        self.__debug('Retrieving warlog for "{}"'.format(self.clan_tag))
+        endpoint = self.WARLOG_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
+        warlog_api = self.__api_call(endpoint)
+        if warlog_api and ('items' in warlog_api):
+            return warlog_api['items']
         else:
-            if(r.json()['reason'] == 'accessDenied'):
-            	raise ClashRoyaleAPIAuthenticationError(r.json()['message'])
-            else:
-            	raise ClashRoyaleAPIError(r.content);
-            return False
+            return warlog_api
+
+    def get_current_war(self):
+        """Grab war log data from API."""
+
+        self.__debug('Retrieving current war data for "{}"'.format(self.clan_tag))
+        endpoint = self.CURRENT_WAR_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
+        return self.__api_call(endpoint)
