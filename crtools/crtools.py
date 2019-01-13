@@ -121,6 +121,9 @@ def member_war(config, clan_member, clan, war):
                 participation['score'] = war_score(config, participation)
             else:
                 participation['status'] = 'normal'
+                if (war['state'] == 'warDay') and (participation['battlesPlayed'] > 0):
+                     participation['status'] = 'good'
+
     return participation
 
 def member_warlog(config, clan_member, clan, warlog):
@@ -320,7 +323,7 @@ def process_members(config, clan, warlog, current_war):
 
     return members_processed
 
-def process_clan(config, clan):
+def process_clan(config, clan, current_war):
     clan_processed = clan.copy()
     del clan_processed['memberList']
 
@@ -328,6 +331,8 @@ def process_clan(config, clan):
     league = get_war_league_from_score(clan['clanWarTrophies'])
     clan_processed['warLeague']      = league['id']
     clan_processed['warLeagueName']  = league['name']
+
+    clan_processed['currentWarState'] = current_war['state']
 
     return clan_processed
 
@@ -390,8 +395,8 @@ def build_dashboard(config):
             else:
                 print('[WARNING] custom description file "{}" not found'.format(description_path))
 
+        clan_processed = process_clan(config, clan, current_war)
         members_processed = process_members(config, clan, warlog, current_war)
-        clan_processed = process_clan(config, clan)
 
         # Create environment for template parser
         env = Environment(

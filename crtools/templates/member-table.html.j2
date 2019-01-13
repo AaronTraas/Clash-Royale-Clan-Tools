@@ -7,6 +7,7 @@
                     <th>Score</th>
                     <th>Trophies</th>
                     <th>Dona&shy;tions</th>
+                    <th>Current War</th>
                 {% for label in war_labels %}
                     <th class="nobr">
                         {{label.date}}
@@ -70,6 +71,30 @@
                                 <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
                         </div>
+                    </td>
+                    <td class="war {{member.currentWar.status}}">
+                    {% if member.currentWar.battlesPlayed is defined %}
+                        <div data-role="war">
+                            <div>
+                            {% if (clan.currentWarState == 'warDay') and (member.currentWar.battlesPlayed > 0) %}
+                                {% for battle in range(0, member.currentWar.battlesPlayed) %}
+                                    {% if member.currentWar.wins >= battle+1 %}
+                                    <img class="war-battle" src="static/images/war-battle-win.svg" />
+                                    {% else %}
+                                    <img class="war-battle" src="static/images/war-battle-loss.svg" />
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <img class="war-battle" src="static/images/war-battle-incomplete.svg" />
+                            {% endif %}
+                            </div>
+                            <div class="war-cards">
+                                {{member.currentWar.cardsEarned}}
+                            </div>
+                        </div>
+                    {% else %}
+                        N/A
+                    {% endif %}
                     </td>
                 {% for war in member.warlog %}
                     <td class="war {{war.status}}" data-tooltip="true">
