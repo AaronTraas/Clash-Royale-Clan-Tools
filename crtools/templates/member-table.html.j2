@@ -72,7 +72,7 @@
                             </dl>
                         </div>
                     </td>
-                    <td class="war current {{member.currentWar.status}}">
+                    <td class="war current {{member.currentWar.status}}" data-tooltip="true">
                     {% if member.currentWar.battlesPlayed is defined %}
                         <div data-role="war">
                             <div>
@@ -92,8 +92,29 @@
                                 {{member.currentWar.cardsEarned}}
                             </div>
                         </div>
+                        <div class="tooltip">
+                            <dl>
+                                <div><dt>Collection day battles</dt><dd>{{member.currentWar.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>Cards earned</dt><dd>{{member.currentWar.cardsEarned}}</dd></div>
+                            {% if clan.currentWarState == 'warDay' %}
+                                <div><dt>War day battles</dt><dd>{{member.currentWar.battlesPlayed}}</dd></div>
+                                <div><dt>War day wins</dt><dd>{{member.currentWar.wins}}</dd></div>
+                            {% endif %}
+                                <div><dt>War score</dt><dd>N/A</dd></div>
+                            </dl>
+                            <br />
+                            NOTE: current war <strong>does not</strong> affect score.
+                        </div>
                     {% else %}
                         N/A
+                        <div class="tooltip">
+                            <strong>{{member.name}}</strong> is <em>not</em> participating in this war.
+                            <dl>
+                                <div><dt>War score</dt><dd>N/A</dd></div>
+                            </dl>
+                            <br />
+                            NOTE: current war <strong>does not</strong> affect score.
+                        </div>
                     {% endif %}
                     </td>
                 {% for war in member.warlog %}
@@ -135,7 +156,7 @@
                             <dl>
                                 <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
-                       </div>
+                        </div>
                     {% endif %}
                     </td>
                 {% endfor %}
