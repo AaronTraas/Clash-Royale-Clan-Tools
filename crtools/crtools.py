@@ -187,7 +187,7 @@ def get_suggestions(config, members):
             # if member on the 'safe' or 'vacation' list, don't make
             # recommendations to kick or demote
 
-            if not (member['safe'] or member['vacation']):
+            if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
                 # if we're above the minimum clan size, recommend kicking
                 # poorly participating member. Otherwise, if member is
                 # an Elder or higher, recommend demotion.
