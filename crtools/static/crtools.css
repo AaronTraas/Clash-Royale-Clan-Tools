@@ -461,6 +461,12 @@ img.war-league {
     font-weight: normal;
 }
 
+
+#member-table td.war.current.normal {
+    border: 3px dashed #BB89CC;
+    background-color: #F1EAF4;
+}
+
 [data-tooltip] {
     position: relative;
 }
@@ -677,6 +683,10 @@ strong.na {
 
 #member-table[data-filter="danger"] tr[data-status="good"],
 #member-table[data-filter="danger"] tr[data-status="normal"] {
+    display: none;
+}
+
+#member-table[data-filter="currentwar"] tr[data-currentwar="na"] {
     display: none;
 }
 
