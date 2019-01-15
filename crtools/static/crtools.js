@@ -1,37 +1,52 @@
-var tooltip_owners = document.querySelectorAll('[data-tooltip]');
+Tooltip = function() {
+	document.querySelectorAll('[data-tooltip]').forEach(function(element) {
+	    element.addEventListener("mouseenter", function(e) {
 
-tooltip_owners.forEach(function(element) {
-	element.addEventListener('click', function(e) {
-		if( element.classList.contains('show-tooltip') ) {
-			element.classList.remove('show-tooltip');
-		} else {
-			tooltip_owners.forEach(function(element_remove) {
-				element_remove.classList.remove('show-tooltip');
-			});
-			element.classList.add('show-tooltip');
-		}
-	});
-});
+	        var child_tooltip = e.target.querySelector('.tooltip');
+	        var tooltip;
+	        if(child_tooltip) {
+				tooltip = child_tooltip.cloneNode(true);
+	        } else {
+	        	tooltip = document.createElement('div')
+	        	tooltip.innerHTML = e.target.getAttribute('data-tooltip');
+	        }
+	        tooltip.className = "b-tooltip ";
 
-function fixTooltipOrientation() {
-	var table_scroll_tooltip_owners = document.querySelectorAll('.table-scroll table [data-tooltip]');
-	table_scroll_tooltip_owners.forEach(function(element) {
-		var tooltip = element.getElementsByClassName('tooltip')[0];
-		var table = tooltip.closest('table');
-		var table_y = table.offsetHeight + table.getBoundingClientRect().y + window.scrollY - 10;
-		var tooltip_y = tooltip.offsetHeight + tooltip.getBoundingClientRect().y + window.scrollY;
-		if( tooltip_y > table_y ) {
-			tooltip.classList.add('invert');
-		} else {
-			tooltip.classList.remove('invert');
-		}
-	});
-}
+	        document.body.appendChild(tooltip);
 
-fixTooltipOrientation();
+	        positionAt(e.target, tooltip);
+	    });
+
+	    element.addEventListener("mouseleave", function(e) {
+	    	var tooltips = document.querySelector(".b-tooltip");
+	    	if(tooltips) {
+	    		document.body.removeChild(tooltips);
+	    	}
+
+	    });
+	})
+
+    /**
+     * Positions the tooltip.
+     * @param {object} parent - The trigger of the tooltip.
+     * @param {object} tooltip - The tooltip itself.
+     */
+    function positionAt(parent, tooltip) {
+	    var dist  = 2;
+        var parentCoords = parent.getBoundingClientRect(), left, top;
+
+		left = parseInt(parentCoords.left) + ((parent.offsetWidth - tooltip.offsetWidth) / 2);
+		top = parseInt(parentCoords.top) - tooltip.offsetHeight - dist;
+
+        tooltip.style.left = left + "px";
+        tooltip.style.top  = top + pageYOffset + "px";
+    }
+};
 
 var filter_dropdown = document.getElementById('member-filter');
 var member_table = document.getElementById('member-table');
 filter_dropdown.addEventListener('change', function(e) {
 	member_table.dataset.filter = e.target.value;
 })
+
+var tooltip = new Tooltip();

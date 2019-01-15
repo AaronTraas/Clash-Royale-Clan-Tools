@@ -178,6 +178,7 @@ th, td {
         margin: 0 -15px;
     }
 }
+
 .table-scroll-inner {
     width: 100%;
     overflow-x: auto;
@@ -467,90 +468,9 @@ img.war-league {
     background-color: #F1EAF4;
 }
 
-[data-tooltip] {
-    position: relative;
-}
-#members [data-tooltip]:hover .tooltip{
-    visibility: visible;
-}
-
-#members .tooltip {
-    background: #ddd;
-    color: #222;
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: normal;
-    min-width: 90px;
-    display: block;
-    position: absolute;
-    border: 1px solid #222;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
-    border-radius: 3px;
-    padding: 4px 6px;
-    top: 100%;
-    right: 6px;
-    z-index: 100;
-    visibility: hidden;
-    white-space: normal;
-    text-align: left;
-}
-#members .tooltip.invert {
-    bottom: 100%;
-    top: unset;
-}
-#members .tooltip:before {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color: #ddd;
-    top: -4px;
-    right: 6px;
-    border-top: 1px solid #222;
-    border-left: 1px solid #222;
-    transform: rotate(45deg);
-}
-#members .tooltip.invert:before {
-    bottom: -4px;
-    top: unset;
-    border: none;
-    border-bottom: 1px solid #222;
-    border-right: 1px solid #222;
-}
-#members .tooltip strong {
-    border: none;
-}
-
-#members .tooltip dl {
-    display: table;
-}
-#members .tooltip dl > div {
-    display: table-row;
-}
-#members .tooltip dl > div > dt,
-#members .tooltip dl > div > dd {
-    display: table-cell;
-}
-#members .tooltip dl > div > dt {
-    font-family: 'Open Sans Condensed', sans-serif;
-    padding-right: 4px;
-}
-#members .tooltip dl > div > dd {
-    font-family: 'Open Sans', sans-serif;
-}
-
-#members table .show-tooltip .tooltip {
-    display: block;
-    visibility: visible;
-}
 
 #members img.war-battle {
     height: 18px;
-}
-
-#members table .tooltip dl > div {
-    white-space: nowrap;
 }
 
 #members table .rank-up,
@@ -736,6 +656,64 @@ footer ul li::after {
 footer ul li:last-child::after {
     content: none;
     display: none;
+}
+
+
+/* Tooltips
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.tooltip {
+    display: none;
+}
+
+.b-tooltip{
+    position: absolute;
+    display: inline-block;
+
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: left;
+
+    padding: 4px 6px;
+    min-width: 90px;
+
+    background: #ddd;
+    color: #222;
+    border: 1px solid #222;
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+}
+.b-tooltip:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #ddd;
+    bottom: -4px;
+    right: 50%;
+    margin-right: -3px;
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
+    transform: rotate(45deg);
+}
+#members .b-tooltip dl {
+    display: table;
+}
+#members .b-tooltip dl > div {
+    display: table-row;
+    white-space: nowrap;
+}
+#members .b-tooltip dl > div > dt,
+#members .b-tooltip dl > div > dd {
+    display: table-cell;
+}
+#members .b-tooltip dl > div > dt {
+    font-family: 'Open Sans Condensed', sans-serif;
+    padding-right: 4px;
+}
+#members .b-tooltip dl > div > dd {
+    font-family: 'Open Sans', sans-serif;
 }
 
 /* Github ribbon

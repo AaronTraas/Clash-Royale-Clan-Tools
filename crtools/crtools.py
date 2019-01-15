@@ -143,7 +143,7 @@ def donations_score(config, member, days_from_donation_reset):
     donation_score = member['donations'] - target_donations
 
     # exempt additional penalties if at least a day hasn't passed
-    if days_from_donation_reset >= 1:
+    if days_from_donation_reset > 1:
         donation_score = round(donation_score / days_from_donation_reset)
 
         # bigger penalty for 0 donations
@@ -245,9 +245,9 @@ def process_members(config, clan, warlog, current_war):
 
     # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
-    days_from_donation_reset = datetime.utcnow().isoweekday()
-    if days_from_donation_reset == 6:
-        days_from_donation_reset = 0
+    days_from_donation_reset = datetime.utcnow().isoweekday() + 1
+    if days_from_donation_reset >= 7:
+        days_from_donation_reset = 1
 
     # grab importent fields from member list for dashboard
     members = clan['memberList'].copy()
