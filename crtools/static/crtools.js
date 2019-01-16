@@ -1,4 +1,4 @@
-Tooltip = function() {
+TooltipManager = function() {
     document.querySelectorAll('[data-tooltip]').forEach(function(element) {
         element.addEventListener('mouseenter', function(e) {
             addTooltip(element, false);
@@ -25,6 +25,9 @@ Tooltip = function() {
         }
         tooltip.className = 'b-tooltip';
         tooltip.dataset.persist = persist;
+        tooltip.addEventListener('click', function(e) {
+        	clearTooltip(this, true);
+        });
 
         document.body.appendChild(tooltip);
 
@@ -36,13 +39,16 @@ Tooltip = function() {
 
         if(tooltips) {
         	tooltips.forEach( function(tooltip) {
-        		persist = (tooltip.dataset.persist=='true')
-        		console.log('persist, force', persist, force)
-        		if( !persist || force ) {
-		            document.body.removeChild(tooltip);
-        		}
-        	})
+        		clearTooltip(tooltip, force)
+        	});
         }
+    }
+
+    function clearTooltip(tooltip, force) {
+		persist = (tooltip.dataset.persist=='true')
+		if( !persist || force ) {
+            document.body.removeChild(tooltip);
+		}
     }
 
     /**
@@ -68,4 +74,4 @@ filter_dropdown.addEventListener('change', function(e) {
     member_table.dataset.filter = e.target.value;
 })
 
-var tooltip = new Tooltip();
+var tooltip = new TooltipManager();
