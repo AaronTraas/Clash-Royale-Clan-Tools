@@ -202,7 +202,7 @@ def get_suggestions(config, members):
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
         elif (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
-            suggestions.append('Consider premoting <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
+            suggestions.append('Promote <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     # If there are no other suggestions, give some sort of message
     if len(suggestions) == 0:

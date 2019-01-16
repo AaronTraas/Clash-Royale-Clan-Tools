@@ -89,21 +89,25 @@
                     <header>
                         <h2>Suggested actions for leadership:</h2>
                     </header>
-                    <ul>
-                    {% for suggestion in suggestions %}
-                        <li>{{suggestion}}</li>
-                    {% endfor %}
-                    </ul>
-                    <hr />
-                    <p>
-                        Score for each individual is derived from war participation and
-                        donations. Anyone with a <strong class="bad">score below 0</strong> will be recommended for
-                        kicking and demotion, depending on the number of people in the clan.
-                    </p>
-                    <p>
-                        A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
-                        is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
-                    </p>
+                    <div class="column">
+                        <div class="list">
+                            <ul>
+                            {% for suggestion in suggestions %}
+                                <li>{{suggestion}}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="info">
+                            <p>
+                                Anyone with a <strong class="bad">score below 0</strong> will be recommended for
+                                kicking or demotion.
+                            </p>
+                            <p>
+                                A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
+                                is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
+                            </p>
+                        </div>
+                    </div>
                 </article>
 
                 <article>

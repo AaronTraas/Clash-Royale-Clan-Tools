@@ -125,13 +125,13 @@ a:hover {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: disc inside;
+  list-style: disc;
 }
 ol {
-  list-style: decimal inside;
+  list-style: decimal;
 }
 ol, ul {
-  padding-left: 0;
+  padding-left: 1em;
   margin-top: 0;
 }
 ul ul, ul ol, ol ol, ol ul {
@@ -140,6 +140,7 @@ ul ul, ul ol, ol ol, ol ul {
 }
 li {
   margin-bottom: 1rem;
+  padding-left: 0.5em;
 }
 
 dl, dt, dd {
@@ -210,6 +211,13 @@ select {
 }
 .row > *:last-child {
     margin-right: 0;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 @media (max-width: 700px) {
@@ -610,8 +618,20 @@ strong.na {
     display: none;
 }
 
-/* Rules table
+/* Rules
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+#suggestions .list {
+    flex: 1;
+    columns: 200px;
+    padding-bottom: 15px;
+    column-fill: auto;
+
+}
+#suggestions .info {
+    flex: 0;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+}
 .rules {
     width: 100%;
 }
