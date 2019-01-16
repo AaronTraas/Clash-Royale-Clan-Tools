@@ -697,22 +697,22 @@ footer ul li:last-child::after {
     border-right: 1px solid #222;
     transform: rotate(45deg);
 }
-#members .b-tooltip dl {
+.b-tooltip dl {
     display: table;
 }
-#members .b-tooltip dl > div {
+.b-tooltip dl > div {
     display: table-row;
     white-space: nowrap;
 }
-#members .b-tooltip dl > div > dt,
-#members .b-tooltip dl > div > dd {
+.b-tooltip dl > div > dt,
+.b-tooltip dl > div > dd {
     display: table-cell;
 }
-#members .b-tooltip dl > div > dt {
+.b-tooltip dl > div > dt {
     font-family: 'Open Sans Condensed', sans-serif;
     padding-right: 4px;
 }
-#members .b-tooltip dl > div > dd {
+.b-tooltip dl > div > dd {
     font-family: 'Open Sans', sans-serif;
 }
 
