@@ -1,3 +1,55 @@
+function getHashParamList() {
+    var hashParamPieces = unescape(window.location.hash).split('?');
+
+    // if the hash is properly formatted, i.e., contains a single '?'
+    if(hashParamPieces.length == 2) {
+        var hashParams = hashParamPieces[1].split('&');
+
+    	// build dictionary of parameters
+        params = {};
+        for( var index in hashParams ) {
+        	var parts = hashParams[index].split('=');
+        	var key = parts[0];
+        	var value = parts.length == 2 ? parts[1] : null;
+        	params[key] = value;
+        }
+
+        // return dict of params
+        return params;
+    } else {
+    	// no params found; return empty dict
+    	return {};
+    }
+}
+
+function getHashParam(key) {
+	var params = getHashParamList();
+	if( key in params ) {
+		return params[key];
+	} else {
+		return null;
+	}
+}
+
+function setHashParam(key, newvalue) {
+	var params = getHashParamList();
+
+	// update value of param
+	params[key] = newvalue;
+
+	// build list of params and write to window.location.hash
+	var paramStrings = [];
+	for( var key in params ) {
+		var value = params[key]
+		if(value) {
+			paramStrings.push(key + '=' + value);
+		} else {
+			paramStrings.push(key);
+		}
+	}
+	window.location.hash = '?' + paramStrings.join('&');
+}
+
 TooltipManager = function() {
     document.querySelectorAll('[data-tooltip]').forEach(function(element) {
         element.addEventListener('mouseenter', function(e) {
@@ -5,12 +57,12 @@ TooltipManager = function() {
         });
 
         element.addEventListener('click', function(e) {
-        	clearTooltips(true);
+            clearTooltips(true);
             addTooltip(element, true);
         });
 
         element.addEventListener('mouseleave', function(e) {
-        	clearTooltips(false);
+            clearTooltips(false);
         });
     })
 
@@ -26,7 +78,7 @@ TooltipManager = function() {
         tooltip.className = 'b-tooltip';
         tooltip.dataset.persist = persist;
         tooltip.addEventListener('click', function(e) {
-        	clearTooltip(this, true);
+            clearTooltip(this, true);
         });
 
         document.body.appendChild(tooltip);
@@ -38,17 +90,17 @@ TooltipManager = function() {
         var tooltips = document.querySelectorAll('.b-tooltip');
 
         if(tooltips) {
-        	tooltips.forEach( function(tooltip) {
-        		clearTooltip(tooltip, force)
-        	});
+            tooltips.forEach( function(tooltip) {
+                clearTooltip(tooltip, force)
+            });
         }
     }
 
     function clearTooltip(tooltip, force) {
-		persist = (tooltip.dataset.persist=='true')
-		if( !persist || force ) {
+        persist = (tooltip.dataset.persist=='true')
+        if( !persist || force ) {
             document.body.removeChild(tooltip);
-		}
+        }
     }
 
     /**
@@ -68,10 +120,29 @@ TooltipManager = function() {
     }
 };
 
-var filter_dropdown = document.getElementById('member-filter');
-var member_table = document.getElementById('member-table');
-filter_dropdown.addEventListener('change', function(e) {
-    member_table.dataset.filter = e.target.value;
-})
+MemberTableFilter = function() {
+    var filter_dropdown = document.getElementById('member-filter');
+    var member_table = document.getElementById('member-table');
+
+    filter_dropdown.addEventListener('change', function(e) {
+        setFilter(e.target.value);
+        setHashParam('filter', e.target.value);
+    });
+
+    getFilterFromHash();
+
+    function setFilter(filter) {
+        member_table.dataset.filter = filter;
+    }
+
+    function getFilterFromHash() {
+    	filter = getHashParam('filter');
+    	if(filter) {
+    		setFilter(filter);
+    		filter_dropdown.value = filter;
+    	}
+    }
+};
 
 var tooltip = new TooltipManager();
+var filter = new MemberTableFilter();
