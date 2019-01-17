@@ -18,7 +18,7 @@
             </thead>
             <tbody>
             {% for member in members %}
-                <tr data-score="{{member.score}}" data-status="{{member.status}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}">
+                <tr data-score="{{member.score}}" data-status="{{member.status}}" data-role="{{member.role}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}">
                     <td style="text-align: center">
                         {% if member.clanRank < member.previousClanRank %}
                         <span class="rank-up">

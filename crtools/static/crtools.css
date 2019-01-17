@@ -618,6 +618,14 @@ strong.na {
     display: none;
 }
 
+#member-table[data-filter="role-elder"] tr:not([data-role="elder"]) {
+    display: none;
+}
+
+#member-table[data-filter="role-member"] tr:not([data-role="member"]) {
+    display: none;
+}
+
 /* Rules
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #suggestions .list {
