@@ -25,7 +25,11 @@ Once setuptools is installed, run the following in your shell:
 Syntax
 ==================================================
 
-usage: crtools [-h] [--config CONFIG-FILE] [--api_key KEY] [--clan TAG]
+Usage: 
+
+.. code::
+
+  crtools [-h] [--config CONFIG-FILE] [--api_key KEY] [--clan TAG]
                [--out PATH] [--favicon PATH] [--clan_logo PATH]
                [--description PATH] [--canonical_url URL]
 
@@ -113,7 +117,7 @@ For example:
 
   0 * * * * crtools --out=/var/www/html \#JY8YVV
 
-Note the '\' character before the # -- that's important. A '#' is a comment
+Note the :code:`\\` character before the # -- that's important. A '#' is a comment
 in most shells/scripting languages. You need to escape it to run it.
 
 ==================================================
