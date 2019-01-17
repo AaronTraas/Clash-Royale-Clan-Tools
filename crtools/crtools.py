@@ -360,7 +360,7 @@ def build_dashboard(config):
         # If logo_path is provided, grab logo from path given, and put it where
         # it needs to go. Otherwise, grab the default from the template folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
-        logo_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-logo.png')
+        logo_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-logo.png')
         if config['paths']['clan_logo']:
             logo_src_path_test = os.path.expanduser(config['paths']['clan_logo'])
             if os.path.isfile(logo_src_path_test):
@@ -373,7 +373,7 @@ def build_dashboard(config):
         # If favicon_path is provided, grab favicon from path given, and put it
         # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
-        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates/crtools-favicon.ico')
+        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-favicon.ico')
         if config['paths']['favicon']:
             favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
             if os.path.isfile(favicon_src_path_test):
