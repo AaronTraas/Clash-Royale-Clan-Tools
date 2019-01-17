@@ -93,7 +93,7 @@ parameter: api_key. The file should look like:
   # and sitemap.xml
   canonical_url=https://yourclan.com/
 
-For more details, see samples/crtools.ini
+For more details, see `samples/crtools.ini <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/samples/crtools.ini>`_
 
 ==================================================
 Suggested usage on a Linux web server
