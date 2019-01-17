@@ -411,7 +411,15 @@ img.war-league {
 
 #members table .member-role {
     text-transform: capitalize;
+    display: block;
 }
+
+#members table tr[data-role='leader'] .member-role {
+    background: url(images/crown-gold.svg) no-repeat left center;
+    background-size: 1em;
+    padding-left: 1.3em;
+}
+
 
 #members table .score,
 #members table .donations,
