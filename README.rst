@@ -121,6 +121,13 @@ Note the :code:`\\` character before the # -- that's important. A '#' is a comme
 in most shells/scripting languages. You need to escape it to run it.
 
 ==================================================
+Contributors
+==================================================
+
+All of the non-code contributors are listed in
+`CONTRIBUTROS.rst <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/CONTRIBUTROS.rst>`_
+
+==================================================
 Image rights
 ==================================================
 
