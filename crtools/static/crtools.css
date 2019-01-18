@@ -696,7 +696,11 @@ footer ul li:last-child::after {
     content: none;
     display: none;
 }
-
+footer .version {
+    float: right;
+    color: #ccc;
+    font-weight: normal;
+}
 
 /* Tooltips
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
