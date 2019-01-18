@@ -53,7 +53,7 @@ def write_object_to_file(file_path, obj):
 
     # open file for UTF-8 output, and write contents of object to file
     with codecs.open(file_path, 'w', 'utf-8') as f:
-        if isinstance(obj, str) or isinstance(obj, unicode):
+        if isinstance(obj, str):
             string = obj
         else:
             string = json.dumps(obj, indent=4)
@@ -437,27 +437,46 @@ def build_dashboard(config):
         if(config['crtools']['debug'] == True):
             log_path = os.path.join(tempdir, 'log')
             os.makedirs(log_path)
-            write_object_to_file(os.path.join(log_path, 'clan.json'), json.dumps(clan, indent=4))
-            write_object_to_file(os.path.join(log_path, 'warlog.json'), json.dumps(warlog, indent=4))
-            write_object_to_file(os.path.join(log_path, 'currentwar.json'), json.dumps(current_war, indent=4))
-            write_object_to_file(os.path.join(log_path, 'clan-processed.json'), json.dumps(clan_processed, indent=4))
-            write_object_to_file(os.path.join(log_path, 'members-processed.json'), json.dumps(members_processed, indent=4))
+            write_object_to_file(os.path.join(log_path, 'clan.json'),              clan)
+            write_object_to_file(os.path.join(log_path, 'warlog.json'),            warlog)
+            write_object_to_file(os.path.join(log_path, 'currentwar.json'),        current_war)
+            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),    clan_processed)
+            write_object_to_file(os.path.join(log_path, 'members-processed.json'), members_processed)
+
+        output_path = os.path.expanduser(config['paths']['out'])
+        if os.path.exists(output_path):
+            # remove contents of output directory to cleanup.
+            try:
+                for file in os.listdir(output_path):
+                    file_path = os.path.join(output_path, file)
+                    if os.path.isfile(file_path):
+                        os.unlink(file_path)
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+            except PermissionError as e:
+                print('Permission error: could not delete: \n\t{}'.format(e.filename))
+        else:
+            # Output directory doesn't exist. Create it.
+            if(config['crtools']['debug'] == True):
+                print('Output directory {} doesn\'t exist. Creating it.'.format(output_path))
+            try:
+                os.mkdir(output_path)
+            except PermissionError as e:
+                print('Permission error: could create output folder: \n\t{}'.format(e.filename))
 
         try:
-            # remove output directory if previeously created to cleanup. Then
-            # create output path and log path.
-            output_path = os.path.expanduser(config['paths']['out'])
-            if os.path.exists(output_path):
-                shutil.copystat(output_path, tempdir)
-                shutil.rmtree(output_path)
-        except PermissionError:
-            print('Permission error: could not delete: \n\t{}'.format(output_path))
-
-        try:
-            # Copy entire contents of temp directory to output directory
-            shutil.copytree(tempdir, output_path)
-        except PermissionError:
-            print('Permission error: could not write output to: \n\t{}'.format(output_path))
+            # Copy all contents of temp directory to output directory
+            for file in os.listdir(tempdir):
+                file_path = os.path.join(tempdir, file)
+                file_out_path = os.path.join(output_path, file)
+                if os.path.isfile(file_path):
+                    shutil.copyfile(file_path, file_out_path)
+                elif os.path.isdir(file_path):
+                    shutil.copytree(file_path, file_out_path)
+        except PermissionError as e:
+            print('Permission error: could not write output to: \n\t{}'.format(e.filename))
+        except FileExistsError as e:
+            print('File Exists: could not write output to: \n\t{}'.format(e.filename))
 
     except ClashRoyaleAPIAuthenticationError as e:
         print('developer.clashroyale.com authentication error: {}'.format(e))
