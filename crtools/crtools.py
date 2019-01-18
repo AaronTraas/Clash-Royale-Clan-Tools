@@ -47,6 +47,14 @@ WAR_LEAGUE_LOOKUP = {
     3000 : { 'id': 'legendary', 'name': 'Legendary League' }
 }
 
+def debug_out(config, obj):
+    if config['crtools']['debug'] == True:
+        if isinstance(obj, str):
+            print('[crtools debug]: {}'.format(obj))
+        else:
+            print('[crtools debug]:')
+            print(json.dumps(obj, indent=4))
+
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
@@ -338,6 +346,8 @@ def process_clan(config, clan, current_war):
 
 def build_dashboard(config):
     """Compile and render clan dashboard."""
+
+    debug_out(config, config)
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.

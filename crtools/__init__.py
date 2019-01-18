@@ -155,8 +155,5 @@ def main():
     if args.debug:
         config['crtools']['debug'] = True
 
-    if config['crtools']['debug'] == True:
-        import pprint; pprint.pprint(config)
-
     # Build the dashboard
     build_dashboard(config)
