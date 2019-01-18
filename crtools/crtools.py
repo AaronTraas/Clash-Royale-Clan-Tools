@@ -103,35 +103,35 @@ def get_war_league_from_war(war, clan_tag):
 def member_war(config, clan_member, clan, war):
     member_tag = clan_member['tag']
     participation = {'status': 'na', 'score': config['score']['war_non_participation']}
-    for member in war['participants']:
-        if member['tag'] == member_tag:
-            participation = member.copy()
-            if 'standings' in war:
-                if member['collectionDayBattlesPlayed'] == 0:
-                    participation['status'] = 'na'
-                elif member['battlesPlayed'] == 0:
-                    participation['status'] = 'bad'
-                elif member['collectionDayBattlesPlayed'] < 3:
-                    participation['status'] = 'ok'
+    if 'participants' in war:
+        for member in war['participants']:
+            if member['tag'] == member_tag:
+                participation = member.copy()
+                if 'standings' in war:
+                    if member['collectionDayBattlesPlayed'] == 0:
+                        participation['status'] = 'na'
+                    elif member['battlesPlayed'] == 0:
+                        participation['status'] = 'bad'
+                    elif member['collectionDayBattlesPlayed'] < 3:
+                        participation['status'] = 'ok'
+                    else:
+                        participation['status'] = 'good'
+
+                    participation['warLeague'] = get_war_league_from_war(war, clan['tag'])['id']
+
+                    league_lookup = ARENA_LEAGUE_LOOKUP[clan_member['arena']['name']]
+                    collection_win_lookup = league_lookup['collection_win']
+                    cardsPerCollectionBattleWin = collection_win_lookup[participation['warLeague']]
+
+                    participation['collectionWinCards'] = cardsPerCollectionBattleWin
+
+                    participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
+                    participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
+                    participation['score'] = war_score(config, participation)
                 else:
-                    participation['status'] = 'good'
-
-                participation['warLeague'] = get_war_league_from_war(war, clan['tag'])['id']
-
-                league_lookup = ARENA_LEAGUE_LOOKUP[clan_member['arena']['name']]
-                collection_win_lookup = league_lookup['collection_win']
-                cardsPerCollectionBattleWin = collection_win_lookup[participation['warLeague']]
-
-                participation['collectionWinCards'] = cardsPerCollectionBattleWin
-
-                participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
-                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
-                participation['score'] = war_score(config, participation)
-            else:
-                participation['status'] = 'normal'
-                if (war['state'] == 'warDay') and (participation['battlesPlayed'] > 0):
-                     participation['status'] = 'good'
-
+                    participation['status'] = 'normal'
+                    if (war['state'] == 'warDay') and (participation['battlesPlayed'] > 0):
+                         participation['status'] = 'good'
     return participation
 
 def member_warlog(config, clan_member, clan, warlog):

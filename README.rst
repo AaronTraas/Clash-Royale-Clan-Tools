@@ -25,7 +25,7 @@ Once setuptools is installed, run the following in your shell:
 Syntax
 ==================================================
 
-Usage: 
+Usage:
 
 .. code::
 
@@ -71,7 +71,7 @@ parameter: api_key. The file should look like:
   api_key=<YOUR-API-KEY>
 
   # Your clan tag
-  clan=#JY8YVV
+  clan_id=#JY8YVV
 
   [Paths]
   # your output path. Where you want the static website to live.
