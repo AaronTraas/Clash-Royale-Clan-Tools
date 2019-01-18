@@ -125,6 +125,9 @@ def main():
     parser.add_argument("--canonical_url",
                         metavar  = "URL",
                         help     = "Canonical URL for this site. Used for setting the rel=\"canonical\" link in the web site, as well as generating the robots.txt and sitemap.xml")
+    parser.add_argument("--debug",
+                        action   = 'store_true',
+                        help     = "Turns on debug mode")
 
     args = parser.parse_args()
 
@@ -149,6 +152,11 @@ def main():
         config['paths']['description_html'] = args.out
     if args.canonical_url:
         config['www']['canonical_url'] = args.out
+    if args.debug:
+        config['crtools']['debug'] = True
+
+    if config['crtools']['debug'] == True:
+        import pprint; pprint.pprint(config)
 
     # Build the dashboard
     build_dashboard(config)
