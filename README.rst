@@ -125,7 +125,7 @@ Contributors
 ==================================================
 
 All of the non-code contributors are listed in
-`CONTRIBUTROS.rst <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/CONTRIBUTROS.rst>`_
+`CONTRIBUTORS.rst <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/CONTRIBUTORS.rst>`_
 
 ==================================================
 Image rights
