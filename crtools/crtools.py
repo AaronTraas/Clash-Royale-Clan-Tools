@@ -13,7 +13,7 @@ import os
 import shutil
 import tempfile
 
-from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
+from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIMissingFieldsError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
 
 ARENA_LEAGUE_LOOKUP = {
@@ -344,9 +344,40 @@ def process_clan(config, clan, current_war):
 
     return clan_processed
 
+def process_current_war(config, current_war):
+    current_war_processed = current_war.copy()
+
+    print(current_war_processed['state'])
+    if current_war_processed['state'] == 'notInWar':
+        current_war_processed['stateLabel'] = 'The clan is not currently engaged in a war.'
+    else:
+        cards = 0;
+        for member in current_war_processed['participants']:
+            cards += member['cardsEarned']
+        current_war_processed['cards'] = cards
+
+        now = datetime.utcnow()
+        if current_war_processed['state'] == 'collectionDay':
+            current_war_processed['stateLabel'] = 'Collection Day'
+
+            collection_end_time = datetime.strptime(current_war_processed['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            collection_end_time_delta = math.floor((collection_end_time - now).seconds / 3600)
+            current_war_processed['collectionEndTimeLabel'] = '{} hours'.format(collection_end_time_delta)
+            current_war_processed['endLabel'] = '1 day, {} hours'.format(collection_end_time_delta)
+        else:
+            current_war_processed['stateLabel'] = 'War Day'
+
+            end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            end_time_delta = math.floor((end_time - now).seconds / 3600)
+            current_war_processed['collectionEndTimeLabel'] = 'Complete'
+            current_war_processed['endLabel'] = '{} hours'.format(collection_end_time_delta)
+
+    return current_war_processed
+
 def build_dashboard(config):
     """Compile and render clan dashboard."""
 
+    debug_out(config, 'crtools version v{}'.format(__version__))
     debug_out(config, config)
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -407,6 +438,7 @@ def build_dashboard(config):
 
         clan_processed = process_clan(config, clan, current_war)
         members_processed = process_members(config, clan, warlog, current_war)
+        current_war_processed = process_current_war(config, current_war)
 
         # Create environment for template parser
         env = Environment(
@@ -423,6 +455,7 @@ def build_dashboard(config):
             war_labels        = warlog_labels(warlog, clan['tag']),
             clan              = clan_processed,
             clan_hero         = clan_hero_html,
+            current_war       = current_war_processed,
             suggestions       = get_suggestions(config, members_processed),
             scoring_rules     = get_scoring_rules(config)
         )
@@ -447,11 +480,12 @@ def build_dashboard(config):
         if(config['crtools']['debug'] == True):
             log_path = os.path.join(tempdir, 'log')
             os.makedirs(log_path)
-            write_object_to_file(os.path.join(log_path, 'clan.json'),              clan)
-            write_object_to_file(os.path.join(log_path, 'warlog.json'),            warlog)
-            write_object_to_file(os.path.join(log_path, 'currentwar.json'),        current_war)
-            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),    clan_processed)
-            write_object_to_file(os.path.join(log_path, 'members-processed.json'), members_processed)
+            write_object_to_file(os.path.join(log_path, 'clan.json'),                 clan)
+            write_object_to_file(os.path.join(log_path, 'warlog.json'),               warlog)
+            write_object_to_file(os.path.join(log_path, 'currentwar.json'),           current_war)
+            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),       clan_processed)
+            write_object_to_file(os.path.join(log_path, 'members-processed.json'),    members_processed)
+            write_object_to_file(os.path.join(log_path, 'currentwar-processed.json'), current_war_processed)
 
         output_path = os.path.expanduser(config['paths']['out'])
         if os.path.exists(output_path):
@@ -500,6 +534,9 @@ def build_dashboard(config):
 
     except ClashRoyaleAPIError as e:
         print('developer.clashroyale.com error: {}'.format(e))
+
+    except ClashRoyaleAPIMissingFieldsError as e:
+        print('error: {}'.format(e))
 
     finally:
         # Ensure that temporary directory gets deleted no matter what

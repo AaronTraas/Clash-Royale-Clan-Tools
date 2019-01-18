@@ -7,7 +7,12 @@ import urllib
 import urllib.parse
 
 
+
 class ClashRoyaleAPIError(Exception):
+    """"""
+    pass
+
+class ClashRoyaleAPIMissingFieldsError(Exception):
     """"""
     pass
 
@@ -31,6 +36,12 @@ class ClashRoyaleAPI:
     debug = False
 
     def __init__(self, api_key, clan_tag, debug=False):
+        if api_key == False:
+            raise ClashRoyaleAPIMissingFieldsError('API key not provided.');
+
+        if clan_tag == False:
+            raise ClashRoyaleAPIMissingFieldsError('Clan tag not provided.');
+
         self.api_key = api_key
         self.clan_tag = clan_tag
         self.debug = debug

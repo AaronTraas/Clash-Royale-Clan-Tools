@@ -65,6 +65,21 @@
             </div>
         </section>
         <section id="members">
+            <article id="current-war">
+                <header>
+                    <h2>Current war:</h2>
+                </header>
+                <dl>
+                    <div class="{{current_war.state}}"><dt>War State</dt><dd>{{current_war.stateLabel}}</dd></div>
+                {% if current_war.state in ['collectionDay', 'warDay'] %}
+                    <div><dt>Collection Day End</dt><dd>{{current_war.collectionEndTimeLabel}}</dd></div>
+                    <div><dt>War End</dt><dd>{{current_war.endLabel}}</dd></div>
+                    <div><dt>Participants</dt><dd>{{current_war.clan.participants}}</dd></div>
+                    <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
+                    <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
+                {% endif %}
+                </dl>
+            </article>
             <article>
                 <header>
                     <h2>Member list <span class="no-mobile">and stats</span></h2>

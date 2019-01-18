@@ -199,7 +199,7 @@ select {
     margin: 0;
     text-transform: none;
 
-    border: 1px solid #ccc;
+    border-right: 1px solid #E1E1E1;
     height: 34px;
 }
 
@@ -337,6 +337,58 @@ img.war-league {
 #clan-description > *:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
+}
+
+/* Current war region
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#members article#current-war {
+    margin-bottom: 66px;
+}
+
+#current-war dl {
+    display: flex
+}
+
+#current-war dl > * {
+    flex: 1;
+    border-right: 1px solid #E1E1E1;
+}
+
+#current-war dl > *:last-child {
+    border-right: none;
+}
+
+#current-war dl dt,
+#current-war dl dd {
+    display: block;
+    text-align: center;
+}
+
+#current-war .cards dd:before,
+#current-war .crowns dd:before,
+#current-war .warDay dd:before,
+#current-war .collectionDay dd:before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    margin: 0 .3em -.1em 0;
+}
+
+#current-war .crowns dd:before {
+    background-image: url(images/crown-gold.svg);
+}
+
+#current-war .cards dd:before,
+#current-war .collectionDay dd:before {
+    background-image: url(images/cards.svg);
+}
+
+#current-war .warDay dd:before {
+    background-image: url(images/war-battle-win.svg);
 }
 
 /* Member list section
