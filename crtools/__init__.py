@@ -41,6 +41,7 @@ config_defaults = {
         'threshold_warn' :              30
     },
     'members': {
+        'blacklist' : [],
         'vacation' : [],
         'safe' :     []
     },

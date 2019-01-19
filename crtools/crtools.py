@@ -215,7 +215,7 @@ def get_suggestions(config, members):
                     suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        elif (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
+        elif not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
             suggestions.append('Promote <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     # If there are no other suggestions, give some sort of message
@@ -302,6 +302,7 @@ def process_members(config, clan, warlog, current_war):
 
         member['vacation'] = member['tag'] in config['members']['vacation']
         member['safe'] = member['tag'] in config['members']['safe']
+        member['blacklist'] = member['tag'] in config['members']['blacklist']
 
         # based on member score, infer an overall member status, which is
         # either 'good', 'ok', 'bad', or 'normal'
