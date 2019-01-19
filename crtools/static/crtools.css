@@ -343,14 +343,22 @@ img.war-league {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #members article#current-war {
     margin-bottom: 66px;
+    padding: 8px;
 }
 
 #current-war dl {
-    display: flex
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: space-between;
 }
 
 #current-war dl > * {
     flex: 1;
+    min-width: 100px;
+    background-color: #fff;
+    margin: 1px;
+    padding: 7px;
     border-right: 1px solid #E1E1E1;
 }
 
@@ -389,6 +397,15 @@ img.war-league {
 
 #current-war .warDay dd:before {
     background-image: url(images/war-battle-win.svg);
+}
+
+@media (max-width: 600px) {
+    #current-war dl {
+        font-family: 'Open Sans Condensed', sans-serif;
+    }
+    #current-war dl > * {
+        border: none;
+    }
 }
 
 /* Member list section
