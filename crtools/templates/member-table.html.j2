@@ -9,10 +9,7 @@
                     <th>Dona&shy;tions</th>
                     <th>Current War</th>
                 {% for label in war_labels %}
-                    <th class="nobr">
-                        {{label.date}}
-                        <img class="war-league" title="{{label.league.name}}" src="static/images/war-league-{{label.league.id}}.svg" />
-                    </th>
+                    <th>{{label.date}}</th>
                 {% endfor %}
                 </tr>
             </thead>
