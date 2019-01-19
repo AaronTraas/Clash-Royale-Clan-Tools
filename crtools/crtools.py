@@ -132,11 +132,10 @@ def member_war(config, clan_member, clan, war):
                     participation['status'] = 'normal'
                     if participation['collectionDayBattlesPlayed'] < 3:
                         participation['status'] = 'ok'
-                    if war['state'] == 'warDay':
-                        if participation['battlesPlayed'] > 0:
-                            participation['status'] = 'good'
+                    if war['state'] == 'warDay' and participation['battlesPlayed'] > 0:
+                        participation['status'] = 'good'
                     else:
-                        participation['status'] += ' collection-day'
+                        participation['status'] += ' incomplete'
 
     return participation
 
