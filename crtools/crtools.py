@@ -376,7 +376,7 @@ def process_current_war(config, current_war):
             end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
             end_time_delta = math.floor((end_time - now).seconds / 3600)
             current_war_processed['collectionEndTimeLabel'] = 'Complete'
-            current_war_processed['endLabel'] = '{} hours'.format(collection_end_time_delta)
+            current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
 
     return current_war_processed
 
