@@ -201,8 +201,6 @@ select {
     font: inherit;
     margin: 0;
     text-transform: none;
-
-    border-right: 1px solid #E1E1E1;
     height: 34px;
 }
 
