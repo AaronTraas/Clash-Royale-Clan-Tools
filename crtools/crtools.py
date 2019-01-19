@@ -130,8 +130,14 @@ def member_war(config, clan_member, clan, war):
                     participation['score'] = war_score(config, participation)
                 else:
                     participation['status'] = 'normal'
-                    if (war['state'] == 'warDay') and (participation['battlesPlayed'] > 0):
-                         participation['status'] = 'good'
+                    if participation['collectionDayBattlesPlayed'] < 3:
+                        participation['status'] = 'ok'
+                    if war['state'] == 'warDay':
+                        if participation['battlesPlayed'] > 0:
+                            participation['status'] = 'good'
+                    else:
+                        participation['status'] += ' collection-day'
+
     return participation
 
 def member_warlog(config, clan_member, clan, warlog):

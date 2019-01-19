@@ -555,6 +555,10 @@ img.war-league {
     border: 3px dashed #BB89CC;
     background-color: #F1EAF4;
 }
+#member-table td.war.current.collection-day.ok {
+    border: 3px dashed #ffbb43;
+    background-color: #FFF6E6;
+}
 
 
 #members img.war-battle {
