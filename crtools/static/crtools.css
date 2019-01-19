@@ -374,9 +374,8 @@ img.war-league {
 }
 
 #current-war .cards dd:before,
-#current-war .crowns dd:before,
-#current-war .warDay dd:before,
-#current-war .collectionDay dd:before {
+#current-war .crowns dd:before
+{
     content: '';
     display: inline-block;
     height: 1em;
@@ -391,13 +390,8 @@ img.war-league {
     background-image: url(images/crown-gold.svg);
 }
 
-#current-war .cards dd:before,
-#current-war .collectionDay dd:before {
+#current-war .cards dd:before {
     background-image: url(images/cards.svg);
-}
-
-#current-war .warDay dd:before {
-    background-image: url(images/war-battle-win.svg);
 }
 
 @media (max-width: 600px) {
