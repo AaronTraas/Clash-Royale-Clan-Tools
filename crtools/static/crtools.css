@@ -27,6 +27,10 @@ main {
 main > section, header > .inner, footer > .inner {
     padding: 22px;
 }
+main > section > .section-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 @media (max-width: 700px) {
     main > section, header > .inner, footer > .inner {
         padding: 15px;
@@ -206,6 +210,7 @@ select {
     margin: 0;
     text-transform: none;
     height: 34px;
+    border: 1px solid #ccc;
 }
 
 /* Grid
@@ -260,15 +265,18 @@ body > header h1 em {
 #hero {
     background-color: #563d7c;
     color: #fff;
-    display: flex;
     padding-top: 44px;
     padding-bottom: 44px;
 }
 
-#hero > * {
+#hero > .section-wrap {
+    display: flex;
+}
+
+#hero > .section-wrap > * {
     margin: 0 15px 0 0;
 }
-#hero > *:last-child {
+#hero > .section-wrap > *:last-child {
     margin: 0;
 }
 
@@ -289,10 +297,10 @@ body > header h1 em {
 }
 
 @media (max-width: 700px) {
-    #hero {
+    #hero > .section-wrap {
         display: block;
     }
-    #hero > * {
+    #hero > .section-wrap > * {
         margin: 0;
     }
 }
@@ -346,8 +354,7 @@ img.war-league {
 
 /* Current war region
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#members article#current-war {
-    margin-bottom: 66px;
+#info article#current-war {
     padding: 8px;
 }
 
@@ -355,7 +362,9 @@ img.war-league {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    align-content: space-between;
+    align-content: space-around;
+    align-items: center;
+    height: 100%;
 }
 
 #current-war dl > * {
@@ -377,6 +386,10 @@ img.war-league {
     text-align: center;
 }
 
+#current-war-standings td.wins:before,
+#current-war-standings td.crowns:before,
+#current-war-standings td.battles:before,
+#current-war .wins dd:before,
 #current-war .cards dd:before,
 #current-war .crowns dd:before
 {
@@ -390,12 +403,65 @@ img.war-league {
     margin: 0 .3em -.1em 0;
 }
 
+#current-war td:before {
+    float: left;
+}
+
+#current-war-standings td.crowns:before,
 #current-war .crowns dd:before {
     background-image: url(images/crown-gold.svg);
 }
 
 #current-war .cards dd:before {
     background-image: url(images/cards.svg);
+}
+
+#current-war-standings td.wins:before,
+#current-war .wins dd:before {
+    background-image: url(images/war-battle-win.svg);
+}
+
+#info article#current-war-standings {
+    flex: 0;
+    padding: 0 8px;
+}
+#current-war-standings table tr:last-child td {
+    border-bottom: none;
+}
+#current-war-standings table tr.this-clan {
+    background-color: #F1EAF4;
+    border-color: #BB89CC;
+    font-weight: bold;
+}
+
+#current-war-standings td {
+    white-space: nowrap;
+}
+
+#current-war-standings .rank,
+#current-war-standings .wins,
+#current-war-standings .crowns,
+#current-war-standings .battles {
+    text-align: center;
+    font-weight: bold;
+}
+#current-war-standings .rank.rank-1 span {
+    background-color: rgb(255, 212, 42);
+}
+#current-war-standings .rank.rank-2 span {
+    background-color: #ccc;
+}
+#current-war-standings .rank.rank-3 span {
+    background-color: rgb(218, 165, 32);
+}
+
+#current-war-standings .rank span {
+    display: inline-block;
+    border-radius: 4px;
+    background: rgba(192,192,192,.2);
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
 @media (max-width: 600px) {
@@ -407,33 +473,33 @@ img.war-league {
     }
 }
 
-/* Member list section
+/* Info section
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#members header {
+#info header {
     display: table-row;
     width: 100%;
 }
-#members header > * {
+#info header > * {
     display: table-cell;
     vertical-align: middle;
     width: 100%;
 }
 
-#members thead img.war-league {
+#info thead img.war-league {
     height: 14px;
     vertical-align: -1px;
 }
 
-#members header .filters {
+#info header .filters {
     white-space: nowrap;
 }
 @media (max-width: 700px) {
-    #members header .filters select {
+    #info header .filters select {
         height: 26px;
     }
 }
 
-#members article {
+#info article {
     position: relative;
     background-color: #fff;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
@@ -442,87 +508,87 @@ img.war-league {
     margin-bottom: 22px;
 }
 
-#members article > header {
+#info article > header {
     position: absolute;
     top: -44px;
     left: 0;
 }
 
-#members article > header h2 {
+#info article > header h2 {
     font-size: 3.0rem;
 }
 @media (max-width: 700px) {
-    #members article > header {
+    #info article > header {
         top: -30px;
     }
-    #members article > header h2 {
+    #info article > header h2 {
         font-size: 2.0rem;
     }
 }
 
 /* Member table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#members h2, #members h3, #members h4 {
+#info h2, #info h3, #info h4 {
     margin: 0;
 }
 
-#members th, #members td {
+#info th, #info td {
     padding: 8px;
     line-height: 1.2em;
 }
 
-#members th:first-child, #members td:first-child {
+#info th:first-child, #info td:first-child {
   padding-left: 0;
 }
 
-#members table th {
+#info table th {
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
 }
 
-#members table .member-role {
+#info table .member-role {
     text-transform: capitalize;
     display: block;
 }
 
-#members table tr[data-role='leader'] .member-role {
+#info table tr[data-role='leader'] .member-role {
     background: url(images/crown-gold.svg) no-repeat left center;
     background-size: 1em;
     padding-left: 1.3em;
 }
 
 
-#members table .score,
-#members table .donations,
-#members table .trophies {
+#info table .score,
+#info table .donations,
+#info table .trophies {
     text-align: center;
 }
 
-#members .trophies > img {
+#info .trophies > img {
     height: 22px;
     vertical-align: text-top;
 }
 
-#members .donations > img {
+#info .donations > img {
     height: 14px;
     vertical-align: -10%;
 }
-#members .donations.bad > img {
+#info .donations.bad > img {
     display: none;
 }
 
-#members table .war {
+#info table .war {
     font-weight: bold;
     font-size: 12px;
     text-align: center;
     white-space: nowrap;
 }
-#members .war-cards {
+#info .war-cards {
     white-space: nowrap;
     font-weight: normal;
     margin-top: 3px;
 }
-#members .war-cards:before {
+#info .war-cards:before {
     content: '';
     display: inline-block;
     background: url(images/cards.svg) no-repeat;
@@ -533,19 +599,19 @@ img.war-league {
     margin-right: -2px;
 }
 
-#members table .good,
-#members table .ok,
-#members table .bad {
+#info table .good,
+#info table .ok,
+#info table .bad {
     border-left: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
 }
 
-#members table .na {
+#info table .na {
     color: #999;
     font-weight: normal;
 }
 
-#members table .war em {
+#info table .war em {
     font-weight: normal;
 }
 
@@ -560,18 +626,18 @@ img.war-league {
 }
 
 
-#members img.war-battle {
+#info img.war-battle {
     height: 18px;
 }
 
-#members table .rank-up,
-#members table .rank-down {
+#info table .rank-up,
+#info table .rank-down {
     display: block;
     position: relative;
 }
 
-#members table .rank-up:before,
-#members table .rank-down:before {
+#info table .rank-up:before,
+#info table .rank-down:before {
     content: '';
     position: absolute;
     display: block;
@@ -583,47 +649,47 @@ img.war-league {
     margin-top: -5px;
     right: -8px;
 }
-#members table .rank-up:before {
+#info table .rank-up:before {
     background-image: url(images/arrow-up.svg);
 }
-#members table .rank-down:before {
+#info table .rank-down:before {
     background-image: url(images/arrow-down.svg);
 }
 
-#members table tr[data-vacation="True"] {
+#info table tr[data-vacation="True"] {
     background-color: #ddd;
     color: #999;
 }
-#members table tr[data-vacation="True"] .bad {
+#info table tr[data-vacation="True"] .bad {
     background-color: #d2b0ac;
     color: #999;
 }
-#members table tr[data-vacation="True"] .ok {
+#info table tr[data-vacation="True"] .ok {
     background-color: #f5ce89;
 }
-#members table tr[data-vacation="True"] .good {
+#info table tr[data-vacation="True"] .good {
     background-color: #d8f3e6;
 }
-#members table tr[data-vacation="True"] .bad,
-#members table tr[data-vacation="True"] .ok,
-#members table tr[data-vacation="True"] .good {
+#info table tr[data-vacation="True"] .bad,
+#info table tr[data-vacation="True"] .ok,
+#info table tr[data-vacation="True"] .good {
     border-left: none;
     border-bottom: 1px solid #E1E1E1
 }
 
-#members table tr[data-vacation="True"] .donations,
-#members table tr[data-vacation="True"] .score {
+#info table tr[data-vacation="True"] .donations,
+#info table tr[data-vacation="True"] .score {
     background-color: #ddd;
 }
-#members table tr[data-vacation="True"] td img {
+#info table tr[data-vacation="True"] td img {
     opacity: .3;
 }
-#members table tr[data-vacation="True"] .member-role {
+#info table tr[data-vacation="True"] .member-role {
     display: block;
     position: relative;
     color: #ddd;
 }
-#members table tr[data-vacation="True"] .member-role:after {
+#info table tr[data-vacation="True"] .member-role:after {
     content: 'On Vacation';
     color: #222;
     font-weight: bold;
@@ -631,26 +697,26 @@ img.war-league {
     text-indent: unset;
     left: 0;
 }
-#members table tr[data-vacation="True"] .score > strong {
+#info table tr[data-vacation="True"] .score > strong {
     display: none;
 }
 
-#members table tr[data-vacation="True"] .score:after {
+#info table tr[data-vacation="True"] .score:after {
     content: 'N/A';
     font-size: 80%;
 }
 
 @media (max-width: 700px) {
-    #members th:first-child, #members td:first-child {
+    #info th:first-child, #info td:first-child {
       padding-left: 4px;
     }
-    #members th, #members td {
+    #info th, #info td {
         line-height: 1.1em;
     }
-    #members table th {
+    #info table th {
         font-size: 10px;
     }
-    #members table td {
+    #info table td {
         font-size: 12px;
     }
 }

@@ -23,148 +23,140 @@
     </div></header>
     <main>
         <section id="hero">
-            <div id="clan-description">
-            {% if clan_hero %}
-                {{clan_hero}}
-            {% else %}
-                <h1>{{clan.name}} ({{clan.tag}})</h1>
-                <h3>{{clan.description}}
-            {% endif %}
-            </div>
-            <div id="clan-stats">
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th colspan="2">Clan Stats</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><th>Clan Score</th><td>{{clan.clanScore}}</td></tr>
-                            <tr><th>Clan Name</th><td>{{clan.name}}</td></tr>
-                            <tr><th>Donations/week</th><td>{{clan.donationsPerWeek}}</td></tr>
-                            <tr><th>Required Trophies</th><td>{{clan.requiredTrophies}}</td></tr>
-                            <tr>
-                                <th>War Trophies</th>
-                                <td>
-                                    {{clan.clanWarTrophies}}
-                                    <img class="war-league" title="{{clan.warLeagueName}}" src="static/images/war-league-{{clan.warLeague}}.svg" />
-                                </td>
-                            </tr>
-                            <tr><th>Clan Tag</th><td>{{clan.tag}}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="last-update">Last update: {{update_date}}</p>
-                {% if clan.members < 50 %}
-                <div class="join-cta">
-                    <h3>Looking for a clan?</h3>
-                    <a class="button join" href="https://link.clashroyale.com/invite/clan/en?tag={{clan.tag}}">Join us!</a>
-                </div>
+            <div class="section-wrap">
+
+                <div id="clan-description">
+                {% if clan_hero %}
+                    {{clan_hero}}
+                {% else %}
+                    <h1>{{clan.name}} ({{clan.tag}})</h1>
+                    <h3>{{clan.description}}
                 {% endif %}
+                </div>
+                <div id="clan-stats">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Clan Stats</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><th>Clan Score</th><td>{{clan.clanScore}}</td></tr>
+                                <tr><th>Clan Name</th><td>{{clan.name}}</td></tr>
+                                <tr><th>Donations/week</th><td>{{clan.donationsPerWeek}}</td></tr>
+                                <tr><th>Required Trophies</th><td>{{clan.requiredTrophies}}</td></tr>
+                                <tr>
+                                    <th>War Trophies</th>
+                                    <td>
+                                        {{clan.clanWarTrophies}}
+                                        <img class="war-league" title="{{clan.warLeagueName}}" src="static/images/war-league-{{clan.warLeague}}.svg" />
+                                    </td>
+                                </tr>
+                                <tr><th>Clan Tag</th><td>{{clan.tag}}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="last-update">Last update: {{update_date}}</p>
+                    {% if clan.members < 50 %}
+                    <div class="join-cta">
+                        <h3>Looking for a clan?</h3>
+                        <a class="button join" href="https://link.clashroyale.com/invite/clan/en?tag={{clan.tag}}">Join us!</a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </section>
-        <section id="members">
-            <article id="current-war">
-                <header>
-                    <h3>Current war:</h3>
-                </header>
-                <dl>
-                    <div class="{{current_war.state}}"><dt>War State</dt><dd>{{current_war.stateLabel}}</dd></div>
-                {% if current_war.state in ['collectionDay', 'warDay'] %}
-                    <div><dt>Collection Day End</dt><dd>{{current_war.collectionEndTimeLabel}}</dd></div>
-                    <div><dt>War End</dt><dd>{{current_war.endLabel}}</dd></div>
-                    <div><dt>Participants</dt><dd>{{current_war.clan.participants}}</dd></div>
-                    <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
-                    <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
-                {% endif %}
-                </dl>
-            </article>
-            <article>
-                <header>
-                    <h3>Member list<span class="no-mobile"> and stats</span>:</h3>
-                    <div class="filters">
-                        <label>
-                            Filter:
-                            <select id="member-filter">
-                                <option value="none">None</option>
-                                <option value="leadership">Leadership</option>
-                                <option value="role-elder">Role: Elder</option>
-                                <option value="role-member">Role: Member</option>
-                            {% if current_war.state in ['collectionDay', 'warDay'] %}
-                                <option value="currentwar">In current war</option>
-                            {% endif %}
-                                <option value="danger">In danger</option>
-                            </select>
-                        </label>
-                    </div>
-                </header>
-
-                {% include 'member-table.html.j2' %}
-            </article>
-
-            <div class="row">
-                <article id="suggestions">
-                    <header>
-                        <h3>Suggestions:</h3>
-                    </header>
-                    <div class="column">
-                        <div class="list">
-                            <ul>
-                            {% for suggestion in suggestions %}
-                                <li>{{suggestion}}</li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="info">
-                            <p>
-                                Anyone with a <strong class="bad">score below 0</strong> will be recommended for
-                                kicking or demotion.
-                            </p>
-                            <p>
-                                A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
-                                is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
-                            </p>
-                        </div>
-                    </div>
-                </article>
+        <section id="info">
+            <div class="section-wrap">
+                {% include 'current-war.html.j2' %}
 
                 <article>
                     <header>
-                        <h3>Score explanation:</h3>
+                        <h3>Member list<span class="no-mobile"> and stats</span>:</h3>
+                        <div class="filters">
+                            <label>
+                                Filter:
+                                <select id="member-filter">
+                                    <option value="none">None</option>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="role-elder">Role: Elder</option>
+                                    <option value="role-member">Role: Member</option>
+                                {% if current_war.state in ['collectionDay', 'warDay'] %}
+                                    <option value="currentwar">In current war</option>
+                                {% endif %}
+                                    <option value="danger">In danger</option>
+                                </select>
+                            </label>
+                        </div>
                     </header>
-                    <p>
-                        Score is made of two components: <strong>donation score</strong>
-                        and <strong>war participation score</strong>.
-                    </p>
-                    <h4>Donation Score:</h4>
-                    <p>
-                        You are expected to donate <strong>{{config.score.min_donations_daily}}
-                        cards per day</strong>, on average. If you make more, you will
-                        gain points. If you make fewer, you will lose points. If you have
-                        zero, you will be penalized
-                        <strong class="bad">{{config.score.donations_zero}} points</strong>
-                    </p>
-                    <h4>War Participation Score:</h4>
-                    <table class="rules">
-                        <thead>
-                            <tr>
-                                <th>For each of the last 10 wars, did member...</th>
-                                <th>Yes</th>
-                                <th>No</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for rule in scoring_rules %}
-                            <tr>
-                                <td>{{rule.name}}</td>
-                                <td class="yes"><strong class="{{rule.yes_status}}">{{"{0:+}".format(rule.yes)}}</strong></td>
-                                <td class="no"><strong class="{{rule.no_status}}">{{"{0:+}".format(rule.no)}}</strong></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+
+                    {% include 'member-table.html.j2' %}
                 </article>
+
+                <div class="row">
+                    <article id="suggestions">
+                        <header>
+                            <h3>Suggestions:</h3>
+                        </header>
+                        <div class="column">
+                            <div class="list">
+                                <ul>
+                                {% for suggestion in suggestions %}
+                                    <li>{{suggestion}}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="info">
+                                <p>
+                                    Anyone with a <strong class="bad">score below 0</strong> will be recommended for
+                                    kicking or demotion.
+                                </p>
+                                <p>
+                                    A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
+                                    is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <header>
+                            <h3>Score explanation:</h3>
+                        </header>
+                        <p>
+                            Score is made of two components: <strong>donation score</strong>
+                            and <strong>war participation score</strong>.
+                        </p>
+                        <h4>Donation Score:</h4>
+                        <p>
+                            You are expected to donate <strong>{{config.score.min_donations_daily}}
+                            cards per day</strong>, on average. If you make more, you will
+                            gain points. If you make fewer, you will lose points. If you have
+                            zero, you will be penalized
+                            <strong class="bad">{{config.score.donations_zero}} points</strong>
+                        </p>
+                        <h4>War Participation Score:</h4>
+                        <table class="rules">
+                            <thead>
+                                <tr>
+                                    <th>For each of the last 10 wars, did member...</th>
+                                    <th>Yes</th>
+                                    <th>No</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for rule in scoring_rules %}
+                                <tr>
+                                    <td>{{rule.name}}</td>
+                                    <td class="yes"><strong class="{{rule.yes_status}}">{{"{0:+}".format(rule.yes)}}</strong></td>
+                                    <td class="no"><strong class="{{rule.no_status}}">{{"{0:+}".format(rule.no)}}</strong></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </article>
+                </div>
             </div>
         </section>
     </main>

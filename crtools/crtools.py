@@ -378,6 +378,9 @@ def process_current_war(config, current_war):
             current_war_processed['collectionEndTimeLabel'] = 'Complete'
             current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
 
+            current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
+
+
     return current_war_processed
 
 def build_dashboard(config):

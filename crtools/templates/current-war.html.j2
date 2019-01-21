@@ -1,0 +1,45 @@
+<div class="row">
+    <article id="current-war">
+        <header>
+            <h3>Current war:</h3>
+        </header>
+
+        <dl>
+            <div><dt>State</dt><dd>{{current_war.stateLabel}}</dd></div>
+        {% if current_war.state in ['collectionDay', 'warDay'] %}
+            {% if current_war.state == 'collectionDay' %}
+            <div><dt>Collection Day End</dt><dd>{{current_war.collectionEndTimeLabel}}</dd></div>
+            {% endif %}
+            <div><dt>War End</dt><dd>{{current_war.endLabel}}</dd></div>
+            <div><dt>Participants</dt><dd>{{current_war.clan.participants}}</dd></div>
+            <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
+            <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
+            {% if current_war.state == 'warDay' %}
+            <div class="wins"><dt>Victories</dt><dd>{{current_war.clan.wins}}</dd></div>
+            {% endif %}
+        {% endif %}
+        </dl>
+    </article>
+{% if current_war.state == 'warDay' %}
+    <article id="current-war-standings">
+        <header>
+            <h3>Standings:</h3>
+        </header>
+        <table class="war-standings">
+        {% for war_clan in current_war.clans %}
+            {% if war_clan.tag == clan.tag %}
+            <tr class="this-clan">
+            {% else %}
+            <tr>
+            {% endif %}
+                <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
+                <td class="name">{{war_clan.name}}</td>
+                <!-- td class="battles">{{war_clan.battlesPlayed}}</td -->
+                <td class="crowns">{{war_clan.crowns}}</td>
+                <td class="wins">{{war_clan.wins}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </article>
+{% endif %}
+</div>
