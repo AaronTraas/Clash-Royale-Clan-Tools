@@ -386,9 +386,6 @@ img.war-league {
     text-align: center;
 }
 
-#current-war-standings td.wins:before,
-#current-war-standings td.crowns:before,
-#current-war-standings td.battles:before,
 #current-war .wins dd:before,
 #current-war .cards dd:before,
 #current-war .crowns dd:before
@@ -403,11 +400,7 @@ img.war-league {
     margin: 0 .3em -.1em 0;
 }
 
-#current-war td:before {
-    float: left;
-}
-
-#current-war-standings td.crowns:before,
+#current-war-standings td.crowns,
 #current-war .crowns dd:before {
     background-image: url(images/crown-gold.svg);
 }
@@ -416,14 +409,18 @@ img.war-league {
     background-image: url(images/cards.svg);
 }
 
-#current-war-standings td.wins:before,
+#current-war-standings td.wins,
 #current-war .wins dd:before {
     background-image: url(images/war-battle-win.svg);
 }
 
+#current-war-standings td.battles {
+    background-image: url(images/battles.svg);
+}
+
 #info article#current-war-standings {
     flex: 0;
-    padding: 0 8px;
+    padding: 4px 8px;
 }
 #current-war-standings table tr:last-child td {
     border-bottom: none;
@@ -434,17 +431,43 @@ img.war-league {
     font-weight: bold;
 }
 
-#current-war-standings td {
+#current-war-standings table tr td {
     white-space: nowrap;
+    padding: 5px;
+}
+
+#current-war-standings td:before {
+    float: left;
+    vertical-align: bottom;
+}
+
+#current-war-standings .rank {
+    text-align: center;
 }
 
 #current-war-standings .rank,
 #current-war-standings .wins,
 #current-war-standings .crowns,
 #current-war-standings .battles {
-    text-align: center;
     font-weight: bold;
 }
+
+#current-war-standings .wins,
+#current-war-standings .crowns,
+#current-war-standings .battles {
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 1.1em;
+    padding-left: 1.4em;
+    padding-right: 1em;
+}
+#current-war-standings .battles {
+    padding-left: 1em;
+}
+#current-war-standings .wins {
+    padding-right: .5em;
+}
+
 #current-war-standings .rank.rank-1 span {
     background-color: rgb(255, 212, 42);
 }
@@ -537,7 +560,7 @@ img.war-league {
     line-height: 1.2em;
 }
 
-#info th:first-child, #info td:first-child {
+#member-table th:first-child, #member-table td:first-child {
   padding-left: 0;
 }
 

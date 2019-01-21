@@ -378,6 +378,17 @@ def process_current_war(config, current_war):
             current_war_processed['collectionEndTimeLabel'] = 'Complete'
             current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
 
+            # figure out how many battles each clan is supposed to complete
+            max_participants = 0;
+            for clan in current_war_processed['clans']:
+                if clan['participants'] > 0:
+                    max_participants = clan['participants'];
+
+            # calculate battles remaining for each clan
+            for clan in current_war_processed['clans']:
+                clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
+
+            # sort clans by who's winning
             current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
 
 
