@@ -34,20 +34,32 @@ function getHashParam(key) {
 function setHashParam(key, newvalue) {
 	var params = getHashParamList();
 
-	// update value of param
-	params[key] = newvalue;
+    if( (newvalue == null) && (key in params) ) {
+        delete params[key];
+    } else {
+        // update value of param
+        params[key] = newvalue;
+    }
 
 	// build list of params and write to window.location.hash
-	var paramStrings = [];
-	for( var key in params ) {
-		var value = params[key]
-		if(value) {
-			paramStrings.push(key + '=' + value);
-		} else {
-			paramStrings.push(key);
-		}
-	}
-	window.location.hash = '?' + paramStrings.join('&');
+    if( Object.keys(params).length == 0 ) {
+        if("pushState" in history) {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        } else {
+            window.location.hash = '?';
+        }
+    } else {
+    	var paramStrings = [];
+    	for( var key in params ) {
+    		var value = params[key]
+    		if(value) {
+    			paramStrings.push(key + '=' + value);
+    		} else {
+    			paramStrings.push(key);
+    		}
+    	}
+    	window.location.hash = '?' + paramStrings.join('&');
+    }
 }
 
 TooltipManager = function() {
@@ -126,7 +138,11 @@ MemberTableFilter = function() {
 
     filter_dropdown.addEventListener('change', function(e) {
         setFilter(e.target.value);
-        setHashParam('filter', e.target.value);
+        if(e.target.value=='none') {
+            setHashParam('filter', null);
+        } else {
+            setHashParam('filter', e.target.value);
+        }
     });
 
     getFilterFromHash();
