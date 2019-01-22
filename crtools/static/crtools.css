@@ -811,24 +811,24 @@ strong.na {
 
 /* Member table filters
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#member-table[data-filter="leadership"] tr[data-leadership="False"] {
+#member-table[data-filter="leadership"] tbody tr[data-leadership="False"] {
     display: none;
 }
 
-#member-table[data-filter="danger"] tr[data-status="good"],
-#member-table[data-filter="danger"] tr[data-status="normal"] {
+#member-table[data-filter="danger"] tbody tr[data-status="good"],
+#member-table[data-filter="danger"] tbody tr[data-status="normal"] {
     display: none;
 }
 
-#member-table[data-filter="currentwar"] tr[data-currentwar="na"] {
+#member-table[data-filter="currentwar"] tbody tr[data-currentwar="na"] {
     display: none;
 }
 
-#member-table[data-filter="role-elder"] tr:not([data-role="elder"]) {
+#member-table[data-filter="role-elder"] tbody tr:not([data-clanrole="elder"]) {
     display: none;
 }
 
-#member-table[data-filter="role-member"] tr:not([data-role="member"]) {
+#member-table[data-filter="role-member"] tbody tr:not([data-clanrole="member"]) {
     display: none;
 }
 
