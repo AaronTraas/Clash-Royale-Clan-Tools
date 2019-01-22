@@ -194,24 +194,23 @@ def get_suggestions(config, members):
 
     suggestions = []
     for index, member in enumerate(members_by_score):
-        # if  members have a score below zero, we recommend to kick or
-        # demote them.
-        if (member['score'] < 0):
-            # if member on the 'safe' or 'vacation' list, don't make
-            # recommendations to kick or demote
-
-            if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
+        # if member on the 'safe' or 'vacation' list, don't make
+        # recommendations to kick or demote
+        if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
+            # if  members have a score below zero, we recommend to kick or
+            # demote them.
+            if member['score'] < config['score']['threshold_kick']:
                 # if we're above the minimum clan size, recommend kicking
                 # poorly participating member. Otherwise, if member is
                 # an Elder or higher, recommend demotion.
                 if index < len(members_by_score) - config['score']['min_clan_size']:
                     suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
-                elif member['role'] != 'member':
-                    if member['role'] == 'elder':
-                        demote_target = 'Member'
-                    else:
-                        demote_target = 'Elder'
-                    suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
+            if member['role'] != 'member' and member['score'] < config['score']['threshold_demote']:
+                if member['role'] == 'elder':
+                    demote_target = 'Member'
+                else:
+                    demote_target = 'Elder'
+                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
         elif not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):

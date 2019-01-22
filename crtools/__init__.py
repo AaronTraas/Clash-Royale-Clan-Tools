@@ -38,6 +38,8 @@ config_defaults = {
         'min_donations_daily' :         12,
         'donations_zero' :              -40,
         'threshold_promote' :           160,
+        'threshold_demote' :            0,
+        'threshold_kick' :              0,
         'threshold_warn' :              30
     },
     'members': {
