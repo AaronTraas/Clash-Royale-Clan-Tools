@@ -172,22 +172,33 @@
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>
 
     <script>
-        // requestAnimFrame polyfill
-        window.requestAnimationFrame = (function(){
-            return  window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame   ||
-            window.mozRequestAnimationFrame      ||
-            function( callback ){
-                window.setTimeout(callback, 1000 / 60);
-            };
-        })();
+        (function() {
+            var script_load_semaphor = 0;
 
-        // delay startup of app until first render if possible.
-        window.requestAnimationFrame( function() {
-            var element = document.createElement( 'script' );
-            element.setAttribute( 'src', 'static/crtools.js?version={{version}}' );
-            document.body.appendChild( element );
-        });
+            function assetsDoneLoading() {
+                if( script_load_semaphor > 1 ) {
+                    --script_load_semaphor;
+                    return;
+                }
+
+                var tooltip = new TooltipManager();
+                var filter = new MemberTableFilter();
+            }
+
+            function loadScript(script_url) {
+                ++script_load_semaphor;
+                var element = document.createElement( 'script' );
+                element.setAttribute( 'src', script_url + '?version={{version}}' );
+                element.onload = assetsDoneLoading;
+
+                document.body.appendChild( element );
+            }
+
+            // delay startup of app until first render if possible.
+            window.requestAnimationFrame( function() {
+                loadScript('static/crtools.js');
+            });
+        })();
     </script>
 </body>
 </html>

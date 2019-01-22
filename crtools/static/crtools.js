@@ -1,66 +1,77 @@
-function getHashParamList() {
-    var hashParamPieces = unescape(window.location.hash).split('?');
+HashParamParser = function() {
+    function getHashParamList() {
+        var hashParamPieces = unescape(window.location.hash).split('?');
 
-    // if the hash is properly formatted, i.e., contains a single '?'
-    if(hashParamPieces.length == 2) {
-        var hashParams = hashParamPieces[1].split('&');
+        // if the hash is properly formatted, i.e., contains a single '?'
+        if(hashParamPieces.length == 2) {
+            var hashParams = hashParamPieces[1].split('&');
 
-    	// build dictionary of parameters
-        params = {};
-        for( var index in hashParams ) {
-        	var parts = hashParams[index].split('=');
-        	var key = parts[0];
-        	var value = parts.length == 2 ? parts[1] : null;
-        	params[key] = value;
-        }
+        	// build dictionary of parameters
+            params = {};
+            for( var index in hashParams ) {
+            	var parts = hashParams[index].split('=');
+            	var key = parts[0];
+            	var value = parts.length == 2 ? parts[1] : null;
+            	params[key] = value;
+            }
 
-        // return dict of params
-        return params;
-    } else {
-    	// no params found; return empty dict
-    	return {};
-    }
-}
-
-function getHashParam(key) {
-	var params = getHashParamList();
-	if( key in params ) {
-		return params[key];
-	} else {
-		return null;
-	}
-}
-
-function setHashParam(key, newvalue) {
-	var params = getHashParamList();
-
-    if( (newvalue == null) && (key in params) ) {
-        delete params[key];
-    } else {
-        // update value of param
-        params[key] = newvalue;
-    }
-
-	// build list of params and write to window.location.hash
-    if( Object.keys(params).length == 0 ) {
-        if("pushState" in history) {
-            history.pushState("", document.title, window.location.pathname + window.location.search);
+            // return dict of params
+            return params;
         } else {
-            window.location.hash = '?';
+        	// no params found; return empty dict
+        	return {};
         }
-    } else {
-    	var paramStrings = [];
-    	for( var key in params ) {
-    		var value = params[key]
-    		if(value) {
-    			paramStrings.push(key + '=' + value);
-    		} else {
-    			paramStrings.push(key);
-    		}
-    	}
-    	window.location.hash = '?' + paramStrings.join('&');
     }
-}
+
+    function getHashParam(key) {
+    	var params = getHashParamList();
+    	if( key in params ) {
+    		return params[key];
+    	} else {
+    		return null;
+    	}
+    }
+
+    function setHashParam(key, newvalue) {
+    	var params = getHashParamList();
+
+        if( (newvalue == null) && (key in params) ) {
+            delete params[key];
+        } else {
+            // update value of param
+            params[key] = newvalue;
+        }
+
+    	// build list of params and write to window.location.hash
+        if( Object.keys(params).length == 0 ) {
+            if("pushState" in history) {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            } else {
+                window.location.hash = '?';
+            }
+        } else {
+        	var paramStrings = [];
+        	for( var key in params ) {
+        		var value = params[key]
+        		if(value) {
+        			paramStrings.push(key + '=' + value);
+        		} else {
+        			paramStrings.push(key);
+        		}
+        	}
+        	window.location.hash = '?' + paramStrings.join('&');
+        }
+    }
+
+    return {
+        'set' : function(key, newvalue) {
+            setHashParam(key, newvalue);
+        },
+        'get' : function(key) {
+            return getHashParam(key);
+        }
+    };
+};
 
 TooltipManager = function() {
     document.querySelectorAll('[data-tooltip]').forEach(function(element) {
@@ -136,12 +147,14 @@ MemberTableFilter = function() {
     var filter_dropdown = document.getElementById('member-filter');
     var member_table = document.getElementById('member-table');
 
+    var hashParams = HashParamParser();
+
     filter_dropdown.addEventListener('change', function(e) {
         setFilter(e.target.value);
         if(e.target.value=='none') {
-            setHashParam('filter', null);
+            hashParams.set('filter', null);
         } else {
-            setHashParam('filter', e.target.value);
+            hashParams.set('filter', e.target.value);
         }
     });
 
@@ -152,13 +165,10 @@ MemberTableFilter = function() {
     }
 
     function getFilterFromHash() {
-    	filter = getHashParam('filter');
+    	filter = hashParams.get('filter');
     	if(filter) {
     		setFilter(filter);
     		filter_dropdown.value = filter;
     	}
     }
 };
-
-var tooltip = new TooltipManager();
-var filter = new MemberTableFilter();

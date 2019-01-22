@@ -257,8 +257,8 @@ def process_members(config, clan, warlog, current_war):
 
     # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
-    days_from_donation_reset = datetime.utcnow().isoweekday() + 1
-    if days_from_donation_reset > 7:
+    days_from_donation_reset = datetime.utcnow().isoweekday()
+    if days_from_donation_reset >= 7 or days_from_donation_reset <= 0:
         days_from_donation_reset = 1
 
     # grab importent fields from member list for dashboard
@@ -386,6 +386,8 @@ def process_current_war(config, current_war):
             # calculate battles remaining for each clan
             for clan in current_war_processed['clans']:
                 clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
+                if clan['battlesRemaining'] < 0:
+                    clan['battlesRemaining'] = 0;
 
             # sort clans by who's winning
             current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
