@@ -192,6 +192,9 @@ def get_suggestions(config, members):
     # sort members by score, and preserve trophy order if relevant
     members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
 
+    debug_out(config, "min_clan_size: {}".format(config['score']['min_clan_size']))
+    debug_out(config, "# members: {}".format(len(members_by_score)))
+
     suggestions = []
     for index, member in enumerate(members_by_score):
         # if member on the 'safe' or 'vacation' list, don't make
@@ -203,8 +206,11 @@ def get_suggestions(config, members):
                 # if we're above the minimum clan size, recommend kicking
                 # poorly participating member. Otherwise, if member is
                 # an Elder or higher, recommend demotion.
-                if index < len(members_by_score) - config['score']['min_clan_size']:
-                    suggestions.append('Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
+                debug_out(config, "member #{} {} below threshold".format(index, member['name']))
+                if index <= len(members_by_score) - config['score']['min_clan_size']:
+                    suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
+                    debug_out(config, suggestion)
+                    suggestions.append(suggestion)
             if member['role'] != 'member' and member['score'] < config['score']['threshold_demote']:
                 if member['role'] == 'elder':
                     demote_target = 'Member'
