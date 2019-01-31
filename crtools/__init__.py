@@ -36,6 +36,7 @@ config_defaults = {
         'war_participation' :           0,
         'war_non_participation' :       -1,
         'min_donations_daily' :         12,
+        'max_donations_bonus' :         40,
         'donations_zero' :              -40,
         'threshold_promote' :           160,
         'threshold_demote' :            0,

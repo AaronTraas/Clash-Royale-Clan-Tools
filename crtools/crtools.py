@@ -168,6 +168,8 @@ def donations_score(config, member, days_from_donation_reset):
         if member['donations'] == 0:
             donation_score += config['score']['donations_zero']
 
+    donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
+
     return donation_score
 
 def war_score(config, war):
