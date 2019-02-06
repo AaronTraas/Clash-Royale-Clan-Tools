@@ -1,4 +1,4 @@
-<div class="row">
+<div id="war-stats" class="row">
     <article id="current-war">
         <header>
             <h3>Current war:</h3>
@@ -13,8 +13,8 @@
             <div><dt>War End</dt><dd>{{current_war.endLabel}}</dd></div>
             <div><dt>Participants</dt><dd>{{current_war.clan.participants}}</dd></div>
             <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
-            <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
             {% if current_war.state == 'warDay' %}
+            <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
             <div class="wins"><dt>Victories</dt><dd>{{current_war.clan.wins}}</dd></div>
             {% endif %}
         {% endif %}
@@ -42,4 +42,27 @@
         </table>
     </article>
 {% endif %}
+    <article id="recent-wars">
+        <header>
+            <h3>Recent wars:</h3>
+        </header>
+        <table class="war-standings" width="100%">
+        {% if recent_wars|length == 0 %}
+            <tr>No wars in war log</tr>
+        {% else %}
+            {% for war in recent_wars %}
+                {% if loop.index <= 5 %}
+                <tr>
+                    <td class="date">{{war.date}}</td>
+                    <!--td class="participants">{{war.participants}}</td -->
+                    <td class="battles">{{war.battlesPlayed}}</td>
+                    <td class="wins">{{war.wins}}</td>
+                    <td class="rank rank-{{war.rank}}"><span>{{war.rank}}</span></td>
+                    <td class="trophies"><strong class="{{ 'good' if war.trophyChange > 0 else 'bad' }}">{{"{0:+}".format(war.trophyChange)}}</strong></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </table>
+    </article>
 </div>

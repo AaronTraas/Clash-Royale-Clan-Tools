@@ -437,7 +437,7 @@ img.war-league {
     margin: 0 .3em -.1em 0;
 }
 
-#current-war-standings td.crowns,
+#war-stats td.crowns,
 #current-war .crowns dd:before {
     background-image: url(images/crown-gold.svg);
 }
@@ -446,76 +446,79 @@ img.war-league {
     background-image: url(images/cards.svg);
 }
 
-#current-war-standings td.wins,
+#war-stats td.wins,
 #current-war .wins dd:before {
     background-image: url(images/war-battle-win.svg);
 }
 
-#current-war-standings td.battles {
+#war-stats td.battles {
     background-image: url(images/battles.svg);
 }
 
-#info article#current-war-standings {
+#info article#current-war-standings,
+#info article#recent-wars {
     flex: 0;
     padding: 4px 8px;
 }
-#current-war-standings table tr:last-child td {
+#war-stats table tr:last-child td {
     border-bottom: none;
 }
-#current-war-standings table tr.this-clan {
+#war-stats table tr.this-clan {
     background-color: #F1EAF4;
     border-color: #BB89CC;
     font-weight: bold;
 }
 
-#current-war-standings table tr td {
+#war-stats table tr td {
     white-space: nowrap;
     padding: 5px;
 }
 
-#current-war-standings td:before {
+#war-stats td:before {
     float: left;
     vertical-align: bottom;
 }
 
-#current-war-standings .rank {
+#war-stats .date,
+#war-stats .rank {
     text-align: center;
 }
 
-#current-war-standings .rank,
-#current-war-standings .wins,
-#current-war-standings .crowns,
-#current-war-standings .battles {
+#war-stats .date,
+#war-stats .rank,
+#war-stats .wins,
+#war-stats .crowns,
+#war-stats .battles {
     font-weight: bold;
 }
 
-#current-war-standings .wins,
-#current-war-standings .crowns,
-#current-war-standings .battles {
+#war-stats .wins,
+#war-stats .crowns,
+#war-stats .battles {
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 1.1em;
     padding-left: 1.4em;
     padding-right: 1em;
 }
-#current-war-standings .battles {
+#war-stats .battles {
     padding-left: 1em;
 }
-#current-war-standings .wins {
+#war-stats .wins {
     padding-right: .5em;
 }
 
-#current-war-standings .rank.rank-1 span {
+#war-stats .rank.rank-1 span {
     background-color: rgb(255, 212, 42);
 }
-#current-war-standings .rank.rank-2 span {
+#war-stats .rank.rank-2 span {
     background-color: #ccc;
 }
-#current-war-standings .rank.rank-3 span {
+#war-stats .rank.rank-3 span {
     background-color: rgb(218, 165, 32);
 }
 
-#current-war-standings .rank span {
+#war-stats .rank span {
     display: inline-block;
     border-radius: 4px;
     background: rgba(192,192,192,.2);

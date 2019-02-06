@@ -74,8 +74,9 @@ def warlog_labels(warlog, clan_tag):
 
     labels = []
     for war in warlog:
+        date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
         label = {
-            'date'   : datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S').strftime("%m/%d"),
+            'date'   : '{}/{}'.format(date.month, date.day),
             'league' : get_war_league_from_war(war, clan_tag)
         }
         labels.append(label)
@@ -223,9 +224,10 @@ def get_suggestions(config, members):
                 else:
                     demote_target = 'Elder'
                 suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
+
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        elif not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
+        if not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
             suggestions.append('Promote <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
 
     # If there are no other suggestions, give some sort of message
@@ -406,8 +408,22 @@ def process_current_war(config, current_war):
             # sort clans by who's winning
             current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
 
-
     return current_war_processed
+
+def process_recent_wars(config, warlog):
+    wars = []
+    for war in warlog:
+        clan = None
+        for rank, war_clan in enumerate(war['standings']):
+            if war_clan['clan']['tag'] == config['api']['clan_id']:
+                clan = war_clan['clan']
+                clan['trophyChange'] = war_clan['trophyChange']
+                clan['rank'] = rank+1
+                date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
+                clan['date'] = '{}/{}'.format(date.month, date.day)
+                wars.append(clan)
+
+    return wars
 
 def build_dashboard(config):
     """Compile and render clan dashboard."""
@@ -474,6 +490,7 @@ def build_dashboard(config):
         clan_processed = process_clan(config, clan, current_war)
         members_processed = process_members(config, clan, warlog, current_war)
         current_war_processed = process_current_war(config, current_war)
+        recent_wars = process_recent_wars(config, warlog)
 
         # Create environment for template parser
         env = Environment(
@@ -491,6 +508,7 @@ def build_dashboard(config):
             clan              = clan_processed,
             clan_hero         = clan_hero_html,
             current_war       = current_war_processed,
+            recent_wars       = recent_wars,
             suggestions       = get_suggestions(config, members_processed),
             scoring_rules     = get_scoring_rules(config)
         )
@@ -515,12 +533,13 @@ def build_dashboard(config):
         if(config['crtools']['debug'] == True):
             log_path = os.path.join(tempdir, 'log')
             os.makedirs(log_path)
-            write_object_to_file(os.path.join(log_path, 'clan.json'),                 clan)
-            write_object_to_file(os.path.join(log_path, 'warlog.json'),               warlog)
-            write_object_to_file(os.path.join(log_path, 'currentwar.json'),           current_war)
-            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),       clan_processed)
-            write_object_to_file(os.path.join(log_path, 'members-processed.json'),    members_processed)
-            write_object_to_file(os.path.join(log_path, 'currentwar-processed.json'), current_war_processed)
+            write_object_to_file(os.path.join(log_path, 'clan.json'),                  clan)
+            write_object_to_file(os.path.join(log_path, 'warlog.json'),                warlog)
+            write_object_to_file(os.path.join(log_path, 'currentwar.json'),            current_war)
+            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),        clan_processed)
+            write_object_to_file(os.path.join(log_path, 'members-processed.json'),     members_processed)
+            write_object_to_file(os.path.join(log_path, 'currentwar-processed.json'),  current_war_processed)
+            write_object_to_file(os.path.join(log_path, 'recent_wars-processed.json'), recent_wars)
 
         output_path = os.path.expanduser(config['paths']['out'])
         if os.path.exists(output_path):
