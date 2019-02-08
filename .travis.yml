@@ -1,0 +1,10 @@
+addons:
+  sonarcloud:
+    organization: "aarontraas-github" # the key of the org you chose at step #3
+language: python
+python:
+  - "3.6"
+  - "3.7"
+install:
+  - python setup.py install
+  - sonar-scanner
