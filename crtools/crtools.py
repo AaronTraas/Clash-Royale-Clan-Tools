@@ -86,9 +86,9 @@ def get_war_league_from_score(clan_score):
     """ Figure out which war league a clan trophy count corresponds to,
     and return war league details. """
     league = 'ERROR'
-    for score, lookupTable in WAR_LEAGUE_LOOKUP.items():
+    for score, lookup_table in WAR_LEAGUE_LOOKUP.items():
         if clan_score >= score:
-            league = lookupTable
+            league = lookup_table
 
     return league
 
@@ -127,9 +127,8 @@ def member_war(config, clan_member, clan, war):
                     else:
                         league_lookup = ARENA_LEAGUE_LOOKUP['Arena Unknown']
                     collection_win_lookup = league_lookup['collection_win']
-                    cardsPerCollectionBattleWin = collection_win_lookup[participation['warLeague']]
 
-                    participation['collectionWinCards'] = cardsPerCollectionBattleWin
+                    participation['collectionWinCards'] = collection_win_lookup[participation['warLeague']]
 
                     participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
                     participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
@@ -210,19 +209,15 @@ def get_suggestions(config, members):
         if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
             # if  members have a score below zero, we recommend to kick or
             # demote them.
-            if member['score'] < config['score']['threshold_kick']:
-                # if we're above the minimum clan size, recommend kicking
-                # poorly participating member. Otherwise, if member is
-                # an Elder or higher, recommend demotion.
-                if index <= len(members_by_score) - config['score']['min_clan_size']:
-                    suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
-                    debug_out(config, suggestion)
-                    suggestions.append(suggestion)
-            if member['role'] != 'member' and member['score'] < config['score']['threshold_demote']:
-                if member['role'] == 'elder':
-                    demote_target = 'Member'
-                else:
-                    demote_target = 'Elder'
+            # if we're above the minimum clan size, recommend kicking
+            # poorly participating member.
+            if member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
+                suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
+                debug_out(config, suggestion)
+                suggestions.append(suggestion)
+            # If we aren't recommending kicking someone, and their role is
+            # > member, recoomend demotion
+            elif member['role'] != 'member' and member['score'] < config['score']['threshold_demote']:
                 suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
 
         # if user is above the threshold, and has not been promoted to
@@ -392,12 +387,6 @@ def process_current_war(config, current_war):
             end_time_delta = math.floor((end_time - now).seconds / 3600)
             current_war_processed['collectionEndTimeLabel'] = 'Complete'
             current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
-
-            # figure out how many battles each clan is supposed to complete
-            max_participants = 0;
-            for clan in current_war_processed['clans']:
-                if clan['participants'] > 0:
-                    max_participants = clan['participants'];
 
             # calculate battles remaining for each clan
             for clan in current_war_processed['clans']:

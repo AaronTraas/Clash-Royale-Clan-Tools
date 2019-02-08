@@ -1,4 +1,4 @@
-HashParamParser = function() {
+function HashParamParser() {
     function getHashParamList() {
         var hashParamPieces = unescape(window.location.hash).split('?');
 
@@ -7,7 +7,7 @@ HashParamParser = function() {
             var hashParams = hashParamPieces[1].split('&');
 
         	// build dictionary of parameters
-            params = {};
+            var params = {};
             for( var index in hashParams ) {
             	var parts = hashParams[index].split('=');
             	var key = parts[0];
@@ -51,12 +51,12 @@ HashParamParser = function() {
             }
         } else {
         	var paramStrings = [];
-        	for( var key in params ) {
-        		var value = params[key]
+        	for( var param_key in params ) {
+        		var value = params[param_key]
         		if(value) {
-        			paramStrings.push(key + '=' + value);
+        			paramStrings.push(param_key + '=' + value);
         		} else {
-        			paramStrings.push(key);
+        			paramStrings.push(param_key);
         		}
         	}
         	window.location.hash = '?' + paramStrings.join('&');
@@ -71,9 +71,9 @@ HashParamParser = function() {
             return getHashParam(key);
         }
     };
-};
+}
 
-TooltipManager = function() {
+function TooltipManager() {
     document.querySelectorAll('[data-tooltip]').forEach(function(element) {
         element.addEventListener('mouseenter', function(e) {
             addTooltip(element, false);
@@ -120,7 +120,7 @@ TooltipManager = function() {
     }
 
     function clearTooltip(tooltip, force) {
-        persist = (tooltip.dataset.persist=='true')
+        var persist = (tooltip.dataset.persist=='true')
         if( !persist || force ) {
             document.body.removeChild(tooltip);
         }
@@ -141,9 +141,9 @@ TooltipManager = function() {
         tooltip.style.left = left + 'px';
         tooltip.style.top  = top + pageYOffset + 'px';
     }
-};
+}
 
-MemberTableFilter = function() {
+function MemberTableFilter() {
     var filter_dropdown = document.getElementById('member-filter');
     var member_table = document.getElementById('member-table');
 
@@ -165,10 +165,10 @@ MemberTableFilter = function() {
     }
 
     function getFilterFromHash() {
-    	filter = hashParams.get('filter');
+    	var filter = hashParams.get('filter');
     	if(filter) {
     		setFilter(filter);
     		filter_dropdown.value = filter;
     	}
     }
-};
+}

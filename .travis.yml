@@ -6,6 +6,8 @@ python:
 addons:
   sonarcloud:
     organization: "aarontraas-github"
+    token:
+      secure:
 install:
   - python setup.py install
   - sonar-scanner
