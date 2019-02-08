@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "aarontraas-github"
     token:
-      secure:
+      secure: "MfrdXiqSQ92evEaFMKruoySBxeXkAWxOxqELVTYPhDj+nZ+Icq14oMD0Pl3APQnPxs5WIUlOInynXbvHg3+MHnyoWzWVh6EfYXJIf0IZUcY1Z0oCvsVtIkKnMu+ChldmU/HUC5K41+25s4H3fcvzi6KxzvxWZ2mQefZ4QyHNHsSiBFwAPXaWVMkWpn4Xrr9ncflLxYJ7y5Oy7t1ux4x7ZfCSgzVMcnGOMbNoXQU6NrEKj8J6ahI6YTp3JXWJRlaII3rxiHQz3ZjtHY/1HJyJf/BtbnkIGcJBUWFAnCamux5jbm+9+3prCcp8j6mBrF0TvYxH3Xt/wqu+oNf/1GQKnxGGY75CL3Ge/0fRJm9Y4Do6cDxHbEeKx0Y2/UPYVskqcG51aw76oOi9FLYMeCu5QIlchRuDaeRkIU/iR4+zz797e2W3gw1pDC24MqRmRZPCD6KeGob6k3xZSltnMR0UaAdI7J6cnz8AAWEiDTCe74AuegenCBzB66mFJq6EkMC09nqtrUg5zlOiTm+pfr0SSd0+qQi97SxzRl5zG69IGUNAlw63GRQmRjCjF0mnHotaey6bF/QiJbvzU+0u824zGGasoMI0sr423TpUkC7y00i1SXlUDlqQTvFz3sK7BNHjLwYVda+si3gyB22YWQrEmYpi8BCDwAIR5/SaV4eAwrs="
 install:
   - python setup.py install
   - sonar-scanner
