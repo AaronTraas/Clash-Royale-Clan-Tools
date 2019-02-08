@@ -1,6 +1,6 @@
 addons:
   sonarcloud:
-    organization: "aarontraas-github" # the key of the org you chose at step #3
+    organization: "aarontraas-github"
 language: python
 python:
   - "3.6"
