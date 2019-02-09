@@ -6,6 +6,7 @@ import os
 # Create config dict with defaults
 config_defaults = {
     'api' : {
+        'server_url' :          'https://api.clashroyale.com',
         'api_key' :             False,
         'clan_id' :             False,
     },

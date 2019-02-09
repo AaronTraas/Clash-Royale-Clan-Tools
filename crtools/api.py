@@ -13,7 +13,12 @@ class ClashRoyaleAPIError(Exception):
 
 class ClashRoyaleAPIMissingFieldsError(Exception):
     """"""
-    pass
+    field_name = None
+
+    def __init__(self, field_name):
+        Exception.__init__(self, "'{}' not provided".format(field_name))
+        self.field_name = field_name
+
 
 class ClashRoyaleAPIAuthenticationError(Exception):
     """Failed to authenticate with the API. Key is likely bad."""
@@ -25,24 +30,26 @@ class ClashRoyaleAPIClanNotFound(Exception):
 
 class ClashRoyaleAPI:
 
-    CLAN_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}'
-    WARLOG_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}/warlog'
-    CURRENT_WAR_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}/currentwar'
+    CLAN_API_ENDPOINT = '/v1/clans/{clan_tag}'
+    WARLOG_API_ENDPOINT = '/v1/clans/{clan_tag}/warlog'
+    CURRENT_WAR_API_ENDPOINT = '/v1/clans/{clan_tag}/currentwar'
 
+    baseurl = False
     api_key = False
     clan_tag = False
 
-    def __init__(self, api_key, clan_tag):
+    def __init__(self, baseurl, api_key, clan_tag):
         self.logger = logging.getLogger('.'.join([__name__, self.__class__.__name__]))
 
         if api_key == False:
-            raise ClashRoyaleAPIMissingFieldsError('API key not provided.');
+            raise ClashRoyaleAPIMissingFieldsError('api_key');
 
         if clan_tag == False:
-            raise ClashRoyaleAPIMissingFieldsError('Clan tag not provided.');
+            raise ClashRoyaleAPIMissingFieldsError('clan_tag');
 
         self.api_key = api_key
         self.clan_tag = clan_tag
+        self.baseurl = baseurl
 
         self.headers = {
             'Accept': 'application/json',
@@ -52,7 +59,7 @@ class ClashRoyaleAPI:
     def __api_call(self, endpoint):
         # Make request and handle errors. If request returns a valid object,
         # return that object.
-        r = requests.get(endpoint, headers=self.headers)
+        r = requests.get(self.baseurl + endpoint, headers=self.headers)
 
         if r.status_code == 200:
             return r.json()

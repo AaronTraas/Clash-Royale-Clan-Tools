@@ -422,7 +422,7 @@ def build_dashboard(config):
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
-        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
+        api = ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
         clan = api.get_clan()
