@@ -1,6 +1,5 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
-import sys
 
 from ._version import __version__
 from .crtools import build_dashboard
