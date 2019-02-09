@@ -130,8 +130,8 @@ def member_war(config, clan_member, clan, war):
 
                     participation['collectionWinCards'] = collection_win_lookup[participation['warLeague']]
 
-                    participation['collectionBattleWins'] = round(member['cardsEarned'] / cardsPerCollectionBattleWin)
-                    participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
+                    participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
+                    participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
                     participation['score'] = war_score(config, participation)
                 else:
                     participation['status'] = 'normal'
