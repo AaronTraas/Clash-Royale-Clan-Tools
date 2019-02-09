@@ -33,6 +33,8 @@ class ClashRoyaleAPI:
     clan_tag = False
 
     def __init__(self, api_key, clan_tag):
+        self.logger = logging.getLogger('.'.join([__name__, self.__class__.__name__]))
+
         if api_key == False:
             raise ClashRoyaleAPIMissingFieldsError('API key not provided.');
 
@@ -66,14 +68,14 @@ class ClashRoyaleAPI:
     def get_clan(self):
         """Grab clan data from API."""
 
-        logging.debug('Retrieving clan data for "{}"'.format(self.clan_tag))
+        self.logger.debug('Retrieving clan data for "{}"'.format(self.clan_tag))
         endpoint = self.CLAN_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         return self.__api_call(endpoint)
 
     def get_warlog(self):
         """Grab war log data from API."""
 
-        logging.debug('Retrieving warlog for "{}"'.format(self.clan_tag))
+        self.logger.debug('Retrieving warlog for "{}"'.format(self.clan_tag))
         endpoint = self.WARLOG_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         warlog_api = self.__api_call(endpoint)
         if warlog_api and ('items' in warlog_api):
@@ -84,6 +86,6 @@ class ClashRoyaleAPI:
     def get_current_war(self):
         """Grab war log data from API."""
 
-        logging.debug('Retrieving current war data for "{}"'.format(self.clan_tag))
+        self.logger.debug('Retrieving current war data for "{}"'.format(self.clan_tag))
         endpoint = self.CURRENT_WAR_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         return self.__api_call(endpoint)

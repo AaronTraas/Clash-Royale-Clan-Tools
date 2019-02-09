@@ -50,6 +50,8 @@ WAR_LEAGUE_LOOKUP = {
     3000 : { 'id': 'legendary', 'name': 'Legendary League' }
 }
 
+logger = logging.getLogger(__name__)
+
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
@@ -192,8 +194,8 @@ def get_suggestions(config, members):
     # sort members by score, and preserve trophy order if relevant
     members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
 
-    logging.debug("min_clan_size: {}".format(config['score']['min_clan_size']))
-    logging.debug("# members: {}".format(len(members_by_score)))
+    logger.debug("min_clan_size: {}".format(config['score']['min_clan_size']))
+    logger.debug("# members: {}".format(len(members_by_score)))
 
     suggestions = []
     for index, member in enumerate(members_by_score):
@@ -206,7 +208,7 @@ def get_suggestions(config, members):
             # poorly participating member.
             if member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
                 suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
-                logging.debug(suggestion)
+                logger.debug(suggestion)
                 suggestions.append(suggestion)
             # If we aren't recommending kicking someone, and their role is
             # > member, recoomend demotion
@@ -410,8 +412,8 @@ def process_recent_wars(config, warlog):
 def build_dashboard(config):
     """Compile and render clan dashboard."""
 
-    logging.debug('crtools version v{}'.format(__version__))
-    logging.debug(config)
+    logger.debug('crtools version v{}'.format(__version__))
+    logger.debug(config)
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.

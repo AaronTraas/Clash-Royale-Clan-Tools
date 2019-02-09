@@ -6,6 +6,8 @@ from ._version import __version__
 from .crtools import build_dashboard
 from .config import load_config_file
 
+logger = logging.getLogger(__name__)
+
 def main():
     # parse command line arguments
     parser = ArgumentParser(prog        = "crtools",
@@ -46,7 +48,7 @@ def main():
         config_file_name = args.config
         os.path.expanduser(config_file_name)
         if os.path.isfile(config_file_name) == False:
-            logging.error("Config file specified {} not found")
+            logger.error("Config file specified {} not found")
             exit(-1)
     else:
         config_file_name = os.path.expanduser('~/.crtools')

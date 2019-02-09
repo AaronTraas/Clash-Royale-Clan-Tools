@@ -89,5 +89,5 @@ def load_config_file(config_file_name=None):
     else:
         logging.basicConfig(level=logging.INFO)
 
-    logging.debug(config)
+    logging.getLogger(__name__).debug(config)
     return config
