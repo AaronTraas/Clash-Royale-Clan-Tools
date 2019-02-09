@@ -3,15 +3,6 @@ import os
 import shutil
 from crtools import crtools, load_config_file
 
-def test_debug(capsys):
-    config_file = os.path.join(os.path.dirname(__file__), 'testconfig.ini')
-    config = load_config_file(config_file)
-
-    crtools.debug_out(config, 'foo')
-
-    captured = capsys.readouterr()
-    assert captured.out.strip() == '[crtools debug]: foo'
-
 def test_write_object_to_file(tmpdir):
     config_file = tmpdir.mkdir('test_write_object_to_file').join('testfile')
 

@@ -1,5 +1,6 @@
 from configparser import SafeConfigParser
 import copy
+import logging
 import os
 
 # Create config dict with defaults
@@ -83,5 +84,10 @@ def load_config_file(config_file_name=None):
                                     value = False
                         config[section_key][key] = value
 
-    #import pprint; pprint.pprint(config)
+    if config['crtools']['debug'] == True:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    logging.debug(config)
     return config

@@ -8,6 +8,7 @@ import codecs
 from datetime import datetime, date, timezone
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 import json
+import logging
 import math
 import os
 import shutil
@@ -48,14 +49,6 @@ WAR_LEAGUE_LOOKUP = {
     1500 : { 'id': 'gold',      'name': 'Gold League' },
     3000 : { 'id': 'legendary', 'name': 'Legendary League' }
 }
-
-def debug_out(config, obj):
-    if config['crtools']['debug'] == True:
-        if isinstance(obj, str):
-            print('[crtools debug]: {}'.format(obj))
-        else:
-            print('[crtools debug]:')
-            print(json.dumps(obj, indent=4))
 
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
@@ -199,8 +192,8 @@ def get_suggestions(config, members):
     # sort members by score, and preserve trophy order if relevant
     members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
 
-    debug_out(config, "min_clan_size: {}".format(config['score']['min_clan_size']))
-    debug_out(config, "# members: {}".format(len(members_by_score)))
+    logging.debug("min_clan_size: {}".format(config['score']['min_clan_size']))
+    logging.debug("# members: {}".format(len(members_by_score)))
 
     suggestions = []
     for index, member in enumerate(members_by_score):
@@ -213,7 +206,7 @@ def get_suggestions(config, members):
             # poorly participating member.
             if member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
                 suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
-                debug_out(config, suggestion)
+                logging.debug(suggestion)
                 suggestions.append(suggestion)
             # If we aren't recommending kicking someone, and their role is
             # > member, recoomend demotion
@@ -417,8 +410,8 @@ def process_recent_wars(config, warlog):
 def build_dashboard(config):
     """Compile and render clan dashboard."""
 
-    debug_out(config, 'crtools version v{}'.format(__version__))
-    debug_out(config, config)
+    logging.debug('crtools version v{}'.format(__version__))
+    logging.debug(config)
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.
@@ -428,7 +421,7 @@ def build_dashboard(config):
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
-        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'], config['crtools']['debug'])
+        api = ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
         clan = api.get_clan()

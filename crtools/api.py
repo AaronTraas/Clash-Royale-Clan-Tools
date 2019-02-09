@@ -2,11 +2,10 @@
 
 """Lightweight wrapper for the Clash Royale API V1 (https://api.clashroyale.com)."""
 
+import logging
 import requests
 import urllib
 import urllib.parse
-
-
 
 class ClashRoyaleAPIError(Exception):
     """"""
@@ -24,7 +23,6 @@ class ClashRoyaleAPIClanNotFound(Exception):
     """"""
     pass
 
-
 class ClashRoyaleAPI:
 
     CLAN_API_ENDPOINT = 'https://api.clashroyale.com/v1/clans/{clan_tag}'
@@ -33,9 +31,8 @@ class ClashRoyaleAPI:
 
     api_key = False
     clan_tag = False
-    debug = False
 
-    def __init__(self, api_key, clan_tag, debug=False):
+    def __init__(self, api_key, clan_tag):
         if api_key == False:
             raise ClashRoyaleAPIMissingFieldsError('API key not provided.');
 
@@ -44,7 +41,6 @@ class ClashRoyaleAPI:
 
         self.api_key = api_key
         self.clan_tag = clan_tag
-        self.debug = debug
 
         self.headers = {
             'Accept': 'application/json',
@@ -67,21 +63,17 @@ class ClashRoyaleAPI:
                 raise ClashRoyaleAPIError(r.content);
             return False
 
-    def __debug(self, msg):
-        if self.debug:
-            print('[ClashRoyaleAPI]: {}'.format(msg))
-
     def get_clan(self):
         """Grab clan data from API."""
 
-        self.__debug('Retrieving clan data for "{}"'.format(self.clan_tag))
+        logging.debug('Retrieving clan data for "{}"'.format(self.clan_tag))
         endpoint = self.CLAN_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         return self.__api_call(endpoint)
 
     def get_warlog(self):
         """Grab war log data from API."""
 
-        self.__debug('Retrieving warlog for "{}"'.format(self.clan_tag))
+        logging.debug('Retrieving warlog for "{}"'.format(self.clan_tag))
         endpoint = self.WARLOG_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         warlog_api = self.__api_call(endpoint)
         if warlog_api and ('items' in warlog_api):
@@ -92,6 +84,6 @@ class ClashRoyaleAPI:
     def get_current_war(self):
         """Grab war log data from API."""
 
-        self.__debug('Retrieving current war data for "{}"'.format(self.clan_tag))
+        logging.debug('Retrieving current war data for "{}"'.format(self.clan_tag))
         endpoint = self.CURRENT_WAR_API_ENDPOINT.format(clan_tag=urllib.parse.quote_plus(self.clan_tag))
         return self.__api_call(endpoint)

@@ -1,10 +1,10 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import logging
 import os
 
 from ._version import __version__
 from .crtools import build_dashboard
 from .config import load_config_file
-
 
 def main():
     # parse command line arguments
@@ -46,7 +46,7 @@ def main():
         config_file_name = args.config
         os.path.expanduser(config_file_name)
         if os.path.isfile(config_file_name) == False:
-            print("Config file specified {} not found")
+            logging.error("Config file specified {} not found")
             exit(-1)
     else:
         config_file_name = os.path.expanduser('~/.crtools')
