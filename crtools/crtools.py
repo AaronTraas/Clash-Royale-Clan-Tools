@@ -358,7 +358,6 @@ def process_clan(config, clan, current_war):
 def process_current_war(config, current_war):
     current_war_processed = current_war.copy()
 
-    print(current_war_processed['state'])
     if current_war_processed['state'] == 'notInWar':
         current_war_processed['stateLabel'] = 'The clan is not currently engaged in a war.'
     else:
@@ -442,7 +441,7 @@ def build_dashboard(config):
             if os.path.isfile(logo_src_path_test):
                 logo_src_path = logo_src_path_test
             else:
-                print('[WARNING] custom logo file "{}" not found'.format(logo_src_path_test))
+                logger.warn('custom logo file "{}" not found. Using default instead.'.format(logo_src_path_test))
 
         shutil.copyfile(logo_src_path, logo_dest_path)
 
@@ -455,7 +454,7 @@ def build_dashboard(config):
             if os.path.isfile(favicon_src_path_test):
                 favicon_src_path = favicon_src_path_test
             else:
-                print('[WARNING] custom favicon file "{}" not found'.format(favicon_src_path_test))
+                logger.warn('custom favicon file "{}" not found. Using default instead.'.format(favicon_src_path_test))
 
         shutil.copyfile(favicon_src_path, favicon_dest_path)
 
@@ -469,7 +468,7 @@ def build_dashboard(config):
                 with open(description_path, 'r') as myfile:
                     clan_hero_html = myfile.read()
             else:
-                print('[WARNING] custom description file "{}" not found'.format(description_path))
+                logger.warn('custom description file "{}" not found. Using default instead.'.format(description_path))
 
         clan_processed = process_clan(config, clan, current_war)
         members_processed = process_members(config, clan, warlog, current_war)
@@ -536,15 +535,15 @@ def build_dashboard(config):
                     elif os.path.isdir(file_path):
                         shutil.rmtree(file_path)
             except PermissionError as e:
-                print('Permission error: could not delete: \n\t{}'.format(e.filename))
+                logger.error('Permission error: could not delete: \n\t{}'.format(e.filename))
         else:
             # Output directory doesn't exist. Create it.
             if(config['crtools']['debug'] == True):
-                print('Output directory {} doesn\'t exist. Creating it.'.format(output_path))
+                logger.info('Output directory {} doesn\'t exist. Creating it.'.format(output_path))
             try:
                 os.mkdir(output_path)
             except PermissionError as e:
-                print('Permission error: could create output folder: \n\t{}'.format(e.filename))
+                logger.error('Permission error: could create output folder: \n\t{}'.format(e.filename))
 
         try:
             # Copy all contents of temp directory to output directory
@@ -556,25 +555,26 @@ def build_dashboard(config):
                 elif os.path.isdir(file_path):
                     shutil.copytree(file_path, file_out_path)
         except PermissionError as e:
-            print('Permission error: could not write output to: \n\t{}'.format(e.filename))
+            logger.error('Permission error: could not write output to: \n\t{}'.format(e.filename))
         except FileExistsError as e:
-            print('File Exists: could not write output to: \n\t{}'.format(e.filename))
+            logger.error('File Exists: could not write output to: \n\t{}'.format(e.filename))
 
     except ClashRoyaleAPIAuthenticationError as e:
-        print('developer.clashroyale.com authentication error: {}'.format(e))
+        msg = 'developer.clashroyale.com authentication error: {}'.format(e)
         if not config['api']['api_key']:
-            print(' - API key not provided')
+            message += '\n - API key not provided'
         else:
-            print(' - API key not valid')
+            message += '\n - API key not valid'
+        logger.error(msg)
 
     except ClashRoyaleAPIClanNotFound as e:
-        print('developer.clashroyale.com: {}'.format(e))
+        logger.error('developer.clashroyale.com: {}'.format(e))
 
     except ClashRoyaleAPIError as e:
-        print('developer.clashroyale.com error: {}'.format(e))
+        logger.error('developer.clashroyale.com error: {}'.format(e))
 
     except ClashRoyaleAPIMissingFieldsError as e:
-        print('error: {}'.format(e))
+        logger.error('error: {}'.format(e))
 
     finally:
         # Ensure that temporary directory gets deleted no matter what
