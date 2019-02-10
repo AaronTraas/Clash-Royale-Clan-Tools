@@ -562,9 +562,9 @@ def build_dashboard(config):
     except ClashRoyaleAPIAuthenticationError as e:
         msg = 'developer.clashroyale.com authentication error: {}'.format(e)
         if not config['api']['api_key']:
-            message += '\n - API key not provided'
+            msg += '\n - API key not provided'
         else:
-            message += '\n - API key not valid'
+            msg += '\n - API key not valid'
         logger.error(msg)
 
     except ClashRoyaleAPIClanNotFound as e:
