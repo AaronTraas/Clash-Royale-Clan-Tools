@@ -26,6 +26,13 @@ blacklist=Foo
 vacation=Bar,     Baz    ,Quux
 '''
 
+__config_paths_template__ = '''
+[Paths]
+clan_logo={logo}
+favicon={favicon}
+description_html={description}
+'''
+
 def test_config_debug(tmpdir):
     """ Sections and properties in INI files should never be added to
     config object if they aren't in the template """
@@ -89,3 +96,49 @@ def test_config_list(tmpdir):
     assert config['members']['vacation'][1] == 'Baz'
 
 
+def test_config_paths_empty(tmpdir):
+    config_file = tmpdir.mkdir('test_config_paths_empty').join('config.ini')
+    config_file.write(__config_paths_template__.format(
+        logo        = False,
+        favicon     = False,
+        description = False
+    ))
+    config = load_config_file(config_file.realpath())
+
+    assert config['paths']['clan_logo'].endswith('/templates/crtools-logo.png')
+    assert config['paths']['favicon'].endswith('/templates/crtools-favicon.ico')
+    assert config['paths']['description_html_src'] == None
+
+def test_config_paths_invalid(tmpdir):
+    config_file = tmpdir.mkdir('test_config_paths_empty').join('config.ini')
+    config_file.write(__config_paths_template__.format(
+        logo        = '~/path/to/invalid/logo',
+        favicon     = '~/path/to/invalid/favicon',
+        description = '~/path/to/invalid/description'
+    ))
+    config = load_config_file(config_file.realpath())
+
+    assert config['paths']['clan_logo'].endswith('/templates/crtools-logo.png')
+    assert config['paths']['favicon'].endswith('/templates/crtools-favicon.ico')
+    assert config['paths']['description_html_src'] == None
+
+def test_config_paths_valid(tmpdir):
+    test_tmpdir = tmpdir.mkdir('test_config_paths_valid')
+    logo = test_tmpdir.join('logo.png')
+    favicon = test_tmpdir.join('favicon.ico')
+    description = test_tmpdir.join('description.html')
+
+    config_file = test_tmpdir.join('config.ini')
+    config_file.write(__config_paths_template__.format(
+        logo        = str(logo.realpath()),
+        favicon     = favicon.realpath(),
+        description = description.realpath()
+    ))
+    logo.write('foo')
+    favicon.write('foo')
+    description.write('foo')
+    config = load_config_file(config_file.realpath())
+
+    assert config['paths']['clan_logo'].endswith('/test_config_paths_valid/logo.png')
+    assert config['paths']['favicon'].endswith('/test_config_paths_valid/favicon.ico')
+    assert config['paths']['description_html'].endswith('/test_config_paths_valid/description.html')

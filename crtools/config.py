@@ -50,12 +50,78 @@ config_defaults = {
     }
 }
 
+def __validate_crtools_settings(config):
+    if config['crtools']['debug'] == True:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    return config
+
+def __validate_paths(config):
+    logger = logging.getLogger(__name__)
+
+    # If logo_path is provided, use logo from path given, and put it where
+    # it needs to go. Otherwise, use the default from the template folder
+    logo_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-logo.png')
+    if config['paths']['clan_logo']:
+        logo_src_path_test = os.path.expanduser(config['paths']['clan_logo'])
+        if os.path.isfile(logo_src_path_test):
+            logo_src_path = logo_src_path_test
+        else:
+            logger.warn('custom logo file "{}" not found. Using default instead.'.format(logo_src_path_test))
+    config['paths']['clan_logo'] = logo_src_path
+
+    # If favicon_path is provided, use favicon from path given, and put it
+    # where it needs to go. Otherwise, use the default from the template folder
+    favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-favicon.ico')
+    if config['paths']['favicon']:
+        favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
+        if os.path.isfile(favicon_src_path_test):
+            favicon_src_path = favicon_src_path_test
+        else:
+            logger.warn('custom favicon file "{}" not found. Using default instead.'.format(favicon_src_path_test))
+    config['paths']['favicon'] = favicon_src_path
+
+    # if external clan description file is specified, read that file and
+    # use it for the clan description section. If not, use the clan
+    # description returned by the API
+    config['paths']['description_html_src'] = None
+    if config['paths']['description_html']:
+        description_path = os.path.expanduser(config['paths']['description_html'])
+        if os.path.isfile(description_path):
+            with open(description_path, 'r') as myfile:
+                config['paths']['description_html_src'] = myfile.read()
+        else:
+            logger.warn('custom description file "{}" not found. Using default instead.'.format(description_path))
+
+    return config
+
+def __parse_value(new_value, template_value):
+    value = new_value
+    if isinstance(template_value, list):
+        value = value.split(',');
+        value = [x.strip() for x in value]
+    else:
+        # if the value represents an integer, convert from string to int
+        try:
+            value = int(value)
+        except ValueError:
+            pass
+
+        # if set to "true" or "false" or similar, convert to boolean
+        if isinstance(value, str):
+            if value.lower() in ['true', 'yes', 'on']:
+                value = True
+            elif value.lower() in ['false', 'no', 'off']:
+                value = False
+    return value
+
 def load_config_file(config_file_name=None):
     """ Look for config file. If config file exists, load it, and try to
     extract config from config file"""
 
     config = copy.deepcopy(config_defaults)
-
 
     if os.path.isfile(config_file_name):
         parser = SafeConfigParser()
@@ -67,28 +133,10 @@ def load_config_file(config_file_name=None):
             if section_key in config:
                 for (key, value) in parser.items(section):
                     if key in config[section_key]:
-                        if isinstance(config[section_key][key], list):
-                            value = value.split(',');
-                            value = [x.strip() for x in value]
-                        else:
-                            # if the value represents an integer, convert from string to int
-                            try:
-                                value = int(value)
-                            except ValueError:
-                                pass
+                        config[section_key][key] = __parse_value(value, config[section_key][key])
 
-                            # if set to "true" or "false" or similar, convert to boolean
-                            if isinstance(value, str):
-                                if value.lower() in ['true', 'yes', 'on']:
-                                    value = True
-                                elif value.lower() in ['false', 'no', 'off']:
-                                    value = False
-                        config[section_key][key] = value
-
-    if config['crtools']['debug'] == True:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
+    config = __validate_paths(config)
+    config = __validate_crtools_settings(config)
 
     logging.getLogger(__name__).debug(config)
     return config

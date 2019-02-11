@@ -439,46 +439,9 @@ def build_dashboard(config): # pragma: no coverage
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
 
-        # If logo_path is provided, grab logo from path given, and put it where
-        # it needs to go. Otherwise, grab the default from the template folder
-        logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
-        # TODO: move to config package and write unit test
-        logo_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-logo.png')
-        if config['paths']['clan_logo']:
-            logo_src_path_test = os.path.expanduser(config['paths']['clan_logo'])
-            if os.path.isfile(logo_src_path_test):
-                logo_src_path = logo_src_path_test
-            else:
-                logger.warn('custom logo file "{}" not found. Using default instead.'.format(logo_src_path_test))
-
-        shutil.copyfile(logo_src_path, logo_dest_path)
-
-        # If favicon_path is provided, grab favicon from path given, and put it
-        # where it needs to go. Otherwise, grab the default from the template folder
-        favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
-        # TODO: move to config package and write unit test
-        favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-favicon.ico')
-        if config['paths']['favicon']:
-            favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
-            if os.path.isfile(favicon_src_path_test):
-                favicon_src_path = favicon_src_path_test
-            else:
-                logger.warn('custom favicon file "{}" not found. Using default instead.'.format(favicon_src_path_test))
-
-        shutil.copyfile(favicon_src_path, favicon_dest_path)
-
-        # if external clan description file is specified, read that file and use it for
-        # the clan description section. If not, use the clan description returned by
-        # the API
-        clan_hero_html = None
-        # TODO: move to config package and write unit test
-        if config['paths']['description_html']:
-            description_path = os.path.expanduser(config['paths']['description_html'])
-            if os.path.isfile(description_path):
-                with open(description_path, 'r') as myfile:
-                    clan_hero_html = myfile.read()
-            else:
-                logger.warn('custom description file "{}" not found. Using default instead.'.format(description_path))
+        # copy user-provided assets to the output path
+        shutil.copyfile(config['paths']['clan_logo'], os.path.join(tempdir, 'clan_logo.png'))
+        shutil.copyfile(config['paths']['favicon'], os.path.join(tempdir, 'favicon.ico'))
 
         clan_processed = process_clan(config, clan, current_war)
         members_processed = process_members(config, clan, warlog, current_war)
@@ -499,7 +462,7 @@ def build_dashboard(config): # pragma: no coverage
             members           = members_processed,
             war_labels        = warlog_labels(warlog, clan['tag']),
             clan              = clan_processed,
-            clan_hero         = clan_hero_html,
+            clan_hero         = config['paths']['description_html_src'],
             current_war       = current_war_processed,
             recent_wars       = recent_wars,
             suggestions       = get_suggestions(config, members_processed),
