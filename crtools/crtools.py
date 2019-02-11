@@ -415,7 +415,13 @@ def process_recent_wars(config, warlog):
 # here is done in all of the calls to functions in this file, or in the
 # ClashRoyaleAPI class, both of which are fully covered. (or soon will
 # be)
-def build_dashboard(config): # pragma: no coverage
+#
+# Similarly, we've tagged this function, and this function alone, to
+# be ignored by static analysis. I don't want to spread out all of
+# the I/O and there's no way to make the exception handling anything
+# other than a mess that will trigger teh cognitive complexity
+# warnings.
+def build_dashboard(config): # pragma: no coverage #NOSONAR
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))

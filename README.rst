@@ -121,6 +121,14 @@ Note the :code:`\\` character before the # -- that's important. A '#' is a comme
 in most shells/scripting languages. You need to escape it to run it.
 
 ==================================================
+Development links
+==================================================
+
+This project uses SonarQube for static analysis. The results of analysis
+are at `SonarCloud <https://sonarcloud.io/dashboard?id=AaronTraas_Clash-Royale-Clan-Tools>`.
+The code quality and test coverage are a work in progress.
+
+==================================================
 Contributors
 ==================================================
 
