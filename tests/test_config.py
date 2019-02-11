@@ -4,6 +4,7 @@ __config_debug =  '''
 [crtools]
 debug=True
 '''
+
 __config_file_unknown_key =  '''
 [garbage]
 should_not_exist=True
