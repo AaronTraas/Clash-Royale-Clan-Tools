@@ -1,5 +1,9 @@
 from crtools import load_config_file
 
+__config_debug =  '''
+[crtools]
+debug=True
+'''
 __config_file_unknown_key =  '''
 [garbage]
 should_not_exist=True
@@ -20,6 +24,16 @@ api_key=Foo,Bar,Baz
 blacklist=Foo
 vacation=Bar,     Baz    ,Quux
 '''
+
+def test_config_debug(tmpdir):
+    """ Sections and properties in INI files should never be added to
+    config object if they aren't in the template """
+    config_file = tmpdir.mkdir('test_config_unknown_key').join('config.ini')
+    config_file.write(__config_debug)
+
+    config = load_config_file(config_file.realpath())
+
+    assert config['crtools']['debug'] == True
 
 def test_config_unknown_key(tmpdir):
     """ Sections and properties in INI files should never be added to
