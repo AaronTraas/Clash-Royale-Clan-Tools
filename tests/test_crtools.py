@@ -23,6 +23,81 @@ war_participation=0
 war_non_participation=-1
 '''
 
+__fake_clan__ = {
+    "tag": CLAN_TAG,
+    "name": "Agrassar",
+    "description": "Rules, stats, discord link, and info at https://agrassar.com",
+    "clanScore": 38803,
+    "clanWarTrophies": 1813,
+    "requiredTrophies": 3000,
+    "donationsPerWeek": 7540,
+    "members": 4,
+    "memberList": [
+        {
+            "tag": "#AAAAAA",
+            "name": "LeaderPerson",
+            "role": "leader",
+            "expLevel": 12,
+            "trophies": 4153,
+            "arena": {
+                "id": 54000012,
+                "name": "Arena 13"
+            },
+            "clanRank": 6,
+            "previousClanRank": 3,
+            "donations": 97,
+            "donationsReceived": 240,
+            "clanChestPoints": 11
+        },
+        {
+            "tag": "#BBBBBB",
+            "name": "CoLeaderPerson",
+            "role": "coLeader",
+            "expLevel": 13,
+            "trophies": 4418,
+            "arena": {
+                "id": 54000013,
+                "name": "League 2"
+            },
+            "clanRank": 1,
+            "previousClanRank": 1,
+            "donations": 648,
+            "donationsReceived": 550,
+            "clanChestPoints": 72
+        },
+        {
+            "tag": "#CCCCCC",
+            "name": "ElderPerson",
+            "role": "elder",
+            "expLevel": 12,
+            "trophies": 4224,
+            "arena": {
+                "id": 54000012,
+                "name": "Arena 13"
+            },
+            "clanRank": 2,
+            "previousClanRank": 2,
+            "donations": 142,
+            "donationsReceived": 200
+        },
+        {
+            "tag": "#DDDDDD",
+            "name": "MemberPerson",
+            "role": "member",
+            "expLevel": 8,
+            "trophies": 2144,
+            "arena": {
+                "id": 54000008,
+                "name": "Arena 7"
+            },
+            "clanRank": 45,
+            "previousClanRank": 44,
+            "donations": 16,
+            "donationsReceived": 0
+        }
+    ]
+}
+
 __fake_warlog__ = [
     {
         "createdDate": "20190203T163246.000Z",
@@ -47,6 +122,42 @@ __fake_warlog__ = [
         ]
     }
 ]
+
+__fake_currentwar__ = {
+    "state": "warDay",
+    "warEndTime": "20190209T212846.354Z",
+    "clan": {
+        "tag": CLAN_TAG,
+        "name": "Agrassar",
+        "clanScore": 1813,
+        "participants": 17,
+        "battlesPlayed": 13,
+        "wins": 1,
+        "crowns": 5
+    },
+    "participants": [
+        {
+            "tag": "#9ULGLRCL",
+            "name": "AaronTraas",
+            "cardsEarned": 1120,
+            "battlesPlayed": 1,
+            "wins": 1,
+            "collectionDayBattlesPlayed": 3
+        }
+    ],
+    "clans": [
+        {
+            "tag": CLAN_TAG,
+            "name": "Agrassar",
+            "clanScore": 1813,
+            "participants": 17,
+            "battlesPlayed": 13,
+            "wins": 5,
+            "crowns": 12,
+            "battlesRemaining": 4
+        },
+    ]
+}
 
 def test_write_object_to_file(tmpdir):
     config_file = tmpdir.mkdir('test_write_object_to_file').join('testfile')
@@ -108,6 +219,47 @@ def test_get_scoring_rules(tmpdir):
     assert rules[4]['yes_status']   == 'good'
     assert rules[4]['no_status']    == 'normal'
 
+def test_process_clan(tmpdir):
+    config_file = tmpdir.mkdir('test_process_clan').join('testfile')
+    config_file.write(__config_file_score__)
+    config = load_config_file(config_file.realpath())
+
+    processed_clan = crtools.process_clan(config, __fake_clan__, __fake_currentwar__)
+
+    assert 'memberList' not in processed_clan
+    assert processed_clan['warLeague'] == 'gold'
+    assert processed_clan['warLeagueName'] == 'Gold League'
+    assert processed_clan['currentWarState'] == 'warDay'
+
+
+def test_process_current_war_nowar():
+    config = load_config_file(False)
+
+    processed_current_war = crtools.process_current_war(config, {"state": "notInWar"})
+
+    assert processed_current_war['stateLabel'] == 'The clan is not currently engaged in a war.'
+
+def test_process_current_war_collection():
+    config = load_config_file(False)
+
+    currentwar = __fake_currentwar__.copy()
+    currentwar['state'] = 'collectionDay'
+    currentwar['collectionEndTime'] = currentwar['warEndTime']
+    processed_current_war = crtools.process_current_war(config, currentwar)
+
+    assert 'collectionEndTimeLabel' in processed_current_war
+    assert 'endLabel' in processed_current_war
+
+def test_process_current_war_warday():
+    config = load_config_file(False)
+
+    processed_current_war = crtools.process_current_war(config, __fake_currentwar__)
+
+    assert processed_current_war['cards'] == 1120
+    assert processed_current_war['stateLabel'] == 'War Day'
+    assert processed_current_war['collectionEndTimeLabel'] == 'Complete'
+    assert 'endLabel' in processed_current_war
+
 def test_war_score(tmpdir):
     # FIXME -- should replace once we test crtools.process_members()
     war_complete = {
@@ -126,7 +278,7 @@ def test_war_score(tmpdir):
     }
     war_na = {}
 
-    config_file = tmpdir.mkdir('test_write_object_to_file').join('testfile')
+    config_file = tmpdir.mkdir('test_war_score').join('testfile')
     config_file.write(__config_file_score__)
     config = load_config_file(config_file.realpath())
 
@@ -135,7 +287,7 @@ def test_war_score(tmpdir):
     assert crtools.war_score(config, war_na)         == -1
 
 def test_process_recent_wars(tmpdir):
-    config_file = tmpdir.mkdir('test_config_boolean').join('config.ini')
+    config_file = tmpdir.mkdir('test_process_recent_wars').join('config.ini')
     config_file.write(__config_file__)
 
     config = load_config_file(config_file.realpath())

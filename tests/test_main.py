@@ -6,6 +6,8 @@ debug=True
 '''
 
 def test_parse_args_config_file(tmpdir):
+    """Send a custom config file to the parser and verify that it
+    loads and parses properly"""
     config_file = tmpdir.mkdir('test_parse_args').join('config.ini')
     config_file.write(__config_debug)
 
@@ -17,7 +19,9 @@ def test_parse_args_config_file(tmpdir):
 
     assert config['crtools']['debug'] == True
 
-def test_parse_args_config_file_not_found(capsys):
+def test_parse_args_config_file_not_found():
+    """Checks that missing file is properly handled when a config
+    file is specified."""
     argv = [
         '--config', '~/fake/path/that/does/not/exist'
     ]
@@ -32,6 +36,8 @@ def test_parse_args_config_file_not_found(capsys):
     assert False
 
 def test_parse_args_all(tmpdir):
+    """Test all of the other command line arguments, other than
+    config file path which is a bit of a special case."""
     argv = [
         '--api_key',        'FakeAPIKey',
         '--clan',           '#FakeClanTag',

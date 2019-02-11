@@ -344,13 +344,15 @@ def process_members(config, clan, warlog, current_war):
 
 def process_clan(config, clan, current_war):
     clan_processed = clan.copy()
+
+    # remove memberlist from clan, as we're separating that out
     del clan_processed['memberList']
 
     # figure out clan war league from clan score
     league = get_war_league_from_score(clan['clanWarTrophies'])
+
     clan_processed['warLeague']      = league['id']
     clan_processed['warLeagueName']  = league['name']
-
     clan_processed['currentWarState'] = current_war['state']
 
     return clan_processed
@@ -386,7 +388,7 @@ def process_current_war(config, current_war):
             for clan in current_war_processed['clans']:
                 clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
                 if clan['battlesRemaining'] < 0:
-                    clan['battlesRemaining'] = 0;
+                    clan['battlesRemaining'] = 0; # pragma: no coverage
 
             # sort clans by who's winning
             current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
@@ -408,7 +410,12 @@ def process_recent_wars(config, warlog):
 
     return wars
 
-def build_dashboard(config):
+# NOTE: we're not testing this function because this is where we're
+# isolating all of the I/O for the application here. The real "work"
+# here is done in all of the calls to functions in this file, or in the
+# ClashRoyaleAPI class, both of which are fully covered. (or soon will
+# be)
+def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))
@@ -435,6 +442,7 @@ def build_dashboard(config):
         # If logo_path is provided, grab logo from path given, and put it where
         # it needs to go. Otherwise, grab the default from the template folder
         logo_dest_path = os.path.join(tempdir, 'clan_logo.png')
+        # TODO: move to config package and write unit test
         logo_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-logo.png')
         if config['paths']['clan_logo']:
             logo_src_path_test = os.path.expanduser(config['paths']['clan_logo'])
@@ -448,6 +456,7 @@ def build_dashboard(config):
         # If favicon_path is provided, grab favicon from path given, and put it
         # where it needs to go. Otherwise, grab the default from the template folder
         favicon_dest_path = os.path.join(tempdir, 'favicon.ico')
+        # TODO: move to config package and write unit test
         favicon_src_path = os.path.join(os.path.dirname(__file__), 'templates', 'crtools-favicon.ico')
         if config['paths']['favicon']:
             favicon_src_path_test = os.path.expanduser(config['paths']['favicon'])
@@ -462,6 +471,7 @@ def build_dashboard(config):
         # the clan description section. If not, use the clan description returned by
         # the API
         clan_hero_html = None
+        # TODO: move to config package and write unit test
         if config['paths']['description_html']:
             description_path = os.path.expanduser(config['paths']['description_html'])
             if os.path.isfile(description_path):
