@@ -185,6 +185,17 @@ def test_get_war_league_from_score():
     assert crtools.get_war_league_from_score(1501)['name'] == 'Gold League'
     assert crtools.get_war_league_from_score(99999999999999)['name'] == 'Legendary League'
 
+def test_get_member_war_status_class():
+    assert crtools.get_member_war_status_class(0, 0) == 'na'
+    assert crtools.get_member_war_status_class(3, 0) == 'bad'
+    assert crtools.get_member_war_status_class(2, 1) == 'ok'
+    assert crtools.get_member_war_status_class(3, 1) == 'good'
+    assert crtools.get_member_war_status_class(3, 0, True) == 'normal incomplete'
+    assert crtools.get_member_war_status_class(2, 0, True) == 'ok incomplete'
+    assert crtools.get_member_war_status_class(2, 0, True, True) == 'ok incomplete'
+    assert crtools.get_member_war_status_class(2, 1, True, True) == 'ok'
+    assert crtools.get_member_war_status_class(3, 1, True, True) == 'good'
+
 def test_warlog_labels(tmpdir):
     labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG)
 

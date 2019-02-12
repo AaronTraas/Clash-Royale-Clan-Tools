@@ -101,6 +101,28 @@ def get_war_league_from_war(war, clan_tag):
 
     return get_war_league_from_score(clan_score)
 
+def get_member_war_status_class(collection_day_battles, war_day_battles, current_war=False, war_day=False):
+    """ returns CSS class(es) for a war log entry for a given member """
+    status = 'normal'
+    if current_war:
+        if collection_day_battles < 3:
+            status = 'ok'
+        elif war_day and war_day_battles > 0:
+            status = 'good'
+
+        if war_day == False or war_day_battles == 0:
+            status += ' incomplete'
+    else:
+        if collection_day_battles == 0:
+            status = 'na'
+        elif war_day_battles == 0:
+            status = 'bad'
+        elif collection_day_battles < 3:
+            status = 'ok'
+        else:
+            status = 'good'
+    return status
+
 def member_war(config, clan_member, clan, war):
     member_tag = clan_member['tag']
     participation = {'status': 'na', 'score': config['score']['war_non_participation']}
@@ -109,14 +131,7 @@ def member_war(config, clan_member, clan, war):
             if member['tag'] == member_tag:
                 participation = member.copy()
                 if 'standings' in war:
-                    if member['collectionDayBattlesPlayed'] == 0:
-                        participation['status'] = 'na'
-                    elif member['battlesPlayed'] == 0:
-                        participation['status'] = 'bad'
-                    elif member['collectionDayBattlesPlayed'] < 3:
-                        participation['status'] = 'ok'
-                    else:
-                        participation['status'] = 'good'
+                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'])
 
                     participation['warLeague'] = get_war_league_from_war(war, clan['tag'])['id']
 
@@ -132,13 +147,7 @@ def member_war(config, clan_member, clan, war):
                     participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
                     participation['score'] = war_score(config, participation)
                 else:
-                    participation['status'] = 'normal'
-                    if participation['collectionDayBattlesPlayed'] < 3:
-                        participation['status'] = 'ok'
-                    if war['state'] == 'warDay' and participation['battlesPlayed'] > 0:
-                        participation['status'] = 'good'
-                    else:
-                        participation['status'] += ' incomplete'
+                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], True, war['state']=='warDay')
 
     return participation
 
