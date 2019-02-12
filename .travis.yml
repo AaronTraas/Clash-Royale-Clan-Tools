@@ -17,3 +17,11 @@ script:
   - coverage run setup.py test
   - coverage xml
   - sonar-scanner
+
+after_success:
+  - chmod +x discord_webhook.sh
+  - ./discord_webhook.sh success $DISCORD_WEBHOOK_URL
+
+after_failure:
+  - chmod +x discord_webhook.sh
+  - ./discord_webhook.sh failure $DISCORD_WEBHOOK_URL
