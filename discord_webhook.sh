@@ -69,6 +69,11 @@ WEBHOOK_DATA='{
         "name": "Branch",
         "value": "'"[\`$TRAVIS_BRANCH\`](https://github.com/$TRAVIS_REPO_SLUG/tree/$TRAVIS_BRANCH)"'",
         "inline": true
+      },
+      {
+        "name": "Static Analysis",
+        "value": "'"[Sonarcloud.io](https://sonarcloud.io/dashboard?id=AaronTraas_Clash-Royale-Clan-Tools)"'",
+        "inline": true
       }
     ],
     "timestamp": "'"$TIMESTAMP"'"
