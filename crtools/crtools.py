@@ -258,7 +258,7 @@ def get_scoring_rules(config):
 
     return rules
 
-def process_members(config, clan, warlog, current_war):
+def process_members(config, clan, warlog, current_war, history):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
 
@@ -273,6 +273,13 @@ def process_members(config, clan, warlog, current_war):
     members_processed = []
     for member_src in members:
         member = member_src.copy()
+
+        member['join_date'] = history['members'][member['tag']]['join_date']
+        if member['join_date'] == 0:
+            member['join_date_label'] = 'Before recorded history'
+        else:
+            member['join_date_label'] = datetime.fromtimestamp(member['join_date']).strftime('%Y-%m-%d')
+
         # calculate the number of daily donations, and the donation status
         # based on threshold set in config
         member['donationStatus'] = 'normal'
@@ -453,18 +460,19 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         shutil.copyfile(config['paths']['clan_logo'], os.path.join(tempdir, 'clan_logo.png'))
         shutil.copyfile(config['paths']['favicon'], os.path.join(tempdir, 'favicon.ico'))
 
-        clan_processed = process_clan(config, clan, current_war)
-        members_processed = process_members(config, clan, warlog, current_war)
-        current_war_processed = process_current_war(config, current_war)
-        recent_wars = process_recent_wars(config, warlog)
-
         # grab history, if it exists, from output paths
         old_history = None
         history_path = os.path.join(output_path, HISTORY_FILE_NAME)
         if os.path.isfile(history_path):
             with open(history_path, 'r') as myfile:
                 old_history = json.loads(myfile.read())
-        history = get_member_history(members_processed, old_history)
+
+        clan_processed = process_clan(config, clan, current_war)
+        history = get_member_history(clan['memberList'], old_history)
+        members_processed = process_members(config, clan, warlog, current_war, history)
+        current_war_processed = process_current_war(config, current_war)
+        recent_wars = process_recent_wars(config, warlog)
+
 
         # Create environment for template parser
         env = Environment(
