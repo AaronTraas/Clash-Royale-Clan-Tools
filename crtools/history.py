@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from datetime import datetime
+import copy
 
 """Functions for maintaining a historical record of the clan."""
 
@@ -43,6 +44,57 @@ def get_role_change_status(old_role, new_role):
 
     return False
 
+def create_new_member(member, timestamp):
+    # member has a join date,
+    return {
+        'join_date':    timestamp,
+        'role':         member['role'],
+        'status':       'present',
+        'events':       [{
+                            'event': 'join',
+                            'type':  'new',
+                            'role':  member['role'],
+                            'date':  timestamp
+                        }]
+    }
+
+def member_rejoin(historical_member, member, timestamp):
+    updated_member = copy.deepcopy(historical_member)
+    updated_member['events'].append({
+        'event': 'join',
+        'type':  're-join',
+        'role':  member['role'],
+        'date':  timestamp
+    })
+    updated_member['role'] = member['role']
+    updated_member['status'] = 'present'
+
+    return updated_member
+
+def member_role_change(historical_member, member, timestamp):
+    updated_member = copy.deepcopy(historical_member)
+    updated_member['events'].append({
+            'event': 'role change',
+            'type':  get_role_change_status(updated_member['role'], member['role']),
+            'role':  member['role'],
+            'date':  timestamp
+        })
+    updated_member['role'] = member['role']
+
+    return updated_member
+
+def member_quit(historical_member, timestamp):
+    updated_member = copy.deepcopy(historical_member)
+
+    updated_member['events'].append({
+        'event': 'quit',
+        'type':  'left',
+        'role':  updated_member['role'],
+        'date':  timestamp
+    })
+    updated_member['status'] = 'absent'
+
+    return updated_member
 
 def get_member_history(members, old_history=None, date=datetime.now()):
     """ Generates user history. Takes as inputs the list of members
@@ -61,45 +113,46 @@ def get_member_history(members, old_history=None, date=datetime.now()):
     The API does not give us whether or not the user has been kicked
     or voluntarily quit. We can only observe the absence of the member.
     """
-
     timestamp = datetime.timestamp(date)
 
     # basically, validate that old history is formatted properly
     if validate_history(old_history):
-        history = old_history.copy()
+        history = copy.deepcopy(old_history)
         history['last_update'] = timestamp
     else:
         history = {
             'last_update': timestamp,
             'members': {}
         }
+        # if history is new, we want all members to have a join
+        # date of 0, implying that they've joined before recorded
+        # history
         timestamp = 0;
 
+    member_tags = []
     for member in members:
         tag = member['tag']
         new_role = member['role']
         new_role = 'coLeader' if new_role == 'co-leader' else new_role
-        if tag in history['members']:
-            historical_member = history['members'][tag]
-            if historical_member['role'] != member['role']:
-                historical_member['events'].append({
-                        'event': 'role change',
-                        'type':  get_role_change_status(historical_member['role'], member['role']),
-                        'role':  member['role'],
-                        'date':  timestamp
-                    })
-                historical_member['role'] = member['role']
+        member_tags.append(tag)
+        if tag not in history['members']:
+            # No history of this member, therefore they are new.
+            # Create record for user.
+            history['members'][tag] = create_new_member(member, timestamp)
         else:
-            history['members'][tag] = {
-                'join_date':    timestamp,
-                'role':         member['role'],
-                'events':       [{
-                                    'event': 'join',
-                                    'type':  'new',
-                                    'role':  member['role'],
-                                    'date':  timestamp
-                                }]
-            }
+            historical_member = history['members'][tag]
+            if historical_member['status'] == 'absent':
+                # If member exists, but is absent in history, the
+                # member has re-joined
+                history['members'][tag] = member_rejoin(historical_member, member, timestamp)
+            elif historical_member['role'] != member['role']:
+                # Member's role has changed
+                history['members'][tag] = member_role_change(historical_member, member, timestamp)
+
+    # Look for missing members. If they're missing, they quit
+    for tag, member in history['members'].copy().items():
+        if tag not in member_tags:
+            history['members'][tag] = member_quit(member, timestamp)
 
     return history
 
