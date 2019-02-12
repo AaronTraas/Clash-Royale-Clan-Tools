@@ -16,6 +16,7 @@ import tempfile
 
 from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIMissingFieldsError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
+from .history import get_member_history
 
 ARENA_LEAGUE_LOOKUP = {
     'Arena Unknown' : { 'id':  'arena-unknown',     'collection_win': { 'bronze': 1,   'silver': 1,   'gold': 1,   'legendary': 1   } },
@@ -49,6 +50,8 @@ WAR_LEAGUE_LOOKUP = {
     1500 : { 'id': 'gold',      'name': 'Gold League' },
     3000 : { 'id': 'legendary', 'name': 'Legendary League' }
 }
+
+HISTORY_FILE_NAME = 'history.json'
 
 logger = logging.getLogger(__name__)
 
@@ -434,6 +437,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         # will happen in this directory, so that no matter what we do, it
         # won't hose existing stuff.
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
+        output_path = os.path.expanduser(config['paths']['out'])
 
         api = ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
@@ -453,6 +457,14 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         members_processed = process_members(config, clan, warlog, current_war)
         current_war_processed = process_current_war(config, current_war)
         recent_wars = process_recent_wars(config, warlog)
+
+        # grab history, if it exists, from output paths
+        old_history = None
+        history_path = os.path.join(output_path, HISTORY_FILE_NAME)
+        if os.path.isfile(history_path):
+            with open(history_path, 'r') as myfile:
+                old_history = json.loads(myfile.read())
+        history = get_member_history(members_processed, old_history)
 
         # Create environment for template parser
         env = Environment(
@@ -476,6 +488,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         )
 
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
+        write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), history)
 
         # If canonical URL is provided, also render the robots.txt and
         # sitemap.xml
@@ -503,7 +516,6 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             write_object_to_file(os.path.join(log_path, 'currentwar-processed.json'),  current_war_processed)
             write_object_to_file(os.path.join(log_path, 'recent_wars-processed.json'), recent_wars)
 
-        output_path = os.path.expanduser(config['paths']['out'])
         if os.path.exists(output_path):
             # remove contents of output directory to cleanup.
             try:
