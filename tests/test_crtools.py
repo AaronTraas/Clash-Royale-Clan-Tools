@@ -185,6 +185,11 @@ def test_get_war_league_from_score():
     assert crtools.get_war_league_from_score(1501)['name'] == 'Gold League'
     assert crtools.get_war_league_from_score(99999999999999)['name'] == 'Legendary League'
 
+def test_get_collection_win_cards():
+    assert crtools.get_collection_win_cards('gold', 'League 2') == 560
+    assert crtools.get_collection_win_cards('silver', 'League 2') == 320
+    assert crtools.get_collection_win_cards('silver', 'Garbage League (obviously fake)') == 1
+
 def test_get_member_war_status_class():
     assert crtools.get_member_war_status_class(0, 0) == 'na'
     assert crtools.get_member_war_status_class(3, 0) == 'bad'
