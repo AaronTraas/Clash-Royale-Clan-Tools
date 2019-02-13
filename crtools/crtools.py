@@ -135,14 +135,29 @@ def get_member_war_status_class(collection_day_battles, war_day_battles, war_dat
             status = 'good'
     return status
 
-def member_war(config, clan_member, war):
-    member_tag = clan_member['tag']
+def get_war_date(war):
     if 'state' in war:
-        war_date_raw = datetime.strptime(war['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
-        war_date_raw -= timedelta(days=2)
+        if war['state'] == 'warDay':
+            war_date_raw = datetime.strptime(war['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            war_date_raw -= timedelta(days=2)
+        elif war['state'] == 'collectionDay':
+            war_date_raw = datetime.strptime(war['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            war_date_raw -= timedelta(days=1)
+        else: # 'notInWar'
+            return {
+                'status': 'na',
+                'score': 0
+            }
     else:
         war_date_raw = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
-    war_date = datetime.timestamp(war_date_raw)
+        war_date_raw -= timedelta(days=1)
+
+    return datetime.timestamp(war_date_raw)
+
+
+def member_war(config, clan_member, war):
+    member_tag = clan_member['tag']
+    war_date = get_war_date(war)
     join_date = clan_member['join_date']
 
     participation = {
@@ -291,7 +306,8 @@ def process_members(config, clan, warlog, current_war, history):
 
     # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
-    days_from_donation_reset = datetime.utcnow().isoweekday()
+    now = datetime.utcnow()
+    days_from_donation_reset = now.isoweekday()
     if days_from_donation_reset >= 7 or days_from_donation_reset <= 0:
         days_from_donation_reset = 1
 
@@ -306,6 +322,13 @@ def process_members(config, clan, warlog, current_war, history):
             member['join_date_label'] = 'Before recorded history'
         else:
             member['join_date_label'] = datetime.fromtimestamp(member['join_date']).strftime('%Y-%m-%d')
+
+        join_datetime = datetime.fromtimestamp(member['join_date'])
+        if join_datetime > (now - timedelta(days=10)):
+            member['new'] = True
+            logger.debug('New member {}'.format(member['name']))
+        else:
+            member['new'] = False
 
         # calculate the number of daily donations, and the donation status
         # based on threshold set in config

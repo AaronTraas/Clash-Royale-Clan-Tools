@@ -604,6 +604,13 @@ img.war-league {
   padding-left: 0;
 }
 
+#member-table tr.new td.name > strong {
+    display: inline-block;
+    padding-right: 22px;
+    background: url(images/new.svg) no-repeat right center;
+    background-size: contain;
+}
+
 #info table th {
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
