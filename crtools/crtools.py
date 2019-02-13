@@ -208,6 +208,11 @@ def donations_score(config, member, days_from_donation_reset):
 
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
 
+    now = datetime.utcnow()
+    join_datetime = datetime.fromtimestamp(member['join_date'])
+    if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
+        donation_score = 0
+
     return donation_score
 
 def war_score(config, war):

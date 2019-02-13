@@ -604,11 +604,10 @@ img.war-league {
   padding-left: 0;
 }
 
-#member-table tr.new td.name > strong {
-    display: inline-block;
-    padding-right: 22px;
+#member-table tr.new td.name {
+    padding-right: 44px;
     background: url(images/new.svg) no-repeat right center;
-    background-size: contain;
+    background-size: 32px;
 }
 
 #info table th {
@@ -674,6 +673,13 @@ img.war-league {
 #info table .bad {
     border-left: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
+}
+
+#member-table tr.new td.score.ok,
+#member-table tr.new td.donations.ok {
+    background-color: #fff;
+    border-left: none;
+    border-bottom: 1px solid #E1E1E1;
 }
 
 #info table .na {
