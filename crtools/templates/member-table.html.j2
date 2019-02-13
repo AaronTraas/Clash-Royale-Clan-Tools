@@ -104,6 +104,14 @@
                             <br />
                             NOTE: current war <strong>does not</strong> affect score.
                         </div>
+                    {% elif member.currentWar.status == 'not-in-clan' %}
+                        Not in clan
+                        <div class="tooltip">
+                            <strong>{{member.name}}</strong> was not in the clan at the time of this war.
+                            <dl>
+                                <div><dt>War score</dt><dd>N/A</dd></div>
+                            </dl>
+                        </div>
                     {% else %}
                         N/A
                         <div class="tooltip">
@@ -145,6 +153,14 @@
                                 <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
                                 <div><dt>War day battles</dt><dd>{{war.battlesPlayed}}</dd></div>
                                 <div><dt>War day wins</dt><dd>{{war.wins}}</dd></div>
+                                <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
+                            </dl>
+                        </div>
+                    {% elif war.status == 'not-in-clan' %}
+                        Not in clan
+                        <div class="tooltip">
+                            <strong>{{member.name}}</strong> was not in the clan at the time of this war.
+                            <dl>
                                 <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
                         </div>

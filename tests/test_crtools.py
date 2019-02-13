@@ -198,15 +198,16 @@ def test_get_collection_win_cards():
     assert crtools.get_collection_win_cards('silver', 'Garbage League (obviously fake)') == 1
 
 def test_get_member_war_status_class():
-    assert crtools.get_member_war_status_class(0, 0) == 'na'
-    assert crtools.get_member_war_status_class(3, 0) == 'bad'
-    assert crtools.get_member_war_status_class(2, 1) == 'ok'
-    assert crtools.get_member_war_status_class(3, 1) == 'good'
-    assert crtools.get_member_war_status_class(3, 0, True) == 'normal incomplete'
-    assert crtools.get_member_war_status_class(2, 0, True) == 'ok incomplete'
-    assert crtools.get_member_war_status_class(2, 0, True, True) == 'ok incomplete'
-    assert crtools.get_member_war_status_class(2, 1, True, True) == 'ok'
-    assert crtools.get_member_war_status_class(3, 1, True, True) == 'good'
+    assert crtools.get_member_war_status_class(0, 0, 0, 1) == 'not-in-clan'
+    assert crtools.get_member_war_status_class(0, 0, 0, 0) == 'na'
+    assert crtools.get_member_war_status_class(3, 0, 0, 0) == 'bad'
+    assert crtools.get_member_war_status_class(2, 1, 0, 0) == 'ok'
+    assert crtools.get_member_war_status_class(3, 1, 0, 0) == 'good'
+    assert crtools.get_member_war_status_class(3, 0, 0, 0, True) == 'normal incomplete'
+    assert crtools.get_member_war_status_class(2, 0, 0, 0, True) == 'ok incomplete'
+    assert crtools.get_member_war_status_class(2, 0, 0, 0, True, True) == 'ok incomplete'
+    assert crtools.get_member_war_status_class(2, 1, 0, 0, True, True) == 'ok'
+    assert crtools.get_member_war_status_class(3, 1, 0, 0, True, True) == 'good'
 
 def test_warlog_labels(tmpdir):
     labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG)
@@ -290,16 +291,19 @@ def test_war_score(tmpdir):
         "wins": 1,
         "collectionDayBattlesPlayed": 3,
         "collectionBattleWins": 2,
-        "collectionBattleLosses": 0
+        "collectionBattleLosses": 0,
+        "status": "na"
     }
     war_incomplete = {
         "battlesPlayed": 0,
         "wins": 0,
         "collectionDayBattlesPlayed": 3,
         "collectionBattleWins": 2,
-        "collectionBattleLosses": 0
+        "collectionBattleLosses": 0,
+        "status": "na"
     }
-    war_na = {}
+    war_na = {"status": "na"}
+    war_new = {"status": "not-in-clan"}
 
     config_file = tmpdir.mkdir('test_war_score').join('testfile')
     config_file.write(__config_file_score__)
@@ -308,6 +312,7 @@ def test_war_score(tmpdir):
     assert crtools.war_score(config, war_complete)   == 24
     assert crtools.war_score(config, war_incomplete) == -26
     assert crtools.war_score(config, war_na)         == -1
+    assert crtools.war_score(config, war_new)        == 0
 
 def test_process_recent_wars(tmpdir):
     config_file = tmpdir.mkdir('test_process_recent_wars').join('config.ini')

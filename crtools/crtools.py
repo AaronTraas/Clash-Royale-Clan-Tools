@@ -5,7 +5,7 @@ __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
 import codecs
-from datetime import datetime, date, timezone
+from datetime import datetime, date, timezone, timedelta
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 import json
 import logging
@@ -110,8 +110,11 @@ def get_collection_win_cards(war_league, arena_league):
 
     return collection_win_lookup[war_league]
 
-def get_member_war_status_class(collection_day_battles, war_day_battles, current_war=False, war_day=False):
+def get_member_war_status_class(collection_day_battles, war_day_battles, war_date, join_date, current_war=False, war_day=False):
     """ returns CSS class(es) for a war log entry for a given member """
+    if war_date < join_date:
+        return 'not-in-clan'
+
     status = 'normal'
     if current_war:
         if collection_day_battles < 3:
@@ -134,13 +137,24 @@ def get_member_war_status_class(collection_day_battles, war_day_battles, current
 
 def member_war(config, clan_member, war):
     member_tag = clan_member['tag']
-    participation = {'status': 'na', 'score': config['score']['war_non_participation']}
+    if 'state' in war:
+        war_date_raw = datetime.strptime(war['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+        war_date_raw -= timedelta(days=2)
+    else:
+        war_date_raw = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
+    war_date = datetime.timestamp(war_date_raw)
+    join_date = clan_member['join_date']
+
+    participation = {
+        'status': get_member_war_status_class(0, 0, war_date, join_date)
+    }
+    participation['score'] = war_score(config, participation)
     if 'participants' in war:
         for member in war['participants']:
             if member['tag'] == member_tag:
                 participation = member.copy()
                 if 'standings' in war:
-                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'])
+                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
 
                     participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])['id']
                     participation['collectionWinCards'] = get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
@@ -149,7 +163,7 @@ def member_war(config, clan_member, war):
                     participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
                     participation['score'] = war_score(config, participation)
                 else:
-                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], True, war['state']=='warDay')
+                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date, True, war['state']=='warDay')
 
     return participation
 
@@ -185,6 +199,8 @@ def war_score(config, war):
     """ Tally the score for a given war """
 
     war_score = 0
+    if war['status'] == 'not-in-clan':
+        return 0;
     if 'battlesPlayed' in war:
         if war['battlesPlayed'] >= 1:
             war_score += war['battlesPlayed'] * config['score']['war_battle_played']

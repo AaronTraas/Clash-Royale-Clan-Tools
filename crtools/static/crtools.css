@@ -674,6 +674,12 @@ img.war-league {
     font-weight: normal;
 }
 
+#info table .not-in-clan {
+    background-color: #EEE;
+    color: #999;
+    font-weight: normal;
+}
+
 #info table .war em {
     font-weight: normal;
 }

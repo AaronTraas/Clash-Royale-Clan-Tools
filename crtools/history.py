@@ -132,8 +132,7 @@ def get_member_history(members, old_history=None, date=datetime.now()):
     member_tags = []
     for member in members:
         tag = member['tag']
-        new_role = member['role']
-        new_role = 'coLeader' if new_role == 'co-leader' else new_role
+        member['role'] = 'coLeader' if member['role'] == 'co-leader' else member['role']
         member_tags.append(tag)
         if tag not in history['members']:
             # No history of this member, therefore they are new.
