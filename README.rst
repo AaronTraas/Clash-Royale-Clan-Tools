@@ -128,6 +128,9 @@ This project uses SonarQube for static analysis. The results of analysis
 are at `SonarCloud <https://sonarcloud.io/dashboard?id=AaronTraas_Clash-Royale-Clan-Tools>`_.
 The code quality and test coverage are a work in progress.
 
+If you wish to discuss development of this project, feel free to join
+us on `Discord <https://discord.gg/cvYhavb>`_.
+
 ==================================================
 Contributors
 ==================================================
