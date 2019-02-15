@@ -180,23 +180,6 @@ def test_write_object_to_file(tmpdir):
 
     assert file_contents_object == json.loads(file_out_contents)
 
-def test_get_war_league_from_score():
-    assert crtools.get_war_league_from_score(200)['name'] == 'Bronze League'
-    assert crtools.get_war_league_from_score(1501)['name'] == 'Gold League'
-    assert crtools.get_war_league_from_score(99999999999999)['name'] == 'Legendary League'
-
-def test_get_collection_win_cards():
-    # The below isn't comprehensive, nor specific. It's mostly checking
-    # if all the war leagues exist and if all the valid arena leagues
-    # result in a > 1 value. As the league makeup and scoring rules
-    # are likely to change from time to time, no reason to update the
-    # tests every time that happens.
-    assert crtools.get_collection_win_cards('legendary', 'League 9') > 1
-    assert crtools.get_collection_win_cards('gold', 'League 1') > 1
-    assert crtools.get_collection_win_cards('silver', 'Arena 9') > 1
-    assert crtools.get_collection_win_cards('bronze', 'Arena 1') > 1
-    assert crtools.get_collection_win_cards('silver', 'Garbage League (obviously fake)') == 1
-
 def test_get_member_war_status_class():
     assert crtools.get_member_war_status_class(0, 0, 0, 1) == 'not-in-clan'
     assert crtools.get_member_war_status_class(0, 0, 0, 0) == 'na'

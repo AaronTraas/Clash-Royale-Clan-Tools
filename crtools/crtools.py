@@ -14,42 +14,10 @@ import os
 import shutil
 import tempfile
 
-from .api import ClashRoyaleAPI, ClashRoyaleAPIError, ClashRoyaleAPIMissingFieldsError, ClashRoyaleAPIAuthenticationError, ClashRoyaleAPIClanNotFound
 from ._version import __version__
-from .history import get_member_history
-
-ARENA_LEAGUE_LOOKUP = {
-    'Arena Unknown' : { 'id':  'arena-unknown',     'collection_win': { 'bronze': 1,   'silver': 1,   'gold': 1,   'legendary': 1   } },
-    'Arena 1'       : { 'id':  'arena-1',           'collection_win': { 'bronze': 40,  'silver': 80,  'gold': 140, 'legendary': 220 } },
-    'Arena 2'       : { 'id':  'arena-2',           'collection_win': { 'bronze': 50,  'silver': 100, 'gold': 175, 'legendary': 275 } },
-    'Arena 3'       : { 'id':  'arena-3',           'collection_win': { 'bronze': 60,  'silver': 120, 'gold': 210, 'legendary': 330 } },
-    'Arena 4'       : { 'id':  'arena-4',           'collection_win': { 'bronze': 70,  'silver': 140, 'gold': 245, 'legendary': 385 } },
-    'Arena 5'       : { 'id':  'arena-5',           'collection_win': { 'bronze': 80,  'silver': 160, 'gold': 280, 'legendary': 440 } },
-    'Arena 6'       : { 'id':  'arena-6',           'collection_win': { 'bronze': 90,  'silver': 180, 'gold': 315, 'legendary': 495 } },
-    'Arena 7'       : { 'id':  'arena-7',           'collection_win': { 'bronze': 100, 'silver': 200, 'gold': 350, 'legendary': 550 } },
-    'Arena 8'       : { 'id':  'arena-8',           'collection_win': { 'bronze': 110, 'silver': 220, 'gold': 385, 'legendary': 605 } },
-    'Arena 9'       : { 'id':  'arena-9',           'collection_win': { 'bronze': 120, 'silver': 240, 'gold': 420, 'legendary': 660 } },
-    'Arena 10'      : { 'id':  'arena-10',          'collection_win': { 'bronze': 130, 'silver': 260, 'gold': 455, 'legendary': 715 } },
-    'Arena 11'      : { 'id':  'arena-11',          'collection_win': { 'bronze': 140, 'silver': 280, 'gold': 490, 'legendary': 770 } },
-    'Arena 12'      : { 'id':  'arena-12',          'collection_win': { 'bronze': 150, 'silver': 300, 'gold': 525, 'legendary': 825 } },
-    'Arena 13'      : { 'id':  'arena-13',          'collection_win': { 'bronze': 150, 'silver': 300, 'gold': 525, 'legendary': 825 } },
-    'League 1'      : { 'id':  'challenger-1',      'collection_win': { 'bronze': 160, 'silver': 320, 'gold': 560, 'legendary': 880 } },
-    'League 2'      : { 'id':  'challenger-2',      'collection_win': { 'bronze': 160, 'silver': 320, 'gold': 560, 'legendary': 880 } },
-    'League 3'      : { 'id':  'challenger-3',      'collection_win': { 'bronze': 160, 'silver': 320, 'gold': 560, 'legendary': 880 } },
-    'League 4'      : { 'id':  'master-1',          'collection_win': { 'bronze': 170, 'silver': 340, 'gold': 595, 'legendary': 935 } },
-    'League 5'      : { 'id':  'master-2',          'collection_win': { 'bronze': 170, 'silver': 340, 'gold': 595, 'legendary': 935 } },
-    'League 6'      : { 'id':  'master-3',          'collection_win': { 'bronze': 170, 'silver': 340, 'gold': 595, 'legendary': 935 } },
-    'League 7'      : { 'id':  'champion',          'collection_win': { 'bronze': 180, 'silver': 360, 'gold': 630, 'legendary': 990 } },
-    'League 8'      : { 'id':  'grand-champion',    'collection_win': { 'bronze': 180, 'silver': 360, 'gold': 630, 'legendary': 990 } },
-    'League 9'      : { 'id':  'ultimate-champion', 'collection_win': { 'bronze': 180, 'silver': 360, 'gold': 630, 'legendary': 990 } }
-}
-
-WAR_LEAGUE_LOOKUP = {
-    0    : { 'id': 'bronze',    'name': 'Bronze League' },
-    600  : { 'id': 'silver',    'name': 'Silver League' },
-    1500 : { 'id': 'gold',      'name': 'Gold League' },
-    3000 : { 'id': 'legendary', 'name': 'Legendary League' }
-}
+from crtools import api
+from crtools import history
+from crtools import leagueinfo
 
 HISTORY_FILE_NAME = 'history.json'
 
@@ -80,16 +48,6 @@ def warlog_labels(warlog, clan_tag):
         labels.append(label)
     return labels
 
-def get_war_league_from_score(clan_score):
-    """ Figure out which war league a clan trophy count corresponds to,
-    and return war league details. """
-    league = 'ERROR'
-    for score, lookup_table in WAR_LEAGUE_LOOKUP.items():
-        if clan_score >= score:
-            league = lookup_table
-
-    return league
-
 def get_war_league_from_war(war, clan_tag):
     """ Figure out which war league a clan was in during a given war. """
     standing = war['standings']
@@ -99,16 +57,7 @@ def get_war_league_from_war(war, clan_tag):
         if clan['clan']['tag'] == clan_tag:
             clan_score = clan['clan']['clanScore']
 
-    return get_war_league_from_score(clan_score)
-
-def get_collection_win_cards(war_league, arena_league):
-    if arena_league in ARENA_LEAGUE_LOOKUP:
-        league_lookup = ARENA_LEAGUE_LOOKUP[arena_league]
-    else:
-        league_lookup = ARENA_LEAGUE_LOOKUP['Arena Unknown']
-    collection_win_lookup = league_lookup['collection_win']
-
-    return collection_win_lookup[war_league]
+    return leagueinfo.get_war_league_from_score(clan_score)
 
 def get_member_war_status_class(collection_day_battles, war_day_battles, war_date, join_date, current_war=False, war_day=False):
     """ returns CSS class(es) for a war log entry for a given member """
@@ -168,17 +117,18 @@ def member_war(config, clan_member, war):
         for member in war['participants']:
             if member['tag'] == member_tag:
                 participation = member.copy()
-                if 'standings' in war:
-                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
-
-                    participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])['id']
-                    participation['collectionWinCards'] = get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
-
-                    participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
-                    participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
-                    participation['score'] = war_score(config, participation)
-                else:
+                if 'standings' not in war:
                     participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date, True, war['state']=='warDay')
+                    continue;
+
+                participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
+
+                participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])['id']
+                participation['collectionWinCards'] = leagueinfo.get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
+
+                participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
+                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
+                participation['score'] = war_score(config, participation)
 
     return participation
 
@@ -221,18 +171,20 @@ def war_score(config, war):
     war_score = 0
     if war['status'] == 'not-in-clan':
         return 0;
-    if 'battlesPlayed' in war:
-        if war['battlesPlayed'] >= 1:
-            war_score += war['battlesPlayed'] * config['score']['war_battle_played']
-            war_score += war['wins'] * config['score']['war_battle_won']
-            war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
-        else:
-            war_score += config['score']['war_battle_incomplete']
 
-        war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
-        war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
-    else:
-        war_score += config['score']['war_non_participation']
+    if 'battlesPlayed' not in war:
+        return config['score']['war_non_participation']
+
+    war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
+    war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
+
+    if war['battlesPlayed'] < 1:
+        war_score += config['score']['war_battle_incomplete']
+        return war_score
+
+    war_score += war['battlesPlayed'] * config['score']['war_battle_played']
+    war_score += war['wins'] * config['score']['war_battle_won']
+    war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
 
     return war_score
 
@@ -305,7 +257,7 @@ def get_scoring_rules(config):
 
     return rules
 
-def process_members(config, clan, warlog, current_war, history):
+def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
 
@@ -322,7 +274,7 @@ def process_members(config, clan, warlog, current_war, history):
     for member_src in members:
         member = member_src.copy()
 
-        member['join_date'] = history['members'][member['tag']]['join_date']
+        member['join_date'] = member_history['members'][member['tag']]['join_date']
         if member['join_date'] == 0:
             member['join_date_label'] = 'Before recorded history'
         else:
@@ -388,10 +340,7 @@ def process_members(config, clan, warlog, current_war, history):
         else:
             member['trophiesStatus'] = 'ok'
 
-        if member['arena']['name'] in ARENA_LEAGUE_LOOKUP:
-            member['arenaLeague'] = ARENA_LEAGUE_LOOKUP[member['arena']['name']]['id']
-        else:
-            member['arenaLeague'] = ARENA_LEAGUE_LOOKUP['Arena Unknown']['id']
+        member['arenaLeague'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
 
         # Figure out whether member is on the leadership team by role
         if member['role'] == 'leader' or member['role'] == 'coLeader':
@@ -414,7 +363,7 @@ def process_clan(config, clan, current_war):
     del clan_processed['memberList']
 
     # figure out clan war league from clan score
-    league = get_war_league_from_score(clan['clanWarTrophies'])
+    league = leagueinfo.get_war_league_from_score(clan['clanWarTrophies'])
 
     clan_processed['warLeague']      = league['id']
     clan_processed['warLeagueName']  = league['name']
@@ -427,36 +376,37 @@ def process_current_war(config, current_war):
 
     if current_war_processed['state'] == 'notInWar':
         current_war_processed['stateLabel'] = 'The clan is not currently engaged in a war.'
+        return current_war_processed
+
+    cards = 0;
+    for member in current_war_processed['participants']:
+        cards += member['cardsEarned']
+    current_war_processed['cards'] = cards
+
+    now = datetime.utcnow()
+    if current_war_processed['state'] == 'collectionDay':
+        current_war_processed['stateLabel'] = 'Collection Day'
+
+        collection_end_time = datetime.strptime(current_war_processed['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+        collection_end_time_delta = math.floor((collection_end_time - now).seconds / 3600)
+        current_war_processed['collectionEndTimeLabel'] = '{} hours'.format(collection_end_time_delta)
+        current_war_processed['endLabel'] = '1 day, {} hours'.format(collection_end_time_delta)
     else:
-        cards = 0;
-        for member in current_war_processed['participants']:
-            cards += member['cardsEarned']
-        current_war_processed['cards'] = cards
+        current_war_processed['stateLabel'] = 'War Day'
 
-        now = datetime.utcnow()
-        if current_war_processed['state'] == 'collectionDay':
-            current_war_processed['stateLabel'] = 'Collection Day'
+        end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+        end_time_delta = math.floor((end_time - now).seconds / 3600)
+        current_war_processed['collectionEndTimeLabel'] = 'Complete'
+        current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
 
-            collection_end_time = datetime.strptime(current_war_processed['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
-            collection_end_time_delta = math.floor((collection_end_time - now).seconds / 3600)
-            current_war_processed['collectionEndTimeLabel'] = '{} hours'.format(collection_end_time_delta)
-            current_war_processed['endLabel'] = '1 day, {} hours'.format(collection_end_time_delta)
-        else:
-            current_war_processed['stateLabel'] = 'War Day'
+        # calculate battles remaining for each clan
+        for clan in current_war_processed['clans']:
+            clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
+            if clan['battlesRemaining'] < 0:
+                clan['battlesRemaining'] = 0; # pragma: no coverage
 
-            end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
-            end_time_delta = math.floor((end_time - now).seconds / 3600)
-            current_war_processed['collectionEndTimeLabel'] = 'Complete'
-            current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
-
-            # calculate battles remaining for each clan
-            for clan in current_war_processed['clans']:
-                clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
-                if clan['battlesRemaining'] < 0:
-                    clan['battlesRemaining'] = 0; # pragma: no coverage
-
-            # sort clans by who's winning
-            current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
+        # sort clans by who's winning
+        current_war_processed['clans'] = sorted(current_war_processed['clans'], key=lambda k: (k['wins'], k['crowns']), reverse=True)
 
     return current_war_processed
 
@@ -501,12 +451,12 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         output_path = os.path.expanduser(config['paths']['out'])
 
-        api = ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
+        cr_api = api.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
-        clan = api.get_clan()
-        warlog = api.get_warlog()
-        current_war = api.get_current_war()
+        clan = cr_api.get_clan()
+        warlog = cr_api.get_warlog()
+        current_war = cr_api.get_current_war()
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
@@ -523,8 +473,8 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
                 old_history = json.loads(myfile.read())
 
         clan_processed = process_clan(config, clan, current_war)
-        history = get_member_history(clan['memberList'], old_history)
-        members_processed = process_members(config, clan, warlog, current_war, history)
+        member_history = history.get_member_history(clan['memberList'], old_history)
+        members_processed = process_members(config, clan, warlog, current_war, member_history)
         current_war_processed = process_current_war(config, current_war)
         recent_wars = process_recent_wars(config, warlog)
 
@@ -551,7 +501,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         )
 
         write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
-        write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), history)
+        write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), member_history)
 
         # If canonical URL is provided, also render the robots.txt and
         # sitemap.xml
@@ -613,7 +563,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         except FileExistsError as e:
             logger.error('File Exists: could not write output to: \n\t{}'.format(e.filename))
 
-    except ClashRoyaleAPIAuthenticationError as e:
+    except api.ClashRoyaleAPIAuthenticationError as e:
         msg = 'developer.clashroyale.com authentication error: {}'.format(e)
         if not config['api']['api_key']:
             msg += '\n - API key not provided'
@@ -621,13 +571,13 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             msg += '\n - API key not valid'
         logger.error(msg)
 
-    except ClashRoyaleAPIClanNotFound as e:
+    except api.ClashRoyaleAPIClanNotFound as e:
         logger.error('developer.clashroyale.com: {}'.format(e))
 
-    except ClashRoyaleAPIError as e:
+    except api.ClashRoyaleAPIError as e:
         logger.error('developer.clashroyale.com error: {}'.format(e))
 
-    except ClashRoyaleAPIMissingFieldsError as e:
+    except api.ClashRoyaleAPIMissingFieldsError as e:
         logger.error('error: {}'.format(e))
 
     finally:
