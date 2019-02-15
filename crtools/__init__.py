@@ -74,6 +74,7 @@ def get_config_from_args(args):
     if args.canonical_url:
         config['www']['canonical_url'] = args.canonical_url
     if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
         config['crtools']['debug'] = True
 
     return config
