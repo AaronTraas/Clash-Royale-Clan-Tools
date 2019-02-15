@@ -85,6 +85,10 @@ def get_member_war_status_class(collection_day_battles, war_day_battles, war_dat
     return status
 
 def get_war_date(war):
+    """ returns the datetime this war was created. If it's an ongoing
+    war, calculate based on the dates given when the war started.
+    If it's a previous war fromt he warlog, we retrieve the creation
+    date. What's returned is a timestamp. """
     if 'state' in war:
         if war['state'] == 'warDay':
             war_date_raw = datetime.strptime(war['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
@@ -92,11 +96,6 @@ def get_war_date(war):
         elif war['state'] == 'collectionDay':
             war_date_raw = datetime.strptime(war['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
             war_date_raw -= timedelta(days=1)
-        else: # 'notInWar'
-            return {
-                'status': 'na',
-                'score': 0
-            }
     else:
         war_date_raw = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
         war_date_raw -= timedelta(days=1)
@@ -105,20 +104,33 @@ def get_war_date(war):
 
 
 def member_war(config, clan_member, war):
+
+    # Bail early if this is for the current war, and there is no
+    # current war
+    if 'state' in war and war['state'] == 'notInWar':
+        return {
+            'status': 'na',
+            'score': 0
+        }
+
     member_tag = clan_member['tag']
     war_date = get_war_date(war)
     join_date = clan_member['join_date']
 
     participation = {
-        'status': get_member_war_status_class(0, 0, war_date, join_date)
+        'status': get_member_war_status_class(0, 0, war_date, join_date),
     }
     participation['score'] = war_score(config, participation)
+    if 'state' in war:
+        participation['score'] = 0
+
     if 'participants' in war:
         for member in war['participants']:
             if member['tag'] == member_tag:
                 participation = member.copy()
-                if 'standings' not in war:
+                if 'state' in war:
                     participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date, True, war['state']=='warDay')
+                    participation['score'] = 0
                     continue;
 
                 participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
@@ -160,6 +172,7 @@ def donations_score(config, member, days_from_donation_reset):
 
     now = datetime.utcnow()
     join_datetime = datetime.fromtimestamp(member['join_date'])
+
     if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
         donation_score = 0
 
