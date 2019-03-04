@@ -39,6 +39,7 @@
                                 <div><dt>XP Level</dt><dd>{{member.expLevel}}</dd></div>
                                 <div><dt>Arena</dt><dd>{{member.arena.name}}</dd></div>
                                 <div><dt>Join Date</dt><dd>{{member.join_date_label}}</dd></div>
+                                <div><dt>Last Activity</dt><dd>{{member.activity_date_label}}</dd></div>
                             </dl>
                         </div>
                     </td>
@@ -67,6 +68,7 @@
                             <dl>
                                 <div><dt>Cards given</dt><dd>{{member.donations}}</dd></div>
                                 <div><dt>Cards recieved</dt><dd>{{member.donationsReceived}}</dd></div>
+                                <div><dt>Cards given last week</dt><dd>{{member.donations_last_week}}</dd></div>
                                 <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
                         </div>

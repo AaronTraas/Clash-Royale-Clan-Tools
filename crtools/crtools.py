@@ -298,12 +298,14 @@ def process_members(config, clan, warlog, current_war, member_history):
 
         historical_member = member_history['members'][member['tag']]
         member['join_date'] = historical_member['join_date']
-        member['donations_last_week'] = historical_member['join_date']
+        member['last_activity_date'] = historical_member['last_activity_date']
+        member['donations_last_week'] = historical_member['donations_last_week']
 
         if member['join_date'] == 0:
             member['join_date_label'] = 'Before recorded history'
         else:
             member['join_date_label'] = datetime.fromtimestamp(member['join_date']).strftime('%Y-%m-%d')
+        member['activity_date_label'] = datetime.fromtimestamp(member['last_activity_date']).strftime('%Y-%m-%d')
 
         join_datetime = datetime.fromtimestamp(member['join_date'])
         if join_datetime > (now - timedelta(days=10)):
