@@ -21,6 +21,11 @@ from crtools import leagueinfo
 
 HISTORY_FILE_NAME = 'history.json'
 
+MAX_CLAN_SIZE = 50
+
+SUGGESTION_RECRUIT ='<strong>Recruit new members!</strong> The team needs some fresh blood.'
+SUGGESTION_NO_SUGGESTIONS = 'No suggestions at this time. The clan is in good order.'
+
 logger = logging.getLogger(__name__)
 
 def write_object_to_file(file_path, obj):
@@ -201,13 +206,13 @@ def war_score(config, war):
 
     return war_score
 
-def get_suggestions(config, members):
+def get_suggestions(config, processed_members):
     """ Returns list of suggestions for the clan leadership to perform.
     Suggestions are to kick, demote, or promote. Suggestions are based on
     user score, and various thresholds in configuration. """
 
     # sort members by score, and preserve trophy order if relevant
-    members_by_score = sorted(members, key=lambda k: (k['score'], k['trophies']))
+    members_by_score = sorted(processed_members, key=lambda k: (k['score'], k['trophies']))
 
     logger.debug("min_clan_size: {}".format(config['score']['min_clan_size']))
     logger.debug("# members: {}".format(len(members_by_score)))
@@ -237,10 +242,10 @@ def get_suggestions(config, members):
 
     # If there are no other suggestions, give some sort of message
     if len(suggestions) == 0:
-        if config['score']['min_clan_size'] >= len(members_by_score):
-            suggestions.append('<strong>Recruit new members!</strong> The team needs some fresh blood.')
+        if len(members_by_score) < MAX_CLAN_SIZE:
+            suggestions.append(SUGGESTION_RECRUIT)
         else:
-            suggestions.append('No suggestions at this time. The clan is in good order.')
+            suggestions.append(SUGGESTION_NO_SUGGESTIONS)
 
     return suggestions
 

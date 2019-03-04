@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+import copy
 import json
 import os
 import shutil
 
-from crtools import crtools, load_config_file
+from crtools import crtools, load_config_file, history
 
 CLAN_TAG = '#FakeClanTag'
 
@@ -81,6 +82,19 @@ __fake_clan__ = {
             "expLevel": 8,
             "trophies": 2144,
             "donations": 0,
+            "arena": {
+                "id": 54000008,
+                "name": "Arena 7"
+            },
+            "join_date": 0
+        },
+        {
+            "tag": "#EEEEEE",
+            "name": "MemberPersonToBePromoted",
+            "role": "member",
+            "expLevel": 8,
+            "trophies": 2144,
+            "donations": 100000000,
             "arena": {
                 "id": 54000008,
                 "name": "Arena 7"
@@ -352,6 +366,78 @@ def test_get_scoring_rules(tmpdir):
     assert rules[4]['no']           == 0
     assert rules[4]['yes_status']   == 'good'
     assert rules[4]['no_status']    == 'normal'
+
+def test_get_suggestions_recruit(tmpdir):
+    config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
+    config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
+    config = load_config_file(config_file.realpath())
+
+    h = history.get_member_history(__fake_clan__['memberList'], None)
+
+    members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
+
+    suggestions = crtools.get_suggestions(config, members)
+
+    print(suggestions)
+
+    assert len(suggestions) == 1
+    assert suggestions[0] == crtools.SUGGESTION_RECRUIT
+
+def test_get_suggestions_nosuggestions(tmpdir):
+    config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
+    config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999\nmin_clan_size={}'.format(crtools.MAX_CLAN_SIZE))
+    config = load_config_file(config_file.realpath())
+
+    members = []
+    for i in range(0, crtools.MAX_CLAN_SIZE):
+        members.append({
+            "role": "leader",
+            "trophies": 9999,
+            "donations": 999,
+            "score": 999,
+            "vacation": False,
+            "safe": True,
+            "blacklist": False
+        })
+
+    suggestions = crtools.get_suggestions(config, members)
+
+    assert len(suggestions) == 1
+    assert suggestions[0] == crtools.SUGGESTION_NO_SUGGESTIONS
+
+def test_get_suggestions_kick(tmpdir):
+    config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
+    config_file.write(__config_file_score__ + '\nmin_clan_size=1')
+    config = load_config_file(config_file.realpath())
+
+    h = history.get_member_history(__fake_clan__['memberList'], None)
+
+    members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
+
+    suggestions = crtools.get_suggestions(config, members)
+
+    print(suggestions)
+
+    assert suggestions[0].startswith('Kick')
+    assert members[3]['name'] in suggestions[0]
+
+def test_get_suggestions_promote_demote(tmpdir):
+    config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
+    config_file.write(__config_file_score__ + '\nthreshold_promote=10')
+    config = load_config_file(config_file.realpath())
+
+    h = history.get_member_history(__fake_clan__['memberList'], None)
+
+    members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
+
+    suggestions = crtools.get_suggestions(config, members)
+
+    print(suggestions)
+
+    assert suggestions[0].startswith('Demote')
+    assert members[2]['name'] in suggestions[0]
+    assert suggestions[1].startswith('Promote')
+    assert members[4]['name'] in suggestions[1]
 
 def test_process_clan(tmpdir):
     config_file = tmpdir.mkdir('test_process_clan').join('testfile')
