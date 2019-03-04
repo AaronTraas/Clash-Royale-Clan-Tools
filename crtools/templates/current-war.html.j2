@@ -9,13 +9,15 @@
         {% if current_war.state in ['collectionDay', 'warDay'] %}
             {% if current_war.state == 'collectionDay' %}
             <div><dt>Collection Day End</dt><dd>{{current_war.collectionEndTimeLabel}}</dd></div>
-            {% endif %}
+            {% else %}
             <div><dt>War End</dt><dd>{{current_war.endLabel}}</dd></div>
+            {% endif %}
             <div><dt>Participants</dt><dd>{{current_war.clan.participants}}</dd></div>
-            <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
             {% if current_war.state == 'warDay' %}
             <div class="crowns"><dt>Crowns</dt><dd>{{current_war.clan.crowns}}</dd></div>
             <div class="wins"><dt>Victories</dt><dd>{{current_war.clan.wins}}</dd></div>
+            {% else %}
+            <div class="cards"><dt>Cards Earned</dt><dd>{{current_war.cards}}</dd></div>
             {% endif %}
         {% endif %}
         </dl>
