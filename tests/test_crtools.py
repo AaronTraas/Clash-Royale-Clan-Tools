@@ -26,6 +26,11 @@ war_participation=0
 war_non_participation=-1
 '''
 
+__fake_history__ = {
+    "last_update": 0,
+    "members": ""
+}
+
 __fake_clan__ = {
     "tag": CLAN_TAG,
     "name": "Agrassar",
@@ -55,7 +60,7 @@ __fake_clan__ = {
             "role": "coLeader",
             "expLevel": 13,
             "trophies": 4418,
-            "donations": 100,
+            "donations": 150,
             "arena": {
                 "id": 54000013,
                 "name": "League 2"
@@ -316,15 +321,15 @@ def test_donations_score(tmpdir):
     config_file.write(__config_file_score__)
     config = load_config_file(config_file.realpath())
 
-    assert crtools.donations_score(config, __fake_clan__['memberList'][0], 6) == 38
-    assert crtools.donations_score(config, __fake_clan__['memberList'][0], 3) == 40
-    assert crtools.donations_score(config, __fake_clan__['memberList'][0], 0) == 40
-    assert crtools.donations_score(config, __fake_clan__['memberList'][1], 3) == 21
-    assert crtools.donations_score(config, __fake_clan__['memberList'][1], 0) == 40
-    assert crtools.donations_score(config, __fake_clan__['memberList'][2], 3) == -9
-    assert crtools.donations_score(config, __fake_clan__['memberList'][2], 0) == 10
-    assert crtools.donations_score(config, __fake_clan__['memberList'][3], 3) == -52
-    assert crtools.donations_score(config, __fake_clan__['memberList'][3], 0) == 0
+    date = datetime(2019, 2, 12, 7, 32, 1, 0)
+    timestamp = datetime.timestamp(date)
+    members = history.get_member_history(__fake_clan__['memberList'], __fake_history__, date)["members"]
+
+    member_tag_0 = __fake_clan__['memberList'][0]['tag']
+
+    assert crtools.donations_score(config, members[member_tag_0], 6) == -49
+    assert crtools.donations_score(config, members[member_tag_0], 3) == -6
+    assert crtools.donations_score(config, members[member_tag_0], 0) == 40
 
     # make this member new, so it trips the rule that removes
     # penalties from new members
@@ -476,7 +481,7 @@ def test_process_current_war_warday():
     assert 'endLabel' in processed_current_war
 
 def test_war_score(tmpdir):
-    # FIXME -- should replace once we test crtools.process_members()
+    # FIXME: should replace once we test crtools.process_members()
     war_complete = {
         "battlesPlayed": 1,
         "wins": 1,

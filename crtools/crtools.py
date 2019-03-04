@@ -161,22 +161,26 @@ def member_warlog(config, clan_member, warlog):
 def donations_score(config, member, days_from_donation_reset):
     """ Calculate the score for a given member's daily donations. """
 
+    now = datetime.utcnow()
+    join_datetime = datetime.fromtimestamp(member['join_date'])
+
     # calculate score based `days_from_donation_reset`.
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
-    donation_score = member['donations'] - target_donations
+    donation_score = member['donations']
+
+    if join_datetime < (now - timedelta(days=days_from_donation_reset + 7)):
+        days_from_donation_reset += 7
+        donation_score += member['donations_last_week']
 
     # exempt additional penalties if at least a day hasn't passed
     if days_from_donation_reset > 1:
-        donation_score = round(donation_score / days_from_donation_reset)
+        donation_score = round(donation_score / days_from_donation_reset) - target_donations
 
         # bigger penalty for 0 donations
         if member['donations'] == 0:
             donation_score += config['score']['donations_zero']
 
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
-
-    now = datetime.utcnow()
-    join_datetime = datetime.fromtimestamp(member['join_date'])
 
     if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
         donation_score = 0
@@ -292,7 +296,10 @@ def process_members(config, clan, warlog, current_war, member_history):
     for member_src in members:
         member = member_src.copy()
 
-        member['join_date'] = member_history['members'][member['tag']]['join_date']
+        historical_member = member_history['members'][member['tag']]
+        member['join_date'] = historical_member['join_date']
+        member['donations_last_week'] = historical_member['join_date']
+
         if member['join_date'] == 0:
             member['join_date_label'] = 'Before recorded history'
         else:
