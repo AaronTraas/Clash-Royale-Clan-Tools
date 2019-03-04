@@ -1,18 +1,22 @@
 from crtools import history
 from datetime import datetime
+import copy
 
 __fake_members__ = [
     {
         "tag": "#AAAAAA",
         "role": "leader",
+        "donations": 100
     },
     {
         "tag": "#CCCCCC",
         "role": "member",
+        "donations": 10
     },
     {
         "tag": "#DDDDDD",
         "role": "elder",
+        "donations": 0
     }
 ]
 
@@ -129,6 +133,18 @@ def test_get_member_history_role_change():
     assert members[__fake_members__[2]['tag']]['events'][1]['type'] == 'promotion'
     assert members[__fake_members__[2]['tag']]['events'][1]['role'] == __fake_members__[2]['role']
     assert members[__fake_members__[2]['tag']]['events'][1]['date'] == timestamp
+
+def test_get_member_history_donations_reset():
+    date = datetime(2019, 2, 12, 7, 32, 1, 0)
+    timestamp = datetime.timestamp(date)
+    members_copy = copy.deepcopy(__fake_members__)
+    members_copy[0]['donations'] = 5
+    h = history.get_member_history(__fake_members__, __fake_history__, date)
+    h2 = history.get_member_history(members_copy, h, date)
+
+    members = h2['members']
+    assert members[__fake_members__[0]['tag']]['donations'] == 5
+    assert members[__fake_members__[0]['tag']]['donations_last_week'] == __fake_members__[0]['donations']
 
 def test_get_member_history_unchanged():
     """ Getting history twice. Nothing should be changed except the

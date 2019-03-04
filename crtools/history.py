@@ -44,19 +44,34 @@ def get_role_change_status(old_role, new_role):
 
     return False
 
+def cleanup_member_history(member, history, timestamp):
+    """ make sure member history entry has all the necessary fields.
+    This is here to make upgrades smooth """
+    if 'join_date' not in history:
+        history['join_date'] = timestamp
+    if 'last_activity_date' not in history:
+        history['last_activity_date'] = timestamp
+    if 'last_donation_date' not in history:
+        history['last_donation_date'] = timestamp
+    if 'role' not in history:
+        history['role'] = member['role']
+    if 'status' not in history:
+        history['status'] = 'present'
+    if 'donations' not in history:
+        history['donations'] = member['donations']
+    if 'donations_last_week' not in history:
+        history['donations_last_week'] = 0
+    if 'events' not in history:
+        history['events'] = [{
+                                'event': 'join',
+                                'type':  'new',
+                                'role':  member['role'],
+                                'date':  timestamp
+                            }]
+    return history
+
 def create_new_member(member, timestamp):
-    # member has a join date,
-    return {
-        'join_date':    timestamp,
-        'role':         member['role'],
-        'status':       'present',
-        'events':       [{
-                            'event': 'join',
-                            'type':  'new',
-                            'role':  member['role'],
-                            'date':  timestamp
-                        }]
-    }
+    return cleanup_member_history(member, {}, timestamp)
 
 def member_rejoin(historical_member, member, timestamp):
     updated_member = copy.deepcopy(historical_member)
@@ -68,6 +83,7 @@ def member_rejoin(historical_member, member, timestamp):
     })
     updated_member['role'] = member['role']
     updated_member['status'] = 'present'
+    updated_member['last_activity_date'] = timestamp
 
     return updated_member
 
@@ -80,6 +96,7 @@ def member_role_change(historical_member, member, timestamp):
             'date':  timestamp
         })
     updated_member['role'] = member['role']
+    updated_member['last_activity_date'] = timestamp
 
     return updated_member
 
@@ -139,7 +156,7 @@ def get_member_history(members, old_history=None, date=datetime.now()):
             # Create record for user.
             history['members'][tag] = create_new_member(member, timestamp)
         else:
-            historical_member = history['members'][tag]
+            historical_member = cleanup_member_history(member, history['members'][tag], timestamp)
             if historical_member['status'] == 'absent':
                 # If member exists, but is absent in history, the
                 # member has re-joined
@@ -147,6 +164,12 @@ def get_member_history(members, old_history=None, date=datetime.now()):
             elif historical_member['role'] != member['role']:
                 # Member's role has changed
                 history['members'][tag] = member_role_change(historical_member, member, timestamp)
+            if member['donations'] < historical_member['donations']:
+                historical_member['donations_last_week'] = historical_member['donations']
+            if member['donations'] != historical_member['donations']:
+                historical_member['donations'] = member['donations']
+                history['last_donation_date'] = timestamp
+                history['last_activity_date'] = timestamp
 
     # Look for missing members. If they're missing, they quit
     for tag, member in history['members'].copy().items():
