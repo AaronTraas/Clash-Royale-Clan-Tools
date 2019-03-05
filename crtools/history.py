@@ -166,7 +166,8 @@ def get_member_history(members, old_history=None, date=datetime.now()):
                 history['members'][tag] = member_role_change(historical_member, member, timestamp)
             if member['donations'] < historical_member['donations']:
                 historical_member['donations_last_week'] = historical_member['donations']
-            if member['donations'] != historical_member['donations']:
+                historical_member['donations'] = member['donations']
+            if member['donations'] > historical_member['donations']:
                 historical_member['donations'] = member['donations']
                 historical_member['last_donation_date'] = timestamp
                 historical_member['last_activity_date'] = timestamp
