@@ -42,11 +42,18 @@ def parse_args(argv):
     parser.add_argument('--debug',
                         action   = 'store_true',
                         help     = 'Turns on debug mode')
+    parser.add_argument('--version',
+                        action   = 'store_true',
+                        help     = 'List the version of crtools.')
 
     return parser.parse_args(argv)
 
 
 def get_config_from_args(args):
+    if args.version:
+        print(__version__)
+        exit(0)
+
     if args.config:
         config_file_name = args.config
         os.path.expanduser(config_file_name)
