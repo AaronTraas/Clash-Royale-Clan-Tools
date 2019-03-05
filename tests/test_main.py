@@ -29,7 +29,24 @@ def test_parse_args_config_file_not_found():
     try:
         config = crtools.get_config_from_args(crtools.parse_args(argv))
     except SystemExit as e:
-        assert e.code == -1
+        assert e.code != 0
+        return
+
+    # Fail if we didn't catch a SystemExit
+    assert False
+
+def test_parse_args_version(capsys):
+    argv = [
+        '--version'
+    ]
+
+    try:
+        config = crtools.get_config_from_args(crtools.parse_args(argv))
+    except SystemExit as e:
+        #
+        assert e.code == 0
+        captured = capsys.readouterr()
+        assert captured.out == "{}\n".format(crtools.__version__)
         return
 
     # Fail if we didn't catch a SystemExit

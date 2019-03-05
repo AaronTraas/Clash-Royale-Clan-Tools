@@ -59,7 +59,7 @@ def get_config_from_args(args):
         os.path.expanduser(config_file_name)
         if os.path.isfile(config_file_name) == False:
             logger.error('Config file specified {} not found'.format(config_file_name) )
-            exit(-1)
+            exit(1)
     else:
         config_file_name = os.path.expanduser('~/.crtools')
 
