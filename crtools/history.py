@@ -168,8 +168,8 @@ def get_member_history(members, old_history=None, date=datetime.now()):
                 historical_member['donations_last_week'] = historical_member['donations']
             if member['donations'] != historical_member['donations']:
                 historical_member['donations'] = member['donations']
-                history['last_donation_date'] = timestamp
-                history['last_activity_date'] = timestamp
+                historical_member['last_donation_date'] = timestamp
+                historical_member['last_activity_date'] = timestamp
 
     # Look for missing members. If they're missing, they quit
     for tag, member in history['members'].copy().items():

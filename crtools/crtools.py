@@ -299,6 +299,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         historical_member = member_history['members'][member['tag']]
         member['join_date'] = historical_member['join_date']
         member['last_activity_date'] = historical_member['last_activity_date']
+        member['last_donation_date'] = historical_member['last_donation_date']
         member['donations_last_week'] = historical_member['donations_last_week']
 
         if member['join_date'] == 0:

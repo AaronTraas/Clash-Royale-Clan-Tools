@@ -441,8 +441,8 @@ def test_get_suggestions_promote_demote(tmpdir):
 
     assert suggestions[0].startswith('Demote')
     assert members[2]['name'] in suggestions[0]
-    assert suggestions[1].startswith('Promote')
-    assert members[4]['name'] in suggestions[1]
+    assert suggestions[2].startswith('Promote')
+    assert members[4]['name'] in suggestions[2]
 
 def test_process_clan(tmpdir):
     config_file = tmpdir.mkdir('test_process_clan').join('testfile')
