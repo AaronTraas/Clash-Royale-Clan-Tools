@@ -61,9 +61,8 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['jinja2','configparser','requests','coverage'],
-    setup_requires=['pytest','pytest-runner','coverage','requests_mock'],
-    test_requires=['pytest','pytest-runner','pytest-cov','requests_mock'],
+    install_requires=['jinja2','configparser','requests'],
+    tests_requires=['pytest','pytest-runner','coverage','requests_mock'],
 
     include_package_data=True,
 

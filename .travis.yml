@@ -12,6 +12,7 @@ addons:
 
 install:
   - python setup.py install
+  - pip install coverage pytest pytest-runner requests_mock
 
 script:
   - coverage run setup.py test
