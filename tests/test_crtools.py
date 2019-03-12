@@ -73,7 +73,7 @@ __fake_clan__ = {
             "role": "elder",
             "expLevel": 12,
             "trophies": 4224,
-            "donations": 10,
+            "donations": 0,
             "arena": {
                 "id": 54000012,
                 "name": "Arena 13"
@@ -327,8 +327,8 @@ def test_donations_score(tmpdir):
 
     member_tag_0 = __fake_clan__['memberList'][0]['tag']
 
-    assert crtools.donations_score(config, members[member_tag_0], 6) == -49
-    assert crtools.donations_score(config, members[member_tag_0], 3) == -6
+    assert crtools.donations_score(config, members[member_tag_0], 6) == 40
+    assert crtools.donations_score(config, members[member_tag_0], 3) == 40
     assert crtools.donations_score(config, members[member_tag_0], 0) == 40
 
     # make this member new, so it trips the rule that removes
@@ -441,8 +441,8 @@ def test_get_suggestions_promote_demote(tmpdir):
 
     assert suggestions[0].startswith('Demote')
     assert members[2]['name'] in suggestions[0]
-    assert suggestions[2].startswith('Promote')
-    assert members[4]['name'] in suggestions[2]
+    assert suggestions[1].startswith('Promote')
+    assert members[4]['name'] in suggestions[1]
 
 def test_process_clan(tmpdir):
     config_file = tmpdir.mkdir('test_process_clan').join('testfile')

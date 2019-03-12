@@ -163,23 +163,29 @@ def donations_score(config, member, days_from_donation_reset):
 
     now = datetime.utcnow()
     join_datetime = datetime.fromtimestamp(member['join_date'])
+    days_from_join = (join_datetime - now).days
+
+    # calculate score based `days_from_donation_reset`.
+    total_donations = member['donations']
 
     if join_datetime < (now - timedelta(days=days_from_donation_reset + 7)):
         days_from_donation_reset += 7
-        donation_score += member['donations_last_week']
+        total_donations += member['donations_last_week']
 
-    # calculate score based `days_from_donation_reset`.
+    if days_from_donation_reset > days_from_join:
+        days_from_donation_reset = days_from_join
+
     target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
-    donation_score = member['donations']
 
     # exempt additional penalties if at least a day hasn't passed
     if days_from_donation_reset > 1:
-        donation_score = round(donation_score / days_from_donation_reset) - target_donations
+        donation_score = round(total_donations / days_from_donation_reset) - target_donations
 
         # bigger penalty for 0 donations
         if member['donations'] == 0:
             donation_score += config['score']['donations_zero']
-
+    else:
+        donation_score = member['donations']
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
 
     if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
