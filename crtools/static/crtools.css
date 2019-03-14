@@ -675,6 +675,15 @@ img.war-league {
     border-bottom: 1px solid #f2f2f2;
 }
 
+#member-table tr[data-activity=bad] td {
+    background-color: #c13525;
+    color: #fff;
+}
+
+#member-table tr[data-activity=ok] td {
+    background-color: #ffbb43;
+}
+
 #member-table tr.new td.score.ok,
 #member-table tr.new td.donations.ok {
     background-color: #fff;
@@ -856,6 +865,7 @@ strong.na {
 #member-table[data-filter="role-member"] tbody tr:not([data-clanrole="member"]) {
     display: none;
 }
+
 
 /* Rules
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

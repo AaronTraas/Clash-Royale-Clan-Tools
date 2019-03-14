@@ -18,7 +18,11 @@ config_defaults = {
         'temp_dir_name' :       'crtools'
     },
     'www' : {
-        'canonical_url' :       False,
+        'canonical_url' :       False
+    },
+    'activity': {
+        'threshold_warn':       14,
+        'threshold_kick':       21
     },
     'score' : {
         'min_clan_size' :               46,

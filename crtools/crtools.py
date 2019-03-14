@@ -168,7 +168,7 @@ def donations_score(config, member, days_from_donation_reset):
     # calculate score based `days_from_donation_reset`.
     total_donations = member['donations']
 
-    if join_datetime < (now - timedelta(days=days_from_donation_reset + 7)):
+    if days_from_join < days_from_donation_reset + 7 and 'donations_last_week' in member:
         days_from_donation_reset += 7
         total_donations += member['donations_last_week']
 
@@ -186,6 +186,7 @@ def donations_score(config, member, days_from_donation_reset):
             donation_score += config['score']['donations_zero']
     else:
         donation_score = member['donations']
+
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
 
     if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
@@ -259,7 +260,6 @@ def get_suggestions(config, processed_members):
 
     return suggestions
 
-
 def get_scoring_rules(config):
     """ Get list of scoring rules to display on the site """
 
@@ -307,6 +307,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         member['last_activity_date'] = historical_member['last_activity_date']
         member['last_donation_date'] = historical_member['last_donation_date']
         member['donations_last_week'] = historical_member['donations_last_week']
+        member['days_inactive'] = (now - datetime.fromtimestamp(member['last_activity_date'])).days
 
         if member['join_date'] == 0:
             member['join_date_label'] = 'Before recorded history'
@@ -368,6 +369,17 @@ def process_members(config, clan, warlog, current_war, member_history):
                 member['status'] = 'normal'
         else:
             member['status'] = 'bad'
+
+        if member['days_inactive'] > config['activity']['threshold_kick']:
+            member['activity_status'] = 'bad'
+            member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
+        elif member['days_inactive'] > config['activity']['threshold_warn']:
+            member['activity_status'] = 'ok'
+            member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
+        else:
+            member['activity_status'] = 'normal'
+            member['role_label'] = member['role']
+
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'
