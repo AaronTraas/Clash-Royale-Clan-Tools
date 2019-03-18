@@ -233,11 +233,16 @@ def get_suggestions(config, processed_members):
         # if member on the 'safe' or 'vacation' list, don't make
         # recommendations to kick or demote
         if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
-            # if  members have a score below zero, we recommend to kick or
+            # suggest kick if inactive for the set threshold
+            if member['days_inactive'] >= config['activity']['threshold_kick']:
+                suggestion = 'Kick <strong>{}</strong> <strong class="bad">{} days inactive</strong>'.format(member['name'], member['days_inactive'])
+                logger.debug(suggestion)
+                suggestions.append(suggestion)
+            # if members have a score below zero, we recommend to kick or
             # demote them.
             # if we're above the minimum clan size, recommend kicking
             # poorly participating member.
-            if member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
+            elif member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
                 suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
                 logger.debug(suggestion)
                 suggestions.append(suggestion)
@@ -370,10 +375,10 @@ def process_members(config, clan, warlog, current_war, member_history):
         else:
             member['status'] = 'bad'
 
-        if member['days_inactive'] > config['activity']['threshold_kick']:
+        if member['days_inactive'] >= config['activity']['threshold_kick']:
             member['activity_status'] = 'bad'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
-        elif member['days_inactive'] > config['activity']['threshold_warn']:
+        elif member['days_inactive'] >= config['activity']['threshold_warn']:
             member['activity_status'] = 'ok'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
         else:

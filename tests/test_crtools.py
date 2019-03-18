@@ -14,6 +14,9 @@ clan_id={}
 '''.format(CLAN_TAG)
 
 __config_file_score__ = '''
+[activity]
+threshold_kick=99999999
+threshold_warn=99999999
 [Score]
 war_battle_incomplete=-30
 war_battle_won=5
