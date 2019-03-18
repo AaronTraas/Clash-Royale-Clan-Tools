@@ -680,7 +680,7 @@ img.war-league {
     color: #fff;
 }
 
-#member-table tr[data-activity=ok] td {
+#member-table tr[data-activity=ok] td:not(.bad) {
     background-color: #ffbb43;
 }
 
