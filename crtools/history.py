@@ -102,7 +102,7 @@ def member_role_change(historical_member, member, timestamp):
 def member_quit(historical_member, timestamp):
     # member can't quit if he isn't there.
     if historical_member['status'] == 'absent':
-        return updated_member
+        return historical_member
 
     updated_member = copy.deepcopy(historical_member)
 
