@@ -606,7 +606,7 @@ img.war-league {
 
 #member-table tr.new td.name {
     padding-right: 44px;
-    background: url(images/new.svg) no-repeat right center;
+    background: inherit url(images/new.svg) no-repeat right center;
     background-size: 32px;
 }
 
