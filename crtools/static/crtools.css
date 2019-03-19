@@ -867,7 +867,7 @@ strong.na {
     display: none;
 }
 
-#member-table[data-filter="activity"] tbody tr:[data-activity="normal"] {
+#member-table[data-filter="activity"] tbody tr[data-activity="normal"] {
     display: none;
 }
 
