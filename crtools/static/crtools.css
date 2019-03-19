@@ -675,6 +675,12 @@ img.war-league {
     border-bottom: 1px solid #f2f2f2;
 }
 
+#member-table tr[data-activity=bad] td,
+#member-table tr[data-activity=ok] td:not(.bad) {
+    border-left: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+}
+
 #member-table tr[data-activity=bad] td {
     background-color: #c13525;
     color: #fff;
@@ -682,6 +688,7 @@ img.war-league {
 
 #member-table tr[data-activity=ok] td:not(.bad) {
     background-color: #ffbb43;
+    color: #222;
 }
 
 #member-table tr.new td.score.ok,
