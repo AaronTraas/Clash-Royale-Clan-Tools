@@ -850,6 +850,7 @@ strong.na {
 }
 
 #member-table[data-filter="danger"] tbody tr[data-status="good"],
+#member-table[data-filter="danger"] tbody tr[data-status="ok"],
 #member-table[data-filter="danger"] tbody tr[data-status="normal"] {
     display: none;
 }
@@ -863,6 +864,10 @@ strong.na {
 }
 
 #member-table[data-filter="role-member"] tbody tr:not([data-clanrole="member"]) {
+    display: none;
+}
+
+#member-table[data-filter="activity"] tbody tr:not([data-activity="normal"]) {
     display: none;
 }
 
