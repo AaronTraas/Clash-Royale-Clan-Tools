@@ -21,7 +21,7 @@ config_defaults = {
         'canonical_url' :       False
     },
     'activity': {
-        'threshold_warn':       14,
+        'threshold_warn':       7,
         'threshold_kick':       21
     },
     'score' : {
