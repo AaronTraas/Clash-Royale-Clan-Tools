@@ -162,10 +162,6 @@ def member_warlog(config, clan_member, warlog):
 def donations_score(config, member):
     """ Calculate the score for a given member's daily donations. """
 
-    now = datetime.utcnow()
-    join_datetime = datetime.fromtimestamp(member['join_date'])
-    days_from_join = (now - join_datetime).days
-
     donation_score = member['donationsDaily'] - config['score']['min_donations_daily']
 
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
@@ -329,8 +325,6 @@ def process_members(config, clan, warlog, current_war, member_history):
     members_processed = []
     for member_src in members:
         member = enrich_member_with_history(member_src, member_history['members'], days_from_donation_reset, now)
-
-        historical_member = member_history['members'][member['tag']]
 
         # calculate the number of daily donations, and the donation status
         # based on threshold set in config
