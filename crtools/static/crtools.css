@@ -606,7 +606,9 @@ img.war-league {
 
 #member-table tr.new td.name {
     padding-right: 44px;
-    background: inherit url(images/new.svg) no-repeat right center;
+    background-image: url(images/new.svg);
+    background-repeat: no-repeat;
+    background-position: right center;
     background-size: 32px;
 }
 
@@ -885,9 +887,7 @@ strong.na {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #suggestions .list {
     flex: 1;
-    columns: 200px;
     padding-bottom: 15px;
-    column-fill: auto;
 
 }
 #suggestions .info {

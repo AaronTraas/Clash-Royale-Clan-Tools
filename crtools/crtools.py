@@ -5,6 +5,7 @@ __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
 import codecs
+import copy
 from datetime import datetime, date, timezone, timedelta
 from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 import json
@@ -158,39 +159,24 @@ def member_warlog(config, clan_member, warlog):
 
     return member_warlog
 
-def donations_score(config, member, days_from_donation_reset):
+def donations_score(config, member):
     """ Calculate the score for a given member's daily donations. """
 
     now = datetime.utcnow()
     join_datetime = datetime.fromtimestamp(member['join_date'])
-    days_from_join = (join_datetime - now).days
+    days_from_join = (now - join_datetime).days
 
-    # calculate score based `days_from_donation_reset`.
-    total_donations = member['donations']
-
-    if days_from_join < days_from_donation_reset + 7 and 'donations_last_week' in member:
-        days_from_donation_reset += 7
-        total_donations += member['donations_last_week']
-
-    if days_from_donation_reset > days_from_join:
-        days_from_donation_reset = days_from_join
-
-    target_donations = config['score']['min_donations_daily'] * (days_from_donation_reset)
-
-    # exempt additional penalties if at least a day hasn't passed
-    if days_from_donation_reset > 1:
-        donation_score = round(total_donations / days_from_donation_reset) - target_donations
-
-        # bigger penalty for 0 donations
-        if member['donations'] == 0:
-            donation_score += config['score']['donations_zero']
-    else:
-        donation_score = member['donations']
+    donation_score = member['donationsDaily'] - config['score']['min_donations_daily']
 
     donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
 
-    if join_datetime > (now - timedelta(days=days_from_donation_reset)) and donation_score < 0:
+    if member['totalDonations'] == 0:
+        donation_score += config['score']['donations_zero']
+
+    if member['new'] and donation_score <= 0:
         donation_score = 0
+
+    #logger.debug('{:20}:\tdays: {:2}\tdonations: {:4}\n'.format(member['name'], days_from_donation_reset, member['donations']))
 
     return donation_score
 
@@ -290,6 +276,43 @@ def get_scoring_rules(config):
 
     return rules
 
+def enrich_member_with_history(fresh_member, historical_members, days_from_donation_reset, now):
+    enriched_member = copy.deepcopy(fresh_member)
+    historical_member = historical_members[enriched_member['tag']]
+
+    enriched_member['join_date'] = historical_member['join_date']
+    enriched_member['last_activity_date'] = historical_member['last_activity_date']
+    enriched_member['last_donation_date'] = historical_member['last_donation_date']
+    enriched_member['donations_last_week'] = historical_member['donations_last_week']
+    enriched_member['days_inactive'] = (now - datetime.fromtimestamp(enriched_member['last_activity_date'])).days
+
+    if enriched_member['join_date'] == 0:
+        enriched_member['join_date_label'] = 'Before recorded history'
+    else:
+        enriched_member['join_date_label'] = datetime.fromtimestamp(enriched_member['join_date']).strftime('%Y-%m-%d')
+    enriched_member['activity_date_label'] = datetime.fromtimestamp(enriched_member['last_activity_date']).strftime('%Y-%m-%d')
+
+    join_datetime = datetime.fromtimestamp(enriched_member['join_date'])
+    days_from_join = (now - join_datetime).days
+    if days_from_join <= 10:
+        enriched_member['new'] = True
+        logger.debug('New member {}'.format(enriched_member['name']))
+    else:
+        enriched_member['new'] = False
+
+    if days_from_donation_reset > days_from_join:
+        days_from_donation_reset = days_from_join
+
+    total_donations = enriched_member['donations']
+    if days_from_join > days_from_donation_reset + 7 and 'donations_last_week' in enriched_member:
+        days_from_donation_reset += 7
+        total_donations += enriched_member['donations_last_week']
+
+    enriched_member['totalDonations'] = total_donations
+    enriched_member['donationsDaily'] = round(total_donations / days_from_donation_reset)
+
+    return enriched_member
+
 def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
@@ -305,27 +328,9 @@ def process_members(config, clan, warlog, current_war, member_history):
     members = clan['memberList'].copy()
     members_processed = []
     for member_src in members:
-        member = member_src.copy()
+        member = enrich_member_with_history(member_src, member_history['members'], days_from_donation_reset, now)
 
         historical_member = member_history['members'][member['tag']]
-        member['join_date'] = historical_member['join_date']
-        member['last_activity_date'] = historical_member['last_activity_date']
-        member['last_donation_date'] = historical_member['last_donation_date']
-        member['donations_last_week'] = historical_member['donations_last_week']
-        member['days_inactive'] = (now - datetime.fromtimestamp(member['last_activity_date'])).days
-
-        if member['join_date'] == 0:
-            member['join_date_label'] = 'Before recorded history'
-        else:
-            member['join_date_label'] = datetime.fromtimestamp(member['join_date']).strftime('%Y-%m-%d')
-        member['activity_date_label'] = datetime.fromtimestamp(member['last_activity_date']).strftime('%Y-%m-%d')
-
-        join_datetime = datetime.fromtimestamp(member['join_date'])
-        if join_datetime > (now - timedelta(days=10)):
-            member['new'] = True
-            logger.debug('New member {}'.format(member['name']))
-        else:
-            member['new'] = False
 
         # calculate the number of daily donations, and the donation status
         # based on threshold set in config
@@ -337,15 +342,12 @@ def process_members(config, clan, warlog, current_war, member_history):
                 member['donationStatus'] = 'bad'
             elif member['donations'] < (days_from_donation_reset-1) * config['score']['min_donations_daily']:
                 member['donationStatus'] = 'ok'
-            member['donationsDaily'] = round(member['donations'] / (days_from_donation_reset))
-        else:
-            member['donationsDaily'] = member['donations']
 
         # get member warlog and add it to the record
         member['currentWar'] = member_war(config, member, current_war)
         member['warlog'] = member_warlog(config, member, warlog)
 
-        member['donationScore'] = donations_score(config, member, days_from_donation_reset)
+        member['donationScore'] = donations_score(config, member)
 
         # calculate score based on war participation
         member['warScore'] = 0
@@ -523,10 +525,10 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             with open(history_path, 'r') as myfile:
                 old_history = json.loads(myfile.read())
 
-        clan_processed = process_clan(config, clan, current_war)
-        member_history = history.get_member_history(clan['memberList'], old_history)
-        members_processed = process_members(config, clan, warlog, current_war, member_history)
         current_war_processed = process_current_war(config, current_war)
+        clan_processed = process_clan(config, clan, current_war)
+        member_history = history.get_member_history(clan['memberList'], old_history, current_war)
+        members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
 
 

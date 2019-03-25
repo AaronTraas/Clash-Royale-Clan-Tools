@@ -326,20 +326,16 @@ def test_donations_score(tmpdir):
 
     date = datetime(2019, 2, 12, 7, 32, 1, 0)
     timestamp = datetime.timestamp(date)
-    members = history.get_member_history(__fake_clan__['memberList'], __fake_history__, date)["members"]
+    members = history.get_member_history(__fake_clan__['memberList'], __fake_history__, None, date)["members"]
 
     member_tag_0 = __fake_clan__['memberList'][0]['tag']
+    member_6 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 6, date)
+    member_3 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 3, date)
+    member_0 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 0, date)
 
-    assert crtools.donations_score(config, members[member_tag_0], 6) == 40
-    assert crtools.donations_score(config, members[member_tag_0], 3) == 40
-    assert crtools.donations_score(config, members[member_tag_0], 0) == 40
-
-    # make this member new, so it trips the rule that removes
-    # penalties from new members
-    new_member = __fake_clan__['memberList'][3].copy()
-    new_member['join_date'] = datetime.timestamp(datetime.utcnow()) -1000
-    print(new_member['join_date'])
-    assert crtools.donations_score(config, new_member, 3) == 0
+    assert crtools.donations_score(config, member_6) == 11
+    assert crtools.donations_score(config, member_3) == 18
+    assert crtools.donations_score(config, member_0) == 31
 
 def test_warlog_labels(tmpdir):
     labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG)

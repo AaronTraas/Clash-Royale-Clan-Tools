@@ -103,7 +103,7 @@ def test_validate_history():
 def test_get_member_history_new():
     date = datetime(2019, 2, 12, 7, 32, 0, 0)
     timestamp = datetime.timestamp(date)
-    h = history.get_member_history(__fake_members__, None, date)
+    h = history.get_member_history(__fake_members__, None, None, date)
 
     assert h['last_update'] == timestamp
     for member in __fake_members__:
@@ -117,7 +117,7 @@ def test_get_member_history_new():
 def test_get_member_history_role_change():
     date = datetime(2019, 2, 12, 7, 32, 1, 0)
     timestamp = datetime.timestamp(date)
-    h = history.get_member_history(__fake_members__, __fake_history__, date)
+    h = history.get_member_history(__fake_members__, __fake_history__, None, date)
 
     members = h['members']
 
@@ -139,8 +139,8 @@ def test_get_member_history_donations_reset():
     timestamp = datetime.timestamp(date)
     members_copy = copy.deepcopy(__fake_members__)
     members_copy[0]['donations'] = 5
-    h = history.get_member_history(__fake_members__, __fake_history__, date)
-    h2 = history.get_member_history(members_copy, h, date)
+    h = history.get_member_history(__fake_members__, __fake_history__, None, date)
+    h2 = history.get_member_history(members_copy, h, None, date)
 
     members = h2['members']
     assert members[__fake_members__[0]['tag']]['donations'] == 5
@@ -154,8 +154,8 @@ def test_get_member_history_unchanged():
     timestamp = datetime.timestamp(date)
     timestamp2 = datetime.timestamp(date2)
 
-    h = history.get_member_history(__fake_members__, None, date)
-    h2 = history.get_member_history(__fake_members__, h, date2)
+    h = history.get_member_history(__fake_members__, None, None, date)
+    h2 = history.get_member_history(__fake_members__, h, None, date2)
 
     assert h['last_update'] == timestamp
     assert h2['last_update'] == timestamp2
@@ -169,8 +169,8 @@ def test_get_member_history_quit_and_rejoin():
     members = __fake_members__.copy()
     del members[2]
 
-    h = history.get_member_history(members, __fake_history__, date)
-    h2 = history.get_member_history(__fake_members__, h, date2)
+    h = history.get_member_history(members, __fake_history__, None, date)
+    h2 = history.get_member_history(__fake_members__, h, None, date2)
 
     h_member = h['members'][__fake_members__[2]['tag']]
     h2_member = h2['members'][__fake_members__[2]['tag']]

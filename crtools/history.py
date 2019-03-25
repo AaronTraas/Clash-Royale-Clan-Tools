@@ -116,7 +116,7 @@ def member_quit(historical_member, timestamp):
 
     return updated_member
 
-def get_member_history(members, old_history=None, date=datetime.now()):
+def get_member_history(members, old_history=None, current_war=None, date=datetime.now()):
     """ Generates user history. Takes as inputs the list of members
     from the API, as well as optionally the old history, and a date
     object for synchronization and testing.
@@ -149,6 +149,11 @@ def get_member_history(members, old_history=None, date=datetime.now()):
         # history
         timestamp = 0;
 
+    war_participants = []
+    if current_war:
+        for participant in current_war['participants']:
+            war_participants.append(participant['tag'])
+
     member_tags = []
     for member in members:
         tag = member['tag']
@@ -173,6 +178,8 @@ def get_member_history(members, old_history=None, date=datetime.now()):
             if member['donations'] > historical_member['donations']:
                 historical_member['donations'] = member['donations']
                 historical_member['last_donation_date'] = timestamp
+                historical_member['last_activity_date'] = timestamp
+            if tag in war_participants:
                 historical_member['last_activity_date'] = timestamp
 
     # Look for missing members. If they're missing, they quit
