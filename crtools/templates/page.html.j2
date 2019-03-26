@@ -181,8 +181,7 @@
             var script_load_semaphor = 0;
 
             function refreshAfterHalfHour() {
-                var now = new Date();
-                if(now - startTimestamp > HALF_HOUR) {
+                if((new Date()) - startTimestamp > HALF_HOUR) {
                     clearInterval(refreshInterval)
                     location.reload(true);
                 }
