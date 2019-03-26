@@ -188,6 +188,8 @@
                 var tooltip = new TooltipManager();
                 var filter = new MemberTableFilter();
                 new Tablesort(memberTable);
+
+                window.requestAnimationFrame(refreshAfterHalfHour)
             }
 
             function loadScript(script_url) {
