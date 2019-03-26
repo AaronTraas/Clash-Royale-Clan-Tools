@@ -175,7 +175,18 @@
 
     <script>
         (function() {
+            var startTimestamp = new Date();
+            var HALF_HOUR = 30 * 60 * 1000;
+            var refreshInterval = null;
             var script_load_semaphor = 0;
+
+            function refreshAfterHalfHour() {
+                var now = new Date();
+                if(now - startTimestamp > HALF_HOUR) {
+                    clearInterval(refreshInterval)
+                    location.reload(true);
+                }
+            }
 
             function assetsDoneLoading() {
                 if( script_load_semaphor > 1 ) {
@@ -189,7 +200,7 @@
                 var filter = new MemberTableFilter();
                 new Tablesort(memberTable);
 
-                window.requestAnimationFrame(refreshAfterHalfHour)
+                refreshInterval = setInterval(refreshAfterHalfHour, 3000)
             }
 
             function loadScript(script_url) {

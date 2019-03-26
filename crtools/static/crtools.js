@@ -172,12 +172,3 @@ function MemberTableFilter() {
     	}
     }
 }
-
-var startTimestamp = new Date();
-function refreshAfterHalfHour() {
-    var HALF_HOUR = 30 * 60 * 1000;
-    var now = new Date();
-    if(now - startTimestamp > HALF_HOUR) {
-        location.reload(true);
-    }
-}
