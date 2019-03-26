@@ -604,7 +604,8 @@ img.war-league {
   padding-left: 0;
 }
 
-#member-table tr.new td.name {
+
+#member-table tr[data-new="true"] td.name {
     padding-right: 44px;
     background-image: url(images/new.svg);
     background-repeat: no-repeat;
@@ -693,8 +694,8 @@ img.war-league {
     color: #222;
 }
 
-#member-table tr.new td.score.ok,
-#member-table tr.new td.donations.ok {
+#member-table tr[data-new="true"] td.score.ok,
+#member-table tr[data-new="true"] td.donations.ok {
     background-color: #fff;
     border-left: none;
     border-bottom: 1px solid #E1E1E1;
@@ -714,7 +715,6 @@ img.war-league {
 #info table .war em {
     font-weight: normal;
 }
-
 
 #member-table td.war.current.normal {
     border: 3px dashed #BB89CC;
@@ -879,6 +879,10 @@ strong.na {
 }
 
 #member-table[data-filter="activity"] tbody tr[data-activity="normal"] {
+    display: none;
+}
+
+#member-table[data-filter="new"] tbody tr:not([data-new="true"]) {
     display: none;
 }
 
