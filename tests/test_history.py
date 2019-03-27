@@ -27,6 +27,7 @@ __fake_history__ = {
             "join_date": 1549974720.0,
             "status": "present",
             "role": "leader",
+            "donations": 100,
             "events": [
                 {
                     "event": "join",
@@ -40,6 +41,7 @@ __fake_history__ = {
             "join_date": 1549974720.0,
             "status": "present",
             "role": "elder",
+            "donations": 5,
             "events": [
                 {
                     "event": "join",
@@ -53,6 +55,7 @@ __fake_history__ = {
             "join_date": 1549974720.0,
             "status": "present",
             "role": "member",
+            "donations": 5,
             "events": [
                 {
                     "event": "join",
@@ -61,10 +64,31 @@ __fake_history__ = {
                     "date": 1549974720.0
                 }
             ]
+        },
+        "#QQQQQQ": {
+            "join_date": 0,
+            "status": "absent",
+            "role": "member",
+            "events": [
+                {
+                    "event": "join",
+                    "status": "new",
+                    "role": "member",
+                    "date": 0
+                }
+            ]
         }
+
     }
 }
 
+__fake_currentwar__ = {
+    "participants": [
+        {
+            "tag": "#AAAAAA"
+        }
+    ]
+}
 
 def test_get_role_change_status():
     assert history.get_role_change_status('foo',                 'foo')                 == False
@@ -187,3 +211,9 @@ def test_get_member_history_quit_and_rejoin():
     assert h2_member['events'][2]['type'] == 're-join'
     assert h2_member['events'][2]['date'] == timestamp2
 
+def test_war_participation_activity_update():
+    date = datetime(2019, 2, 12, 7, 32, 1, 0)
+    h = history.get_member_history(__fake_members__, __fake_history__, __fake_currentwar__, date)
+
+    h_member = h['members'][__fake_members__[0]['tag']]
+    assert h_member['last_activity_date'] == datetime.timestamp(date)
