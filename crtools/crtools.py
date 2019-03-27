@@ -305,7 +305,10 @@ def enrich_member_with_history(fresh_member, historical_members, days_from_donat
         total_donations += enriched_member['donations_last_week']
 
     enriched_member['totalDonations'] = total_donations
-    enriched_member['donationsDaily'] = round(total_donations / days_from_donation_reset)
+    if(days_from_donation_reset > 0):
+        enriched_member['donationsDaily'] = round(total_donations / days_from_donation_reset)
+    else:
+        enriched_member['donationsDaily'] = total_donations
 
     return enriched_member
 
