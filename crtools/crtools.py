@@ -329,22 +329,22 @@ def process_members(config, clan, warlog, current_war, member_history):
     for member_src in members:
         member = enrich_member_with_history(member_src, member_history['members'], days_from_donation_reset, now)
 
-        # calculate the number of daily donations, and the donation status
-        # based on threshold set in config
-        member['donationStatus'] = 'normal'
-        if member['donations'] > (days_from_donation_reset) * 40:
-            member['donationStatus'] = 'good'
-        if days_from_donation_reset >= 1:
-            if member['donations'] == 0:
-                member['donationStatus'] = 'bad'
-            elif member['donations'] < (days_from_donation_reset-1) * config['score']['min_donations_daily']:
-                member['donationStatus'] = 'ok'
-
         # get member warlog and add it to the record
         member['currentWar'] = member_war(config, member, current_war)
         member['warlog'] = member_warlog(config, member, warlog)
 
         member['donationScore'] = donations_score(config, member)
+
+        # calculate the number of daily donations, and the donation status
+        # based on threshold set in config
+        member['donationStatus'] = 'normal'
+        if member['donationScore'] >= config['score']['max_donations_bonus']:
+            member['donationStatus'] = 'good'
+        if days_from_donation_reset >= 1:
+            if member['donationsDaily'] == 0:
+                member['donationStatus'] = 'bad'
+            elif member['donationsDaily'] < config['score']['min_donations_daily']:
+                member['donationStatus'] = 'ok'
 
         # calculate score based on war participation
         member['warScore'] = 0
