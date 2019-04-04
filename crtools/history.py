@@ -47,10 +47,13 @@ def get_role_change_status(old_role, new_role):
 def cleanup_member_history(member, history, timestamp):
     """ make sure member history entry has all the necessary fields.
     This is here to make upgrades smooth """
+    now = timestamp
+    if now == 0:
+        now = datetime.timestamp(datetime.now())
     if 'join_date' not in history:
         history['join_date'] = timestamp
     if 'last_activity_date' not in history:
-        history['last_activity_date'] = timestamp
+        history['last_activity_date'] = now
     if 'last_donation_date' not in history:
         history['last_donation_date'] = timestamp
     if 'role' not in history:
