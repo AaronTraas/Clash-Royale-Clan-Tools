@@ -299,6 +299,9 @@ def enrich_member_with_history(fresh_member, historical_members, days_from_donat
     if days_from_donation_reset > days_from_join:
         days_from_donation_reset = days_from_join
 
+    if enriched_member['days_inactive'] > 13:
+        enriched_member['donations_last_week'] = 0
+
     total_donations = enriched_member['donations']
     if days_from_join > days_from_donation_reset + 7 and 'donations_last_week' in enriched_member:
         days_from_donation_reset += 7
@@ -527,7 +530,6 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         member_history = history.get_member_history(clan['memberList'], old_history, current_war)
         members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
-
 
         # Create environment for template parser
         env = Environment(

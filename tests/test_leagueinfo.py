@@ -5,7 +5,7 @@ def test_get_arena_league_from_name():
     # are likely to change from time to time, no reason to update the
     # tests every time that happens.
     assert leagueinfo.get_arena_league_from_name('Arena 1')['id'] == 'arena-1'
-    assert leagueinfo.get_arena_league_from_name('Arena 13')['id'] == 'challenger-1'
+    assert leagueinfo.get_arena_league_from_name('Legendary Arena')['id'] == 'challenger-1'
     assert leagueinfo.get_arena_league_from_name('Garbage League (obviously fake)')['id'] == 'arena-unknown'
 
 def test_get_war_league_from_score():
@@ -19,8 +19,8 @@ def test_get_collection_win_cards():
     # result in a > 1 value. As the league makeup and scoring rules
     # are likely to change from time to time, no reason to update the
     # tests every time that happens.
-    assert leagueinfo.get_collection_win_cards('legendary', 'League 9') > 1
-    assert leagueinfo.get_collection_win_cards('gold', 'Arena 13') > 1
+    assert leagueinfo.get_collection_win_cards('legendary', 'Arena 4') > 1
+    assert leagueinfo.get_collection_win_cards('gold', 'Legendary Arena') > 1
     assert leagueinfo.get_collection_win_cards('silver', 'Arena 9') > 1
     assert leagueinfo.get_collection_win_cards('bronze', 'Arena 1') > 1
     assert leagueinfo.get_collection_win_cards('silver', 'Garbage League (obviously fake)') == 1

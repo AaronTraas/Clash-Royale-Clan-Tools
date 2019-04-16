@@ -53,7 +53,7 @@ __fake_clan__ = {
             "donations": 300,
             "arena": {
                 "id": 54000012,
-                "name": "Arena 13"
+                "name": "Legendary Arena"
             },
             "join_date": 0
         },
@@ -66,7 +66,7 @@ __fake_clan__ = {
             "donations": 150,
             "arena": {
                 "id": 54000013,
-                "name": "League 2"
+                "name": "Arena 12"
             },
             "join_date": 0
         },
@@ -79,7 +79,7 @@ __fake_clan__ = {
             "donations": 0,
             "arena": {
                 "id": 54000012,
-                "name": "Arena 13"
+                "name": "Legendary Arena"
             },
             "join_date": 0
         },
@@ -289,6 +289,7 @@ def test_member_war(tmpdir):
         __fake_clan__['memberList'][1],
         __fake_war__
     )
+    print(__fake_clan__['memberList'][1]['arena'])
     assert war_isparticipating_ok['status'] == 'ok'
     assert war_isparticipating_ok['score'] == 34
 
