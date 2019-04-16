@@ -323,7 +323,7 @@ def process_members(config, clan, warlog, current_war, member_history):
     # donation tracking purposes:
     now = datetime.utcnow()
     days_from_donation_reset = now.isoweekday()
-    if days_from_donation_reset >= 7 or days_from_donation_reset <= 0:
+    if days_from_donation_reset > 7 or days_from_donation_reset <= 0:
         days_from_donation_reset = 1
 
     # grab importent fields from member list for dashboard
