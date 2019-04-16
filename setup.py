@@ -96,4 +96,8 @@ setup(
             'crtools=crtools:main',
         ],
     },
+    project_urls={  # Optional
+        'Bug Reports': 'https://github.com/AaronTraas/Clash-Royale-Clan-Tools/issues',
+        'Source': 'https://github.com/AaronTraas/Clash-Royale-Clan-Tools',
+    },
 )
