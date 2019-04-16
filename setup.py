@@ -21,7 +21,7 @@ setup(
     # Version single-sourced from crtools/_version.py
     version=__version__,
 
-    description='Python tools for creating a clan maagement dashboard for Clash Royale',
+    description='Python tools for creating a clan management dashboard for Clash Royale',
     long_description=long_description,
 
     # The project's main homepage.
