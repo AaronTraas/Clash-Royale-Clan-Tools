@@ -493,6 +493,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))
+    logger.debug('pyroyale version v{}'.format(pyroyale.__version__))
     logger.debug(config)
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
@@ -507,7 +508,6 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         api = pyroyale.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
-        print(pyroyale.__version__)
         clan = api.clan.clan_info()
         warlog = api.clan.warlog()
         current_war = api.clan.current_war()
