@@ -12,11 +12,11 @@ import json
 import logging
 import math
 import os
+import pyroyale
 import shutil
 import tempfile
 
 from ._version import __version__
-from crtools import api
 from crtools import history
 from crtools import leagueinfo
 
@@ -504,7 +504,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         output_path = os.path.expanduser(config['paths']['out'])
 
-        cr_api = api.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
+        cr_api = pyroyale.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
         clan = cr_api.get_clan()
@@ -615,7 +615,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         except FileExistsError as e:
             logger.error('File Exists: could not write output to: \n\t{}'.format(e.filename))
 
-    except api.ClashRoyaleAPIAuthenticationError as e:
+    except pyroyale.ClashRoyaleAPIAuthenticationError as e:
         msg = 'developer.clashroyale.com authentication error: {}'.format(e)
         if not config['api']['api_key']:
             msg += '\n - API key not provided'
@@ -623,13 +623,13 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             msg += '\n - API key not valid'
         logger.error(msg)
 
-    except api.ClashRoyaleAPIClanNotFound as e:
+    except pyroyale.ClashRoyaleAPIClanNotFound as e:
         logger.error('developer.clashroyale.com: {}'.format(e))
 
-    except api.ClashRoyaleAPIError as e:
+    except pyroyale.ClashRoyaleAPIError as e:
         logger.error('developer.clashroyale.com error: {}'.format(e))
 
-    except api.ClashRoyaleAPIMissingFieldsError as e:
+    except pyroyale.ClashRoyaleAPIMissingFieldsError as e:
         logger.error('error: {}'.format(e))
 
     finally:
