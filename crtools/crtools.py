@@ -504,12 +504,13 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         output_path = os.path.expanduser(config['paths']['out'])
 
-        cr_api = pyroyale.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
+        api = pyroyale.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
-        clan = cr_api.get_clan()
-        warlog = cr_api.get_warlog()
-        current_war = cr_api.get_current_war()
+        print(pyroyale.__version__)
+        clan = api.clan.clan_info()
+        warlog = api.clan.warlog()
+        current_war = api.clan.current_war()
 
         # copy static assets to output path
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
