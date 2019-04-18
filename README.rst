@@ -42,22 +42,12 @@ optional arguments:
   -h, --help           show this help message and exit
   --config FILE        configuration file for this app.
   --api_key KEY        API key for developer.clashroyale.com
-  --clan CLAN          Clan ID from Clash Royale. If it starts with a '#',
-                       clan ID must be quoted.
+  --clan CLAN          Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.
   --out PATH           Output path for HTML.
-  --favicon PATH       Source path for favicon.ico. If provided, we will copy
-                       to the output directory.
-  --clan_logo PATH     Source path for clan logo PNG. Recommended at least
-                       64x64 pizels. If provided, we will copy to the output
-                       directory.
-  --description PATH   Source path snippet of HTML to replace the clan
-                       description. Should not be a complete HTML document.
-                       Sample here: https://github.com/AaronTraas/crtools-
-                       agrassar-assets/blob/master/description.html If
-                       provided, we will copy to the output directory.
-  --canonical_url URL  Canonical URL for this site. Used for setting the
-                       rel=canonical link in the web site, as well as
-                       generating the robots.txt and sitemap.xml
+  --favicon PATH       Source path for favicon.ico. If provided, we will copy to the output directory.
+  --clan_logo PATH     Source path for clan logo PNG. Recommended at least 64x64 pizels. If provided, we will copy to the output directory.
+  --description PATH   Source path snippet of HTML to replace the clan description. Should not be a complete HTML document. Sample here: https://github.com/AaronTraas/crtools-agrassar-assets/blob/master/description.html If provided, we will copy to the output directory.
+  --canonical_url URL  Canonical URL for this site. Used for setting the rel=canonical link in the web site, as well as generating the robots.txt and sitemap.xml
   --debug              Turns on debug mode
   --version            List the version of crtools.
 
