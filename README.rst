@@ -12,14 +12,18 @@ For an example dashboard created for the clan Agrassar (#JY8YVV), see: https://a
 Installation
 ==================================================
 
-This requires Python 3 and setup tools installed on your machine. See
-https://packaging.python.org/tutorials/installing-packages/ for details.
-
-Once setuptools is installed, run the following in your shell:
+This requires Python 3 and pip on your machine. To install, use
 
 .. code::
 
-  python3 setup.py install
+  pip3 install crtools
+
+If you have an older version installed, to upgrade to the latest version, run:
+
+.. code::
+
+  pip3 install -U crtools
+
 
 ==================================================
 Syntax
@@ -31,7 +35,8 @@ Usage:
 
   crtools [-h] [--config CONFIG-FILE] [--api_key KEY] [--clan TAG]
                [--out PATH] [--favicon PATH] [--clan_logo PATH]
-               [--description PATH] [--canonical_url URL]
+               [--description PATH] [--canonical_url URL] [--debug]
+               [--version]
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -53,6 +58,8 @@ optional arguments:
   --canonical_url URL  Canonical URL for this site. Used for setting the
                        rel=canonical link in the web site, as well as
                        generating the robots.txt and sitemap.xml
+  --debug              Turns on debug mode
+  --version            List the version of crtools.
 
 ==================================================
 Optional config file
