@@ -111,8 +111,12 @@
                             </div>
                             <div class="info">
                                 <p>
-                                    Anyone with a <strong class="bad">score below 0</strong> will be recommended for
+                                    Members with a <strong class="bad">score below 0</strong> will be recommended for
                                     kicking or demotion.
+                                </p>
+                                <p>
+                                    Members inactive for <strong class="bad">{{config.activity.threshold_kick}} days</strong>
+                                    will be kicked.
                                 </p>
                                 <p>
                                     A member who achieves <strong class="good">{{config.score.threshold_promote}} points</strong>
