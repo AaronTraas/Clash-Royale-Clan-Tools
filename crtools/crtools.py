@@ -214,7 +214,7 @@ def get_suggestions(config, processed_members):
     for index, member in enumerate(members_by_score):
         # if member on the 'safe' or 'vacation' list, don't make
         # recommendations to kick or demote
-        if not (member['safe'] or member['vacation'] or member['new']) and member['currentWar']['status'] == 'na':
+        if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
             # suggest kick if inactive for the set threshold
             if member['days_inactive'] >= config['activity']['threshold_kick']:
                 suggestion = 'Kick <strong>{}</strong> <strong class="bad">{} days inactive</strong>'.format(member['name'], member['days_inactive'])
