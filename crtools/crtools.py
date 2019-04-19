@@ -365,6 +365,9 @@ def process_members(config, clan, warlog, current_war, member_history):
         member['safe'] = member['tag'] in config['members']['safe']
         member['blacklist'] = member['tag'] in config['members']['blacklist']
 
+        if member['safe'] and (member['days_inactive'] >= config['activity']['threshold_warn']):
+            member['vacation'] = True
+
         # based on member score, infer an overall member status, which is
         # either 'good', 'ok', 'bad', or 'normal'
         if member['score'] >= 0:
