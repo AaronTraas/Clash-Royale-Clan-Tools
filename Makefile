@@ -14,11 +14,13 @@ install:
 develop:
 	python3 setup.py develop
 
-test:
+test-depend:
 	pip3 install coverage pytest pytest-runner requests_mock
+
+test: test-depend
 	python3 setup.py test
 
-coverage:
+coverage: test-depend
 	coverage run setup.py test
 	coverage xml
 
