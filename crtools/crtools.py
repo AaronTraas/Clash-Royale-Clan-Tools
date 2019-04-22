@@ -508,7 +508,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         output_path = os.path.expanduser(config['paths']['out'])
 
-        api = pyroyale.ClashRoyaleAPI(config['api']['server_url'], config['api']['api_key'], config['api']['clan_id'])
+        api = pyroyale.ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
 
         # Get clan data and war log from API.
         clan = api.clan.clan_info()
