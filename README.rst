@@ -8,6 +8,10 @@ create an API key to use with this.
 
 For an example dashboard created for the clan Agrassar (#JY8YVV), see: https://agrassar.com/
 
+This tool is a static site generator -- it generates static HTML, JavaScript,
+and CSS used to render the dashboard. If you wish to use this, you should set
+it up to run once per hour on your web server.
+
 ==================================================
 Installation
 ==================================================
@@ -96,6 +100,11 @@ For more details, see `samples/crtools.ini <https://github.com/AaronTraas/Clash-
 Suggested usage on a Linux web server
 ==================================================
 
+This tool is a static site generator -- it generates static HTML, JavaScript,
+and CSS used to render the dashboard. If you wish to use this, you should set
+it up to run once per hour on your web server using :code:`cron` or similar.
+Below is an example setup on Linux.
+
 Assuming root is going to be running the script:
 
 1. Download and install this application
@@ -114,8 +123,8 @@ For example:
 
   0 * * * * crtools --out=/var/www/html \#JY8YVV
 
-Note the :code:`\\` character before the # -- that's important. A '#' is a comment
-in most shells/scripting languages. You need to escape it to run it.
+Note the :code:`\\` character before the # -- that's important. A '#' is a
+comment in most shells/scripting languages. You need to escape it to run it.
 
 ==================================================
 Development links
