@@ -15,6 +15,7 @@ develop:
 	python3 setup.py develop
 
 test:
+	pip3 install coverage pytest pytest-runner requests_mock
 	python3 setup.py test
 
 coverage:
