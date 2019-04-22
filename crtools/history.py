@@ -153,7 +153,7 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
         timestamp = 0;
 
     war_participants = []
-    if current_war:
+    if current_war and current_war['state'] != 'notInWar':
         for participant in current_war['participants']:
             war_participants.append(participant['tag'])
 

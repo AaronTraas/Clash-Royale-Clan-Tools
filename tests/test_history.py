@@ -83,6 +83,7 @@ __fake_history__ = {
 }
 
 __fake_currentwar__ = {
+    "state": "collectionDay",
     "participants": [
         {
             "tag": "#AAAAAA"
