@@ -25,7 +25,7 @@ coverage: test-depend
 	coverage xml
 
 sonar: coverage
-	sonar-scanner -Dsonar.projectVersion=`python -c "import sys; from pyroyale import __version__; sys.stdout.write(__version__)"`
+	sonar-scanner -Dsonar.projectVersion=`python -c "import sys; from crtools import __version__; sys.stdout.write(__version__)"`
 
 upload:
 	python3 setup.py sdist bdist_wheel
