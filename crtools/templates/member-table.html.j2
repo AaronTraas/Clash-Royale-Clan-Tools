@@ -28,21 +28,9 @@
                            <strong>{{member.clanRank}}</strong>
                         </span>
                     </td>
-                    <td class="name" data-sort="{{member.name}}" data-tooltip="true">
+                    <td class="name" data-sort="{{member.name}}" data-role="member-dialog-show" data-member-tag="{{member.tag}}">
                         <strong>{{member.name}}</strong><br />
                         <small class="member-role">{{member.role_label}}</small>
-                        <div class="tooltip">
-                            <dl>
-                                <div><dt>Name</dt><dd>{{member.name}}</dd></div>
-                                <div><dt>Tag</dt><dd>{{member.tag}}</dd></div>
-                                <div><dt>Clan Role</dt><dd>{{member.role}}</dd></div>
-                                <div><dt>XP Level</dt><dd>{{member.expLevel}}</dd></div>
-                                <div><dt>Arena</dt><dd>{{member.arena.name}}</dd></div>
-                                <div><dt>Join Date</dt><dd>{{member.join_date_label}}</dd></div>
-                                <div><dt>Last Activity</dt><dd>{{member.activity_date_label}}</dd></div>
-                                <div><dt>Days Inactive</dt><dd>{{member.days_inactive}}</dd></div>
-                            </dl>
-                        </div>
                     </td>
                     <td class="score {{member.status}}" data-sort="{{member.score}}" data-tooltip="true">
                         <strong>{{member.score}}</strong>

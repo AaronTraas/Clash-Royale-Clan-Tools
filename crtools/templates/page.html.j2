@@ -16,8 +16,9 @@
     {% endif %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,300i,700,700i" />
     <link rel="stylesheet" href="static/crtools.css?version={{version}}" />
+    <link rel="stylesheet" href="static/dialog.css?version={{version}}" />
 </head>
-<body>
+<body data-member-dialog="none">
     <header><div class="inner">
         <h1>{{clan.name}} Clan Dashboard</h1>
     </div></header>
@@ -177,6 +178,8 @@
 
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>
 
+    {% include 'member-detail-dialog.html.j2' %}
+
     <script>
         (function() {
             var startTimestamp = new Date();
@@ -201,6 +204,8 @@
 
                 var tooltip = new TooltipManager();
                 var filter = new MemberTableFilter();
+                var dialogHandler = new DialogHandler();
+
                 new Tablesort(memberTable);
 
                 refreshInterval = setInterval(refreshAfterHalfHour, 3000)

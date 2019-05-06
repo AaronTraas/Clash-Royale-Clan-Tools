@@ -172,3 +172,35 @@ function MemberTableFilter() {
     	}
     }
 }
+
+function DialogHandler() {
+
+    var detailDivs = document.querySelectorAll('dialog [data-member-id]')
+
+    function showMemberInfo(memberTag) {
+        detailDivs.forEach(function(element) {
+            if(element.dataset.memberId == memberTag) {
+                element.className = 'show'
+            } else {
+                element.className = ''
+            }
+        });
+        document.body.dataset.memberDialog = memberTag
+    }
+
+    document.querySelectorAll('.dialog-shadow, dialog [data-role="close"]').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.dataset.memberDialog = 'none';
+        });
+    });
+
+    document.querySelectorAll('[data-role="member-dialog-show"]').forEach(function(element) {
+        var tag = element.dataset.memberTag;
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            showMemberInfo(tag)
+            return true;
+        });
+    });
+}
