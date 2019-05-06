@@ -380,16 +380,19 @@ def process_members(config, clan, warlog, current_war, member_history):
         else:
             member['status'] = 'bad'
 
+        member['activity_status'] = 'normal'
+        member['role_label'] = member['role']
+        if member['days_inactive'] <= 0:
+            member['activity_status'] = 'good'
+        elif member['days_inactive'] <= 2:
+            member['activity_status'] = 'na'
+
         if member['days_inactive'] >= config['activity']['threshold_kick']:
             member['activity_status'] = 'bad'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
         elif member['days_inactive'] >= config['activity']['threshold_warn']:
             member['activity_status'] = 'ok'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
-        else:
-            member['activity_status'] = 'normal'
-            member['role_label'] = member['role']
-
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'

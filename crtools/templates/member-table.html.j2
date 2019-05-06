@@ -8,6 +8,7 @@
                     <th>Score</th>
                     <th>Trophies</th>
                     <th>Dona&shy;tions</th>
+                    <th>Days Inactive</th>
                     <th data-sort-method="none">Current War</th>
                 {% for label in war_labels %}
                     <th data-sort-method="none">{{label.date}}</th>
@@ -61,6 +62,9 @@
                                 <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
                         </div>
+                    </td>
+                    <td class="inactivity {{member.activity_status}}" data-sort="{{member.days_inactive}}" >
+                        <strong>{{member.days_inactive}}</strong><br /><small>days</small>
                     </td>
                     <td class="war current {{member.currentWar.status}}" data-tooltip="true">
                     {% if member.currentWar.battlesPlayed is defined %}

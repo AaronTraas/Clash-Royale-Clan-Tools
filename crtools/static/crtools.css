@@ -631,6 +631,7 @@ img.war-league {
 
 
 #info table .score,
+#info table .inactivity,
 #info table .donations,
 #info table .trophies {
     text-align: center;
@@ -829,7 +830,8 @@ img.war-league {
     background-color: #c13525;
     color: #fff;
 }
-.ok {
+.ok,
+.inactivity.normal {
     background-color: #ffbb43;
 }
 .good {
@@ -839,6 +841,12 @@ img.war-league {
 .na {
     color: #999;
 }
+
+#info table .inactivity.na {
+    background-color: transparent;
+    color: #222;
+}
+
 
 strong.good,
 strong.ok,
