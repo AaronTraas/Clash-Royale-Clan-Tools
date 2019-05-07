@@ -67,7 +67,11 @@ def get_config_from_args(args):
     else:
         config_file_name = os.path.expanduser('~/.crtools')
 
-    config = load_config_file(config_file_name)
+    locale = None
+    if args.locale:
+        locale = args.locale
+
+    config = load_config_file(config_file_name, locale)
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:
@@ -87,8 +91,6 @@ def get_config_from_args(args):
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
         config['crtools']['debug'] = True
-    if args.locale:
-        config['crtools']['locale'] = args.locale
 
     return config
 

@@ -386,7 +386,7 @@ def test_get_suggestions_recruit(tmpdir):
     print(suggestions)
 
     assert len(suggestions) == 1
-    assert suggestions[0] == crtools.SUGGESTION_RECRUIT
+    assert suggestions[0] == config['strings']['suggestionRecruit']
 
 def test_get_suggestions_nosuggestions(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
@@ -408,7 +408,7 @@ def test_get_suggestions_nosuggestions(tmpdir):
     suggestions = crtools.get_suggestions(config, members)
 
     assert len(suggestions) == 1
-    assert suggestions[0] == crtools.SUGGESTION_NO_SUGGESTIONS
+    assert suggestions[0] == config['strings']['suggestionNone']
 
 def test_get_suggestions_kick(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
