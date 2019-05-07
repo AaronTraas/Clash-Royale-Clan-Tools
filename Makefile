@@ -27,8 +27,11 @@ coverage: test-depend
 sonar: coverage
 	sonar-scanner -Dsonar.projectVersion=`python -c "import sys; from crtools import __version__; sys.stdout.write(__version__)"`
 
-translate:
+translate-update:
+	python setup.py update_catalog
 	python setup.py extract_messages
+
+translate:
 	python setup.py compile_catalog
 
 dist: translate
