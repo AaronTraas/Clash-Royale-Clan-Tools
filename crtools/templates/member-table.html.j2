@@ -4,11 +4,12 @@
             <thead>
                 <tr>
                     <th data-sort-default>#</th>
-                    <th>Member</th>
-                    <th>Score</th>
-                    <th>Trophies</th>
-                    <th>Dona&shy;tions</th>
-                    <th>Days Inactive</th>
+                    <th>{{strings.labelMember}}</th>
+                    <th>{{strings.labelScore}}</th>
+                    <th>{{strings.labelTrophies}}</th>
+                    <th>{{strings.labelDonations}}</th>
+                    <th>{{strings.labelDaysInactive}}</th>
+                    <th>{{strings.labelCurrentWar}}</th>
                     <th data-sort-method="none">Current War</th>
                 {% for label in war_labels %}
                     <th data-sort-method="none">{{label.date}}</th>
@@ -100,7 +101,7 @@
                             NOTE: current war <strong>does not</strong> affect score.
                         </div>
                     {% elif member.currentWar.status == 'not-in-clan' %}
-                        Not in clan
+                        {{strings.labelNotInClan}}
                         <div class="tooltip">
                             <strong>{{member.name}}</strong> was not in the clan at the time of this war.
                             <dl>
@@ -108,7 +109,7 @@
                             </dl>
                         </div>
                     {% else %}
-                        N/A
+                        {{strings.labelNA}}
                         <div class="tooltip">
                             <strong>{{member.name}}</strong> is <em>not</em> participating in this war.
                             <dl>
@@ -152,7 +153,7 @@
                             </dl>
                         </div>
                     {% elif war.status == 'not-in-clan' %}
-                        Not in clan
+                        {{strings.labelNotInClan}}
                         <div class="tooltip">
                             <strong>{{member.name}}</strong> was not in the clan at the time of this war.
                             <dl>

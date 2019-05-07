@@ -61,6 +61,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
+    setup_requires=['babel'],
     install_requires=['jinja2','configparser','pyroyale==0.3.0'],
     tests_requires=['pytest','pytest-runner','coverage','requests_mock'],
 
