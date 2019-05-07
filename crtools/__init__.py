@@ -1,4 +1,5 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import gettext
 import logging
 import os
 import sys
@@ -15,6 +16,9 @@ def parse_args(argv):
                             description = '''A tool for creating a dashboard for clan participation in
                                              ClashRoyale. See https://developer.clashroyale.com to sign up
                                              for a developer account and create an API key to use with this.''')
+    parser.add_argument('--locale',
+                        metavar  = 'LOCALE',
+                        help     = 'Locale if language other than English is desired. Currently, only "fr" is valid.')
     parser.add_argument('--config',
                         metavar  = 'CONFIG-FILE',
                         help     = 'configuration file for this app.')
@@ -83,6 +87,8 @@ def get_config_from_args(args):
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
         config['crtools']['debug'] = True
+    if args.locale:
+        config['crtools']['locale'] = args.locale
 
     return config
 

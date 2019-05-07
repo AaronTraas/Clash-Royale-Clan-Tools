@@ -21,85 +21,9 @@ from ._version import __version__
 from crtools import history
 from crtools import leagueinfo
 
-localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-translate = gettext.translation('crtool', localedir, fallback=True)
-_ = translate.gettext
-
 HISTORY_FILE_NAME = 'history.json'
 
 MAX_CLAN_SIZE = 50
-
-SUGGESTION_RECRUIT        = _('<strong>Recruit new members!</strong> The team needs some fresh blood.')
-SUGGESTION_NO_SUGGESTIONS = _('No suggestions at this time. The clan is in good order.')
-
-RULE_PARTICIPATE          = _('...participate in the war?')
-RULE_COLLECTION_COMPLETE  = _('...complete each collection battle? (per battle)')
-RULE_COLLECTION_WIN       = _('...win each collection battle? (per battle)')
-RULE_WARDAY_COMPLETE      = _('...complete war day battle?')
-RULE_WARDAY_WIN           = _('...win war day battle? (per battle)')
-
-NOT_IN_WAR_MESSAGE        = _('The clan is not currently engaged in a war.')
-
-strings = {
-    'mainHeader'              : _('{clan_name} Clan Dashboard'),
-    'sectionCurrentWar'       : _('Current war'),
-    'sectionWarStandings'     : _('Standings'),
-    'sectionRecentWars'       : _('Recent wars'),
-    'sectionMemberTable'      : _('Member list and stats'),
-    'sectionSuggestions'      : _('Suggestions'),
-    'sectionScoring'          : _('Score explanation'),
-
-    'labelClanStats'          : _('Clan Stats'),
-    'labelClanName'           : _('Clan Name'),
-    'labelClanScore'          : _('Clan Score'),
-    'labelDonationsPerWeek'   : _('Donations/week'),
-    'labelRequiredTrophies'   : _('Required Trophies'),
-    'labelWarTrophies'        : _('War Trophies'),
-    'labelClanTag'            : _('Clan Tag'),
-    'labelLastUpdate'         : _('Last update'),
-    'labelYes'                : _('Yes'),
-    'labelNo'                 : _('No'),
-    'labelNoWarInLog'         : _('No wars in war log'),
-    'labelWarState'           : _('State'),
-    'labelCollectionDayEnd'   : _('Collection Day End'),
-    'labelWarEnd'             : _('War End'),
-    'labelNumWarParticipants' : _('Participants'),
-    'labelWarCrowns'          : _('Crowns'),
-    'labelWarVictories'       : _('Victories'),
-    'labelWarCards'           : _('Cards Earned'),
-    'labelMember'             : _('Member'),
-    'labelScore'              : _('Score'),
-    'labelTrophies'           : _('Trophies'),
-    'labelDonations'          : _('Dona&shy;tions'),
-    'labelDaysInactive'       : _('Days Inactive'),
-    'labelCurrentWar'         : _('Current War'),
-    'labelNotInClan'          : _('Not in clan'),
-    'labelNA'                 : _('N/A'),
-
-    'ctaLookingForClan'       : _('Looking for a clan?'),
-    'buttonJoinUs'            : _('Join us!'),
-
-    'labelFilter'             : _('Filter'),
-    'filterNone'              : _('None'),
-    'filterLeadership'        : _('Leadership'),
-    'filterRoleElder'         : _('Role: Elder'),
-    'filterRoleMember'        : _('Role: Member'),
-    'filterNewMembers'        : _('New Members'),
-    'filterInCurrentWar'      : _('In current war'),
-    'filterInactive'          : _('Inactive'),
-    'filterDanger'            : _('In danger'),
-
-    'suggestionKick'          : _('Members with a <strong class="bad">score below 0</strong> will be recommended for kicking or demotion.'),
-    'suggestionInactive'      : _('Members inactive for <strong class="bad">{days_inactive} days</strong> will be kicked.'),
-    'suggestionPromote'       : _('A member who achieves <strong class="good">{points} points</strong> is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.'),
-
-    'scoreBreakdown'          : _('Score is made of two components: <strong>donation score</strong> and <strong>war participation score</strong>.'),
-    'scoreDonationLabel'      : _('Donation Score'),
-    'scoreDonationBreakdown'  : _('You are expected to donate <strong>{{min_donations_daily}} cards per day</strong>, on average. If you make more, you will gain points. If you make fewer, you will lose points. If you have zero, you will be penalized <strong class="bad">{{donations_zero}} points</strong>'),
-
-    'scoreWarLabel'           : _('War Participation Score'),
-    'scoreRuleHeader'         : _('For each of the last 10 wars, did member...')
-}
 
 logger = logging.getLogger(__name__)
 
@@ -315,9 +239,9 @@ def get_suggestions(config, processed_members):
     # If there are no other suggestions, give some sort of message
     if len(suggestions) == 0:
         if len(members_by_score) < MAX_CLAN_SIZE:
-            suggestions.append(SUGGESTION_RECRUIT)
+            suggestions.append(config['strings']['suggestionRecruit'])
         else:
-            suggestions.append(SUGGESTION_NO_SUGGESTIONS)
+            suggestions.append(config['strings']['suggestionNone'])
 
     return suggestions
 
@@ -333,11 +257,11 @@ def get_scoring_rules(config):
             return 'normal'
 
     rules = [
-        {'name': RULE_PARTICIPATE,         'yes': config['score']['war_participation'],        'no': config['score']['war_non_participation'] },
-        {'name': RULE_COLLECTION_COMPLETE, 'yes': config['score']['collect_battle_played'],    'no': config['score']['collect_battle_incomplete']},
-        {'name': RULE_COLLECTION_WIN,      'yes': config['score']['collect_battle_won'],       'no': config['score']['collect_battle_lost']},
-        {'name': RULE_WARDAY_COMPLETE,     'yes': config['score']['war_battle_played'],        'no': config['score']['war_battle_incomplete']},
-        {'name': RULE_WARDAY_WIN,          'yes': config['score']['war_battle_won'],           'no': config['score']['war_battle_lost']}
+        {'name': config['strings']['ruleParticipate'],         'yes': config['score']['war_participation'],        'no': config['score']['war_non_participation'] },
+        {'name': config['strings']['ruleCollectionComplete'], 'yes': config['score']['collect_battle_played'],    'no': config['score']['collect_battle_incomplete']},
+        {'name': config['strings']['ruleCollectionWin'],      'yes': config['score']['collect_battle_won'],       'no': config['score']['collect_battle_lost']},
+        {'name': config['strings']['ruleWarDayComplete'],     'yes': config['score']['war_battle_played'],        'no': config['score']['war_battle_incomplete']},
+        {'name': config['strings']['ruleWarDayWin'],          'yes': config['score']['war_battle_won'],           'no': config['score']['war_battle_lost']}
     ]
 
     for rule in rules:
@@ -508,7 +432,7 @@ def process_current_war(config, current_war):
     current_war_processed = current_war.copy()
 
     if current_war_processed['state'] == 'notInWar':
-        current_war_processed['stateLabel'] = NOT_IN_WAR_MESSAGE
+        current_war_processed['stateLabel'] = config['strings']['LabelNotInWar']
         return current_war_processed
 
     cards = 0;
@@ -558,6 +482,104 @@ def process_recent_wars(config, warlog):
 
     return wars
 
+def generate_strings(config):
+    localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
+    translate = gettext.translation('crtools', localedir, languages=[config['crtools']['locale']], fallback=True)
+    _ = translate.gettext
+
+    return {
+        'mainHeader'                : _('{clan_name} Clan Dashboard'),
+
+        'ctaLookingForClan'         : _('Looking for a clan?'),
+        'buttonJoinUs'              : _('Join us!'),
+
+        'sectionCurrentWar'         : _('Current war'),
+        'sectionWarStandings'       : _('Standings'),
+        'sectionRecentWars'         : _('Recent wars'),
+        'sectionMemberTable'        : _('Member list and stats'),
+        'sectionSuggestions'        : _('Suggestions'),
+        'sectionScoring'            : _('Score explanation'),
+
+        'labelClanStats'            : _('Clan Stats'),
+        'labelClanName'             : _('Clan Name'),
+        'labelClanScore'            : _('Clan Score'),
+        'labelDonationsPerWeek'     : _('Donations/week'),
+        'labelRequiredTrophies'     : _('Required Trophies'),
+        'labelWarTrophies'          : _('War Trophies'),
+        'labelClanTag'              : _('Clan Tag'),
+        'labelClanRole'             : _('Clan Role'),
+        'labelLastUpdate'           : _('Last update'),
+        'labelYes'                  : _('Yes'),
+        'labelNo'                   : _('No'),
+        'labelNoWarInLog'           : _('No wars in war log'),
+        'labelWarState'             : _('State'),
+        'labelCollectionDayEnd'     : _('Collection Day End'),
+        'labelWarEnd'               : _('War End'),
+        'labelNumWarParticipants'   : _('Participants'),
+        'labelWarCrowns'            : _('Crowns'),
+        'labelWarVictories'         : _('Victories'),
+        'labelWarCards'             : _('Cards Earned'),
+        'labelMember'               : _('Member'),
+        'labelMemberName'           : _('Member Name'),
+        'labelMemberTag'            : _('Member Tag'),
+        'labelMemberJoinDate'       : _('Join Date'),
+        'labelMemberLastActivity'   : _('Last Activity Date'),
+        'labelArena'                : _('Arena'),
+        'labelXpLevel'              : _('XP Level'),
+        'labelScore'                : _('Score'),
+        'labelTrophies'             : _('Trophies'),
+        'labelDonations'            : _('Dona&shy;tions'),
+        'labelDaysInactive'         : _('Days Inactive'),
+        'labelCurrentWar'           : _('Current War'),
+        'labelNotInClan'            : _('Not in clan'),
+        'labelNA'                   : _('N/A'),
+        'LabelNotInWar'             : _('The clan is not currently engaged in a war.'),
+        'labelScoreDonations'       : _('Score from donations'),
+        'labelScoreWar'             : _('Score from war participation'),
+        'labelCardsGiven'           : _('Cards given'),
+        'labelCardRecieved'         : _('Cards recieved'),
+        'labelDonationsLastWeek'    : _('Cards given last week'),
+        'labelCollectionDayBattles' : _('Collection day battles'),
+        'labelCollectionDayWins'    : _('Collection day wins'),
+        'labelCardsEarned'          : _('Cards earned'),
+        'labelWarDayBattles'        : _('War day battles'),
+        'labelWarDayWins'           : _('War day wins'),
+        'labelWarScore'             : _('War score'),
+        'labelWarLeague'            : _('War league'),
+
+        'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
+        'tooltipCurrentWarNoScore'  : _('NOTE: current war <strong>does not</strong> affect score.'),
+
+        'labelFilter'               : _('Filter'),
+        'filterNone'                : _('None'),
+        'filterLeadership'          : _('Leadership'),
+        'filterRoleElder'           : _('Role: Elder'),
+        'filterRoleMember'          : _('Role: Member'),
+        'filterNewMembers'          : _('New Members'),
+        'filterInCurrentWar'        : _('In current war'),
+        'filterInactive'            : _('Inactive'),
+        'filterDanger'              : _('In danger'),
+
+        'suggestionKick'            : _('Members with a <strong class="bad">score below 0</strong> will be recommended for kicking or demotion.'),
+        'suggestionInactive'        : _('Members inactive for <strong class="bad">{days_inactive} days</strong> will be kicked.'),
+        'suggestionPromote'         : _('A member who achieves <strong class="good">{points} points</strong> is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.'),
+        'suggestionRecruit'         : _('<strong>Recruit new members!</strong> The team needs some fresh blood.'),
+        'suggestionNone'            : _('No suggestions at this time. The clan is in good order.'),
+
+        'scoreBreakdown'            : _('Score is made of two components: <strong>donation score</strong> and <strong>war participation score</strong>.'),
+        'scoreDonationLabel'        : _('Donation Score'),
+        'scoreDonationBreakdown'    : _('You are expected to donate <strong>{min_donations_daily} cards per day</strong>, on average. If you make more, you will gain points. If you make fewer, you will lose points. If you have zero, you will be penalized <strong class="bad">{donations_zero} points</strong>'),
+
+        'scoreWarLabel'             : _('War Participation Score'),
+        'scoreRuleHeader'           : _('For each of the last 10 wars, did member...'),
+        'ruleParticipate'           : _('...participate in the war?'),
+        'ruleCollectionComplete'    : _('...complete each collection battle? (per battle)'),
+        'ruleCollectionWin'         : _('...win each collection battle? (per battle)'),
+        'ruleWarDayComplete'        : _('...complete war day battle?'),
+        'ruleWarDayWin'             : _('...win war day battle? (per battle)')
+    }
+
+
 # NOTE: we're not testing this function because this is where we're
 # isolating all of the I/O for the application here. The real "work"
 # here is done in all of the calls to functions in this file, or in the
@@ -606,6 +628,8 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             with open(history_path, 'r') as myfile:
                 old_history = json.loads(myfile.read())
 
+        config['strings'] = generate_strings(config)
+
         current_war_processed = process_current_war(config, current_war)
         clan_processed = process_clan(config, clan, current_war)
         member_history = history.get_member_history(clan['memberList'], old_history, current_war)
@@ -622,7 +646,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
         dashboard_html = env.get_template('page.html.j2').render(
             version           = __version__,
             config            = config,
-            strings           = strings,
+            strings           = config['strings'],
             update_date       = datetime.now().strftime('%c'),
             members           = members_processed,
             war_labels        = warlog_labels(warlog, clan['tag']),

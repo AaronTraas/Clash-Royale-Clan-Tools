@@ -49,7 +49,8 @@ config_defaults = {
         'safe' :     []
     },
     'crtools' : {
-        'debug' : False
+        'debug' : False,
+        'locale' : 'en'
     }
 }
 

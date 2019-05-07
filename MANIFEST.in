@@ -2,3 +2,5 @@ include README.rst
 include crtools/static/*
 include crtools/static/images/*
 include crtools/templates/*
+recursive-include crtools/locale *
+

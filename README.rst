@@ -137,6 +137,10 @@ The code quality and test coverage are a work in progress.
 If you wish to discuss development of this project, feel free to join
 us on `Discord <https://discord.gg/cvYhavb>`_.
 
+For translation into your language, please follow this tutorial:
+
+https://www.mattlayman.com/blog/2015/i18n/
+
 ==================================================
 Contributors
 ==================================================

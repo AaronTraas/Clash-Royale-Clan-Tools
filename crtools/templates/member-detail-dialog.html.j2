@@ -4,14 +4,14 @@
         <div data-member-id="{{member.tag}}">
             <h1>{{member.name}}</h1>
             <dl>
-                <div><dt>Name</dt><dd>{{member.name}}</dd></div>
-                <div><dt>Tag</dt><dd>{{member.tag}}</dd></div>
-                <div><dt>Clan Role</dt><dd>{{member.role}}</dd></div>
-                <div><dt>XP Level</dt><dd>{{member.expLevel}}</dd></div>
-                <div><dt>Arena</dt><dd>{{member.arena.name}}</dd></div>
-                <div><dt>Join Date</dt><dd>{{member.join_date_label}}</dd></div>
-                <div><dt>Last Activity</dt><dd>{{member.activity_date_label}}</dd></div>
-                <div><dt>Days Inactive</dt><dd>{{member.days_inactive}}</dd></div>
+                <div><dt>{{strings.labelMemberName}}</dt><dd>{{member.name}}</dd></div>
+                <div><dt>{{strings.labelMemberTag}}</dt><dd>{{member.tag}}</dd></div>
+                <div><dt>{{strings.labelDaysInactive}}</dt><dd>{{member.role}}</dd></div>
+                <div><dt>{{strings.labelMemberXpLevel}}</dt><dd>{{member.expLevel}}</dd></div>
+                <div><dt>{{strings.labelArena}}</dt><dd>{{member.arena.name}}</dd></div>
+                <div><dt>{{strings.labelMemberJoinDate}}</dt><dd>{{member.join_date_label}}</dd></div>
+                <div><dt>{{strings.labelMemberLastActivity}}</dt><dd>{{member.activity_date_label}}</dd></div>
+                <div><dt>{{strings.labelDaysInactive}}</dt><dd>{{member.days_inactive}}</dd></div>
             </dl>
         </div>
     {% endfor %}

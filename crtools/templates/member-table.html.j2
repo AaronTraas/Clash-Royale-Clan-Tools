@@ -38,8 +38,8 @@
                         <strong>{{member.score}}</strong>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>Score from donations</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
-                                <div><dt>Score from war participation</dt><dd>{{"{0:+}".format(member.warScore)}}</strong></dd></div>
+                                <div><dt>{{strings.labelScoreDonations}}</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
+                                <div><dt>{{strings.labelScoreWar}}</dt><dd>{{"{0:+}".format(member.warScore)}}</strong></dd></div>
                             </dl>
                         </div>
                     </td>
@@ -57,10 +57,10 @@
                         {% endif %}
                         <div class="tooltip">
                             <dl>
-                                <div><dt>Cards given</dt><dd>{{member.donations}}</dd></div>
-                                <div><dt>Cards recieved</dt><dd>{{member.donationsReceived}}</dd></div>
-                                <div><dt>Cards given last week</dt><dd>{{member.donations_last_week}}</dd></div>
-                                <div><dt>Donations score</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
+                                <div><dt>{{strings.labelCardsGiven}}</dt><dd>{{member.donations}}</dd></div>
+                                <div><dt>{{strings.labelCardRecieved}}</dt><dd>{{member.donationsReceived}}</dd></div>
+                                <div><dt>{{strings.labelDonationsLastWeek}}</dt><dd>{{member.donations_last_week}}</dd></div>
+                                <div><dt>{{strings.labelScoreDonations}}</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
                         </div>
                     </td>
@@ -89,34 +89,34 @@
                         </div>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>Collection day battles</dt><dd>{{member.currentWar.collectionDayBattlesPlayed}}</dd></div>
-                                <div><dt>Cards earned</dt><dd>{{member.currentWar.cardsEarned}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{member.currentWar.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{member.currentWar.cardsEarned}}</dd></div>
                             {% if clan.currentWarState == 'warDay' %}
-                                <div><dt>War day battles</dt><dd>{{member.currentWar.battlesPlayed}}</dd></div>
-                                <div><dt>War day wins</dt><dd>{{member.currentWar.wins}}</dd></div>
+                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{member.currentWar.battlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{member.currentWar.wins}}</dd></div>
                             {% endif %}
-                                <div><dt>War score</dt><dd>N/A</dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
                             </dl>
                             <br />
-                            NOTE: current war <strong>does not</strong> affect score.
+                            {{strings.tooltipCurrentWarNoScore}}
                         </div>
                     {% elif member.currentWar.status == 'not-in-clan' %}
                         {{strings.labelNotInClan}}
                         <div class="tooltip">
                             <strong>{{member.name}}</strong> was not in the clan at the time of this war.
                             <dl>
-                                <div><dt>War score</dt><dd>N/A</dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
                             </dl>
                         </div>
                     {% else %}
                         {{strings.labelNA}}
                         <div class="tooltip">
-                            <strong>{{member.name}}</strong> is <em>not</em> participating in this war.
+                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>
                                 <div><dt>War score</dt><dd>N/A</dd></div>
                             </dl>
                             <br />
-                            NOTE: current war <strong>does not</strong> affect score.
+                            {{strings.tooltipCurrentWarNoScore}}
                         </div>
                     {% endif %}
                     </td>
@@ -143,29 +143,29 @@
                         </div>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>War league</dt><dd>{{war.warLeague}}</dd></div>
-                                <div><dt>Collection day battles</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
-                                <div><dt>Collection day wins</dt><dd>{{war.collectionBattleWins}}</dd></div>
-                                <div><dt>Cards earned</dt><dd>{{war.cardsEarned}}</dd></div>
-                                <div><dt>War day battles</dt><dd>{{war.battlesPlayed}}</dd></div>
-                                <div><dt>War day wins</dt><dd>{{war.wins}}</dd></div>
-                                <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
+                                <div><dt>{{strings.labelWarLeague}}</dt><dd>{{war.warLeague}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayWins}}</dt><dd>{{war.collectionBattleWins}}</dd></div>
+                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{war.cardsEarned}}</dd></div>
+                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{war.battlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{war.wins}}</dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
                         </div>
                     {% elif war.status == 'not-in-clan' %}
                         {{strings.labelNotInClan}}
                         <div class="tooltip">
-                            <strong>{{member.name}}</strong> was not in the clan at the time of this war.
+                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>
-                                <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
                         </div>
                     {% else %}
                         N/A
                         <div class="tooltip">
-                            <strong>{{member.name}}</strong> did <em>not</em> participate in this war.
+                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>
-                                <div><dt>War score</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
                         </div>
                     {% endif %}
