@@ -240,10 +240,11 @@ def load_config_file(config_file_name=None, locale=None):
     config = __validate_paths(config)
     config = __validate_crtools_settings(config)
 
+    logging.getLogger(__name__).debug(config)
+
     if locale:
         config['crtools']['locale'] = locale
 
     config['strings'] = __localize_strings(config['crtools']['locale'])
 
-    logging.getLogger(__name__).debug(config)
     return config
