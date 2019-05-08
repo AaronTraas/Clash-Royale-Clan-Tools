@@ -11,3 +11,5 @@ Theodore Kotz <ted@kotz.us>
 Anis Jolly <anisjolly@gmail.com>
 	Debugging Windows-specific path issues, documentation, and current war state
 
+Eagle334 <Eagle334@gmail.com>
+	French translation

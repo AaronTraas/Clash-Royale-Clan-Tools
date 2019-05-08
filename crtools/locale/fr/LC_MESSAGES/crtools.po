@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the crtools project.
 #
 # Translators:
-# FIRST AUTHOR <Eagle334@gmail.com>, 2019.
+# Eagle334 <Eagle334@gmail.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
