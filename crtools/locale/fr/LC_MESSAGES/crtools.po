@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
 "Report-Msgid-Bugs-To: aaron@traas.org\n"
 "POT-Creation-Date: 2019-05-07 15:25-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"PO-Revision-Date: 2019-05-08 12:41+0000\n"
+"Last-Translator: Eagle334 <Eagle334@gmail.com>, 2019\n"
+"Language-Team: French (https://www.transifex.com/traasorg/teams/98811/fr/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: crtools/config.py:64
 msgid "{clan_name} Clan Dashboard"
@@ -84,9 +84,8 @@ msgid "Clan Tag"
 msgstr "Tag du clan"
 
 #: crtools/config.py:83
-#, fuzzy
 msgid "Clan Role"
-msgstr "Rôle du clan"
+msgstr "Rôle du Clan"
 
 #: crtools/config.py:84
 msgid "Last update"
@@ -141,7 +140,6 @@ msgid "Member Name"
 msgstr "Nom du membre"
 
 #: crtools/config.py:97
-#, fuzzy
 msgid "Member Tag"
 msgstr "Tag du membre"
 
@@ -177,7 +175,7 @@ msgstr "Dons"
 msgid "Days Inactive"
 msgstr "Jours d'inactivité"
 
-#: crtools/config.py:106   ---------- Already defined line 35+36
+#: crtools/config.py:106
 msgid "Current War"
 msgstr "Guerre en cours"
 
@@ -206,7 +204,6 @@ msgid "Cards given"
 msgstr "Cartes données"
 
 #: crtools/config.py:113
-#, fuzzy
 msgid "Cards recieved"
 msgstr "Cartes reçues"
 
@@ -215,22 +212,18 @@ msgid "Cards given last week"
 msgstr "Cartes données la semaine dernière"
 
 #: crtools/config.py:115
-#, fuzzy
 msgid "Collection day battles"
 msgstr "Batailles du jour de collecte"
 
 #: crtools/config.py:116
-#, fuzzy
 msgid "Collection day wins"
 msgstr "Victoires jour de collecte"
 
-#: crtools/config.py:117   ----------------------- Already defined line 132+133
-#, fuzzy
+#: crtools/config.py:117
 msgid "Cards earned"
 msgstr "Cartes acquises"
 
 #: crtools/config.py:118
-#, fuzzy
 msgid "War day battles"
 msgstr "Batailles jour de guerre"
 
@@ -239,7 +232,6 @@ msgid "War day wins"
 msgstr "Victoires jour de guerre"
 
 #: crtools/config.py:120
-#, fuzzy
 msgid "War score"
 msgstr "Score de la guerre"
 
@@ -249,7 +241,8 @@ msgstr "League de la guerre"
 
 #: crtools/config.py:123
 msgid "<strong>{name}</strong> was not in the clan at the time of this war."
-msgstr "<strong>{name}</strong> n'était pas dans le clan au moment de cette guerre."
+msgstr ""
+"<strong>{name}</strong> n'était pas dans le clan au moment de cette guerre."
 
 #: crtools/config.py:124
 msgid "NOTE: current war <strong>does not</strong> affect score."
@@ -295,7 +288,9 @@ msgstr "En danger"
 msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
-msgstr "Les membres dont le score est inférieur à 0 seront recommandés pour exclusion ou rétrogradation."
+msgstr ""
+"Les membres dont le score est inférieur à 0 seront recommandés pour "
+"exclusion ou rétrogradation."
 
 #: crtools/config.py:137
 msgid ""
@@ -308,11 +303,15 @@ msgid ""
 "A member who achieves <strong class=\"good\">{points} points</strong> is "
 "elegible for promotion to <strong>Elder</strong> at the discretion of "
 "leadership."
-msgstr "Un membre ayant atteint {points} points est éligible à une promotion d'Aîné à la discrétions du Chef/Adjoint."
+msgstr ""
+"Un membre ayant atteint {points} points est éligible à une promotion d'Aîné "
+"à la discrétions du Chef/Adjoint."
 
 #: crtools/config.py:139
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
-msgstr "<strong>Recruiter de nouveaux membres!</strong> Le clan a besoin de sans neuf."
+msgstr ""
+"<strong>Recruiter de nouveaux membres!</strong> Le clan a besoin de sans "
+"neuf."
 
 #: crtools/config.py:140
 msgid "No suggestions at this time. The clan is in good order."
@@ -322,7 +321,9 @@ msgstr "Aucune suggestion pour le moment. Tout est en ordre."
 msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
-msgstr "Le score est baé sur deux aspects: le <strong>score de donations</strong> et le <strong>score de participation</strong>."
+msgstr ""
+"Le score est basé sur deux aspects: le <strong>score de donations</strong> "
+"et le <strong>score de participation</strong>."
 
 #: crtools/config.py:143
 msgid "Donation Score"
@@ -332,9 +333,14 @@ msgstr "Score de Donation"
 msgid ""
 "You are expected to donate <strong>{min_donations_daily} cards per "
 "day</strong>, on average. If you make more, you will gain points. If you "
-"make fewer, you will lose points. If you have zero, you will be penalized"
-" <strong class=\"bad\">{donations_zero} points</strong>"
-msgstr "On attend de chaque joueur un don minimum de <strong>{min_donations_daily} cartes par jour</strong>, en moyenne. Si vous faites plus, vous gagnerez des points. Si vous faites moins, vous perdrez des points. Si vous ne donnez pas vous serez pénalisé de <strong class=\"bad\">{donations_zero} points</strong>"
+"make fewer, you will lose points. If you have zero, you will be penalized "
+"<strong class=\"bad\">{donations_zero} points</strong>"
+msgstr ""
+"On attend de chaque joueur un don minimum de <strong>{min_donations_daily} "
+"cartes par jour</strong>, en moyenne. Si vous faites plus, vous gagnerez des"
+" points. Si vous faites moins, vous perdrez des points. Si vous ne donnez "
+"pas vous serez pénalisé de <strong class=\"bad\">{donations_zero} "
+"points</strong>"
 
 #: crtools/config.py:146
 msgid "War Participation Score"
@@ -342,7 +348,7 @@ msgstr "Score de la particiation à la guerre"
 
 #: crtools/config.py:147
 msgid "For each of the last 10 wars, did member..."
-msgstr "Pour chacune des 10 dernieres guerre, est-ce que le joueur a..."
+msgstr "Pour chacune des 10 dernières guerre, est-ce que le joueur a..."
 
 #: crtools/config.py:148
 msgid "...participate in the war?"
@@ -363,4 +369,3 @@ msgstr "...fait la(les) bataille(s) de la guerre?"
 #: crtools/config.py:152
 msgid "...win war day battle? (per battle)"
 msgstr "...gagné la(les) bataille(s) de la guerre?"
-
