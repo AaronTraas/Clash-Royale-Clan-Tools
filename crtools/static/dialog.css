@@ -106,12 +106,11 @@ dialog .button.royaleapi:before {
 
 dialog h1 {
 	font-size: 3.0rem;
-	line-height: 1.3em;
+    line-height: 2.0em;
 	background-color: #563d7c;
 	color: #fff;
     padding: 0 22px;
     margin: 0 0 12px 0;
-    line-height: 2.0em;
 }
 
 @media (max-width: 700px) {
