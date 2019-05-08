@@ -3,16 +3,21 @@
     {% for member in members %}
         <div data-member-id="{{member.tag}}">
             <h1>{{member.name}}</h1>
-            <dl>
-                <div><dt>{{strings.labelMemberName}}</dt><dd>{{member.name}}</dd></div>
-                <div><dt>{{strings.labelMemberTag}}</dt><dd>{{member.tag}}</dd></div>
-                <div><dt>{{strings.labelDaysInactive}}</dt><dd>{{member.role}}</dd></div>
-                <div><dt>{{strings.labelXpLevel}}</dt><dd>{{member.expLevel}}</dd></div>
-                <div><dt>{{strings.labelArena}}</dt><dd>{{member.arena.name}}</dd></div>
-                <div><dt>{{strings.labelMemberJoinDate}}</dt><dd>{{member.join_date_label}}</dd></div>
-                <div><dt>{{strings.labelMemberLastActivity}}</dt><dd>{{member.activity_date_label}}</dd></div>
-                <div><dt>{{strings.labelDaysInactive}}</dt><dd>{{member.days_inactive}}</dd></div>
-            </dl>
+            <section>
+                <table width="100%">
+                    <tr><th>{{strings.labelMemberTag}}</th><td>{{member.tag}}</td></tr>
+                    <tr><th>{{strings.labelDaysInactive}}</th><td>{{member.role}}</td></tr>
+                    <tr><th>{{strings.labelXpLevel}}</th><td>{{member.expLevel}}</td></tr>
+                    <tr><th>{{strings.labelArena}}</th><td>{{member.arena.name}}</td></tr>
+                    <tr><th>{{strings.labelMemberJoinDate}}</th><td>{{member.join_date_label}}</td></tr>
+                    <tr><th>{{strings.labelMemberLastActivity}}</th><td>{{member.activity_date_label}}</td></tr>
+                    <tr><th>{{strings.labelDaysInactive}}</th><td>{{member.days_inactive}}</td></tr>
+                </table>
+                <div>
+                    <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi">See on RoyaleAPI</a>
+                    <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale">See on StatsRoyale</a>
+                </div>
+            </section>
         </div>
     {% endfor %}
 

@@ -14,15 +14,35 @@
 
 dialog {
 	position: fixed;
-	max-width: 600px;
-	width: auto;
+	box-sizing: border-box;
+	max-width: 640px;
+	width: 100%;
 	top: 100px;
 	left: 50%;
 	margin-left: -300px;
+	padding: 0 0 12px 0;
 
+	background: #fff;
 	border-radius: 5px;
 	border: none;
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
+	overflow: hidden;
+
+	display: none;
+}
+
+dialog [data-role='close'] {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	background: url(images/close.svg) no-repeat center;
+	background-size: 22px;
+	white-space: nowrap;
+	text-indent: 100%;
 }
 
 body:not([data-member-dialog='none']) dialog,
@@ -30,21 +50,94 @@ body:not([data-member-dialog='none']) .dialog-shadow {
 	display: block;
 }
 
-dialog div[data-member-id] {
+dialog > [data-member-id] {
 	display: none;
 }
 
-dialog div[data-member-id].show {
+dialog > [data-member-id].show {
 	display: block;
 }
 
+dialog > [data-member-id] > section {
+	display: flex;
+	margin: 12px 6px;
+}
+
+dialog > [data-member-id] > section > * {
+	margin: 0 12px;
+}
+
+dialog .button {
+	display: block;
+	margin: 0 0 12px 0;
+	position: relative;
+	font-size: 16px;
+	text-align: left;
+}
+
+dialog .button.statsroyale,
+dialog .button.royaleapi {
+	padding-left: 38px;
+	white-space: nowrap;
+}
+
+dialog .button.statsroyale:before,
+dialog .button.royaleapi:before {
+	content: '';
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	position: absolute;
+	left: 12px;
+	top: 50%;
+	margin-top: -9px;
+}
+
+dialog .button.statsroyale:before {
+	background-image: url(https://cdn.statsroyale.com/images/favicon/apple-touch-icon-precomposed.png)
+}
+
+dialog .button.royaleapi:before {
+	background-image: url(https://royaleapi.com/static/img/favicon/favicon-32x32.png)
+}
+
+dialog h1 {
+	font-size: 3.0rem;
+	line-height: 1.3em;
+	background-color: #563d7c;
+	color: #fff;
+    padding: 0 22px;
+    margin: 0 0 12px 0;
+    line-height: 2.0em;
+}
 
 @media (max-width: 700px) {
+	dialog [data-role='close'] {
+		width: 44px;
+		height: 44px;
+		background-size: 16px;
+	}
+
+	dialog > [data-member-id] > section {
+		display: block;
+	}
+
 	dialog {
-		max-width: auto;
+		max-width: none;
+		width: auto;
         left: 15px;
         right: 15px;
         top: 44px;
         margin-left: 0;
     }
+    dialog > [data-member-id] > section > * {
+		margin: 12px;
+	}
+	dialog h1 {
+		font-size: 2.2rem;
+	    line-height: 2.0em;
+	}
 }
