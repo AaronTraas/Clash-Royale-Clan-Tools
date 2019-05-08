@@ -44,6 +44,7 @@ Usage:
 
 optional arguments:
   -h, --help           show this help message and exit
+  --locale LOCALE      Locale if language other than English is desired. Currently, only "fr" is valid.
   --config FILE        configuration file for this app.
   --api_key KEY        API key for developer.clashroyale.com
   --clan CLAN          Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.
@@ -95,6 +96,20 @@ parameter: api_key. The file should look like:
   canonical_url=https://yourclan.com/
 
 For more details, see `samples/crtools.ini <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/samples/crtools.ini>`_
+
+==================================================
+Other languages/locales
+==================================================
+
+Crtools currently supports English and French. If you'd like to use French,
+add the following switch on the command line:
+
+.. code::
+
+  --locale=fr
+
+If you wish for crtools to be available in another languages, reach out to
+me.
 
 ==================================================
 Suggested usage on a Linux web server
