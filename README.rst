@@ -37,10 +37,10 @@ Usage:
 
 .. code::
 
-  crtools [-h] [--config CONFIG-FILE] [--api_key KEY] [--clan TAG]
-               [--out PATH] [--favicon PATH] [--clan_logo PATH]
-               [--description PATH] [--canonical_url URL] [--debug]
-               [--version]
+  crtools [-h] [--locale LOCALE] [--config CONFIG-FILE] [--api_key KEY]
+          [--clan TAG] [--out PATH] [--favicon PATH] [--clan_logo PATH]
+          [--description PATH] [--canonical_url URL] [--debug]
+          [--version]
 
 optional arguments:
   -h, --help           show this help message and exit
