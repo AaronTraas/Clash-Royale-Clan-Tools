@@ -120,6 +120,9 @@ def __localize_strings(locale):
         'labelWarScore'             : _('War score'),
         'labelWarLeague'            : _('War league'),
 
+        'dialogTitleMemberDetails'  : _('Member Details'),
+        'dialogLabelPlayerStats'    : _('Player Stats and Info'),
+
         'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
         'tooltipCurrentWarNoScore'  : _('NOTE: current war <strong>does not</strong> affect score.'),
 

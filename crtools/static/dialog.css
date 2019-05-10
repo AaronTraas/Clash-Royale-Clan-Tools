@@ -225,6 +225,16 @@ dialog h1 {
 		width: 44px;
 		height: 44px;
 		background-size: 16px;
+		top: 1px;
+	}
+	dialog [data-role='close']:before {
+		left: 10px;
+		top: 10px;
+		right: 10px;
+		bottom: 10px;
+	}
+	dialog [data-role='close']:after {
+		line-height: 42px;
 	}
 
 	dialog [data-member-id] > section.flex {
@@ -240,7 +250,7 @@ dialog h1 {
         margin-left: 0;
     }
     dialog [data-member-id] > section > * {
-		margin: 12px 0;
+		margin: 0 12px;
 	}
 	dialog h1 {
 		font-size: 2.2rem;
