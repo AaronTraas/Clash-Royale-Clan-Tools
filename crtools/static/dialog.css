@@ -7,7 +7,7 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
-	background-color: #fff;
+	background-color: #000;
 	opacity: .5;
 	display: none;
 }
@@ -20,15 +20,31 @@ dialog {
 	top: 100px;
 	left: 50%;
 	margin-left: -300px;
-	padding: 0 0 12px 0;
+	padding: 0;
 
-	background: #fff;
-	border-radius: 5px;
+	background-color: #63687d;
+	border-radius: 10px;
 	border: none;
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
 	overflow: hidden;
 
 	display: none;
+}
+
+dialog h1, dialog h2, dialog h3 {
+	color: #fff;
+	text-shadow: -1px -1px 0px #000000,
+				 0px -1px 0px #000000,
+	             1px -1px 0px #000000,
+	             1px 0px 0px #000000,
+	             -1px 0px 0px #000000,
+	             -1px 1px 0px #000000,
+	             1px 1px 0px #000000,
+	             1px 2px 0px #000000,
+	             -1px 2px 0px #000000,
+	             -1px 3px 0px #000000,
+	             0px 3px 0px #000000,
+	             1px 3px 0px #000000;
 }
 
 dialog [data-role='close'] {
@@ -39,10 +55,55 @@ dialog [data-role='close'] {
 	width: 60px;
 	height: 60px;
 	overflow: hidden;
-	background: url(images/close.svg) no-repeat center;
-	background-size: 22px;
 	white-space: nowrap;
 	text-indent: 100%;
+}
+
+dialog [data-role='close']:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 16px;
+	top: 16px;
+	right: 16px;
+	bottom: 16px;
+	border: 1.5px solid #000;
+	border-radius: 7px;
+	background: #ff2e2e;
+	background: linear-gradient(to bottom, rgba(248,80,50,1) 0%, rgba(241,111,92,1) 50%, rgba(246,41,12,1) 51%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%);
+}
+dialog [data-role='close']:after {
+	content: '×';
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	color: #fff;
+	text-align: center;
+	line-height: 58px;
+	text-indent: 0;
+	font-size: 26px;
+	font-weight: 700;
+	text-shadow: 0px -1px 0px #000000,
+				 -1px -1px 0px #000000,
+				 1px -1px 0px #000000,
+				 1px 0px 0px #000000,
+				 -1px 0px 0px #000000,
+				 -1px 1px 0px #000000,
+				 1px 1px 0px #000000,
+				 0px 1px 0px #000000,
+				 -1px 1.5px 0px #000000,
+				 1px 1.5px 0px #000000,
+				 0px 1.5px 0px #000000;
+}
+
+dialog .inner {
+	background-color: #e3eef4;
+	margin: 0 8px 8px 8px;
+	border-radius: 5px;
+	overflow: hidden;
 }
 
 body:not([data-member-dialog='none']) dialog,
@@ -50,22 +111,66 @@ body:not([data-member-dialog='none']) .dialog-shadow {
 	display: block;
 }
 
-dialog > [data-member-id] {
+dialog [data-member-id] {
 	display: none;
 }
 
-dialog > [data-member-id].show {
+dialog [data-member-id].show {
 	display: block;
 }
 
-dialog > [data-member-id] > section {
-	display: flex;
-	margin: 12px 6px;
+dialog [data-member-id] > section {
+	position: relative;
+}
+dialog [data-member-id] > section.normal {
+	padding-top: 8px;
+}
+dialog [data-member-id] > section.normal:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	display: block;
+	background-color: #e5e8fb;
+	border-top: 1px solid #f0ffff;
+	height: 3px;
 }
 
-dialog > [data-member-id] > section > * {
+dialog [data-member-id] > section.flex {
+	display: flex;
+}
+
+dialog [data-member-id] > section > * {
 	margin: 0 12px;
 }
+
+dialog [data-member-id] > h3 {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	border-bottom: 3px solid #d2f3fc;
+	background-color: #0e57a4;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 2.6em;
+}
+dialog [data-member-id] > h3:before {
+	content: '';
+	display: block;
+	background-color: #e3eef4;
+	border-bottom: 5px solid #6f8cac;
+	height: 12px;
+	box-shadow: 0px 0px 22px 22px rgba(0,0,0,0.6);
+}
+
+dialog [data-member-id] > section.identity {
+	background: linear-gradient(to bottom, rgba(4,27,58,1) 0%,rgba(31,101,189,1) 100%);
+	padding: 22px 0;
+	color: #fff;
+}
+
 
 dialog .button {
 	display: block;
@@ -107,10 +212,12 @@ dialog .button.royaleapi:before {
 dialog h1 {
 	font-size: 3.0rem;
     line-height: 2.0em;
-	background-color: #563d7c;
 	color: #fff;
     padding: 0 22px;
-    margin: 0 0 12px 0;
+    margin: 2px 2px 0 2px;
+    text-align: center;
+	background: linear-gradient(to bottom, rgba(255,255,255,0.25) 0%,rgba(241,241,241,0.25) 50%,rgba(225,225,225,0.25) 51%,rgba(255,255,255,0) 100%);
+	border-radius: 10px;
 }
 
 @media (max-width: 700px) {
@@ -120,7 +227,7 @@ dialog h1 {
 		background-size: 16px;
 	}
 
-	dialog > [data-member-id] > section {
+	dialog [data-member-id] > section.flex {
 		display: block;
 	}
 
@@ -132,8 +239,8 @@ dialog h1 {
         top: 44px;
         margin-left: 0;
     }
-    dialog > [data-member-id] > section > * {
-		margin: 12px;
+    dialog [data-member-id] > section > * {
+		margin: 12px 0;
 	}
 	dialog h1 {
 		font-size: 2.2rem;

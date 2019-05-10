@@ -1,9 +1,17 @@
 <div class="dialog-shadow"></div>
 <dialog id="member">
+    <header>
+        <h1>Member Details</h1>
+        <a data-role="close" href="#">Close</a>
+    </header>
+    <div class="inner">
     {% for member in members %}
         <div data-member-id="{{member.tag}}">
-            <h1>{{member.name}}</h1>
-            <section>
+            <section class="identity">
+                <h2>{{member.name}}</h2>
+            </section>
+            <h3>Player stats and info</h3>
+            <section class="flex normal">
                 <table width="100%">
                     <tr><th>{{strings.labelMemberTag}}</th><td>{{member.tag}}</td></tr>
                     <tr><th>{{strings.labelClanRole}}</th><td>{{member.role}}</td></tr>
@@ -20,6 +28,5 @@
             </section>
         </div>
     {% endfor %}
-
-    <a data-role="close" href="#">Close</a>
+    </div>
 </dialog>
