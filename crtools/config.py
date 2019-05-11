@@ -5,7 +5,10 @@ import json
 import logging
 import os
 import requests
-from packaging.version import parse
+try:
+    from packaging.version import parse
+except ImportError:
+    from pip._vendor.packaging.version import parse
 
 from ._version import __version__
 
