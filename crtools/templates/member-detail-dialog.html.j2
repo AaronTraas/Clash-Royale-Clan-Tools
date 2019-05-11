@@ -8,7 +8,13 @@
     {% for member in members %}
         <div data-member-id="{{member.tag}}">
             <section class="identity">
-                <h2>{{member.name}}</h2>
+                <h2>
+                    {{member.name}}
+                    <small>{{member.tag}}</small>
+                </h2>
+
+                {{member.expLevel}}
+                {{member.trophies}}
             </section>
             <h3>{{strings.dialogLabelPlayerStats}}</h3>
             <section class="flex normal">

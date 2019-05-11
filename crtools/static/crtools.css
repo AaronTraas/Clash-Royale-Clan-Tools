@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 2rem;
   font-weight: 300;
+  font-family: 'Roboto Slab';
 }
 
 h1, h2, h4 {
@@ -302,8 +303,26 @@ body > header h1 em {
 #hero {
     background-color: #563d7c;
     color: #fff;
-    padding-top: 44px;
-    padding-bottom: 44px;
+    padding: 44px 80px;
+    margin: 0 -60px;
+    background: #03468d url(images/diamond-tile.svg) center center;
+    background-size: 64px;
+    box-shadow: inset 0px 6px 70px 10px rgba(0,0,0,0.8);
+}
+
+#hero h2 {
+    text-shadow: -1px -1px 0px #000000,
+                 0px -1px 0px #000000,
+                 1px -1px 0px #000000,
+                 1px 0px 0px #000000,
+                 -1px 0px 0px #000000,
+                 -1px 1px 0px #000000,
+                 1px 1px 0px #000000,
+                 1px 2px 0px #000000,
+                 -1px 2px 0px #000000,
+                 -1px 3px 0px #000000,
+                 0px 3px 0px #000000,
+                 1px 3px 0px #000000;
 }
 
 #hero > .section-wrap {

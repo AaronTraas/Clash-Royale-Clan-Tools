@@ -151,10 +151,12 @@ dialog [data-member-id] > h3 {
 	padding: 0;
 	margin: 0;
 	border-bottom: 3px solid #d2f3fc;
-	background-color: #0e57a4;
     font-size: 2rem;
     font-weight: bold;
     line-height: 2.6em;
+    background: #03468d url(images/diamond-tile.svg) center center;
+    background-size: 32px;
+    box-shadow: inset 0px 6px 20px 2px rgba(0,0,0,0.8);
 }
 dialog [data-member-id] > h3:before {
 	content: '';
@@ -171,6 +173,8 @@ dialog [data-member-id] > section.identity {
 	color: #fff;
 }
 
+dialog [data-member-id] > section.identity h2 small {
+}
 
 dialog .button {
 	display: block;
