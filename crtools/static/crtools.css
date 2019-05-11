@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 2rem;
   font-weight: 300;
-  font-family: 'Roboto Slab';
+  font-family: 'Roboto Slab', sans-serif;
 }
 
 h1, h2, h4 {
@@ -116,7 +116,7 @@ a:hover {
 }
 
 .button {
-    font-family: 'Roboto Slab';
+    font-family: 'Roboto Slab', sans-serif;
     display: inline-block;
     background-color: #0689fc;
     border-radius: 6px;
@@ -302,7 +302,6 @@ body > header h1 em {
 /* Hero element
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #hero {
-    background-color: #563d7c;
     color: #fff;
     padding: 44px 80px;
     margin: 0 -60px;
