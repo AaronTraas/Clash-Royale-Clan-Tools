@@ -13,16 +13,18 @@
                     <small>{{member.tag}}</small>
                 </h2>
                 <div>
-                    <span class="xp-level">{{member.expLevel}}
-                    <span class="trophies">{{member.trophies}}</span>
+                    <h3 class="xp-level">{{member.expLevel}}</h3>
+                    <h3 class="trophies">{{member.trophies}}</h3>
                 </div>
+                {% if 'arena-' not in member.arenaLeague %}
+                <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arenaLeague}}.svg" />
+                {% endif %}
+
             </section>
             <h3>{{strings.dialogLabelPlayerStats}}</h3>
             <section class="flex normal">
                 <table width="100%">
-                    <tr><th>{{strings.labelMemberTag}}</th><td>{{member.tag}}</td></tr>
                     <tr><th>{{strings.labelClanRole}}</th><td>{{member.role}}</td></tr>
-                    <tr><th>{{strings.labelXpLevel}}</th><td>{{member.expLevel}}</td></tr>
                     <tr><th>{{strings.labelArena}}</th><td>{{member.arena.name}}</td></tr>
                     <tr><th>{{strings.labelMemberJoinDate}}</th><td>{{member.join_date_label}}</td></tr>
                     <tr><th>{{strings.labelMemberLastActivity}}</th><td>{{member.activity_date_label}}</td></tr>

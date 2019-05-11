@@ -116,6 +116,7 @@ a:hover {
 }
 
 .button {
+    font-family: 'Roboto Slab';
     display: inline-block;
     background-color: #0689fc;
     border-radius: 6px;
