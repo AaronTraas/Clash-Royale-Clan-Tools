@@ -52,7 +52,6 @@ def parse_args(argv):
 
     return parser.parse_args(argv)
 
-
 def get_config_from_args(args):
     if args.version:
         print(__version__)
@@ -71,7 +70,7 @@ def get_config_from_args(args):
     if args.locale:
         locale = args.locale
 
-    config = load_config_file(config_file_name, locale)
+    config = load_config_file(config_file_name, True, locale)
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:

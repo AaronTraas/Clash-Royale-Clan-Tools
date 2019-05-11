@@ -157,7 +157,7 @@
             <li><a rel="external" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools">Github</a></li>
             <li><a rel="external" target="_blank" href="https://developer.clashroyale.com/">Clash Royale API</a></li>
         </ul>
-        <a class="version" rel="external" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools">crtools {{version}}</a>
+        <a class="version {{ 'update-available' if config.crtools.update_available == True else '' }}" rel="external" target="_blank" href="https://pypi.org/project/crtools/">crtools {{config.crtools.version}}</a>
     </div></footer>
 
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>

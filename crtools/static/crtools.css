@@ -978,6 +978,12 @@ footer .version {
     font-weight: normal;
 }
 
+footer .version.update-available {
+    background: url(images/new.svg) no-repeat left center;
+    background-size: contain;
+    padding-left: 1.8em;
+}
+
 /* Tooltips
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .tooltip {

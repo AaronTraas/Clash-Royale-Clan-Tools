@@ -1,4 +1,7 @@
+import requests_mock
+
 from crtools import load_config_file
+from crtools.config import PYPI_URL
 
 __config_debug =  '''
 [crtools]
@@ -142,3 +145,45 @@ def test_config_paths_valid(tmpdir):
     assert config['paths']['clan_logo'].endswith('/test_config_paths_valid/logo.png')
     assert config['paths']['favicon'].endswith('/test_config_paths_valid/favicon.ico')
     assert config['paths']['description_html'].endswith('/test_config_paths_valid/description.html')
+
+def test_version_update(requests_mock, tmpdir):
+    latest_version = '99.99.99'
+    mock_object = {'releases': {latest_version: []}}
+
+    requests_mock.get(PYPI_URL, json=mock_object, status_code=200)
+
+    config_file = tmpdir.mkdir('test_config_unknown_key').join('config.ini')
+    config_file.write(__config_debug)
+
+    config = load_config_file(config_file.realpath(), True)
+
+    assert config['crtools']['latest_version'] != config['crtools']['version']
+    assert config['crtools']['latest_version'] == latest_version
+    assert config['crtools']['update_available'] == True
+
+def test_version_update_latest(requests_mock, tmpdir):
+    latest_version = '0.0.0'
+    mock_object = {'releases': {latest_version: []}}
+
+    requests_mock.get(PYPI_URL, json=mock_object, status_code=200)
+
+    config_file = tmpdir.mkdir('test_config_unknown_key').join('config.ini')
+    config_file.write(__config_debug)
+
+    config = load_config_file(config_file.realpath(), True)
+
+    assert config['crtools']['latest_version'] == config['crtools']['version']
+    assert config['crtools']['update_available'] == False
+
+def test_version_update_request_fail(requests_mock, tmpdir):
+    mock_object = {}
+
+    requests_mock.get(PYPI_URL, json=mock_object, status_code=500)
+
+    config_file = tmpdir.mkdir('test_config_unknown_key').join('config.ini')
+    config_file.write(__config_debug)
+
+    config = load_config_file(config_file.realpath(), True)
+
+    assert config['crtools']['latest_version'] == config['crtools']['version']
+    assert config['crtools']['update_available'] == False

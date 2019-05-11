@@ -1,8 +1,17 @@
 from configparser import SafeConfigParser
 import copy
 import gettext
+import json
 import logging
 import os
+import requests
+from packaging.version import parse
+
+from ._version import __version__
+
+logger = logging.getLogger(__name__)
+
+PYPI_URL = 'https://pypi.org/pypi/crtools/json'
 
 # Create config dict with defaults
 config_defaults = {
@@ -50,8 +59,11 @@ config_defaults = {
         'safe' :     []
     },
     'crtools' : {
-        'debug' : False,
-        'locale' : 'en'
+        'debug'            : False,
+        'locale'           : 'en',
+        'version'          : __version__,
+        'latest_version'   : __version__,
+        'update_available' : False
     }
 }
 
@@ -222,7 +234,27 @@ def __parse_value(new_value, template_value):
                 value = False
     return value
 
-def load_config_file(config_file_name=None, locale=None):
+def __get_version_info(config):
+    logger.debug('Grabbing current version from PyPI')
+
+    req = requests.get(PYPI_URL)
+    latest_version = current_version = parse(config['crtools']['version'])
+    if req.status_code == requests.codes.ok:
+        j = json.loads(req.text)
+        releases = j.get('releases', [])
+        for release in releases:
+            ver = parse(release)
+            latest_version = max(latest_version, ver)
+
+    logger.info('crtools version: {}'.format(current_version))
+    if latest_version > current_version:
+        config['crtools']['latest_version'] = '{}'.format(latest_version)
+        config['crtools']['update_available'] = True
+        logger.info('*** update available: crtools {} ***'.format(latest_version))
+
+    return config
+
+def load_config_file(config_file_name=None, check_for_update=False, locale=None):
     """ Look for config file. If config file exists, load it, and try to
     extract config from config file"""
 
@@ -243,7 +275,10 @@ def load_config_file(config_file_name=None, locale=None):
     config = __validate_paths(config)
     config = __validate_crtools_settings(config)
 
-    logging.getLogger(__name__).debug(config)
+    if check_for_update:
+        config = __get_version_info(config)
+
+    logger.debug(config)
 
     if locale:
         config['crtools']['locale'] = locale
