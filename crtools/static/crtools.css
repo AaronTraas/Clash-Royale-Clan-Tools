@@ -51,7 +51,7 @@ h1, h2, h4 {
 }
 h1 { font-size: 5.0rem; line-height: 1.2;  letter-spacing: -.1rem; }
 h2 { font-size: 4.2rem; line-height: 1.25; letter-spacing: -.1rem; }
-h3 { font-size: 3.0rem; line-height: 1.3;  letter-spacing: -.1rem; }
+h3 { font-size: 2.2rem; line-height: 1.3;  letter-spacing: -.1rem; }
 h4 { font-size: 1.8rem; line-height: 1.35; letter-spacing: -.08rem; }
 h5 { font-size: 1.5rem; line-height: 1.5;  letter-spacing: -.05rem; }
 h6 { font-size: 1.2rem; line-height: 1.6;  letter-spacing: 0; }
@@ -117,20 +117,70 @@ a:hover {
 
 .button {
     font-family: 'Roboto Slab', sans-serif;
+    text-shadow: -1px -1px 0px #003366,
+                 0px -1px 0px #003366,
+                 1px -1px 0px #003366,
+                 1px 0px 0px #003366,
+                 -1px 0px 0px #003366,
+                 -1px 1px 0px #003366,
+                 1px 1px 0px #003366,
+                 1px 2px 0px #003366,
+                 -1px 2px 0px #003366;
     display: inline-block;
-    background-color: #0689fc;
-    border-radius: 6px;
     line-height: 18px;
-    padding: 16px 44px;
     text-align: center;
     font-size: 18px;
     color: #fff;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-    text-shadow: 0 2px rgba(0,0,0,0.15);
     font-weight: bold;
     text-decoration: none;
     margin: 0 22px;
+
+    border: 2px solid #000;
+    position: relative;
+
+    background-color: #0058ac;
 }
+.button,
+.button:before {
+    border-radius: 8px;
+}
+.button > span {
+    display: block;
+    position: relative;
+    padding: 8px 32px;
+    margin: 5px 4px 8px 4px;
+    border-radius: 6px;
+    border-bottom: 2px solid rgba(0,0,128,0.3);
+
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 51%, rgba(255,255,255,0.2) 100%);
+}
+.button:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 6px;
+    left: 0;
+    overflow: hidden;
+    border-top-width: 3px;
+
+    border: 0.5px solid #6ce0fc;
+    background-color: #4cacff;
+}
+.button > span:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(255,255,255,.7);
+    width: 7px;
+    height: 7px;
+    border-radius: 3px 6px;
+}
+
 .button:hover {
     color: #fff;
 }
@@ -297,115 +347,6 @@ body > header h1 {
 }
 body > header h1 em {
     font-weight: normal;
-}
-
-/* Hero element
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#hero {
-    color: #fff;
-    padding: 44px 80px;
-    margin: 0 -60px;
-    background: #03468d url(images/diamond-tile.svg) center center;
-    background-size: 64px;
-    box-shadow: inset 0px 6px 70px 10px rgba(0,0,0,0.8);
-}
-
-#hero h2 {
-    text-shadow: -1px -1px 0px #000000,
-                 0px -1px 0px #000000,
-                 1px -1px 0px #000000,
-                 1px 0px 0px #000000,
-                 -1px 0px 0px #000000,
-                 -1px 1px 0px #000000,
-                 1px 1px 0px #000000,
-                 1px 2px 0px #000000,
-                 -1px 2px 0px #000000,
-                 -1px 3px 0px #000000,
-                 0px 3px 0px #000000,
-                 1px 3px 0px #000000;
-}
-
-#hero > .section-wrap {
-    display: flex;
-}
-
-#hero > .section-wrap > * {
-    margin: 0 15px 0 0;
-}
-#hero > .section-wrap > *:last-child {
-    margin: 0;
-}
-
-#hero .last-update {
-    color: rgba(255,255,255,0.4);
-    text-align: center;
-    font-size: 1.2rem;
-    font-style: italic;
-}
-
-#hero .join-cta {
-    text-align: center;
-    margin: 4px 22px;
-}
-#hero .join-cta h3 {
-    font-size: 2.0rem;
-    margin-bottom: 8px;
-}
-
-@media (max-width: 700px) {
-    #hero > .section-wrap {
-        display: block;
-    }
-    #hero > .section-wrap > * {
-        margin: 0;
-    }
-}
-@media (max-width: 550px) {
-    #hero {
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-}
-
-/* Clan stats table
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#clan-stats {
-    min-width: 260px;
-}
-#clan-stats .table-wrap {
-    border: 1px solid #fff;
-    border-radius: 5px;
-    background-color: rgba(0,0,0,.3);
-}
-#clan-stats table {
-    width: 100%;
-    margin: 0;
-}
-#clan-stats table thead th {
-    text-align: center;
-    background-color: rgba(255,255,255,0.4);
-}
-#clan-stats table tbody th {
-    font-family: 'Open Sans Condensed', sans-serif;
-}
-#clan-stats table tbody tr:last-child th,
-#clan-stats table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-img.war-league {
-    height: 22px;
-    vertical-align: text-top;
-}
-
-/* Clan description region
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#clan-description {
-    flex: 1;
-}
-#clan-description > *:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
 }
 
 /* Current war region

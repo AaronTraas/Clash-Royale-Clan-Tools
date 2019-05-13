@@ -1,0 +1,114 @@
+/* Hero element
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#hero {
+    color: #fff;
+    padding: 44px 80px;
+    margin: 0 -60px;
+    background: #03468d url(images/diamond-tile.svg) center center;
+    background-size: 64px;
+    box-shadow: inset 0px 6px 70px 10px rgba(0,0,0,0.8);
+}
+
+#hero h2, #hero h3, #clan-stats thead th {
+    font-family: 'Roboto Slab', sans-serif;
+    text-shadow: -1px -1px 0px #000000,
+                 0px -1px 0px #000000,
+                 1px -1px 0px #000000,
+                 1px 0px 0px #000000,
+                 -1px 0px 0px #000000,
+                 -1px 1px 0px #000000,
+                 1px 1px 0px #000000,
+                 1px 2px 0px #000000,
+                 -1px 2px 0px #000000,
+                 -1px 3px 0px #000000,
+                 0px 3px 0px #000000,
+                 1px 3px 0px #000000;
+}
+
+#hero > .section-wrap {
+    display: flex;
+}
+
+#hero > .section-wrap > * {
+    margin: 0 15px 0 0;
+}
+#hero > .section-wrap > *:last-child {
+    margin: 0;
+}
+
+#hero .last-update {
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+#hero .join-cta {
+    text-align: center;
+    margin: 4px 22px;
+}
+#hero .join-cta h3 {
+    font-size: 2.0rem;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 700px) {
+    #hero > .section-wrap {
+        display: block;
+    }
+    #hero > .section-wrap > * {
+        margin: 0;
+    }
+}
+@media (max-width: 550px) {
+    #hero {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}
+
+/* Clan stats table
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#clan-stats {
+    min-width: 260px;
+}
+#clan-stats .table-wrap {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.3);
+}
+#clan-stats table {
+    width: 100%;
+    margin: 0;
+}
+#clan-stats table thead th {
+    text-align: center;
+    background-color: rgba(255,255,255,0.4);
+}
+#clan-stats table tbody th {
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+#clan-stats table tbody tr:last-child th,
+#clan-stats table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+img.war-league {
+    height: 22px;
+    vertical-align: text-top;
+}
+
+/* Clan description region
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#clan-description {
+    flex: 1;
+    text-shadow:
+                 1px 0px 0px #333,
+                 -1px 0px 0px #333,
+                 -1px 1px 0px #333,
+                 1px 1px 0px #333;
+}
+#clan-description > *:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

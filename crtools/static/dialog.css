@@ -245,19 +245,18 @@ dialog [data-member-id] > section.identity .arena-league {
 dialog .button {
 	display: block;
 	margin: 0 0 12px 0;
-	position: relative;
 	font-size: 16px;
 	text-align: left;
 }
 
-dialog .button.statsroyale,
-dialog .button.royaleapi {
+dialog .button.statsroyale > span,
+dialog .button.royaleapi > span {
 	padding-left: 38px;
 	white-space: nowrap;
 }
 
-dialog .button.statsroyale:before,
-dialog .button.royaleapi:before {
+dialog .button.statsroyale > span:before,
+dialog .button.royaleapi > span:before {
 	content: '';
 	display: inline-block;
 	width: 18px;
@@ -271,11 +270,11 @@ dialog .button.royaleapi:before {
 	margin-top: -9px;
 }
 
-dialog .button.statsroyale:before {
+dialog .button.statsroyale > span:before {
 	background-image: url(https://cdn.statsroyale.com/images/favicon/apple-touch-icon-precomposed.png)
 }
 
-dialog .button.royaleapi:before {
+dialog .button.royaleapi > span:before {
 	background-image: url(https://royaleapi.com/static/img/favicon/favicon-32x32.png)
 }
 
