@@ -135,6 +135,7 @@ a:hover {
     font-weight: bold;
     text-decoration: none;
     margin: 0 22px;
+    box-shadow: 0px 1.5px 0px 0px rgba(0,0,0,0.3);
 
     border: 2px solid #000;
     position: relative;
