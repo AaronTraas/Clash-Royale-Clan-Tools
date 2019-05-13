@@ -31,8 +31,8 @@
                     <tr><th>{{strings.labelDaysInactive}}</th><td>{{member.days_inactive}}</td></tr>
                 </table>
                 <div>
-                    <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>See on RoyaleAPI</span></a>
-                    <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>See on StatsRoyale</span></a>
+                    <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>{{config.strings.dialogMemberRoyaleApi}}</span></a>
+                    <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>{{config.strings.dialogMemberStatsRoyale}}</span></a>
                 </div>
             </section>
         </div>

@@ -134,9 +134,16 @@ def __localize_strings(locale):
         'labelWarDayWins'           : _('War day wins'),
         'labelWarScore'             : _('War score'),
         'labelWarLeague'            : _('War league'),
+        'labelCollectionEndTime'    : _('{} hours'),
+        'labelCollectionComplete'   : _('Complete'),
+        'labelEndTime'              : _('1 day, {} hours'),
+        'labelStateCollectionDay'   : _('Collection Day'),
+        'labelStateWarDay'          : _('War Day'),
 
         'dialogTitleMemberDetails'  : _('Member Details'),
         'dialogLabelPlayerStats'    : _('Player Stats and Info'),
+        'dialogMemberStatsRoyale'   : _('See on StatsRoyale'),
+        'dialogMemberRoyaleApi'     : _('See on RoyaleAPI'),
 
         'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
         'tooltipCurrentWarNoScore'  : _('NOTE: current war <strong>does not</strong> affect score.'),

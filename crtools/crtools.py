@@ -451,19 +451,19 @@ def process_current_war(config, current_war):
 
     now = datetime.utcnow()
     if current_war_processed['state'] == 'collectionDay':
-        current_war_processed['stateLabel'] = 'Collection Day'
+        current_war_processed['stateLabel'] = config['strings']['labelStateCollectionDay']
 
         collection_end_time = datetime.strptime(current_war_processed['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
         collection_end_time_delta = math.floor((collection_end_time - now).seconds / 3600)
-        current_war_processed['collectionEndTimeLabel'] = '{} hours'.format(collection_end_time_delta)
-        current_war_processed['endLabel'] = '1 day, {} hours'.format(collection_end_time_delta)
+        current_war_processed['collectionEndTimeLabel'] = config['strings']['labelCollectionEndTime'].format(collection_end_time_delta)
+        current_war_processed['endLabel'] = config['strings']['labelEndTime'].format(collection_end_time_delta)
     else:
-        current_war_processed['stateLabel'] = 'War Day'
+        current_war_processed['stateLabel'] = config['strings']['labelStateWarDay']
 
         end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
         end_time_delta = math.floor((end_time - now).seconds / 3600)
-        current_war_processed['collectionEndTimeLabel'] = 'Complete'
-        current_war_processed['endLabel'] = '{} hours'.format(end_time_delta)
+        current_war_processed['collectionEndTimeLabel'] = config['strings']['labelCollectionComplete']
+        current_war_processed['endLabel'] = config['strings']['labelCollectionEndTime'].format(end_time_delta)
 
         # calculate battles remaining for each clan
         for clan in current_war_processed['clans']:
