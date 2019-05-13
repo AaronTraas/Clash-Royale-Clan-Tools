@@ -156,6 +156,11 @@ def __localize_strings(locale):
         'suggestionPromote'         : _('A member who achieves <strong class="good">{points} points</strong> is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.'),
         'suggestionRecruit'         : _('<strong>Recruit new members!</strong> The team needs some fresh blood.'),
         'suggestionNone'            : _('No suggestions at this time. The clan is in good order.'),
+        'suggestionKickBlacklist'   : _('Kick <strong>{name}</strong>. Member is blacklisted.'),
+        'suggestionKickInactivity'  : _('Kick <strong>{name}</strong> <strong class="bad">{days} days inactive</strong>'),
+        'suggestionKickScore'       : _('Kick <strong>{name}</strong> <strong class="bad">{score}</strong>'),
+        'suggestionDemoteScore'     : _('Demote <strong>{name}</strong> <strong class="bad">{score}</strong>'),
+        'suggestionPromoteScore'    : _('Promote <strong>{name}</strong> to <strong>Elder</strong> <strong class="good">{score}</strong>'),
 
         'scoreBreakdown'            : _('Score is made of two components: <strong>donation score</strong> and <strong>war participation score</strong>.'),
         'scoreDonationLabel'        : _('Donation Score'),

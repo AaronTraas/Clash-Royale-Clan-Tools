@@ -196,7 +196,7 @@ def war_score(config, war):
 
     return war_score
 
-def get_suggestions(config, processed_members):
+def get_suggestions(config, processed_members, clan_processed):
     """ Returns list of suggestions for the clan leadership to perform.
     Suggestions are to kick, demote, or promote. Suggestions are based on
     user score, and various thresholds in configuration. """
@@ -209,12 +209,18 @@ def get_suggestions(config, processed_members):
 
     suggestions = []
     for index, member in enumerate(members_by_score):
+        if member['blacklist']:
+            suggestion = config['strings']['suggestionKickBlacklist'].format(name=member['name'])
+            logger.debug(suggestion)
+            suggestions.append(suggestion)
+            continue
+
         # if member on the 'safe' or 'vacation' list, don't make
         # recommendations to kick or demote
         if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
             # suggest kick if inactive for the set threshold
             if member['days_inactive'] >= config['activity']['threshold_kick']:
-                suggestion = 'Kick <strong>{}</strong> <strong class="bad">{} days inactive</strong>'.format(member['name'], member['days_inactive'])
+                suggestion = config['strings']['suggestionKickInactivity'].format(name=member['name'], days=member['days_inactive'])
                 logger.debug(suggestion)
                 suggestions.append(suggestion)
             # if members have a score below zero, we recommend to kick or
@@ -222,18 +228,18 @@ def get_suggestions(config, processed_members):
             # if we're above the minimum clan size, recommend kicking
             # poorly participating member.
             elif member['score'] < config['score']['threshold_kick'] and index <= len(members_by_score) - config['score']['min_clan_size']:
-                suggestion = 'Kick <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score'])
+                suggestion = config['strings']['suggestionKickScore'].format(name=member['name'], score=member['score'])
                 logger.debug(suggestion)
                 suggestions.append(suggestion)
             # If we aren't recommending kicking someone, and their role is
             # > member, recoomend demotion
             elif member['role'] != 'member' and member['score'] < config['score']['threshold_demote']:
-                suggestions.append('Demote <strong>{}</strong> <strong class="bad">{}</strong>'.format(member['name'], member['score']))
+                suggestions.append(config['strings']['suggestionDemoteScore'].format(name=member['name'], score=member['score']))
 
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        if not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member'):
-            suggestions.append('Promote <strong>{}</strong> to <strong>Elder</strong> <strong class="good">{}</strong>'.format(member['name'], member['score']))
+        if not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member') and (member['trophies'] >= clan_processed['requiredTrophies']):
+            suggestions.append(config['strings']['suggestionPromoteScore'].format(name=member['name'], score=member['score']))
 
     # If there are no other suggestions, give some sort of message
     if len(suggestions) == 0:
@@ -390,6 +396,10 @@ def process_members(config, clan, warlog, current_war, member_history):
         elif member['days_inactive'] >= config['activity']['threshold_warn']:
             member['activity_status'] = 'ok'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
+
+        if member['blacklist']:
+            member['role_label'] = 'Blacklisted. Kick!'
+
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'
@@ -553,7 +563,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             clan_hero         = config['paths']['description_html_src'],
             current_war       = current_war_processed,
             recent_wars       = recent_wars,
-            suggestions       = get_suggestions(config, members_processed),
+            suggestions       = get_suggestions(config, members_processed, clan_processed),
             scoring_rules     = get_scoring_rules(config)
         )
 

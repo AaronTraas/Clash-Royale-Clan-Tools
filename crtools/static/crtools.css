@@ -643,12 +643,14 @@ body > header h1 em {
 }
 
 #member-table tr[data-activity=bad] td,
+#member-table tr[data-blacklist=true] td,
 #member-table tr[data-activity=ok] td:not(.bad) {
     border-left: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
 }
 
-#member-table tr[data-activity=bad] td {
+#member-table tr[data-activity=bad] td,
+#member-table tr[data-blacklist=true] td {
     background-color: #c13525;
     color: #fff;
 }

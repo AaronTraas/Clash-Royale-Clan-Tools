@@ -17,7 +17,7 @@
             </thead>
             <class="list">
             {% for member in members %}
-                <tr data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}" data-new="{{ 'true' if member.new else 'false' }}">
+                <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}" data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}" data-new="{{ 'true' if member.new else 'false' }}">
                     <td class="id" data-sort="{{member.clanRank}}">
                         {% if member.clanRank < member.previousClanRank %}
                         <span class="rank-up">

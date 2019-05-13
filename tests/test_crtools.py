@@ -88,7 +88,7 @@ __fake_clan__ = {
             "name": "MemberPerson",
             "role": "member",
             "expLevel": 8,
-            "trophies": 2144,
+            "trophies": 3100,
             "donations": 0,
             "arena": {
                 "id": 54000008,
@@ -101,7 +101,7 @@ __fake_clan__ = {
             "name": "MemberPersonToBePromoted",
             "role": "member",
             "expLevel": 8,
-            "trophies": 2144,
+            "trophies": 3144,
             "donations": 100000000,
             "arena": {
                 "id": 54000008,
@@ -381,7 +381,7 @@ def test_get_suggestions_recruit(tmpdir):
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
-    suggestions = crtools.get_suggestions(config, members)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
 
     print(suggestions)
 
@@ -405,7 +405,7 @@ def test_get_suggestions_nosuggestions(tmpdir):
             "blacklist": False
         })
 
-    suggestions = crtools.get_suggestions(config, members)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
 
     assert len(suggestions) == 1
     assert suggestions[0] == config['strings']['suggestionNone']
@@ -419,7 +419,7 @@ def test_get_suggestions_kick(tmpdir):
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
-    suggestions = crtools.get_suggestions(config, members)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
 
     print(suggestions)
 
@@ -435,7 +435,7 @@ def test_get_suggestions_promote_demote(tmpdir):
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
-    suggestions = crtools.get_suggestions(config, members)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
 
     print(suggestions)
 
