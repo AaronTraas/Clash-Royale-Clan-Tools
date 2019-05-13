@@ -165,9 +165,11 @@ a:hover {
     bottom: 6px;
     left: 0;
     overflow: hidden;
+
+    border: 0.5px solid;
     border-top-width: 3px;
 
-    border: 0.5px solid #6ce0fc;
+    border-color: #6ce0fc;
     background-color: #4cacff;
 }
 .button > span:after {
