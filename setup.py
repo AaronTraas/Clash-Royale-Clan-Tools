@@ -62,7 +62,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     setup_requires=['babel'],
-    install_requires=['jinja2','configparser','pyroyale==0.4.0'],
+    install_requires=['jinja2','configparser','pyroyale', 'requests'],
     tests_requires=['pytest','pytest-runner','coverage','requests_mock'],
 
     include_package_data=True,

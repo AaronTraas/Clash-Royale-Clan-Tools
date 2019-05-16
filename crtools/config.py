@@ -19,22 +19,23 @@ PYPI_URL = 'https://pypi.org/pypi/crtools/json'
 # Create config dict with defaults
 config_defaults = {
     'api' : {
-        'api_key' :             False,
-        'clan_id' :             False,
+        'api_key'                       : False,
+        'clan_id'                       : False,
     },
     'paths' : {
-        'out' :                 './crtools-out',
-        'favicon' :             False,
-        'clan_logo' :           False,
-        'description_html' :    False,
-        'temp_dir_name' :       'crtools'
+        'out'                           : './crtools-out',
+        'favicon'                       : False,
+        'clan_logo'                     : False,
+        'description_html'              : False,
+        'temp_dir_name'                 : 'crtools',
+        'use_fankit'                    : False
     },
     'www' : {
-        'canonical_url' :       False
+        'canonical_url'                 : False
     },
     'activity': {
-        'threshold_warn':       7,
-        'threshold_kick':       21
+        'threshold_warn'                : 7,
+        'threshold_kick'                : 21
     },
     'score' : {
         'min_clan_size' :               46,
@@ -57,16 +58,16 @@ config_defaults = {
         'threshold_warn' :              30
     },
     'members': {
-        'blacklist' : [],
-        'vacation' : [],
-        'safe' :     []
+        'blacklist'                     : [],
+        'vacation'                      : [],
+        'safe'                          : []
     },
     'crtools' : {
-        'debug'            : False,
-        'locale'           : 'en',
-        'version'          : __version__,
-        'latest_version'   : __version__,
-        'update_available' : False
+        'debug'                         : False,
+        'locale'                        : 'en',
+        'version'                       : __version__,
+        'latest_version'                : __version__,
+        'update_available'              : False
     }
 }
 

@@ -603,7 +603,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
                     file_path = os.path.join(output_path, file)
                     if os.path.isfile(file_path):
                         os.unlink(file_path)
-                    elif os.path.isdir(file_path):
+                    elif os.path.isdir(file_path) and os.path.basename(os.path.normpath(file_path)) != 'fankit':
                         shutil.rmtree(file_path)
             except PermissionError as e:
                 logger.error('Permission error: could not delete: \n\t{}'.format(e.filename))

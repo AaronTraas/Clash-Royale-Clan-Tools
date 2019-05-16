@@ -10,7 +10,6 @@
 }
 
 #hero h2, #hero h3, #clan-stats thead th {
-    font-family: 'Roboto Slab', sans-serif;
     text-shadow: -1px -1px 0px #000000,
                  0px -1px 0px #000000,
                  1px -1px 0px #000000,
