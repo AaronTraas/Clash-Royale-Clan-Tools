@@ -246,23 +246,23 @@ msgstr "League de la guerre"
 
 #: crtools/config.py:139
 msgid "{} hours"
-msgstr ""
+msgstr "{} heures"
 
 #: crtools/config.py:140
 msgid "Complete"
-msgstr ""
+msgstr "Terminée"  #Don't know where it is used. I suppose a battle or war. Removed the terminal 'e' if it's for a male gender.
 
 #: crtools/config.py:141
 msgid "1 day, {} hours"
-msgstr ""
+msgstr "1 jour, {} heures"
 
 #: crtools/config.py:142
 msgid "Collection Day"
-msgstr ""
+msgstr "Jour de Collecte"
 
 #: crtools/config.py:143
 msgid "War Day"
-msgstr ""
+msgstr "Jour de Guerre"
 
 #: crtools/config.py:145
 msgid "Member Details"
@@ -274,11 +274,11 @@ msgstr "Joueur Statistiques et Information"
 
 #: crtools/config.py:147
 msgid "See on StatsRoyale"
-msgstr ""
+msgstr "Voir sur StatsRoyale"
 
 #: crtools/config.py:148
 msgid "See on RoyaleAPI"
-msgstr ""
+msgstr "Voir sur RoyaleAPI"
 
 #: crtools/config.py:150
 msgid "<strong>{name}</strong> was not in the clan at the time of this war."
@@ -361,27 +361,29 @@ msgstr "Aucune suggestion pour le moment. Tout est en ordre."
 
 #: crtools/config.py:168
 msgid "Kick <strong>{name}</strong>. Member is blacklisted."
-msgstr ""
+msgstr "Sortir <strong>{name}</strong>. Le joueur sera en liste noire."
 
 #: crtools/config.py:169
 msgid ""
 "Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
 "inactive</strong>"
-msgstr ""
+msgstr "Sortir <strong>{name}</strong> <strong class=\"bad\">{days} jours "
+"inactif</strong>"
 
 #: crtools/config.py:170
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
-msgstr ""
+msgstr "Sortir <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 
 #: crtools/config.py:171
 msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
-msgstr ""
+msgstr "Rétrograder <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 
 #: crtools/config.py:172
 msgid ""
 "Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
 "class=\"good\">{score}</strong>"
-msgstr ""
+msgstr "Promouvoir <strong>{name}</strong> <strong>Aîné</strong> <strong "
+"class=\"good\">{score}</strong>"
 
 #: crtools/config.py:174
 msgid ""
