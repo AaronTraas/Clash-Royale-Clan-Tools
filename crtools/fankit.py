@@ -1,3 +1,7 @@
+# Note: disabled coverage for the functions in this file. There's no real way
+# to test this; we're downloading and unzipping a specific zip file from the
+# Internet. This would require integration testing, rather than unit testing.
+
 import logging
 import os
 import requests
@@ -6,7 +10,7 @@ import zipfile
 
 logger = logging.getLogger(__name__)
 
-def download_file(url, destination_path):
+def download_file(url, destination_path):  # pragma: no coverage #NOSONAR
     # NOTE the stream=True parameter below
     download_status_msg = 'Downloading fan kit: {:,.2f} MB'
 
@@ -28,7 +32,7 @@ def download_file(url, destination_path):
 
         print("\nDownload complete!\n")
 
-def download_fan_kit(tempdir):
+def download_fan_kit(tempdir):  # pragma: no coverage #NOSONAR
     zip_path = os.path.join(tempdir, 'fankit.zip')
     unzip_path = os.path.join(tempdir, 'fankit_unzip')
     dest_path = os.path.join(tempdir, 'fankit')
