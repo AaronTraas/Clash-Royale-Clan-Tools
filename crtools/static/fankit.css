@@ -25,6 +25,10 @@ dialog [data-member-id] > section.identity h2 {
     height: 22px;
 }
 
+dialog [data-member-id] > section.identity .arena-league {
+	top: 0;
+}
+
 figure.arena-league {
 	background-image: url(../fankit/ui/arenas/ui_icon_training.png);
 }
