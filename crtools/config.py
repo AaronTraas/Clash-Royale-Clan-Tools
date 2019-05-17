@@ -181,7 +181,10 @@ def __localize_strings(locale):
         'ruleCollectionComplete'    : _('...complete each collection battle? (per battle)'),
         'ruleCollectionWin'         : _('...win each collection battle? (per battle)'),
         'ruleWarDayComplete'        : _('...complete war day battle?'),
-        'ruleWarDayWin'             : _('...win war day battle? (per battle)')
+        'ruleWarDayWin'             : _('...win war day battle? (per battle)'),
+
+        'footerDisclaimer'          : _('This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.'),
+        'footerSeeContentPolicy'    : _("For more information see Supercell's Fan Content Policy.")
     }
 
 def __validate_crtools_settings(config):

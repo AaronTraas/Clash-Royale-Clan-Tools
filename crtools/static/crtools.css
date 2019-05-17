@@ -43,7 +43,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 2rem;
   font-weight: 300;
-  font-family: 'Roboto Slab', sans-serif;
 }
 
 h1, h2, h4 {
@@ -121,7 +120,6 @@ a:hover {
 }
 
 .button {
-    font-family: 'Roboto Slab', sans-serif;
     text-shadow: -1px -1px 0px #003366,
                  0px -1px 0px #003366,
                  1px -1px 0px #003366,
@@ -346,6 +344,7 @@ body > header {
 }
 
 body > header h1 {
+    font-family: 'Open Sans', sans-serif;
     font-size: 24px;
     font-weight: bold;
     margin: 0;
@@ -946,6 +945,13 @@ footer .version.update-available {
     padding-left: 1.8em;
 }
 
+footer .disclaimer, footer .disclaimer a {
+    max-width: 800px;
+    margin: 44px 0 22px 0;
+    line-height: 1.3em;
+    color: #ccc;
+}
+
 /* Tooltips
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .tooltip {
@@ -1006,7 +1012,7 @@ footer .version.update-available {
 /* Github ribbon
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .github-fork-ribbon {
-  font-family: sans-serif;
+    font-family: sans-serif;
     width: 160px;
     height: 160px;
     position: absolute;
@@ -1060,3 +1066,16 @@ footer .version.update-available {
     border-color: rgba(255,255,255,0.7);
 }
 
+@media (max-width: 700px) {
+    .github-fork-ribbon {
+        width: 90px;
+        height: 90px;
+        font-size: 9px;
+    }
+    .github-fork-ribbon:before, .github-fork-ribbon:after {
+        width: 150px;
+        height: 18px;
+
+        top: 21px;
+    }
+}

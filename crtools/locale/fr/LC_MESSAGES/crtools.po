@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
 "Report-Msgid-Bugs-To: aaron@traas.org\n"
-"POT-Creation-Date: 2019-05-16 21:38-0400\n"
+"POT-Creation-Date: 2019-05-17 08:06-0400\n"
 "PO-Revision-Date: 2019-05-08 12:41+0000\n"
 "Last-Translator: Eagle334 <Eagle334@gmail.com>, 2019\n"
 "Language: fr\n"
@@ -435,4 +435,14 @@ msgstr "...fait la(les) bataille(s) de la guerre?"
 #: crtools/config.py:184
 msgid "...win war day battle? (per battle)"
 msgstr "...gagné la(les) bataille(s) de la guerre?"
+
+#: crtools/config.py:186
+msgid ""
+"This content is not affiliated with, endorsed, sponsored, or specifically"
+" approved by Supercell and Supercell is not responsible for it."
+msgstr "Ce contenu n'est pas affilié avec, soutenu, sponsorisé ou spécifiquement approuvé par Supercell et Supercell refuse toute responsabilité à son sujet."
+
+#: crtools/config.py:187
+msgid "For more information see Supercell's Fan Content Policy."
+msgstr "Pour plus d'informations, veuillez consulter le règlement de Supercell sur les contenus créés par les fans."
 

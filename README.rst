@@ -173,3 +173,11 @@ included in the GPL license. The SVGs were all created in Inkscape.
 It was important to us to make sure the entirety of this application is
 open source, and not subject to takedown request. We will not ever
 extract assets from the game or from any other web properties.
+
+Optionally, crtools can download the official Clash Royale fan kit and use
+some of the content contained. This is not the default behavior, and no
+works copywritten by Supercell are contained within this code.
+
+This content is not affiliated with, endorsed, sponsored, or specifically
+approved by Supercell and Supercell is not responsible for it. For more
+information see Supercell's Fan Content Policy: https://supercell.com/en/fan-content-policy/

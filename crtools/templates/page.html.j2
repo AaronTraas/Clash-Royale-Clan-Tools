@@ -11,19 +11,20 @@
     <title>{{clan.name}} Clan Dashboard | crtools</title>
 
     <link rel="icon" href="favicon.ico"/>
-    {% if config.www.canonical_url != False %}
+{% if config.www.canonical_url != False %}
     <link rel="canonical" href="{{config.www.canonical_url}}" />
-    {% endif %}
+{% endif %}
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,300i,700,700i" />
-    {% if config.paths.use_fankit != True %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700|Open+Sans:300,300i,700,700i" />
-    {% endif %}
     <link rel="stylesheet" href="static/crtools.css?version={{version}}" />
     <link rel="stylesheet" href="static/hero.css?version={{version}}" />
     <link rel="stylesheet" href="static/dialog.css?version={{version}}" />
-    {% if config.paths.use_fankit == True %}
+{% if config.paths.use_fankit == True %}
     <link rel="stylesheet" href="static/fankit.css?version={{version}}" />
-    {% endif %}
+{% else %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700|Open+Sans:300,300i,700,700i" />
+    <link rel="stylesheet" href="static/os-assets.css?version={{version}}" />
+{% endif %}
 </head>
 <body data-member-dialog="none">
     <header><div class="inner">
@@ -167,6 +168,13 @@
             <li><a rel="external" target="_blank" href="https://developer.clashroyale.com/">Clash Royale API</a></li>
         </ul>
         <a class="version {{ 'update-available' if config.crtools.update_available == True else '' }}" rel="external" target="_blank" href="https://pypi.org/project/crtools/">crtools {{config.crtools.version}}</a>
+
+        <p class="disclaimer">
+            {{strings.footerDisclaimer}}
+        {% if config.paths.use_fankit == True %}
+            <a href="https://supercell.com/fan-content-policy">{{strings.footerSeeContentPolicy}}</a>
+        {% endif %}
+        </p>
     </div></footer>
 
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>
