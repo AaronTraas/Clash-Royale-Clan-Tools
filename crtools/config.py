@@ -86,6 +86,7 @@ def __localize_strings(locale):
         'sectionWarStandings'       : _('Standings'),
         'sectionRecentWars'         : _('Recent wars'),
         'sectionMemberTable'        : _('Member list and stats'),
+        'sectionMemberTableMobile'  : _('Members'),
         'sectionSuggestions'        : _('Suggestions'),
         'sectionScoring'            : _('Score explanation'),
 

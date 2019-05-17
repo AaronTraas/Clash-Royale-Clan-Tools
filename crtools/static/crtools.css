@@ -59,8 +59,8 @@ h6 { font-size: 1.2rem; line-height: 1.6;  letter-spacing: 0; }
 @media (max-width: 550px) {
     body { font-size: 1.3em; }
     h1 { font-size: 4.0rem; }
-    h2 { font-size: 2.6rem; }
-    h3 { font-size: 2.2rem; }
+    h2 { font-size: 2.4rem; }
+    h3 { font-size: 2.0rem; }
 }
 p {
   margin: 0 0 15px 0;
@@ -84,7 +84,12 @@ small {
     white-space: nowrap;
 }
 
-@media (max-width: 550px) {
+@media (min-width: 701px) {
+    .no-desktop {
+        display: none;
+    }
+}
+@media (max-width: 700px) {
     .no-mobile {
         display: none;
     }
@@ -350,6 +355,17 @@ body > header h1 {
 }
 body > header h1 em {
     font-weight: normal;
+}
+
+@media (max-width: 700px) {
+    body > header h1 {
+        background-size: 48px;
+    }
+}
+@media (max-width: 460px) {
+    body > header h1 {
+        font-size: 20px;
+    }
 }
 
 /* Current war region

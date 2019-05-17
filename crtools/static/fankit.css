@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Clash";
+  src: url('../fankit/font/Clash-Regular.otf');
+  font-weight: normal;
+}
+/*
+@font-face {
+  font-family: "Clash";
+  src: url('../fankit/font/Clash-Bold.otf');
+  font-weight: bold;
+}
+*/
+h1, h2, h3, h4, h5, h6, .button, #clan-stats thead th {
+  font-family: 'Clash', sans-serif;
+  font-weight: normal;
+}

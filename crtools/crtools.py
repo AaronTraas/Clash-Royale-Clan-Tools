@@ -19,8 +19,10 @@ import tempfile
 from ._version import __version__
 from crtools import history
 from crtools import leagueinfo
+from crtools import fankit
 
 HISTORY_FILE_NAME = 'history.json'
+FANKIT_DIR_NAME = 'fankit'
 
 MAX_CLAN_SIZE = 50
 
@@ -539,6 +541,17 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             with open(history_path, 'r') as myfile:
                 old_history = json.loads(myfile.read())
 
+        if config['paths']['use_fankit']:
+            fankit_src_path = os.path.join(output_path, FANKIT_DIR_NAME)
+            fankit_dest_path = os.path.join(tempdir, FANKIT_DIR_NAME)
+            print(fankit_src_path)
+            if os.path.isdir(fankit_src_path):
+                shutil.copytree(fankit_src_path, fankit_dest_path)
+            else:
+                print('FANKIT NOT FOUND!!!!!!!!!!!!')
+                fankit.download_fan_kit(tempdir)
+
+
         current_war_processed = process_current_war(config, current_war)
         clan_processed = process_clan(config, clan, current_war)
         member_history = history.get_member_history(clan['memberList'], old_history, current_war)
@@ -603,7 +616,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
                     file_path = os.path.join(output_path, file)
                     if os.path.isfile(file_path):
                         os.unlink(file_path)
-                    elif os.path.isdir(file_path) and os.path.basename(os.path.normpath(file_path)) != 'fankit':
+                    elif os.path.isdir(file_path):
                         shutil.rmtree(file_path)
             except PermissionError as e:
                 logger.error('Permission error: could not delete: \n\t{}'.format(e.filename))
