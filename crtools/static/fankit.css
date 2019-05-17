@@ -10,7 +10,106 @@
   font-weight: bold;
 }
 */
-h1, h2, h3, h4, h5, h6, .button, #clan-stats thead th {
+h1, h2, h3, h4, h5, h6, .button, #clan-stats thead th, figure > figcaption {
   font-family: 'Clash', sans-serif;
   font-weight: normal;
 }
+
+dialog [data-member-id] > section.identity h2 {
+	font-size: 3rem;
+}
+
+#member-table td.arena-league:before {
+	background-size: 160%;
+    width: 22px;
+    height: 22px;
+}
+
+figure.arena-league {
+	background-image: url(../fankit/ui/arenas/ui_icon_training.png);
+}
+
+figure.arena-league.challenger-1,
+#member-table td.arena-league.challenger-1:before {
+	background-image: url(../fankit/ui/leagues/league1.png);
+}
+
+figure.arena-league.challenger-2,
+#member-table td.arena-league.challenger-2:before {
+	background-image: url(../fankit/ui/leagues/league2.png);
+}
+
+figure.arena-league.challenger-3,
+#member-table td.arena-league.challenger-3:before {
+	background-image: url(../fankit/ui/leagues/league3.png);
+}
+
+figure.arena-league.master-1,
+#member-table td.arena-league.master-1:before {
+	background-image: url(../fankit/ui/leagues/league4.png);
+}
+
+figure.arena-league.master-2,
+#member-table td.arena-league.master-2:before {
+	background-image: url(../fankit/ui/leagues/league5.png);
+}
+
+figure.arena-league.master-3,
+#member-table td.arena-league.master-3:before {
+	background-image: url(../fankit/ui/leagues/league6.png);
+}
+
+figure.arena-league.arena-12 {
+	background-image: url(../fankit/ui/arenas/ui_icon_champion.png);
+}
+
+figure.arena-league.arena-11 {
+	background-image: url(../fankit/ui/arenas/ui_icon_champion.png);
+}
+
+figure.arena-league.arena-10 {
+	background-image: url(../fankit/ui/arenas/ui_icon_hogmountain.png);
+}
+
+figure.arena-league.arena-9 {
+	background-image: url(../fankit/ui/arenas/ui_icon_jungle.png);
+}
+
+figure.arena-league.arena-8 {
+	background-image: url(../fankit/ui/arenas/ui_icon_ice.png);
+}
+
+figure.arena-league.arena-7 {
+	background-image: url(../fankit/ui/arenas/ui_icon_royal.png);
+}
+
+figure.arena-league.arena-6 {
+	background-image: url(../fankit/ui/arenas/ui_icon_builders.png);
+}
+
+figure.arena-league.arena-5 {
+	background-image: url(../fankit/ui/arenas/ui_icon_spell.png);
+}
+
+figure.arena-league.arena-4 {
+	background-image: url(../fankit/ui/arenas/ui_icon_pekka.png);
+}
+
+figure.arena-league.arena-3 {
+	background-image: url(../fankit/ui/arenas/ui_icon_barbarian.png);
+}
+
+figure.arena-league.arena-2 {
+	background-image: url(../fankit/ui/arenas/ui_icon_bone.png);
+}
+
+figure.arena-league.arena-1 {
+	background-image: url(../fankit/ui/arenas/ui_icon_goblin.png);
+}
+
+
+
+
+
+
+

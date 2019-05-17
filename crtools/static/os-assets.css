@@ -1,6 +1,29 @@
 /* If the fankit isn't being used, here we use open-source replacements */
 
-h1, h2, h3, h4, h5, h6, .button {
+h1, h2, h3, h4, h5, h6, .button, #clan-stats thead th, figure > figcaption {
   font-family: 'Roboto Slab', sans-serif;
 }
 
+#member-table td.arena-league.challenger-1:before {
+	background-image: url(images/arena-league-challenger-1.svg);
+}
+
+#member-table td.arena-league.challenger-2:before {
+	background-image: url(images/arena-league-challenger-2.svg);
+}
+
+#member-table td.arena-league.challenger-3:before {
+	background-image: url(images/arena-league-challenger-3.svg);
+}
+
+#member-table td.arena-league.master-1:before {
+	background-image: url(images/arena-league-master-1.svg);
+}
+
+#member-table td.arena-league.master-2:before {
+	background-image: url(images/arena-league-master-2.svg);
+}
+
+#member-table td.arena-league.master-3:before {
+	background-image: url(images/arena-league-master-3.svg);
+}

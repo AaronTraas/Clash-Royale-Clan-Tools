@@ -615,8 +615,14 @@ body > header h1 em {
     text-align: center;
 }
 
-#info .trophies > img {
+#member-table td.arena-league:before {
+    content: '';
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 22px;
     height: 22px;
+    display: inline-block;
     vertical-align: text-top;
 }
 

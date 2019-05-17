@@ -42,10 +42,7 @@
                             </dl>
                         </div>
                     </td>
-                    <td class="trophies {{member.trophiesStatus}}" data-sort="{{member.trophies}}">
-                        {% if 'arena-' not in member.arenaLeague %}
-                        <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arenaLeague}}.svg" />
-                        {% endif %}
+                    <td class="trophies {{member.trophiesStatus}} {{ 'arena-league' if 'arena-' not in member.arenaLeague else '' }} {{member.arenaLeague}}" data-sort="{{member.trophies}}">
                         <strong>{{member.trophies}}</strong>
                     </td>
                     <td class="donations {{member.donationStatus}}" data-sort="{{member.donations}}" data-tooltip="true">

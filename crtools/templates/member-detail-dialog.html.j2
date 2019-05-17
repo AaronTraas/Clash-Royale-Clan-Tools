@@ -16,9 +16,10 @@
                     <h3 class="xp-level">{{member.expLevel}}</h3>
                     <h3 class="trophies">{{member.trophies}}</h3>
                 </div>
-                {% if 'arena-' not in member.arenaLeague %}
-                <img class="arena-league" title="{{member.arena.name}}" src="static/images/arena-league-{{member.arenaLeague}}.svg" />
-                {% endif %}
+
+                <figure class="arena-league {{member.arenaLeague}}">
+                    <figcaption>{{member.arena.name}}</figcaption>
+                </figure>
 
             </section>
             <h3>{{strings.dialogLabelPlayerStats}}</h3>

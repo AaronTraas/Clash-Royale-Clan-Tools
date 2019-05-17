@@ -31,7 +31,7 @@ dialog {
 	display: none;
 }
 
-dialog h1, dialog h2, dialog h3 {
+dialog h1, dialog h2, dialog h3, dialog figcaption {
 	color: #fff;
 	text-shadow: -1px -1px 0px #000000,
 				 0px -1px 0px #000000,
@@ -237,11 +237,20 @@ dialog [data-member-id] > section.identity .trophies:after {
 dialog [data-member-id] > section.identity .arena-league {
 	position: absolute;
 	right: 0;
-	top: 22px;
+	top: 12px;
+	bottom: 12px;
 	width: 150px;
-	height: 150px;
+	text-align: center;
+	background-position: top center;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
-
+dialog [data-member-id] > section.identity .arena-league > figcaption {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
 dialog .button {
 	display: block;
 	margin: 0 0 12px 0;
