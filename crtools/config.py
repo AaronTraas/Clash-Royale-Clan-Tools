@@ -136,6 +136,7 @@ def __localize_strings(locale):
         'labelWarDayWins'           : _('War day wins'),
         'labelWarScore'             : _('War score'),
         'labelWarLeague'            : _('War league'),
+        'labelWarDate'              : _('{month}/{day}'),
         'labelCollectionEndTime'    : _('{} hours'),
         'labelCollectionComplete'   : _('Complete'),
         'labelEndTime'              : _('1 day, {} hours'),

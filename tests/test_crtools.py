@@ -339,7 +339,7 @@ def test_donations_score(tmpdir):
     assert crtools.donations_score(config, member_0) == 31
 
 def test_warlog_labels(tmpdir):
-    labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG)
+    labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG, '{month}/{day}')
 
     assert labels[0]['date'] == '2/3'
     assert labels[0]['league']['name'] == 'Silver League'

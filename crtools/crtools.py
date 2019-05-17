@@ -40,14 +40,14 @@ def write_object_to_file(file_path, obj):
             string = json.dumps(obj, indent=4)
         f.write(string)
 
-def warlog_labels(warlog, clan_tag):
+def warlog_labels(warlog, clan_tag, date_label_format):
     """ Return list of date strings from warlog. One entry per war. """
 
     labels = []
     for war in warlog:
         date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
         label = {
-            'date'   : '{}/{}'.format(date.month, date.day),
+            'date'   : date_label_format.format(month=date.month, day=date.day),
             'league' : get_war_league_from_war(war, clan_tag)
         }
         labels.append(label)
@@ -571,7 +571,7 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             strings           = config['strings'],
             update_date       = datetime.now().strftime('%c'),
             members           = members_processed,
-            war_labels        = warlog_labels(warlog, clan['tag']),
+            war_labels        = warlog_labels(warlog, clan['tag'], config['strings']['labelWarDate']),
             clan              = clan_processed,
             clan_hero         = config['paths']['description_html_src'],
             current_war       = current_war_processed,
