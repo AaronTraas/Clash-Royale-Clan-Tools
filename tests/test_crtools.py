@@ -330,9 +330,9 @@ def test_donations_score(tmpdir):
     members = history.get_member_history(__fake_clan__['memberList'], __fake_history__, None, date)["members"]
 
     member_tag_0 = __fake_clan__['memberList'][0]['tag']
-    member_6 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 6, date)
-    member_3 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 3, date)
-    member_0 = crtools.enrich_member_with_history(__fake_clan__['memberList'][0], members, 0, date)
+    member_6 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 6, date)
+    member_3 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 3, date)
+    member_0 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 0, date)
 
     assert crtools.donations_score(config, member_6) == 11
     assert crtools.donations_score(config, member_3) == 18

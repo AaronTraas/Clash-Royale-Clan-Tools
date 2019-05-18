@@ -2,6 +2,7 @@ from configparser import SafeConfigParser
 import copy
 import gettext
 import json
+import locale
 import logging
 import os
 import requests
@@ -71,9 +72,12 @@ config_defaults = {
     }
 }
 
-def __localize_strings(locale):
+def __localize_strings(locale_id):
+
+    locale.setlocale(locale.LC_TIME, (locale_id, 'UTF-8'))
+
     localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
-    translate = gettext.translation('crtools', localedir, languages=[locale], fallback=True)
+    translate = gettext.translation('crtools', localedir, languages=[locale_id], fallback=True)
     _ = translate.gettext
 
     return {
@@ -114,6 +118,7 @@ def __localize_strings(locale):
         'labelMemberTag'            : _('Member Tag'),
         'labelMemberJoinDate'       : _('Join Date'),
         'labelMemberLastActivity'   : _('Last Activity Date'),
+        'labelBeforeHistory'        : _('Before recorded history'),
         'labelArena'                : _('Arena'),
         'labelXpLevel'              : _('XP Level'),
         'labelScore'                : _('Score'),
@@ -183,6 +188,13 @@ def __localize_strings(locale):
         'ruleCollectionWin'         : _('...win each collection battle? (per battle)'),
         'ruleWarDayComplete'        : _('...complete war day battle?'),
         'ruleWarDayWin'             : _('...win war day battle? (per battle)'),
+
+        'roleLeader'                : _('Leader'),
+        'roleCoLeader'              : _('Co-Leader'),
+        'roleElder'                 : _('Elder'),
+        'roleMember'                : _('Member'),
+        'roleBlacklisted'           : _('Blacklisted. Kick!'),
+        'roleVacation'              : _('On vacation'),
 
         'footerDisclaimer'          : _('This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.'),
         'footerSeeContentPolicy'    : _("For more information see Supercell's Fan Content Policy.")

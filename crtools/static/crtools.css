@@ -773,19 +773,6 @@ body > header h1 em {
 #info table tr[data-vacation="True"] td img {
     opacity: .3;
 }
-#info table tr[data-vacation="True"] .member-role {
-    display: block;
-    position: relative;
-    color: #ddd;
-}
-#info table tr[data-vacation="True"] .member-role:after {
-    content: 'On Vacation';
-    color: #222;
-    font-weight: bold;
-    position: absolute;
-    text-indent: unset;
-    left: 0;
-}
 #info table tr[data-vacation="True"] .score > strong {
     display: none;
 }

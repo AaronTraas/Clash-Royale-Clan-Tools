@@ -277,7 +277,7 @@ def get_scoring_rules(config):
 
     return rules
 
-def enrich_member_with_history(fresh_member, historical_members, days_from_donation_reset, now):
+def enrich_member_with_history(config, fresh_member, historical_members, days_from_donation_reset, now):
     enriched_member = copy.deepcopy(fresh_member)
     historical_member = historical_members[enriched_member['tag']]
 
@@ -288,10 +288,10 @@ def enrich_member_with_history(fresh_member, historical_members, days_from_donat
     enriched_member['days_inactive'] = (now - datetime.fromtimestamp(enriched_member['last_activity_date'])).days
 
     if enriched_member['join_date'] == 0:
-        enriched_member['join_date_label'] = 'Before recorded history'
+        enriched_member['join_date_label'] = config['strings']['labelBeforeHistory']
     else:
-        enriched_member['join_date_label'] = datetime.fromtimestamp(enriched_member['join_date']).strftime('%Y-%m-%d')
-    enriched_member['activity_date_label'] = datetime.fromtimestamp(enriched_member['last_activity_date']).strftime('%Y-%m-%d')
+        enriched_member['join_date_label'] = datetime.fromtimestamp(enriched_member['join_date']).strftime('%x')
+    enriched_member['activity_date_label'] = datetime.fromtimestamp(enriched_member['last_activity_date']).strftime('%x')
 
     join_datetime = datetime.fromtimestamp(enriched_member['join_date'])
     days_from_join = (now - join_datetime).days
@@ -335,7 +335,7 @@ def process_members(config, clan, warlog, current_war, member_history):
     members = clan['memberList'].copy()
     members_processed = []
     for member_src in members:
-        member = enrich_member_with_history(member_src, member_history['members'], days_from_donation_reset, now)
+        member = enrich_member_with_history(config, member_src, member_history['members'], days_from_donation_reset, now)
 
         # get member warlog and add it to the record
         member['currentWar'] = member_war(config, member, current_war)
@@ -386,7 +386,15 @@ def process_members(config, clan, warlog, current_war, member_history):
             member['status'] = 'bad'
 
         member['activity_status'] = 'normal'
-        member['role_label'] = member['role']
+
+        # Format roles in sane way'
+        member['role_label'] = {
+            'leader'   : config['strings']['roleLeader'],
+            'coLeader' : config['strings']['roleCoLeader'],
+            'elder'    : config['strings']['roleElder'],
+            'member'   : config['strings']['roleMember'],
+        }[member['role']]
+
         if member['days_inactive'] <= 0:
             member['activity_status'] = 'good'
         elif member['days_inactive'] <= 2:
@@ -399,9 +407,11 @@ def process_members(config, clan, warlog, current_war, member_history):
             member['activity_status'] = 'ok'
             member['role_label'] = 'Inactive {} days'.format(member['days_inactive'])
 
-        if member['blacklist']:
-            member['role_label'] = 'Blacklisted. Kick!'
+        if member['vacation']:
+            member['role_label'] = config['strings']['roleVacation']
 
+        if member['blacklist']:
+            member['role_label'] = config['strings']['roleBlacklisted']
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'
@@ -415,10 +425,6 @@ def process_members(config, clan, warlog, current_war, member_history):
             member['leadership'] = True
         else:
             member['leadership'] = False
-
-        # Format 'co-leader" in sane way'
-        if member['role'] == 'coLeader':
-            member['role'] = 'co-leader'
 
         members_processed.append(member)
 
@@ -488,7 +494,7 @@ def process_recent_wars(config, warlog):
                 clan['trophyChange'] = war_clan['trophyChange']
                 clan['rank'] = rank+1
                 date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
-                clan['date'] = '{}/{}'.format(date.month, date.day)
+                clan['date'] = config['strings']['labelWarDate'].format(month=date.month, day=date.day)
                 wars.append(clan)
 
     return wars
@@ -541,16 +547,12 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
             with open(history_path, 'r') as myfile:
                 old_history = json.loads(myfile.read())
 
-        if config['paths']['use_fankit']:
-            fankit_src_path = os.path.join(output_path, FANKIT_DIR_NAME)
-            fankit_dest_path = os.path.join(tempdir, FANKIT_DIR_NAME)
-            print(fankit_src_path)
-            if os.path.isdir(fankit_src_path):
-                shutil.copytree(fankit_src_path, fankit_dest_path)
-            else:
-                print('FANKIT NOT FOUND!!!!!!!!!!!!')
-                fankit.download_fan_kit(tempdir)
-
+        # Download fan kit if applicable
+        fankit_src_path = os.path.join(output_path, FANKIT_DIR_NAME)
+        if os.path.isdir(fankit_src_path):
+            shutil.copytree(fankit_src_path, os.path.join(tempdir, FANKIT_DIR_NAME))
+        elif config['paths']['use_fankit']:
+            fankit.download_fan_kit(tempdir)
 
         current_war_processed = process_current_war(config, current_war)
         clan_processed = process_clan(config, clan, current_war)
