@@ -158,7 +158,7 @@ msgstr "Dernière fois vu"
 
 #: crtools/config.py:121
 msgid "Before recorded history"
-msgstr ""
+msgstr "Avant historisation"
 
 #: crtools/config.py:122
 msgid "Arena"
@@ -464,11 +464,11 @@ msgstr "Ainé"
 
 #: crtools/config.py:196
 msgid "Blacklisted. Kick!"
-msgstr ""
+msgstr "Sur liste noire. Ejecter !"
 
 #: crtools/config.py:197
 msgid "On vacation"
-msgstr ""
+msgstr "En vacances"
 
 #: crtools/config.py:199
 msgid ""
