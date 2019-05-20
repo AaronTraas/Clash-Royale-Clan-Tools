@@ -18,14 +18,14 @@
                 </div>
 
                 <figure class="arena-league {{member.arenaLeague}}">
-                    <figcaption>{{member.arena.name}}</figcaption>
+                    <figcaption>{{member.arenaLeagueLabel}}</figcaption>
                 </figure>
 
             </section>
             <h3>{{strings.dialogLabelPlayerStats}}</h3>
             <section class="flex normal">
                 <table width="100%">
-                    <tr><th>{{strings.labelClanRole}}</th><td>{{member.role}}</td></tr>
+                    <tr><th>{{strings.labelClanRole}}</th><td>{{member.role_label}}</td></tr>
                     <tr><th>{{strings.labelMemberJoinDate}}</th><td>{{member.join_date_label}}</td></tr>
                     <tr><th>{{strings.labelMemberLastActivity}}</th><td>{{member.activity_date_label}}</td></tr>
                     <tr><th>{{strings.labelDaysInactive}}</th><td>{{member.days_inactive}}</td></tr>

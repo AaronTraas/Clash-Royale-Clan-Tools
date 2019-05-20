@@ -419,6 +419,7 @@ def process_members(config, clan, warlog, current_war, member_history):
             member['trophiesStatus'] = 'ok'
 
         member['arenaLeague'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
+        member['arenaLeagueLabel'] = config['strings']['league-' + member['arenaLeague']]
 
         # Figure out whether member is on the leadership team by role
         if member['role'] == 'leader' or member['role'] == 'coLeader':
@@ -440,7 +441,7 @@ def process_clan(config, clan, current_war):
     league = leagueinfo.get_war_league_from_score(clan['clanWarTrophies'])
 
     clan_processed['warLeague']      = league['id']
-    clan_processed['warLeagueName']  = league['name']
+    clan_processed['warLeagueName']  = config['strings']['war-league-' + league['id']]
     clan_processed['currentWarState'] = current_war['state']
 
     return clan_processed
