@@ -114,7 +114,7 @@ msgstr "Etat"
 
 #: crtools/config.py:110
 msgid "Collection Day End"
-msgstr "Fin collecte dans"
+msgstr "Collecte terminée dans"
 
 #: crtools/config.py:111
 msgid "War End"
@@ -275,7 +275,7 @@ msgid "War Day"
 msgstr "Jour de Guerre"
 
 #: crtools/config.py:151
-msgid "Member Details"
+msgid "Player Details"
 msgstr "Détails du Joueur"
 
 #: crtools/config.py:152
@@ -362,7 +362,7 @@ msgstr ""
 #: crtools/config.py:172
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
 msgstr ""
-"<strong>Recruiter de nouveaux membres!</strong> Le clan a besoin de sans "
+"<strong>Recruiter de nouveaux membres!</strong> Le clan a besoin de sang "
 "neuf."
 
 #: crtools/config.py:173
@@ -371,31 +371,31 @@ msgstr "Aucune suggestion pour le moment. Tout est en ordre."
 
 #: crtools/config.py:174
 msgid "Kick <strong>{name}</strong>. Member is blacklisted."
-msgstr "Sortir <strong>{name}</strong>. Le joueur sera en liste noire."
+msgstr "Exclure <strong>{name}</strong>. Le joueur sera en liste noire."
 
 #: crtools/config.py:175
 msgid ""
-"Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
+"Kick <strong>{name}</strong> : <strong class=\"bad\">{days} days "
 "inactive</strong>"
 msgstr ""
-"Sortir <strong>{name}</strong> <strong class=\"bad\">{days} jours "
+"Exclure <strong>{name}</strong> : <strong class=\"bad\">{days} jours "
 "inactif</strong>"
 
 #: crtools/config.py:176
-msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
-msgstr "Sortir <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
+msgid "Kick <strong>{name}</strong> : <strong class=\"bad\">{score}</strong> points."
+msgstr "Exclure <strong>{name}</strong> : <strong class=\"bad\">{score}</strong> points."
 
 #: crtools/config.py:177
-msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
-msgstr "Rétrograder <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
+msgid "Demote <strong>{name}</strong> : <strong class=\"bad\">{score}</strong> points."
+msgstr "Rétrograder <strong>{name}</strong> : <strong class=\"bad\">{score}</strong> points."
 
 #: crtools/config.py:178
 msgid ""
 "Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
-"class=\"good\">{score}</strong>"
+"class=\"good\">{score}</strong> points."
 msgstr ""
-"Promouvoir <strong>{name}</strong> <strong>Aîné</strong> <strong "
-"class=\"good\">{score}</strong>"
+"Promouvoir <strong>{name}</strong> : <strong>Aîné</strong> <strong "
+"class=\"good\">{score}</strong> points."
 
 #: crtools/config.py:180
 msgid ""
@@ -416,8 +416,8 @@ msgid ""
 "make fewer, you will lose points. If you have zero, you will be penalized"
 " <strong class=\"bad\">{donations_zero} points</strong>"
 msgstr ""
-"On attend de chaque joueur un don minimum de "
-"<strong>{min_donations_daily} cartes par jour</strong>, en moyenne. Si "
+"On s'attend à ce que vous donniez un minimum de "
+"<strong>{min_donations_daily} cartes en moyenne par jour</strong>. Si "
 "vous faites plus, vous gagnerez des points. Si vous faites moins, vous "
 "perdrez des points. Si vous ne donnez pas vous serez pénalisé de <strong "
 "class=\"bad\">{donations_zero} points</strong>"
@@ -460,11 +460,11 @@ msgstr "Chef-Adjoint"
 
 #: crtools/config.py:194
 msgid "Elder"
-msgstr "Ainé"
+msgstr "Aîné"
 
 #: crtools/config.py:196
 msgid "Blacklisted. Kick!"
-msgstr "Sur liste noire. Ejecter !"
+msgstr "Sur liste noire. Exclure !"
 
 #: crtools/config.py:197
 msgid "On vacation"
