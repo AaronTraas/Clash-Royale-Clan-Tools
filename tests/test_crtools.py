@@ -342,7 +342,7 @@ def test_warlog_labels(tmpdir):
     labels = crtools.warlog_labels(__fake_warlog__, CLAN_TAG, '{month}/{day}')
 
     assert labels[0]['date'] == '2/3'
-    assert labels[0]['league']['name'] == 'Silver League'
+    assert labels[0]['league'] == 'silver'
 
 def test_get_scoring_rules(tmpdir):
     config_file = tmpdir.mkdir('test_write_object_to_file').join('testfile')

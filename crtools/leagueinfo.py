@@ -35,10 +35,10 @@ ARENA_LEAGUE_LOOKUP = {
 }
 
 WAR_LEAGUE_LOOKUP = {
-    0    : { 'id': 'bronze',    'name': 'Bronze League' },
-    600  : { 'id': 'silver',    'name': 'Silver League' },
-    1500 : { 'id': 'gold',      'name': 'Gold League' },
-    3000 : { 'id': 'legendary', 'name': 'Legendary League' }
+    0    : 'bronze',
+    600  : 'silver',
+    1500 : 'gold',
+    3000 : 'legendary'
 }
 
 logger = logging.getLogger(__name__)

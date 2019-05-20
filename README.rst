@@ -109,7 +109,8 @@ add the following switch on the command line:
   --locale=fr
 
 If you wish for crtools to be available in another languages, reach out to
-me.
+me. I'm unable to do the translation myself (I speak only English), but I can
+help you provide a translation for this.
 
 ==================================================
 Suggested usage on a Linux web server
@@ -122,24 +123,17 @@ Below is an example setup on Linux.
 
 Assuming root is going to be running the script:
 
-1. Download and install this application
+1. Install this application via pip
 2. Install nginx or apache
-3. Create :code:`/root/.crtools` file as specified above, and add your API key
-4. Find your document root (e.g., :code:`/var/www/html`)
+3. Find your document root (e.g., :code:`/var/www/html`)
+4. Create :code:`/root/.crtools` file as specified above, and add your
+   API key (from https://developer.clashroyale.com), output path (the
+   document root), and clan tag
 5. Create the following entry in your crontab:
 
 .. code::
 
-  0 * * * * crtools --out=[YOUR-DOC-ROOT] [YOUR-CLAN-TAG]
-
-For example:
-
-.. code::
-
-  0 * * * * crtools --out=/var/www/html \#JY8YVV
-
-Note the :code:`\\` character before the # -- that's important. A '#' is a
-comment in most shells/scripting languages. You need to escape it to run it.
+  0 * * * * crtools
 
 ==================================================
 Development links
@@ -151,10 +145,6 @@ The code quality and test coverage are a work in progress.
 
 If you wish to discuss development of this project, feel free to join
 us on `Discord <https://discord.gg/cvYhavb>`_.
-
-For translation into your language, please follow this tutorial:
-
-https://www.mattlayman.com/blog/2015/i18n/
 
 ==================================================
 Contributors

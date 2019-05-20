@@ -9,9 +9,9 @@ def test_get_arena_league_from_name():
     assert leagueinfo.get_arena_league_from_name('Garbage League (obviously fake)')['id'] == 'arena-unknown'
 
 def test_get_war_league_from_score():
-    assert leagueinfo.get_war_league_from_score(200)['name'] == 'Bronze League'
-    assert leagueinfo.get_war_league_from_score(1501)['name'] == 'Gold League'
-    assert leagueinfo.get_war_league_from_score(99999999999999)['name'] == 'Legendary League'
+    assert leagueinfo.get_war_league_from_score(200) == 'bronze'
+    assert leagueinfo.get_war_league_from_score(1501) == 'gold'
+    assert leagueinfo.get_war_league_from_score(99999999999999) == 'legendary'
 
 def test_get_collection_win_cards():
     # The below isn't comprehensive, nor specific. It's mostly checking

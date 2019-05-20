@@ -140,7 +140,7 @@ def member_war(config, clan_member, war):
 
                 participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
 
-                participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])['id']
+                participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])
                 participation['collectionWinCards'] = leagueinfo.get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
 
                 participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
@@ -440,8 +440,8 @@ def process_clan(config, clan, current_war):
     # figure out clan war league from clan score
     league = leagueinfo.get_war_league_from_score(clan['clanWarTrophies'])
 
-    clan_processed['warLeague']      = league['id']
-    clan_processed['warLeagueName']  = config['strings']['war-league-' + league['id']]
+    clan_processed['warLeague']      = league
+    clan_processed['warLeagueName']  = config['strings']['war-league-' + league]
     clan_processed['currentWarState'] = current_war['state']
 
     return clan_processed
