@@ -123,7 +123,7 @@ dialog [data-member-id] > section {
 	position: relative;
 }
 dialog [data-member-id] > section.normal {
-	padding-top: 8px;
+	padding: 12px 0;
 }
 dialog [data-member-id] > section.normal:before {
 	content: '';
@@ -144,6 +144,11 @@ dialog [data-member-id] > section.flex {
 
 dialog [data-member-id] > section > * {
 	margin: 0 12px;
+}
+
+dialog#member tr:last-child td,
+dialog#member tr:last-child th {
+	border-bottom: none;
 }
 
 dialog [data-member-id] > h3 {

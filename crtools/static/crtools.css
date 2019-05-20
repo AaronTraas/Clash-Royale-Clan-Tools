@@ -688,7 +688,7 @@ body > header h1 em {
     border-bottom: 1px solid #E1E1E1;
 }
 
-#info table .na {
+#info table#member-table tr td.na {
     color: #999;
     font-weight: normal;
 }
