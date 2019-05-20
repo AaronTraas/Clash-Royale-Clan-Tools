@@ -275,7 +275,7 @@ msgid "War Day"
 msgstr "Jour de Guerre"
 
 #: crtools/config.py:151
-msgid "Player Details"
+msgid "Member Details"
 msgstr "Détails du Joueur"
 
 #: crtools/config.py:152
@@ -555,28 +555,20 @@ msgid "Ultimate Champion"
 msgstr ""
 
 #: crtools/config.py:222
-#, fuzzy
-#| msgid "War league"
 msgid "Bronze League"
-msgstr "League de la guerre"
+msgstr ""
 
 #: crtools/config.py:223
-#, fuzzy
-#| msgid "War league"
 msgid "Silver League"
-msgstr "League de la guerre"
+msgstr ""
 
 #: crtools/config.py:224
-#, fuzzy
-#| msgid "War league"
 msgid "Gold League"
-msgstr "League de la guerre"
+msgstr ""
 
 #: crtools/config.py:225
-#, fuzzy
-#| msgid "War league"
 msgid "Legendary League"
-msgstr "League de la guerre"
+msgstr ""
 
 #: crtools/config.py:227
 msgid ""
