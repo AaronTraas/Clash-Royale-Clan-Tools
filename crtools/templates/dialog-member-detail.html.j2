@@ -24,12 +24,27 @@
             </section>
             <h3>{{strings.dialogLabelPlayerStats}}</h3>
             <section class="flex normal">
-                <table width="100%">
-                    <tr><th>{{strings.labelClanRole}}</th><td>{{member.role_label}}</td></tr>
-                    <tr><th>{{strings.labelMemberJoinDate}}</th><td>{{member.join_date_label}}</td></tr>
-                    <tr><th>{{strings.labelMemberLastActivity}}</th><td>{{member.activity_date_label}}</td></tr>
-                    <tr><th>{{strings.labelDaysInactive}}</th><td>{{member.days_inactive}}</td></tr>
-                </table>
+                <div class="attribute-list">
+                    <dl>
+                        <dt>{{strings.labelClanRole}}</dt>
+                        <dd>{{member.role_label}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelMemberJoinDate}}</dt>
+                        <dd>{{member.join_date_label}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelMemberLastActivity}}</dt>
+                        <dd>
+                            {{member.activity_date_label}}<br />
+                            {% if member.days_inactive > 1 %}
+                                ({{member.days_inactive}} days)
+                            {% else %}
+                                (Today)
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
                 <div>
                     <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>{{config.strings.dialogMemberRoyaleApi}}</span></a>
                     <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>{{config.strings.dialogMemberStatsRoyale}}</span></a>

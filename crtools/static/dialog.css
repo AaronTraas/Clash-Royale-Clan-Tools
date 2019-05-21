@@ -111,6 +111,37 @@ body:not([data-member-dialog='none']) .dialog-shadow {
 	display: block;
 }
 
+dialog .attribute-list {
+	flex-wrap: wrap;
+	display: flex;
+    justify-content: space-between;
+	align-items: stretch;
+	margin-right: -12px;
+}
+dialog .attribute-list > * {
+	margin: 0 12px 12px 0;
+	flex-grow: 1;
+    justify-content: space-between;
+    width: 40%
+}
+
+dialog .attribute-list dt {
+	display: block;
+	font-weight: bold;
+	font-size: 1.3rem;
+	white-space: nowrap;
+	color: #00a;
+}
+dialog .attribute-list dd {
+	display: block;
+	font-weight: bold;
+	border-radius: 6px;
+	padding: 6px;
+	background-color: #ddd;
+	line-height: 1.3em;
+	box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.4);
+}
+
 dialog [data-member-id] {
 	display: none;
 }

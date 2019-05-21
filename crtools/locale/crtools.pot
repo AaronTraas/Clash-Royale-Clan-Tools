@@ -150,7 +150,7 @@ msgid "Join Date"
 msgstr ""
 
 #: crtools/config.py:120
-msgid "Last Activity Date"
+msgid "Last Active"
 msgstr ""
 
 #: crtools/config.py:121
