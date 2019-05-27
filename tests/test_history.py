@@ -114,16 +114,33 @@ def test_get_role_change_status():
     assert history.get_role_change_status(history.ROLE_MEMBER,   history.ROLE_COLEADER) == 'promotion'
     assert history.get_role_change_status(history.ROLE_MEMBER,   history.ROLE_ELDER)    == 'promotion'
 
-def test_validate_history():
-    assert history.validate_history(None) == False
-    assert history.validate_history("members") == False
-    assert history.validate_history(False) == False
-    assert history.validate_history([]) == False
-    assert history.validate_history({}) == False
-    assert history.validate_history({'last_update':'foo'}) == False
-    assert history.validate_history({'members':'foo'}) == False
-    assert history.validate_history({'last_update':'foo', 'members': 'Foo'}) == False
-    assert history.validate_history({'last_update':'foo', 'members': {}}) == True
+def test_validate_history_new():
+    timestamp = datetime.utcnow()
+    new_history = {
+        'last_update': timestamp,
+        'members': {}
+    }
+
+    assert history.validate_history(None, timestamp) == (new_history, 0)
+    assert history.validate_history("members", timestamp) == (new_history, 0)
+    assert history.validate_history(False, timestamp) == (new_history, 0)
+    assert history.validate_history([], timestamp) == (new_history, 0)
+    assert history.validate_history({}, timestamp) == (new_history, 0)
+    assert history.validate_history({'last_update':'foo'}, timestamp) == (new_history, 0)
+    assert history.validate_history({'members':'foo'}, timestamp) == (new_history, 0)
+    assert history.validate_history({'last_update':'foo', 'members': 'Foo'}, timestamp) == (new_history, 0)
+
+def test_validate_history_update():
+    timestamp = datetime.utcnow()
+    new_history = {
+        'last_update': 0,
+        'members': {}
+    }
+    actual_history, actual_timestamp = history.validate_history(new_history, timestamp)
+    assert actual_timestamp == timestamp
+    assert actual_history['last_update'] == timestamp
+    assert type(actual_history['members']) == dict
+    assert len(actual_history['members']) == 0
 
 def test_get_member_history_new():
     date = datetime(2019, 2, 12, 7, 32, 0, 0)

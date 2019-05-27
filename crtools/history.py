@@ -14,13 +14,27 @@ def validate_role(role):
     """ Returns whether or not the role string is a valid role """
     return role in [ROLE_MEMBER, ROLE_ELDER, ROLE_COLEADER, ROLE_LEADER]
 
-def validate_history(history):
+def validate_history(old_history, timestamp):
     """ Returns True if and only if the history object is
     validly formatted """
-    return type(history) == dict \
-        and 'last_update' in history \
-        and 'members' in history \
-        and type(history['members']) == dict
+    if type(old_history) == dict \
+        and 'last_update' in old_history \
+        and 'members' in old_history \
+        and type(old_history['members']) == dict:
+        history = copy.deepcopy(old_history)
+
+        history['last_update'] = timestamp
+        return history, timestamp
+    else:
+        history = {
+            'last_update': timestamp,
+            'members': {}
+        }
+        # if history is new, we want all members to have a join
+        # date of 0, implying that they've joined before recorded
+        # history
+        return history, 0
+
 
 def get_role_change_status(old_role, new_role):
     """ Return 'unchanged', 'promotion', or 'demotion' based
@@ -102,22 +116,23 @@ def member_role_change(historical_member, member, timestamp):
 
     return updated_member
 
-def member_quit(historical_member, timestamp):
-    # member can't quit if he isn't there.
-    if historical_member['status'] == 'absent':
-        return historical_member
+def process_missing_members(historical_mambers, member_tags, timestamp):
+    """ Look for missing members. If they're missing, they quit """
+    members = copy.deepcopy(historical_mambers)
 
-    updated_member = copy.deepcopy(historical_member)
+    for tag, member in members.items():
+        if tag not in member_tags and member['status'] != 'absent':
 
-    updated_member['events'].append({
-        'event': 'quit',
-        'type':  'left',
-        'role':  updated_member['role'],
-        'date':  timestamp
-    })
-    updated_member['status'] = 'absent'
+            member['events'].append({
+                'event': 'quit',
+                'type':  'left',
+                'role':  member['role'],
+                'date':  timestamp
+            })
+            member['status'] = 'absent'
 
-    return updated_member
+    return members
+
 
 def get_member_history(members, old_history=None, current_war=None, date=datetime.now()):
     """ Generates user history. Takes as inputs the list of members
@@ -136,21 +151,9 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
     The API does not give us whether or not the user has been kicked
     or voluntarily quit. We can only observe the absence of the member.
     """
-    timestamp = datetime.timestamp(date)
-
-    # basically, validate that old history is formatted properly
-    if validate_history(old_history):
-        history = copy.deepcopy(old_history)
-        history['last_update'] = timestamp
-    else:
-        history = {
-            'last_update': timestamp,
-            'members': {}
-        }
-        # if history is new, we want all members to have a join
-        # date of 0, implying that they've joined before recorded
-        # history
-        timestamp = 0;
+    # validate that old history is formatted properly. If not, return new
+    # hitory object and reset the timestamp to 0
+    history, timestamp = validate_history(old_history, datetime.timestamp(date))
 
     war_participants = []
     if current_war and current_war['state'] != 'notInWar':
@@ -186,9 +189,7 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
                 historical_member['last_activity_date'] = timestamp
 
     # Look for missing members. If they're missing, they quit
-    for tag, member in history['members'].copy().items():
-        if tag not in member_tags:
-            history['members'][tag] = member_quit(member, timestamp)
+    history['members'] = process_missing_members(history['members'], member_tags, timestamp)
 
     return history
 
