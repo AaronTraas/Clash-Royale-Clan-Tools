@@ -97,6 +97,7 @@ def __localize_strings(locale_id):
         'labelClanStats'            : _('Clan Stats'),
         'labelClanName'             : _('Clan Name'),
         'labelClanScore'            : _('Clan Score'),
+        'labelCountry'              : _('Country'),
         'labelDonationsPerWeek'     : _('Donations/week'),
         'labelRequiredTrophies'     : _('Required Trophies'),
         'labelWarTrophies'          : _('War Trophies'),

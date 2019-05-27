@@ -52,6 +52,11 @@
     margin-bottom: 8px;
 }
 
+#hero .flag {
+    margin-left: 5px;
+    vertical-align: center;
+}
+
 @media (max-width: 700px) {
     #hero > .section-wrap {
         display: block;

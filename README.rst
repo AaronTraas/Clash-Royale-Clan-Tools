@@ -157,8 +157,13 @@ All of the non-code contributors are listed in
 Image rights
 ==================================================
 
-All images included in this repository were created by the team, and are
-included in the GPL license. The SVGs were all created in Inkscape.
+All images except the flags included in this repository were created by the
+team, and are included in the GPL license. The SVGs were all created in
+Inkscape.
+
+The flags included are from http://www.famfamfam.com/lab/icons/flags/, which
+as of 5/27/2019 stated it required no attribution or license. We are
+interpreting this to mean these are available in the public domain.
 
 It was important to us to make sure the entirety of this application is
 open source, and not subject to takedown request. We will not ever
