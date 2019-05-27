@@ -63,6 +63,7 @@ def test_parse_args_all(tmpdir):
         '--clan_logo',      '/fake/clan/logo/path',
         '--description',    '/fake/description/path',
         '--canonical_url',  'https://fake-canonical-url.fake-tld/fake/path',
+        '--locale',         'fr',
         '--debug'
     ]
     config = crtools.get_config_from_args(crtools.parse_args(argv))
@@ -74,3 +75,4 @@ def test_parse_args_all(tmpdir):
     assert config['paths']['description_html'] == argv[11]
     assert config['www']['canonical_url'] == argv[13]
     assert config['crtools']['debug'] == True
+    assert config['crtools']['locale'] == 'fr'
