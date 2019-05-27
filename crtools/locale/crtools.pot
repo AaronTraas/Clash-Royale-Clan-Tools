@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-27 12:43-0400\n"
+"POT-Creation-Date: 2019-05-27 14:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -450,113 +450,117 @@ msgstr ""
 msgid "On vacation"
 msgstr ""
 
-#: crtools/config.py:200
-msgid "Arena Unknown"
+#: crtools/config.py:199
+msgid "Inactive {days} days"
 msgstr ""
 
 #: crtools/config.py:201
-msgid "Goblin Stadium"
+msgid "Arena Unknown"
 msgstr ""
 
 #: crtools/config.py:202
-msgid "Bone Pit"
+msgid "Goblin Stadium"
 msgstr ""
 
 #: crtools/config.py:203
-msgid "Barbarian Bowl"
+msgid "Bone Pit"
 msgstr ""
 
 #: crtools/config.py:204
-msgid "P.E.K.K.A's Playhouse"
+msgid "Barbarian Bowl"
 msgstr ""
 
 #: crtools/config.py:205
-msgid "Spell Valley"
+msgid "P.E.K.K.A's Playhouse"
 msgstr ""
 
 #: crtools/config.py:206
-msgid "Builder's Workshop"
+msgid "Spell Valley"
 msgstr ""
 
 #: crtools/config.py:207
-msgid "Royal Arena"
+msgid "Builder's Workshop"
 msgstr ""
 
 #: crtools/config.py:208
-msgid "Frozen Peak"
+msgid "Royal Arena"
 msgstr ""
 
 #: crtools/config.py:209
-msgid "Jungle Arena"
+msgid "Frozen Peak"
 msgstr ""
 
 #: crtools/config.py:210
-msgid "Hog Mountain"
+msgid "Jungle Arena"
 msgstr ""
 
 #: crtools/config.py:211
-msgid "Electro Valley"
+msgid "Hog Mountain"
 msgstr ""
 
 #: crtools/config.py:212
-msgid "Spooky Town"
+msgid "Electro Valley"
 msgstr ""
 
 #: crtools/config.py:213
-msgid "Legendary Arena"
+msgid "Spooky Town"
 msgstr ""
 
 #: crtools/config.py:214
-msgid "Challenger II"
+msgid "Legendary Arena"
 msgstr ""
 
 #: crtools/config.py:215
-msgid "Challenger III"
+msgid "Challenger II"
 msgstr ""
 
 #: crtools/config.py:216
-msgid "Master I"
+msgid "Challenger III"
 msgstr ""
 
 #: crtools/config.py:217
-msgid "Master II"
+msgid "Master I"
 msgstr ""
 
 #: crtools/config.py:218
+msgid "Master II"
+msgstr ""
+
+#: crtools/config.py:219
 msgid "Master III"
 msgstr ""
 
-#: crtools/config.py:219 crtools/config.py:220
+#: crtools/config.py:220 crtools/config.py:221
 msgid "Grand Champion"
 msgstr ""
 
-#: crtools/config.py:221
+#: crtools/config.py:222
 msgid "Ultimate Champion"
 msgstr ""
 
-#: crtools/config.py:223
+#: crtools/config.py:224
 msgid "Bronze League"
 msgstr ""
 
-#: crtools/config.py:224
+#: crtools/config.py:225
 msgid "Silver League"
 msgstr ""
 
-#: crtools/config.py:225
+#: crtools/config.py:226
 msgid "Gold League"
 msgstr ""
 
-#: crtools/config.py:226
+#: crtools/config.py:227
 msgid "Legendary League"
 msgstr ""
 
-#: crtools/config.py:228
+#: crtools/config.py:229
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically "
 "approved by Supercell and Supercell is not responsible for it."
 msgstr ""
 
-#: crtools/config.py:229
+#: crtools/config.py:230
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr ""
 

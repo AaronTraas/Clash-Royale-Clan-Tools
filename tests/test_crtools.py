@@ -29,6 +29,18 @@ war_participation=0
 war_non_participation=-1
 '''
 
+__config_file_score_thresholds__ = '''
+[Score]
+threshold_promote=100
+threshold_warn=10
+'''
+
+__config_file_score_donations__ = '''
+[Score]
+max_donations_bonus=40
+min_donations_daily=10
+'''
+
 __fake_history__ = {
     "last_update": 0,
     "members": ""
@@ -522,3 +534,47 @@ def test_process_recent_wars(tmpdir):
     assert processed_warlog[0]['rank'] == 1
     assert processed_warlog[0]['date'] == '2/3'
     assert processed_warlog[0]['trophyChange'] == 999
+
+def test_calc_activity_status():
+    config = load_config_file(False)
+
+    assert crtools.calc_activity_status(config, 0) == 'good'
+    assert crtools.calc_activity_status(config, -1) == 'good'
+    assert crtools.calc_activity_status(config, 1) == 'na'
+    assert crtools.calc_activity_status(config, 3) == 'normal'
+    assert crtools.calc_activity_status(config, 7) == 'ok'
+    assert crtools.calc_activity_status(config, 400) == 'bad'
+
+def test_calc_member_status(tmpdir):
+    config_file = tmpdir.mkdir('test_calc_member_status').join('config.ini')
+    config_file.write(__config_file_score_thresholds__)
+    config = load_config_file(config_file.realpath())
+
+    assert crtools.calc_member_status(config, -1) == 'bad'
+    assert crtools.calc_member_status(config, 5) == 'ok'
+    assert crtools.calc_member_status(config, 10) == 'normal'
+    assert crtools.calc_member_status(config, 100) == 'good'
+
+def test_calc_donation_status(tmpdir):
+    config_file = tmpdir.mkdir('test_calc_donation_status').join('config.ini')
+    config_file.write(__config_file_score_donations__)
+    config = load_config_file(config_file.realpath())
+
+    assert crtools.calc_donation_status(config, 1000, 100, 6) == 'good'
+    assert crtools.calc_donation_status(config, 0, 0, 6) == 'bad'
+    assert crtools.calc_donation_status(config, 0, 5, 6) == 'ok'
+    assert crtools.calc_donation_status(config, 0, 0, 0) == 'normal'
+
+def test_get_role_label():
+    config = load_config_file(False)
+
+    assert crtools.get_role_label(config, 'member', 0, 'good', False, True) == config['strings']['roleBlacklisted']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, True) == config['strings']['roleBlacklisted']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, False) == config['strings']['roleVacation']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', False, False) == config['strings']['roleInactive'].format(days=100)
+
+    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False) == config['strings']['roleLeader']
+    assert crtools.get_role_label(config, 'coLeader', 0, 'good', False, False) == config['strings']['roleCoLeader']
+    assert crtools.get_role_label(config, 'elder', 0, 'good', False, False) == config['strings']['roleElder']
+    assert crtools.get_role_label(config, 'member', 0, 'good', False, False) == config['strings']['roleMember']
+

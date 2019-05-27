@@ -321,67 +321,67 @@ def enrich_member_with_history(config, fresh_member, historical_members, days_fr
 
     return enriched_member
 
-def calc_donation_status(config, donationScore, donationsDaily, days_from_donation_reset):
+def calc_donation_status(config, donation_score, donations_daily, days_from_donation_reset):
     """ calculate the number of daily donations, and the donation status
     based on threshold set in config """
-    if donationScore >= config['score']['max_donations_bonus']:
+    if donation_score >= config['score']['max_donations_bonus']:
         return 'good'
 
     if days_from_donation_reset >= 1:
-        if donationsDaily == 0:
+        if donations_daily == 0:
             return 'bad'
 
-        if donationsDaily < config['score']['min_donations_daily']:
+        if donations_daily < config['score']['min_donations_daily']:
             return 'ok'
 
     return 'normal'
 
-def calc_member_status(config, memberScore):
+def calc_member_status(config, member_score):
     # either 'good', 'ok', 'bad', or 'normal'
-    if memberScore < 0:
+    if member_score < 0:
         return 'bad'
 
-    if memberScore >= config['score']['threshold_promote']:
+    if member_score >= config['score']['threshold_promote']:
         return 'good'
 
-    if memberScore < config['score']['threshold_warn']:
+    if member_score < config['score']['threshold_warn']:
         return 'ok'
 
     return 'normal'
 
-def calc_activity_status(config, daysInactive):
-    if daysInactive <= 0:
+def calc_activity_status(config, days_inactive):
+    if days_inactive <= 0:
         return 'good'
 
-    if daysInactive <= 2:
+    if days_inactive <= 2:
         return 'na'
 
-    if daysInactive >= config['activity']['threshold_kick']:
+    if days_inactive >= config['activity']['threshold_kick']:
         return 'bad'
 
-    if daysInactive >= config['activity']['threshold_warn']:
+    if days_inactive >= config['activity']['threshold_warn']:
         return 'ok'
 
     return 'normal'
 
-def get_role_label(config, memberRole, activityStatus, onVacation, blacklisted):
+def get_role_label(config, member_role, days_inactive, activity_status, on_vacation, blacklisted):
     """ Format roles in sane way """
 
     if blacklisted:
         return config['strings']['roleBlacklisted']
 
-    if onVacation:
+    if on_vacation:
         return config['strings']['roleVacation']
 
-    if activityStatus in ['bad', 'ok']:
-        return 'Inactive {} days'.format(member['days_inactive'])
+    if activity_status in ['bad', 'ok']:
+        return config['strings']['roleInactive'].format(days=days_inactive)
 
     return {
         'leader'   : config['strings']['roleLeader'],
         'coLeader' : config['strings']['roleCoLeader'],
         'elder'    : config['strings']['roleElder'],
         'member'   : config['strings']['roleMember'],
-    }[memberRole]
+    }[member_role]
 
 def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
@@ -434,7 +434,7 @@ def process_members(config, clan, warlog, current_war, member_history):
 
         member['activity_status'] = calc_activity_status(config, member['days_inactive'])
 
-        member['role_label'] = get_role_label(config, member['role'], member['activity_status'], member['vacation'], member['blacklist'])
+        member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'])
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'
