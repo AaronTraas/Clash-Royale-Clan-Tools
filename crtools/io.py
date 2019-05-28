@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 
 HISTORY_FILE_NAME = 'history.json'
 
+CLAN_LOG_FILENAME = 'clan_logo.png'
+FAVICON_FILENAME = 'favicon.ico'
+
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
@@ -27,6 +30,9 @@ def write_object_to_file(file_path, obj):
 def get_previous_history(output_dir):
     # grab history, if it exists, from output paths
 
+    if not output_dir:
+        return None
+
     history_path = os.path.join(output_dir, HISTORY_FILE_NAME)
     if not os.path.isfile(history_path):
         return None
@@ -39,8 +45,8 @@ def copy_static_assets(tempdir, clan_logo_path, favicon_path):
     shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
 
     # copy user-provided assets to the output path
-    shutil.copyfile(clan_logo_path, os.path.join(tempdir, 'clan_logo.png'))
-    shutil.copyfile(favicon_path, os.path.join(tempdir, 'favicon.ico'))
+    shutil.copyfile(clan_logo_path, os.path.join(tempdir, CLAN_LOG_FILENAME))
+    shutil.copyfile(favicon_path, os.path.join(tempdir, FAVICON_FILENAME))
 
 
 def parse_templates(config, history, tempdir, clan, members, current_war, recent_wars, suggestions, scoring_rules):
@@ -103,8 +109,7 @@ def move_temp_to_output_dir(tempdir, output_dir):
             logger.error('Permission error: could not delete: \n\t{}'.format(e.filename))
     else:
         # Output directory doesn't exist. Create it.
-        if(config['crtools']['debug'] == True):
-            logger.info('Output directory {} doesn\'t exist. Creating it.'.format(output_dir))
+        logger.debug('Output directory {} doesn\'t exist. Creating it.'.format(output_dir))
         try:
             os.mkdir(output_dir)
         except PermissionError as e:

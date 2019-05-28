@@ -501,7 +501,7 @@ def process_recent_wars(config, warlog):
 # the I/O and there's no way to make the exception handling anything
 # other than a mess that will trigger teh cognitive complexity
 # warnings.
-def build_dashboard(config): # pragma: no coverage #NOSONAR
+def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))

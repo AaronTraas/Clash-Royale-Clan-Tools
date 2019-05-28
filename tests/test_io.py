@@ -22,3 +22,50 @@ def test_write_object_to_file(tmpdir):
         file_out_contents = myfile.read()
 
     assert file_contents_object == json.loads(file_out_contents)
+
+def test_get_previous_history(tmpdir):
+    fake_output_dir = tmpdir.mkdir('test_get_previous_history')
+    history_file = fake_output_dir.join(io.HISTORY_FILE_NAME)
+
+    fake_history_content = '{"foo":"bar"}'
+    fake_history_obj = json.loads(fake_history_content)
+
+    history_file.write(fake_history_content)
+
+    dir_path = fake_output_dir.realpath()
+
+    assert io.get_previous_history(None) == None
+    assert io.get_previous_history('/obviously/fake/dir') == None
+    assert io.get_previous_history(dir_path) == fake_history_obj
+
+def test_copy_static_assets(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_copy_static_assets')
+    logo_source = fake_tempdir.join('fake_logo')
+    favicon_source = fake_tempdir.join('fake_favicon')
+
+    logo_source.write('foo')
+    favicon_source.write('bar')
+
+    io.copy_static_assets(fake_tempdir.realpath(), logo_source.realpath(), favicon_source.realpath())
+
+    assert fake_tempdir.join('static').check(dir=1)
+    assert fake_tempdir.join('static').join('images').check(dir=1)
+    assert fake_tempdir.join(io.CLAN_LOG_FILENAME).read() == 'foo'
+    assert fake_tempdir.join(io.FAVICON_FILENAME).read() == 'bar'
+
+def test_dump_debug_logs(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_dump_debug_logs')
+    obj = {'foo': 'bar'}
+    obj_name = 'test'
+    obj2 = {'baz': 'quux'}
+    obj2_name = 'test2'
+
+    io.dump_debug_logs(fake_tempdir.realpath(), {obj_name: obj, obj2_name: obj2})
+
+    log_dir = fake_tempdir.join('log')
+    out_obj = json.loads(log_dir.join(obj_name+'.json').read())
+    out_obj2 = json.loads(log_dir.join(obj2_name+'.json').read())
+
+    assert obj == out_obj
+    assert obj2 == out_obj2
+
