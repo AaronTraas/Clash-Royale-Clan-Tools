@@ -74,7 +74,7 @@ msgstr "Score du clan"
 
 #: crtools/config.py:100
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: crtools/config.py:101
 msgid "Donations/week"
@@ -484,7 +484,7 @@ msgstr "En vacances"
 
 #: crtools/config.py:199
 msgid "Inactive {days} days"
-msgstr ""
+msgstr "Inactif {days} jours"
 
 #: crtools/config.py:201
 msgid "Arena Unknown"
@@ -492,99 +492,99 @@ msgstr ""
 
 #: crtools/config.py:202
 msgid "Goblin Stadium"
-msgstr ""
+msgstr "Gobelinarium"
 
 #: crtools/config.py:203
 msgid "Bone Pit"
-msgstr ""
+msgstr "Fausse aux os"
 
 #: crtools/config.py:204
 msgid "Barbarian Bowl"
-msgstr ""
+msgstr "Arène des barbares"
 
 #: crtools/config.py:205
 msgid "P.E.K.K.A's Playhouse"
-msgstr ""
+msgstr "Parc P.E.K.K.Aland"
 
 #: crtools/config.py:206
 msgid "Spell Valley"
-msgstr ""
+msgstr "Vallée des sorts"
 
 #: crtools/config.py:207
 msgid "Builder's Workshop"
-msgstr ""
+msgstr "Atelier d’ouvriers"
 
 #: crtools/config.py:208
 msgid "Royal Arena"
-msgstr ""
+msgstr "Arène royale"
 
 #: crtools/config.py:209
 msgid "Frozen Peak"
-msgstr ""
+msgstr "Sommet Glacé"
 
 #: crtools/config.py:210
 msgid "Jungle Arena"
-msgstr ""
+msgstr "Arène Sauvage"
 
 #: crtools/config.py:211
 msgid "Hog Mountain"
-msgstr ""
+msgstr "Mont des Cochons"
 
 #: crtools/config.py:212
 msgid "Electro Valley"
-msgstr ""
+msgstr "Vallée Electrique"
 
 #: crtools/config.py:213
 msgid "Spooky Town"
-msgstr ""
+msgstr "Ville sinistre"
 
 #: crtools/config.py:214
 msgid "Legendary Arena"
-msgstr ""
+msgstr "Arène Légendaire"
 
 #: crtools/config.py:215
 msgid "Challenger II"
-msgstr ""
+msgstr "Combattant II"
 
 #: crtools/config.py:216
 msgid "Challenger III"
-msgstr ""
+msgstr "Combattant III"
 
 #: crtools/config.py:217
 msgid "Master I"
-msgstr ""
+msgstr "Maître I"
 
 #: crtools/config.py:218
 msgid "Master II"
-msgstr ""
+msgstr "Maître II"
 
 #: crtools/config.py:219
 msgid "Master III"
-msgstr ""
+msgstr "Maître III"
 
 #: crtools/config.py:220 crtools/config.py:221
 msgid "Grand Champion"
-msgstr ""
+msgstr "Champion"
 
 #: crtools/config.py:222
 msgid "Ultimate Champion"
-msgstr ""
+msgstr "Grand Champion"
 
 #: crtools/config.py:224
 msgid "Bronze League"
-msgstr ""
+msgstr "Ligue Bronze"
 
 #: crtools/config.py:225
 msgid "Silver League"
-msgstr ""
+msgstr "Ligue Argent"
 
 #: crtools/config.py:226
 msgid "Gold League"
-msgstr ""
+msgstr "Ligue Or"
 
 #: crtools/config.py:227
 msgid "Legendary League"
-msgstr ""
+msgstr "Ligue Légendaire"
 
 #: crtools/config.py:229
 msgid ""
