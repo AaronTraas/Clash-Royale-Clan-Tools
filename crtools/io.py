@@ -112,7 +112,7 @@ def move_temp_to_output_dir(tempdir, output_dir):
         logger.debug('Output directory {} doesn\'t exist. Creating it.'.format(output_dir))
         try:
             os.mkdir(output_dir)
-        except PermissionError as e:
+        except PermissionError as e: # pragma: no coverage
             logger.error('Permission error: could create output folder: \n\t{}'.format(e.filename))
 
     # Copy all contents of temp directory to output directory

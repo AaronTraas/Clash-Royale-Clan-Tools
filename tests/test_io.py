@@ -98,12 +98,6 @@ def test_move_temp_to_output_dir_output_dir_doesnt_exist(tmpdir):
 
     io.move_temp_to_output_dir(fake_tempdir.realpath(), fake_output_dir.realpath())
 
-
-def test_move_temp_to_output_dir_output_dir_no_access(tmpdir):
-    fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_access-temp')
-
-    io.move_temp_to_output_dir(fake_tempdir.realpath(), '/root')
-
 def test_move_temp_to_output_dir_output_dir_no_write(tmpdir):
     fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_write-temp')
     fake_output_dir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_write-output')
