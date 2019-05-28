@@ -6,7 +6,6 @@ __docformat__ = 'reStructuredText'
 
 import copy
 from datetime import datetime, date, timezone, timedelta
-import json
 import logging
 import math
 import os
