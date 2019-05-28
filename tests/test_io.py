@@ -69,3 +69,44 @@ def test_dump_debug_logs(tmpdir):
     assert obj == out_obj
     assert obj2 == out_obj2
 
+def test_move_temp_to_output_dir(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir-temp')
+    fake_output_dir = tmpdir.mkdir('test_move_temp_to_output_dir-output')
+
+    test_file_name = 'test.txt'
+    test_file_contents = 'foo'
+    test_subdir_name = 'bar'
+    test_out_existing_filename = 'baz.txt'
+    test_out_existing_dirname = 'quux'
+    fake_tempdir.join(test_file_name).write(test_file_contents)
+    fake_tempdir.mkdir(test_subdir_name)
+    fake_output_dir.join(test_out_existing_filename).write(test_out_existing_filename)
+    fake_output_dir.mkdir(test_out_existing_dirname)
+
+    io.move_temp_to_output_dir(fake_tempdir.realpath(), fake_output_dir.realpath())
+
+    out_file_contents = fake_output_dir.join(test_file_name).read()
+
+    assert out_file_contents == test_file_contents
+    assert fake_output_dir.join(test_subdir_name).check(dir=1)
+    assert fake_output_dir.join(test_out_existing_filename).check(file=0)
+    assert fake_output_dir.join(test_out_existing_dirname).check(dir=0)
+
+def test_move_temp_to_output_dir_output_dir_doesnt_exist(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_doesnt_exist-temp')
+    fake_output_dir = tmpdir.join('test_move_temp_to_output_dir_output_dir_doesnt_exist-output')
+
+    io.move_temp_to_output_dir(fake_tempdir.realpath(), fake_output_dir.realpath())
+
+
+def test_move_temp_to_output_dir_output_dir_no_access(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_access-temp')
+
+    io.move_temp_to_output_dir(fake_tempdir.realpath(), '/root')
+
+def test_move_temp_to_output_dir_output_dir_no_write(tmpdir):
+    fake_tempdir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_write-temp')
+    fake_output_dir = tmpdir.mkdir('test_move_temp_to_output_dir_output_dir_no_write-output')
+    fake_output_dir.chmod(0)
+
+    io.move_temp_to_output_dir(fake_tempdir.realpath(), fake_output_dir.realpath())

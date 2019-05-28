@@ -28,7 +28,7 @@ def write_object_to_file(file_path, obj):
         f.write(string)
 
 def get_previous_history(output_dir):
-    # grab history, if it exists, from output paths
+    """ grab history, if it exists, from output paths """
 
     if not output_dir:
         return None
@@ -49,47 +49,47 @@ def copy_static_assets(tempdir, clan_logo_path, favicon_path):
     shutil.copyfile(favicon_path, os.path.join(tempdir, FAVICON_FILENAME))
 
 
-def parse_templates(config, history, tempdir, clan, members, current_war, recent_wars, suggestions, scoring_rules):
-        # Create environment for template parser
-        env = Environment(
-            loader=PackageLoader('crtools', 'templates'),
-            autoescape=select_autoescape(['html', 'xml']),
-            undefined=StrictUndefined
-        )
+def parse_templates(config, history, tempdir, clan, members, current_war, recent_wars, suggestions, scoring_rules): # pragma: no coverage
+    # Create environment for template parser
+    env = Environment(
+        loader=PackageLoader('crtools', 'templates'),
+        autoescape=select_autoescape(['html', 'xml']),
+        undefined=StrictUndefined
+    )
 
-        dashboard_html = env.get_template('page.html.j2').render(
-            version           = __version__,
-            config            = config,
-            strings           = config['strings'],
-            update_date       = datetime.now().strftime('%c'),
-            members           = members,
-            clan              = clan,
-            clan_hero         = config['paths']['description_html_src'],
-            current_war       = current_war,
-            recent_wars       = recent_wars,
-            suggestions       = suggestions,
-            scoring_rules     = scoring_rules
-        )
+    dashboard_html = env.get_template('page.html.j2').render(
+        version           = __version__,
+        config            = config,
+        strings           = config['strings'],
+        update_date       = datetime.now().strftime('%c'),
+        members           = members,
+        clan              = clan,
+        clan_hero         = config['paths']['description_html_src'],
+        current_war       = current_war,
+        recent_wars       = recent_wars,
+        suggestions       = suggestions,
+        scoring_rules     = scoring_rules
+    )
 
-        write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
-        write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), history)
+    write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
+    write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), history)
 
-        # If canonical URL is provided, also render the robots.txt and
-        # sitemap.xml
-        if config['www']['canonical_url'] != False:
-            lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
-            sitemap_xml = env.get_template('sitemap.xml.j2').render(
-                    url     = config['www']['canonical_url'],
-                    lastmod = lastmod
-                )
-            robots_txt = env.get_template('robots.txt.j2').render(
-                    canonical_url = config['www']['canonical_url']
-                )
-            write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
-            write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
+    # If canonical URL is provided, also render the robots.txt and
+    # sitemap.xml
+    if config['www']['canonical_url'] != False:
+        lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
+        sitemap_xml = env.get_template('sitemap.xml.j2').render(
+                url     = config['www']['canonical_url'],
+                lastmod = lastmod
+            )
+        robots_txt = env.get_template('robots.txt.j2').render(
+                canonical_url = config['www']['canonical_url']
+            )
+        write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
+        write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
 
 def dump_debug_logs(tempdir, objects_to_dump):
-    # archive outputs of API for debugging
+    """ archive outputs of API and other objects for debugging """
     log_path = os.path.join(tempdir, 'log')
     os.makedirs(log_path)
     for name, obj in objects_to_dump.items():
@@ -115,16 +115,13 @@ def move_temp_to_output_dir(tempdir, output_dir):
         except PermissionError as e:
             logger.error('Permission error: could create output folder: \n\t{}'.format(e.filename))
 
-    try:
-        # Copy all contents of temp directory to output directory
-        for file in os.listdir(tempdir):
-            file_path = os.path.join(tempdir, file)
-            file_out_path = os.path.join(output_dir, file)
-            if os.path.isfile(file_path):
-                shutil.copyfile(file_path, file_out_path)
-            elif os.path.isdir(file_path):
-                shutil.copytree(file_path, file_out_path)
-    except PermissionError as e:
-        logger.error('Permission error: could not write output to: \n\t{}'.format(e.filename))
-    except FileExistsError as e:
-        logger.error('File Exists: could not write output to: \n\t{}'.format(e.filename))
+    # Copy all contents of temp directory to output directory
+    # NOTE: not in try/catch block because if the above executed, we already
+    # have sufficient privileges to write to the output directory
+    for file in os.listdir(tempdir):
+        file_path = os.path.join(tempdir, file)
+        file_out_path = os.path.join(output_dir, file)
+        if os.path.isfile(file_path):
+            shutil.copyfile(file_path, file_out_path)
+        elif os.path.isdir(file_path):
+            shutil.copytree(file_path, file_out_path)
