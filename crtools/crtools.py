@@ -4,10 +4,8 @@
 __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
-import codecs
 import copy
 from datetime import datetime, date, timezone, timedelta
-from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescape
 import json
 import logging
 import math
@@ -20,38 +18,11 @@ from ._version import __version__
 from crtools import history
 from crtools import leagueinfo
 from crtools import fankit
-
-HISTORY_FILE_NAME = 'history.json'
-FANKIT_DIR_NAME = 'fankit'
+from crtools import io
 
 MAX_CLAN_SIZE = 50
 
 logger = logging.getLogger(__name__)
-
-def write_object_to_file(file_path, obj):
-    """ Writes contents of object to file. If object is a string, write it
-    directly. Otherwise, convert it to JSON first """
-
-    # open file for UTF-8 output, and write contents of object to file
-    with codecs.open(file_path, 'w', 'utf-8') as f:
-        if isinstance(obj, str):
-            string = obj
-        else:
-            string = json.dumps(obj, indent=4)
-        f.write(string)
-
-def warlog_labels(warlog, clan_tag, date_label_format):
-    """ Return list of date strings from warlog. One entry per war. """
-
-    labels = []
-    for war in warlog:
-        date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
-        label = {
-            'date'   : date_label_format.format(month=date.month, day=date.day),
-            'league' : get_war_league_from_war(war, clan_tag)
-        }
-        labels.append(label)
-    return labels
 
 def get_war_league_from_war(war, clan_tag):
     """ Figure out which war league a clan was in during a given war. """
@@ -538,133 +509,62 @@ def build_dashboard(config): # pragma: no coverage #NOSONAR
     logger.debug('pyroyale version v{}'.format(pyroyale.__version__))
     logger.debug(config)
 
+    # Create temporary directory. All file writes, until the very end,
+    # will happen in this directory, so that no matter what we do, it
+    # won't hose existing stuff.
+    tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
+
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.
     try:
-        # Create temporary directory. All file writes, until the very end,
-        # will happen in this directory, so that no matter what we do, it
-        # won't hose existing stuff.
-        tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
         output_path = os.path.expanduser(config['paths']['out'])
 
-        api = pyroyale.ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
-
         # Get clan data and war log from API.
+        api = pyroyale.ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
         clan = api.clan.clan_info()
         warlog = api.clan.warlog()
         current_war = api.clan.current_war()
 
-        # copy static assets to output path
-        shutil.copytree(os.path.join(os.path.dirname(__file__), 'static'), os.path.join(tempdir, 'static'))
-
-        # copy user-provided assets to the output path
-        shutil.copyfile(config['paths']['clan_logo'], os.path.join(tempdir, 'clan_logo.png'))
-        shutil.copyfile(config['paths']['favicon'], os.path.join(tempdir, 'favicon.ico'))
-
-        # grab history, if it exists, from output paths
-        old_history = None
-        history_path = os.path.join(output_path, HISTORY_FILE_NAME)
-        if os.path.isfile(history_path):
-            with open(history_path, 'r') as myfile:
-                old_history = json.loads(myfile.read())
-
-        # Download fan kit if applicable
-        fankit_src_path = os.path.join(output_path, FANKIT_DIR_NAME)
-        if os.path.isdir(fankit_src_path):
-            shutil.copytree(fankit_src_path, os.path.join(tempdir, FANKIT_DIR_NAME))
-        elif config['paths']['use_fankit']:
-            fankit.download_fan_kit(tempdir)
-
+        # process data from API
         current_war_processed = process_current_war(config, current_war)
         clan_processed = process_clan(config, clan, current_war)
-        member_history = history.get_member_history(clan['memberList'], old_history, current_war)
+        member_history = history.get_member_history(clan['memberList'], io.get_previous_history(output_path), current_war)
         members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
 
-        # Create environment for template parser
-        env = Environment(
-            loader=PackageLoader('crtools', 'templates'),
-            autoescape=select_autoescape(['html', 'xml']),
-            undefined=StrictUndefined
+        io.parse_templates(
+            config,
+            member_history,
+            tempdir,
+            clan_processed,
+            members_processed,
+            current_war_processed,
+            recent_wars,
+            get_suggestions(config, members_processed, clan_processed),
+            get_scoring_rules(config)
         )
 
-        dashboard_html = env.get_template('page.html.j2').render(
-            version           = __version__,
-            config            = config,
-            strings           = config['strings'],
-            update_date       = datetime.now().strftime('%c'),
-            members           = members_processed,
-            war_labels        = warlog_labels(warlog, clan['tag'], config['strings']['labelWarDate']),
-            clan              = clan_processed,
-            clan_hero         = config['paths']['description_html_src'],
-            current_war       = current_war_processed,
-            recent_wars       = recent_wars,
-            suggestions       = get_suggestions(config, members_processed, clan_processed),
-            scoring_rules     = get_scoring_rules(config)
-        )
-
-        write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)
-        write_object_to_file(os.path.join(tempdir, HISTORY_FILE_NAME), member_history)
-
-        # If canonical URL is provided, also render the robots.txt and
-        # sitemap.xml
-        if config['www']['canonical_url'] != False:
-            lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
-            sitemap_xml = env.get_template('sitemap.xml.j2').render(
-                    url     = config['www']['canonical_url'],
-                    lastmod = lastmod
-                )
-            robots_txt = env.get_template('robots.txt.j2').render(
-                    canonical_url = config['www']['canonical_url']
-                )
-            write_object_to_file(os.path.join(tempdir, 'sitemap.xml'), sitemap_xml)
-            write_object_to_file(os.path.join(tempdir, 'robots.txt'), robots_txt)
-
-        # archive outputs of API for debugging
         if(config['crtools']['debug'] == True):
-            log_path = os.path.join(tempdir, 'log')
-            os.makedirs(log_path)
-            write_object_to_file(os.path.join(log_path, 'clan.json'),                  clan)
-            write_object_to_file(os.path.join(log_path, 'warlog.json'),                warlog)
-            write_object_to_file(os.path.join(log_path, 'currentwar.json'),            current_war)
-            write_object_to_file(os.path.join(log_path, 'clan-processed.json'),        clan_processed)
-            write_object_to_file(os.path.join(log_path, 'members-processed.json'),     members_processed)
-            write_object_to_file(os.path.join(log_path, 'currentwar-processed.json'),  current_war_processed)
-            write_object_to_file(os.path.join(log_path, 'recent_wars-processed.json'), recent_wars)
+            # archive outputs of API for debugging
+            io.dump_debug_logs(
+                tempdir,
+                {
+                    'clan'                  : clan,
+                    'warlog'                : warlog,
+                    'currentwar'            : current_war,
+                    'clan-processed'        : clan_processed,
+                    'members-processed'     : members_processed,
+                    'currentwar-processed'  : current_war_processed,
+                    'recentwars-processed'  : recent_wars
+                }
+            )
 
-        if os.path.exists(output_path):
-            # remove contents of output directory to cleanup.
-            try:
-                for file in os.listdir(output_path):
-                    file_path = os.path.join(output_path, file)
-                    if os.path.isfile(file_path):
-                        os.unlink(file_path)
-                    elif os.path.isdir(file_path):
-                        shutil.rmtree(file_path)
-            except PermissionError as e:
-                logger.error('Permission error: could not delete: \n\t{}'.format(e.filename))
-        else:
-            # Output directory doesn't exist. Create it.
-            if(config['crtools']['debug'] == True):
-                logger.info('Output directory {} doesn\'t exist. Creating it.'.format(output_path))
-            try:
-                os.mkdir(output_path)
-            except PermissionError as e:
-                logger.error('Permission error: could create output folder: \n\t{}'.format(e.filename))
+        if config['paths']['use_fankit']:
+            fankit.get_fankit(tempdir, output_path)
 
-        try:
-            # Copy all contents of temp directory to output directory
-            for file in os.listdir(tempdir):
-                file_path = os.path.join(tempdir, file)
-                file_out_path = os.path.join(output_path, file)
-                if os.path.isfile(file_path):
-                    shutil.copyfile(file_path, file_out_path)
-                elif os.path.isdir(file_path):
-                    shutil.copytree(file_path, file_out_path)
-        except PermissionError as e:
-            logger.error('Permission error: could not write output to: \n\t{}'.format(e.filename))
-        except FileExistsError as e:
-            logger.error('File Exists: could not write output to: \n\t{}'.format(e.filename))
+        io.copy_static_assets(tempdir, config['paths']['clan_logo'], config['paths']['favicon'])
+
+        io.move_temp_to_output_dir(tempdir, output_path)
 
     except pyroyale.ClashRoyaleAPIAuthenticationError as e:
         msg = 'developer.clashroyale.com authentication error: {}'.format(e)

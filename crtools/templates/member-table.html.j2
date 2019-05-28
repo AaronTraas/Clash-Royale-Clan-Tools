@@ -10,8 +10,8 @@
                     <th>{{strings.labelDonations}}</th>
                     <th>{{strings.labelDaysInactive}}</th>
                     <th data-sort-method="none">{{strings.labelCurrentWar}}</th>
-                {% for label in war_labels %}
-                    <th data-sort-method="none">{{label.date}}</th>
+                {% for war in recent_wars %}
+                    <th data-sort-method="none">{{war.date}}</th>
                 {% endfor %}
                 </tr>
             </thead>
