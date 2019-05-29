@@ -76,6 +76,6 @@ def get_fankit(tempdir, output_dir): # pragma: no coverage #NOSONAR
     if os.path.isdir(fankit_src_path):
         shutil.copytree(fankit_src_path, os.path.join(tempdir, FANKIT_DIR_NAME))
     else:
-        fankit.download_fan_kit(config, tempdir)
+        download_fan_kit(config, tempdir)
 
 
