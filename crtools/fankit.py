@@ -10,6 +10,7 @@ import zipfile
 
 logger = logging.getLogger(__name__)
 
+FANKIT_URL = 'https://supr.cl/CRFanKit'
 FANKIT_DIR_NAME = 'fankit'
 
 def download_file(url, destination_path):  # pragma: no coverage #NOSONAR
@@ -41,7 +42,7 @@ def download_fan_kit(tempdir):  # pragma: no coverage #NOSONAR
     try:
         logger.debug('Fankit temp dir = {}'.format(tempdir))
 
-        response = requests.head('https://supr.cl/CRFanKit')
+        response = requests.head(FANKIT_URL)
         logger.debug(response.headers)
 
         if 'Location' in response.headers:
