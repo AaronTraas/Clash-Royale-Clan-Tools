@@ -53,9 +53,14 @@
                             <tbody>
                                 <tr><th>{{strings.labelClanScore}}</th><td>{{clan.clanScore}}</td></tr>
                                 <tr><th>{{strings.labelClanName}}</th><td>{{clan.name}}</td></tr>
+                                <tr>
+                                    <th>{{strings.labelCountry}}</th>
                                 {% if clan.location.isCountry == true %}
-                                <tr><th>{{strings.labelCountry}}</th><td>{{clan.location.name}}<img class="flag" src="static/images/flags/{{clan.location.countryCode|lower}}.png" /></td></tr>
+                                    <td>{{clan.location.name}}<img class="flag" src="static/images/flags/{{clan.location.countryCode|lower}}.png" /></td>
+                                {% else %}
+                                    <td>{{strings.labelInternational}}<img class="flag" src="static/images/flags/international.png" /></td>
                                 {% endif %}
+                                </td></tr>
 
                                 <tr><th>{{strings.labelDonationsPerWeek}}</th><td>{{clan.donationsPerWeek}}</td></tr>
                                 <tr><th>{{strings.labelRequiredTrophies}}</th><td>{{clan.requiredTrophies}}</td></tr>
