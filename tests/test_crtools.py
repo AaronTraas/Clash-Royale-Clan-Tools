@@ -386,7 +386,8 @@ def test_get_suggestions_nosuggestions(tmpdir):
             "score": 999,
             "vacation": False,
             "safe": True,
-            "blacklist": False
+            "blacklist": False,
+            "no_promote": False
         })
 
     suggestions = crtools.get_suggestions(config, members, __fake_clan__)
@@ -522,10 +523,11 @@ def test_calc_member_status(tmpdir):
     config_file.write(__config_file_score_thresholds__)
     config = load_config_file(config_file.realpath())
 
-    assert crtools.calc_member_status(config, -1) == 'bad'
-    assert crtools.calc_member_status(config, 5) == 'ok'
-    assert crtools.calc_member_status(config, 10) == 'normal'
-    assert crtools.calc_member_status(config, 100) == 'good'
+    assert crtools.calc_member_status(config, -1, False)  == 'bad'
+    assert crtools.calc_member_status(config, 5, False)   == 'ok'
+    assert crtools.calc_member_status(config, 10, False)  == 'normal'
+    assert crtools.calc_member_status(config, 100, False) == 'good'
+    assert crtools.calc_member_status(config, 100, True)  == 'normal'
 
 def test_calc_donation_status(tmpdir):
     config_file = tmpdir.mkdir('test_calc_donation_status').join('config.ini')

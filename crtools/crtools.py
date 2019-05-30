@@ -210,7 +210,7 @@ def get_suggestions(config, processed_members, clan_processed):
 
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        if not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member') and (member['trophies'] >= clan_processed['requiredTrophies']):
+        if not member['no_promote'] and not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member') and (member['trophies'] >= clan_processed['requiredTrophies']):
             suggestions.append(config['strings']['suggestionPromoteScore'].format(name=member['name'], score=member['score']))
 
     # If there are no other suggestions, give some sort of message
@@ -306,12 +306,12 @@ def calc_donation_status(config, donation_score, donations_daily, days_from_dona
 
     return 'normal'
 
-def calc_member_status(config, member_score):
+def calc_member_status(config, member_score, no_promote):
     # either 'good', 'ok', 'bad', or 'normal'
     if member_score < 0:
         return 'bad'
 
-    if member_score >= config['score']['threshold_promote']:
+    if member_score >= config['score']['threshold_promote'] and not no_promote:
         return 'good'
 
     if member_score < config['score']['threshold_warn']:
@@ -376,6 +376,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         # blacklist = member on blacklist. Recommend kick immediately.
         member['vacation'] = member['tag'] in config['members']['vacation']
         member['safe'] = member['tag'] in config['members']['safe']
+        member['no_promote'] = member['tag'] in config['members']['no_promote']
         member['blacklist'] = member['tag'] in config['members']['blacklist']
 
         # Automatically add inactive 'safe' members to vacation
@@ -400,7 +401,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         # based on threshold set in config
         member['donationStatus'] = calc_donation_status(config, member['donationScore'], member['donationsDaily'], days_from_donation_reset)
 
-        member['status'] = calc_member_status(config, member['score'])
+        member['status'] = calc_member_status(config, member['score'], member['no_promote'])
 
         member['activity_status'] = calc_activity_status(config, member['days_inactive'])
 

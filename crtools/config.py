@@ -60,6 +60,7 @@ config_defaults = {
     },
     'members': {
         'blacklist'                     : [],
+        'no_promote'                    : [],
         'vacation'                      : [],
         'safe'                          : []
     },
