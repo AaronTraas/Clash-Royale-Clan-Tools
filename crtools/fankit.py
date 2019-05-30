@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 FANKIT_URL = 'https://supr.cl/CRFanKit'
 FANKIT_DIR_NAME = 'fankit'
 
-def download_file(url, destination_path):  # pragma: no coverage #NOSONAR
+def download_file(url, destination_path):
     # NOTE the stream=True parameter below
     download_status_msg = 'Downloading fan kit: {:,.2f} MB'
 
@@ -27,22 +27,22 @@ def download_file(url, destination_path):  # pragma: no coverage #NOSONAR
                 if chunk: # filter out keep-alive new chunks
                     counter += 1
                     f.write(chunk)
-                    if counter >= 100:
+                    if counter >= 100:  # pragma: no coverage
+                        # not covered because I don't want to simulate large file download
                         download_size = os.path.getsize(destination_path)/(1024*1024)
                         print(download_status_msg.format(download_size), end='\r')
                         counter = 0
-                    # f.flush()
 
         print("\nDownload complete!\n")
 
-def download_fan_kit(tempdir):  # pragma: no coverage #NOSONAR
+def download_fan_kit(tempdir):
     zip_path = os.path.join(tempdir, 'fankit.zip')
     unzip_path = os.path.join(tempdir, 'fankit_unzip')
     dest_path = os.path.join(tempdir, 'fankit')
     try:
         logger.debug('Fankit temp dir = {}'.format(tempdir))
 
-        response = requests.head(FANKIT_URL)
+        response = requests.get(FANKIT_URL)
         logger.debug(response.headers)
 
         if 'Location' in response.headers:
@@ -62,6 +62,8 @@ def download_fan_kit(tempdir):  # pragma: no coverage #NOSONAR
             print('Copying assets to output folder')
             for subfolder in ['font', 'emotes', 'ui']:
                 shutil.copytree(os.path.join(unzip_path, subfolder), os.path.join(dest_path, subfolder))
+        else:
+            logger.error(response.headers)
     except Exception as e:
         logger.error(e)
         logger.error('Could not download Clash Royale Fan Kit')
@@ -71,12 +73,12 @@ def download_fan_kit(tempdir):  # pragma: no coverage #NOSONAR
         if os.path.isdir(unzip_path):
             shutil.rmtree(unzip_path)
 
-def get_fankit(tempdir, output_dir): # pragma: no coverage #NOSONAR
+def get_fankit(tempdir, output_dir):
     """ Download fan kit if applicable """
     fankit_src_path = os.path.join(output_dir, FANKIT_DIR_NAME)
     if os.path.isdir(fankit_src_path):
         shutil.copytree(fankit_src_path, os.path.join(tempdir, FANKIT_DIR_NAME))
     else:
-        download_fan_kit(config, tempdir)
+        download_fan_kit(tempdir)
 
 
