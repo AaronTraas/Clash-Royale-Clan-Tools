@@ -155,6 +155,8 @@ def __localize_strings(locale_id):
         'dialogLabelPlayerStats'    : _('Player Stats and Info'),
         'dialogMemberStatsRoyale'   : _('See on StatsRoyale'),
         'dialogMemberRoyaleApi'     : _('See on RoyaleAPI'),
+        'dialogMemberBlacklist'     : _('Member is on the blacklist. Kick member immediately.'),
+        'dialogMemberNoPromote'     : _('Member has been tagged on the "No Promote" list for abusing privileges in the past. Never promote to Elder or higher.'),
 
         'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
         'tooltipCurrentWarNoScore'  : _('NOTE: current war <strong>does not</strong> affect score.'),

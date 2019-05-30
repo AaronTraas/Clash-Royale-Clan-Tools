@@ -22,7 +22,7 @@
                 </figure>
 
             </section>
-            <h3>{{strings.dialogLabelPlayerStats}}</h3>
+            <h3><span>{{strings.dialogLabelPlayerStats}}</span></h3>
             <section class="flex normal">
                 <div class="attribute-list">
                     <dl>
@@ -50,6 +50,12 @@
                     <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>{{config.strings.dialogMemberStatsRoyale}}</span></a>
                 </div>
             </section>
+            {% if member.blacklist %}
+            <h3 class="blacklist"><span>{{strings.dialogMemberBlacklist}}</span></h3>
+            {% endif %}
+            {% if member.no_promote %}
+            <h3 class="no-promote"><span>{{strings.dialogMemberNoPromote}}</span></h3>
+            {% endif %}
         </div>
     {% endfor %}
     </div>
