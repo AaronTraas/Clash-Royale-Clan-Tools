@@ -334,7 +334,7 @@ def calc_activity_status(config, days_inactive):
 
     return 'normal'
 
-def get_role_label(config, member_role, days_inactive, activity_status, on_vacation, blacklisted):
+def get_role_label(config, member_role, days_inactive, activity_status, on_vacation, blacklisted, no_promote):
     """ Format roles in sane way """
 
     if blacklisted:
@@ -345,6 +345,9 @@ def get_role_label(config, member_role, days_inactive, activity_status, on_vacat
 
     if activity_status in ['bad', 'ok']:
         return config['strings']['roleInactive'].format(days=days_inactive)
+
+    if no_promote:
+        return config['strings']['roleNoPromote']
 
     return {
         'leader'   : config['strings']['roleLeader'],
@@ -405,7 +408,7 @@ def process_members(config, clan, warlog, current_war, member_history):
 
         member['activity_status'] = calc_activity_status(config, member['days_inactive'])
 
-        member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'])
+        member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'], member['no_promote'])
 
         if member['trophies'] >= clan['requiredTrophies']:
             member['trophiesStatus'] = 'normal'

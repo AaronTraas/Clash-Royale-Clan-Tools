@@ -201,6 +201,7 @@ def __localize_strings(locale_id):
         'roleBlacklisted'           : _('Blacklisted. Kick!'),
         'roleVacation'              : _('On vacation'),
         'roleInactive'              : _('Inactive {days} days'),
+        'roleNoPromote'             : _('Never Promote'),
 
         'league-arena-unknown'      : _('Arena Unknown'),
         'league-arena-1'            : _('Goblin Stadium'),
