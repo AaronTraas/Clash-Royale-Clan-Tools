@@ -6,9 +6,9 @@ import locale
 import logging
 import os
 import requests
-try:
+try:  # pragma: no coverage
     from packaging.version import parse
-except ImportError:
+except ImportError:  # pragma: no coverage
     from pip._vendor.packaging.version import parse
 
 from ._version import __version__
