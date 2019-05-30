@@ -542,13 +542,15 @@ def test_calc_donation_status(tmpdir):
 def test_get_role_label():
     config = load_config_file(False)
 
-    assert crtools.get_role_label(config, 'member', 0, 'good', False, True) == config['strings']['roleBlacklisted']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, True) == config['strings']['roleBlacklisted']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, False) == config['strings']['roleVacation']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', False, False) == config['strings']['roleInactive'].format(days=100)
+    assert crtools.get_role_label(config, 'member', 0, 'good', False, True, False) == config['strings']['roleBlacklisted']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, True, False) == config['strings']['roleBlacklisted']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, False, False) == config['strings']['roleVacation']
+    assert crtools.get_role_label(config, 'leader', 100, 'bad', False, False, False) == config['strings']['roleInactive'].format(days=100)
 
-    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False) == config['strings']['roleLeader']
-    assert crtools.get_role_label(config, 'coLeader', 0, 'good', False, False) == config['strings']['roleCoLeader']
-    assert crtools.get_role_label(config, 'elder', 0, 'good', False, False) == config['strings']['roleElder']
-    assert crtools.get_role_label(config, 'member', 0, 'good', False, False) == config['strings']['roleMember']
+    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False, False) == config['strings']['roleLeader']
+    assert crtools.get_role_label(config, 'coLeader', 0, 'good', False, False, False) == config['strings']['roleCoLeader']
+    assert crtools.get_role_label(config, 'elder', 0, 'good', False, False, False) == config['strings']['roleElder']
+    assert crtools.get_role_label(config, 'member', 0, 'good', False, False, False) == config['strings']['roleMember']
+
+    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False, True) == config['strings']['roleNoPromote']
 
