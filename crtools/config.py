@@ -16,6 +16,7 @@ from ._version import __version__
 logger = logging.getLogger(__name__)
 
 PYPI_URL = 'https://pypi.org/pypi/crtools/json'
+LOCALE_NOT_FOUND_ERROR_TEMPLATE = 'Locale "{}" not defined. Using default instead.'
 
 # Create config dict with defaults
 config_defaults = {
@@ -78,7 +79,7 @@ def __localize_strings(locale_id):
     try:
         locale.setlocale(locale.LC_TIME, (locale_id, 'UTF-8'))
     except locale.Error:
-        logger.warn('Locale "{}" not defined. Using default instead.'.format(locale_id))
+        print(LOCALE_NOT_FOUND_ERROR_TEMPLATE.format(locale_id))
 
 
     localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
