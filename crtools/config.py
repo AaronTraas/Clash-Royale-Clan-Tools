@@ -75,7 +75,11 @@ config_defaults = {
 
 def __localize_strings(locale_id):
 
-    locale.setlocale(locale.LC_TIME, (locale_id, 'UTF-8'))
+    try:
+        locale.setlocale(locale.LC_TIME, (locale_id, 'UTF-8'))
+    except locale.Error:
+        logger.warn('Locale "{}" not defined. Using default instead.'.format(locale_id))
+
 
     localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
     translate = gettext.translation('crtools', localedir, languages=[locale_id], fallback=True)
