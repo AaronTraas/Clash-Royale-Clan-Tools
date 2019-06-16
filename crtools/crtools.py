@@ -114,7 +114,7 @@ def member_war(config, clan_member, war):
                 participation['collectionWinCards'] = leagueinfo.get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
 
                 participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
-                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionWinCards']
+                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
                 participation['score'] = war_score(config, participation)
 
     return participation
