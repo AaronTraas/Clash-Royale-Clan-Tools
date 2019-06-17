@@ -168,7 +168,7 @@ Support
 ==================================================
 
 If you need help getting this up and running, feel free to email
-`Aaron <mailto:aaron+crtools@traas.org>`.
+`Aaron <mailto:aaron+crtools@traas.org>`_.
 
 Keep in mind, this is a command  line utility that expects a working Python 3
 environment. It also assumes you will know how to configure a web server to
