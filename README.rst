@@ -167,10 +167,10 @@ The code quality and test coverage are a work in progress.
 Support
 ==================================================
 
-If you need help getting this up and running, feel free to email
-`Aaron <mailto:aaron+crtools@traas.org>`_.
+If you need help getting this up and running, feel free to hop on the
+`crtools discord <https://discord.gg/YjuUdMF>`_.
 
-Keep in mind, this is a command  line utility that expects a working Python 3
+Keep in mind, this is a command-line utility that expects a working Python 3
 environment. It also assumes you will know how to configure a web server to
 serve up HTML, as well as cron or similar on your given platform. There is no
 install wizard, GUI of any kind, etc.
