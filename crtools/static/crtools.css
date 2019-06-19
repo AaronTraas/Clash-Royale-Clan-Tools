@@ -555,6 +555,7 @@ body > header h1 em {
     padding: 15px;
     margin-top: 44px;
     margin-bottom: 22px;
+    min-width: 200px;
 }
 
 #info article > header {
