@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="static/os-assets.css?version={{version}}" />
 {% endif %}
 </head>
-<body data-member-dialog="none">
+<body data-active-dialog="none">
     <header><div class="inner">
         <h1>{{strings.mainHeader.format(clan_name=clan.name)}}</h1>
     </div></header>
@@ -115,6 +115,8 @@
                     </header>
 
                     {% include 'member-table.html.j2' %}
+
+                    <a href="#" data-role="dialog-show" data-target="members-old">Old members</a>
                 </article>
 
                 <div class="row">
@@ -188,6 +190,8 @@
 
     <a class="github-fork-ribbon" target="_blank" href="https://github.com/AaronTraas/Clash-Royale-Clan-Tools" title="Fork me on GitHub">Fork me on GitHub</a>
 
+    <div class="dialog-shadow"></div>
+    {% include 'dialog-old-members.html.j2' %}
     {% include 'dialog-member-detail.html.j2' %}
 
     <script>

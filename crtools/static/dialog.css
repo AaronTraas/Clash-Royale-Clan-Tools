@@ -106,8 +106,9 @@ dialog .inner {
 	overflow: hidden;
 }
 
-body:not([data-member-dialog='none']) dialog,
-body:not([data-member-dialog='none']) .dialog-shadow {
+body:not([data-active-dialog='none']) .dialog-shadow,
+body[data-active-dialog='member-detail'] dialog#member-detail,
+body[data-active-dialog='members-old'] dialog#members-old {
 	display: block;
 }
 

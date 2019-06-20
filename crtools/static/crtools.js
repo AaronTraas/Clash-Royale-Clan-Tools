@@ -185,21 +185,28 @@ function DialogHandler() {
                 element.className = ''
             }
         });
-        document.body.dataset.memberDialog = memberTag
     }
 
     document.querySelectorAll('.dialog-shadow, dialog [data-role="close"]').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault();
-            document.body.dataset.memberDialog = 'none';
+            document.body.dataset.activeDialog = 'none';
         });
     });
 
-    document.querySelectorAll('[data-role="member-dialog-show"]').forEach(function(element) {
-        var tag = element.dataset.memberTag;
+    document.querySelectorAll('[data-role="dialog-show"]').forEach(function(element) {
+        var target = element.dataset.target;
         element.addEventListener('click', function(e) {
             e.preventDefault();
-            showMemberInfo(tag)
+            document.body.dataset.activeDialog = target;
+
+            switch(target) {
+                case 'member-detail':
+                    var tag = element.dataset.memberTag;
+                    showMemberInfo(tag)
+                    break;
+            }
+
             return true;
         });
     });

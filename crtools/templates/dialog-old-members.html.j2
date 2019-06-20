@@ -1,0 +1,16 @@
+<dialog id="members-old">
+    <header>
+        <h1>Old members</h1>
+        <a data-role="close" href="#">Close</a>
+    </header>
+    <div class="inner">
+        <table>
+        {% for member in members %}
+            <tr>
+                <td>{{member.name}}</td>
+                <td>{{member.tag}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</dialog>
