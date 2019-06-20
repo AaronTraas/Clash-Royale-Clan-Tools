@@ -50,7 +50,7 @@
         </header>
         <table class="war-standings" width="100%">
         {% if recent_wars|length == 0 %}
-            <tr>{{strings.labelNoWarInLog}}</tr>
+            <tr><td>{{strings.labelNoWarInLog}}</td></tr>
         {% else %}
             {% for war in recent_wars %}
                 {% if loop.index <= 5 %}
