@@ -4,16 +4,19 @@ import copy
 
 __fake_members__ = [
     {
+        "name": "Player A",
         "tag": "#AAAAAA",
         "role": "leader",
         "donations": 100
     },
     {
+        "name": "Player C",
         "tag": "#CCCCCC",
         "role": "member",
         "donations": 10
     },
     {
+        "name": "Player D",
         "tag": "#DDDDDD",
         "role": "elder",
         "donations": 0
