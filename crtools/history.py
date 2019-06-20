@@ -64,6 +64,8 @@ def cleanup_member_history(member, history, timestamp):
     now = timestamp
     if now == 0:
         now = datetime.timestamp(datetime.now())
+    if 'name' not in history:
+        history['name'] = member['name']
     if 'join_date' not in history:
         history['join_date'] = timestamp
     if 'last_activity_date' not in history:
@@ -121,15 +123,17 @@ def process_missing_members(historical_mambers, member_tags, timestamp):
     members = copy.deepcopy(historical_mambers)
 
     for tag, member in members.items():
-        if tag not in member_tags and member['status'] != 'absent':
-
-            member['events'].append({
-                'event': 'quit',
-                'type':  'left',
-                'role':  member['role'],
-                'date':  timestamp
-            })
-            member['status'] = 'absent'
+        if tag not in member_tags:
+            if member['status'] != 'absent':
+                member['events'].append({
+                    'event': 'quit',
+                    'type':  'left',
+                    'role':  member['role'],
+                    'date':  timestamp
+                })
+                member['status'] = 'absent'
+            if 'name' not in member:
+                member['name'] = '[unknown]'
 
     return members
 
