@@ -158,8 +158,8 @@ def __localize_strings(locale_id):
         'labelViewOldMembers'       : _('View List of Old Members'),
 
         'memberEventJoinedClan'     : _('Joined clan'),
-        'memberEventExitClan'       : _('Changed role to {}'),
-        'memberEventRoleChange'     : _('Departed clan'),
+        'memberEventRoleChange'     : _('Changed role to {}'),
+        'memberEventExitClan'       : _('Departed clan'),
 
         'dialogTitleMemberDetails'  : _('Member Details'),
         'dialogLabelPlayerStats'    : _('Player Stats and Info'),
