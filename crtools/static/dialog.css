@@ -17,7 +17,6 @@ dialog {
 	box-sizing: border-box;
 	max-width: 640px;
 	width: 100%;
-	top: 100px;
 	left: 50%;
 	margin-left: -300px;
 	padding: 0;
@@ -29,6 +28,16 @@ dialog {
 	overflow: hidden;
 
 	display: none;
+}
+
+dialog#member-detail {
+	top: 100px;
+}
+
+dialog#members-old {
+	top: 44px;
+	bottom: 44px;
+	height: auto;
 }
 
 dialog h1, dialog h2, dialog h3, dialog figcaption {
@@ -106,6 +115,17 @@ dialog .inner {
 	overflow: hidden;
 }
 
+dialog#members-old .inner {
+    position: absolute;
+    top: 58px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: auto;
+	overflow-y: scroll;
+}
+
 body:not([data-active-dialog='none']) .dialog-shadow,
 body[data-active-dialog='member-detail'] dialog#member-detail,
 body[data-active-dialog='members-old'] dialog#members-old {
@@ -178,9 +198,29 @@ dialog [data-member-id] > section > * {
 	margin: 0 12px;
 }
 
-dialog#member tr:last-child td,
-dialog#member tr:last-child th {
+dialog#members-old table {
+	margin: 0 8px;
+}
+
+dialog#member-details tr:last-child td,
+dialog#member-details tr:last-child th {
 	border-bottom: none;
+}
+
+dialog#members-old td {
+	border: none;
+}
+
+dialog#members-old tr.member-start td {
+	border-top: 1px solid #bbb;
+}
+
+dialog#members-old td {
+	padding: 4px 14px;
+}
+
+dialog#members-old td.buttons {
+	white-space: nowrap;
 }
 
 dialog [data-member-id] > h3 {
@@ -311,6 +351,14 @@ dialog .button {
 	text-align: left;
 }
 
+dialog#members-old .button {
+	display: inline-block;
+	margin: 0;
+}
+dialog#members-old .button > span {
+	padding: 12px 14px;
+}
+
 dialog .button.statsroyale > span,
 dialog .button.royaleapi > span {
 	padding-left: 38px;
@@ -330,6 +378,12 @@ dialog .button.royaleapi > span:before {
 	left: 12px;
 	top: 50%;
 	margin-top: -9px;
+}
+
+dialog#members-old .button.statsroyale > span:before,
+dialog#members-old .button.royaleapi > span:before {
+	left: 50%;
+	margin-left: -9px;
 }
 
 dialog .button.statsroyale > span:before {

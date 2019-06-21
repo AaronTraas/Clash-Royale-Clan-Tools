@@ -89,7 +89,7 @@
             <div class="section-wrap">
                 {% include 'current-war.html.j2' %}
 
-                <article>
+                <article class="member-info">
                     <header>
                         <h3>
                             <span class="no-mobile">{{strings.sectionMemberTable}}:</span>
@@ -116,7 +116,9 @@
 
                     {% include 'member-table.html.j2' %}
 
-                    <a href="#" data-role="dialog-show" data-target="members-old">Old members</a>
+                    <p>
+                        <a href="#" class="button" data-role="dialog-show" data-target="members-old"><span>{{strings.labelViewOldMembers}}</span></a>
+                    </p>
                 </article>
 
                 <div class="row">

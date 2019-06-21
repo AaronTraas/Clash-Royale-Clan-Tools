@@ -155,6 +155,7 @@ def __localize_strings(locale_id):
         'labelEndTime'              : _('1 day, {} hours'),
         'labelStateCollectionDay'   : _('Collection Day'),
         'labelStateWarDay'          : _('War Day'),
+        'labelViewOldMembers'       : _('View List of Old Members'),
 
         'dialogTitleMemberDetails'  : _('Member Details'),
         'dialogLabelPlayerStats'    : _('Player Stats and Info'),

@@ -49,7 +49,7 @@ def copy_static_assets(tempdir, clan_logo_path, favicon_path):
     shutil.copyfile(favicon_path, os.path.join(tempdir, FAVICON_FILENAME))
 
 
-def parse_templates(config, history, tempdir, clan, members, current_war, recent_wars, suggestions, scoring_rules): # pragma: no coverage
+def parse_templates(config, history, tempdir, clan, members, former_members, current_war, recent_wars, suggestions, scoring_rules): # pragma: no coverage
     # Create environment for template parser
     env = Environment(
         loader=PackageLoader('crtools', 'templates'),
@@ -68,7 +68,8 @@ def parse_templates(config, history, tempdir, clan, members, current_war, recent
         current_war       = current_war,
         recent_wars       = recent_wars,
         suggestions       = suggestions,
-        scoring_rules     = scoring_rules
+        scoring_rules     = scoring_rules,
+        former_members    = former_members
     )
 
     write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)

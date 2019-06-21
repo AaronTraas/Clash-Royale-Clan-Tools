@@ -794,6 +794,11 @@ body > header h1 em {
     font-size: 80%;
 }
 
+article.member-info > p {
+    text-align: center;
+    margin-top: 12px;
+}
+
 @media (max-width: 700px) {
     #info th:first-child, #info td:first-child {
       padding-left: 4px;

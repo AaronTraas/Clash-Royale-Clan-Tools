@@ -425,6 +425,31 @@ def process_members(config, clan, warlog, current_war, member_history):
 
     return members_processed
 
+def process_absent_members(historical_members):
+    absent_members = []
+
+    for tag, member in historical_members.items():
+        if member['status'] == 'absent':
+            events = []
+            for event in member['events']:
+                if event['date'] == 0:
+                    continue
+                events.append({
+                    'date'    : datetime.fromtimestamp(event['date']).strftime('%x'),
+                    'message' : {
+                        'join'        : 'Joined clan',
+                        'role change' : 'Changed role to {}'.format(event['role']),
+                        'quit'        : 'Departed clan'
+                    }[event['event']]
+                })
+            absent_members.append({
+                'name'   : member['name'],
+                'tag'    : tag,
+                'events' : events
+            })
+
+    return reversed(absent_members)
+
 def process_clan(config, clan, current_war):
     clan_processed = clan.copy()
 
@@ -534,6 +559,7 @@ def build_dashboard(config): # pragma: no coverage
         member_history = history.get_member_history(clan['memberList'], io.get_previous_history(output_path), current_war)
         members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
+        former_members = process_absent_members(member_history['members'])
 
         io.parse_templates(
             config,
@@ -541,6 +567,7 @@ def build_dashboard(config): # pragma: no coverage
             tempdir,
             clan_processed,
             members_processed,
+            former_members,
             current_war_processed,
             recent_wars,
             get_suggestions(config, members_processed, clan_processed),

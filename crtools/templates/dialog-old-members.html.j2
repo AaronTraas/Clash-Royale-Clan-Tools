@@ -4,13 +4,34 @@
         <a data-role="close" href="#">Close</a>
     </header>
     <div class="inner">
-        <table>
-        {% for member in members %}
-            <tr>
-                <td>{{member.name}}</td>
-                <td>{{member.tag}}</td>
-            </tr>
-        {% endfor %}
+        <table width="100%">
+            <thead>
+                <th>Name / tag</th>
+                <th colspan="2">Event</th>
+                <th>Links</th>
+            </thead>
+            <tbody>
+            {% for member in former_members %}
+                <tr class="member-start">
+                    <td rowspan="{{member.events|length}}">
+                        <strong>{{member.name}}</strong><br/>
+                        {{member.tag}}
+                    </td>
+                    <td>{{member.events[0].date}}</td>
+                    <td>{{member.events[0].message}}</td>
+                    <td rowspan="{{member.events|length}}" class="buttons">
+                        <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span></span></a>
+                        <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span></span></a>
+                    </td>
+                </tr>
+                {% for event in member.events[1:] %}
+                <tr>
+                    <td>{{event.date}}</td>
+                    <td>{{event.message}}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </dialog>

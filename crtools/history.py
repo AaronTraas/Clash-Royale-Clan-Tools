@@ -10,6 +10,8 @@ ROLE_ELDER      = 'elder'
 ROLE_COLEADER   = 'coLeader'
 ROLE_LEADER     = 'leader'
 
+NAME_UNKNOWN = '[unknown]'
+
 def validate_role(role):
     """ Returns whether or not the role string is a valid role """
     return role in [ROLE_MEMBER, ROLE_ELDER, ROLE_COLEADER, ROLE_LEADER]
@@ -64,7 +66,7 @@ def cleanup_member_history(member, history, timestamp):
     now = timestamp
     if now == 0:
         now = datetime.timestamp(datetime.now())
-    if 'name' not in history:
+    if 'name' not in history or member['name'] == NAME_UNKNOWN:
         history['name'] = member['name']
     if 'join_date' not in history:
         history['join_date'] = timestamp
@@ -133,7 +135,7 @@ def process_missing_members(historical_mambers, member_tags, timestamp):
                 })
                 member['status'] = 'absent'
             if 'name' not in member:
-                member['name'] = '[unknown]'
+                member['name'] = NAME_UNKNOWN
 
     return members
 
