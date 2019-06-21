@@ -157,10 +157,15 @@ def __localize_strings(locale_id):
         'labelStateWarDay'          : _('War Day'),
         'labelViewOldMembers'       : _('View List of Old Members'),
 
+        'memberEventJoinedClan'     : _('Joined clan'),
+        'memberEventExitClan'       : _('Changed role to {}'),
+        'memberEventRoleChange'     : _('Departed clan'),
+
         'dialogTitleMemberDetails'  : _('Member Details'),
         'dialogLabelPlayerStats'    : _('Player Stats and Info'),
         'dialogMemberStatsRoyale'   : _('See on StatsRoyale'),
         'dialogMemberRoyaleApi'     : _('See on RoyaleAPI'),
+        'dialogLabelPlayerHistory'  : _('Player History'),
         'dialogMemberBlacklist'     : _('Member is on the blacklist. Kick member immediately.'),
         'dialogMemberNoPromote'     : _('Member has been tagged on the "No Promote" list for abusing privileges in the past. Never promote to Elder or higher.'),
 

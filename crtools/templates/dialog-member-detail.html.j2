@@ -49,6 +49,14 @@
                     <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>{{config.strings.dialogMemberStatsRoyale}}</span></a>
                 </div>
             </section>
+            <h3><span>{{strings.dialogLabelPlayerHistory}}</span></h3>
+            <section>
+                <ul>
+                {% for event in member.events %}
+                    <li>{{event.date}} - {{event.message}}</li>
+                {% endfor %}
+                </ul>
+            </section>
             {% if member.blacklist %}
             <h3 class="blacklist"><span>{{strings.dialogMemberBlacklist}}</span></h3>
             {% endif %}

@@ -289,6 +289,8 @@ def enrich_member_with_history(config, fresh_member, historical_members, days_fr
     else:
         enriched_member['donationsDaily'] = total_donations
 
+    enriched_member['events'] = process_member_events(config, historical_member['events'])
+
     return enriched_member
 
 def calc_donation_status(config, donation_score, donations_daily, days_from_donation_reset):
@@ -355,6 +357,22 @@ def get_role_label(config, member_role, days_inactive, activity_status, on_vacat
         'elder'    : config['strings']['roleElder'],
         'member'   : config['strings']['roleMember'],
     }[member_role]
+
+def process_member_events(config, events):
+    processed_events = []
+    for event in events:
+        if event['date'] == 0:
+            continue
+        processed_events.append({
+            'date'    : datetime.fromtimestamp(event['date']).strftime('%x'),
+            'message' : {
+                'join'        : config['strings']['memberEventJoinedClan'],
+                'role change' : config['strings']['memberEventRoleChange'].format(event['role']),
+                'quit'        : config['strings']['memberEventExitClan']
+            }[event['event']]
+        })
+    return processed_events
+
 
 def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
@@ -425,27 +443,15 @@ def process_members(config, clan, warlog, current_war, member_history):
 
     return members_processed
 
-def process_absent_members(historical_members):
+def process_absent_members(config, historical_members):
     absent_members = []
 
     for tag, member in historical_members.items():
         if member['status'] == 'absent':
-            events = []
-            for event in member['events']:
-                if event['date'] == 0:
-                    continue
-                events.append({
-                    'date'    : datetime.fromtimestamp(event['date']).strftime('%x'),
-                    'message' : {
-                        'join'        : 'Joined clan',
-                        'role change' : 'Changed role to {}'.format(event['role']),
-                        'quit'        : 'Departed clan'
-                    }[event['event']]
-                })
             absent_members.append({
                 'name'   : member['name'],
                 'tag'    : tag,
-                'events' : events
+                'events' : process_member_events(config, member['events'])
             })
 
     return reversed(absent_members)
@@ -559,7 +565,7 @@ def build_dashboard(config): # pragma: no coverage
         member_history = history.get_member_history(clan['memberList'], io.get_previous_history(output_path), current_war)
         members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
-        former_members = process_absent_members(member_history['members'])
+        former_members = process_absent_members(config, member_history['members'])
 
         io.parse_templates(
             config,
