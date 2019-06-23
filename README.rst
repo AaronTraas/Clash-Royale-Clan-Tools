@@ -1,5 +1,5 @@
 ==================================================
-crtools -- Clash Royale Clan Dashboard generator
+crtools - Clash Royale Clan Dashboard generator
 ==================================================
 
 This is a tool for creating a dashboard for clan participation in ClashRoyale.
@@ -168,7 +168,7 @@ Support
 ==================================================
 
 If you need help getting this up and running, feel free to hop on the
-`crtools discord <https://discord.gg/YjuUdMF>`_.
+`crtools discord <https://discord.gg/K2UDCXU>`_.
 
 Keep in mind, this is a command-line utility that expects a working Python 3
 environment. It also assumes you will know how to configure a web server to
