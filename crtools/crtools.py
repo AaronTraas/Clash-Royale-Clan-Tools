@@ -364,8 +364,9 @@ def process_member_events(config, events):
         if event['date'] == 0:
             continue
         processed_events.append({
-            'date'    : datetime.fromtimestamp(event['date']).strftime('%x'),
-            'message' : {
+            'date'      : datetime.fromtimestamp(event['date']).strftime('%x'),
+            'timestamp' : event['date'],
+            'message'   : {
                 'join'        : config['strings']['memberEventJoinedClan'],
                 'role change' : config['strings']['memberEventRoleChange'].format(event['role']),
                 'quit'        : config['strings']['memberEventExitClan']
@@ -448,13 +449,15 @@ def process_absent_members(config, historical_members):
 
     for tag, member in historical_members.items():
         if member['status'] == 'absent':
+            events = process_member_events(config, member['events'])
             absent_members.append({
-                'name'   : member['name'],
-                'tag'    : tag,
-                'events' : process_member_events(config, member['events'])
+                'name'      : member['name'],
+                'tag'       : tag,
+                'events'    : events,
+                'timestamp' : events[len(events)-1]['timestamp']
             })
 
-    return reversed(absent_members)
+    return sorted(absent_members, key=lambda k: k['timestamp'], reverse=True)
 
 def process_clan(config, clan, current_war):
     clan_processed = clan.copy()
