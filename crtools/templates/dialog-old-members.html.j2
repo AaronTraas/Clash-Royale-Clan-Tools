@@ -1,14 +1,14 @@
 <dialog id="members-old">
     <header>
-        <h1>Old members</h1>
-        <a data-role="close" href="#">Close</a>
+        <h1>{{strings.dialogTitleFormerMembers}}</h1>
+        <a data-role="close" href="#">{{strings.dialogButtonClose}}</a>
     </header>
     <div class="inner">
         <table width="100%">
             <thead>
-                <th>Name / tag</th>
-                <th colspan="2">Event</th>
-                <th>Links</th>
+                <th>{{strings.dialogTableHeaderNameTag}}</th>
+                <th colspan="2">{{strings.dialogTableHeaderEvents}}</th>
+                <th>{{strings.dialogTitleFormerLinks}}</th>
             </thead>
             <tbody>
             {% for member in former_members %}
