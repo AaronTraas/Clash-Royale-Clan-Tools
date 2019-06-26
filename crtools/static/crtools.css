@@ -85,12 +85,12 @@ small {
 
 @media (min-width: 701px) {
     .no-desktop {
-        display: none;
+        display: none !important;
     }
 }
 @media (max-width: 700px) {
     .no-mobile {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -253,7 +253,7 @@ th, td {
 
 @media (max-width: 700px) {
     .table-scroll {
-        margin: -15px;
+        margin: -15px -15px 0 -15px;
     }
     .table-scroll tr:last-child td {
         border-bottom: none;

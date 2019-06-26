@@ -156,6 +156,7 @@ def __localize_strings(locale_id):
         'labelStateCollectionDay'   : _('Collection Day'),
         'labelStateWarDay'          : _('War Day'),
         'labelViewOldMembers'       : _('View List of Old Members'),
+        'labelOldMembers'           : _('Old Members'),
 
         'memberEventJoinedClan'     : _('Joined clan'),
         'memberEventRoleChange'     : _('Changed role to {}'),
