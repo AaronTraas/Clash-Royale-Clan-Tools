@@ -1,4 +1,4 @@
-.dialog-shadow {
+.tddialog-shadow {
 	content: '';
 	position: fixed;
 	width: 100%;
@@ -445,5 +445,24 @@ dialog h1 {
 	dialog [data-member-id] > section.identity .arena-league {
 		width: 100px;
 		height: 100px;
+	}
+}
+
+@media (max-width: 600px) {
+	dialog#members-old table {
+		margin: 0;
+	}
+
+	dialog#members-old td {
+		padding: 4px 8px;
+	}
+
+	dialog#members-old .button {
+		display: block;
+		width: 40px;
+		margin-bottom: 8px;
+	}
+	dialog#members-old .button:last-child {
+		margin-bottom: 0;
 	}
 }
