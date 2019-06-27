@@ -157,6 +157,7 @@ def war_score(config, war):
 
     war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
     war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
+    war_score += (3-war['collectionDayBattlesPlayed']) * config['score']['collect_battle_incomplete']
 
     if war['battlesPlayed'] < 1:
         war_score += config['score']['war_battle_incomplete']

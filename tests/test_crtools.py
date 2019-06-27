@@ -281,7 +281,7 @@ def test_member_war(tmpdir):
     )
     print(__fake_clan__['memberList'][1]['arena'])
     assert war_isparticipating_ok['status'] == 'ok'
-    assert war_isparticipating_ok['score'] == 34
+    assert war_isparticipating_ok['score'] == 24
 
     war_isparticipating_bad = crtools.member_war(
         config,
@@ -289,7 +289,7 @@ def test_member_war(tmpdir):
         __fake_war__
     )
     assert war_isparticipating_bad['status'] == 'bad'
-    assert war_isparticipating_bad['score'] == -16
+    assert war_isparticipating_bad['score'] == -26
 
     war_notparticipating = crtools.member_war(
         config,
