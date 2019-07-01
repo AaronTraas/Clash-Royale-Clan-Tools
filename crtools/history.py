@@ -66,7 +66,7 @@ def cleanup_member_history(member, history, timestamp):
     now = timestamp
     if now == 0:
         now = datetime.timestamp(datetime.now())
-    if 'name' not in history or member['name'] == NAME_UNKNOWN:
+    if 'name' not in history or history['name'] == NAME_UNKNOWN:
         history['name'] = member['name']
     if 'join_date' not in history:
         history['join_date'] = timestamp
