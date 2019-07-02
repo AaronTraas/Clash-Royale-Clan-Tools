@@ -19,8 +19,32 @@ def test_get_collection_win_cards():
     # result in a > 1 value. As the league makeup and scoring rules
     # are likely to change from time to time, no reason to update the
     # tests every time that happens.
-    assert leagueinfo.get_collection_win_cards('legendary', 'Arena 4') > 1
-    assert leagueinfo.get_collection_win_cards('gold', 'Legendary Arena') > 1
-    assert leagueinfo.get_collection_win_cards('silver', 'Arena 9') > 1
-    assert leagueinfo.get_collection_win_cards('bronze', 'Arena 1') > 1
+    arenas = [
+        'Arena 1',
+        'Arena 2',
+        'Arena 3',
+        'Arena 4',
+        'Arena 5',
+        'Arena 6',
+        'Arena 7',
+        'Arena 8',
+        'Arena 9',
+        'Arena 10',
+        'Arena 11',
+        'Arena 12',
+        'Legendary Arena',
+        'Challenger II',
+        'Challenger III',
+        'Master I',
+        'Master II',
+        'Master III',
+        'Champion',
+        'Grand Champion',
+        'Ultimate Champion'
+    ]
+
+    for arena in arenas:
+        for league in ['legendary', 'gold', 'silver', 'bronze']:
+            assert leagueinfo.get_collection_win_cards(league, arena) > 1
+
     assert leagueinfo.get_collection_win_cards('silver', 'Garbage League (obviously fake)') == 1
