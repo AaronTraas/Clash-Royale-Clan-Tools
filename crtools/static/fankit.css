@@ -66,6 +66,21 @@ figure.arena-league.master-3,
 	background-image: url(../fankit/ui/leagues/league6.png);
 }
 
+figure.arena-league.champion,
+#member-table td.arena-league.champion:before {
+	background-image: url(../fankit/ui/leagues/league7.png);
+}
+
+figure.arena-league.grand-champion,
+#member-table td.arena-league.grand-champion:before {
+	background-image: url(../fankit/ui/leagues/league8.png);
+}
+
+figure.arena-league.ultimate-champion,
+#member-table td.arena-league.ultimate-champion:before {
+	background-image: url(../fankit/ui/leagues/league9.png);
+}
+
 figure.arena-league.arena-12 {
 	background-image: url(../fankit/ui/arenas/ui_icon_champion.png);
 }
