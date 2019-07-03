@@ -204,14 +204,11 @@ dialog#member-details tr:last-child th {
 
 dialog#members-old td {
 	border: none;
+	padding: 4px 14px;
 }
 
 dialog#members-old tr.member-start td {
 	border-top: 1px solid #bbb;
-}
-
-dialog#members-old td {
-	padding: 4px 14px;
 }
 
 dialog#members-old td.buttons {

@@ -200,11 +200,8 @@ function DialogHandler() {
             e.preventDefault();
             document.body.dataset.activeDialog = target;
 
-            switch(target) {
-                case 'member-detail':
-                    var tag = element.dataset.memberTag;
-                    showMemberInfo(tag)
-                    break;
+            if (target == 'member-detail') {
+                showMemberInfo(element.dataset.memberTag)
             }
 
             return true;
