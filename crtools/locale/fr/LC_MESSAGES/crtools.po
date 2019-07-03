@@ -284,26 +284,26 @@ msgstr "Jour de Guerre"
 
 #: crtools/config.py:158
 msgid "View List of Old Members"
-msgstr ""
+msgstr "Liste des anciens joueurs"
 
 #: crtools/config.py:159
 #, fuzzy
 #| msgid "Role: Member"
 msgid "Old Members"
-msgstr "Rôle: Membre"
+msgstr "Anciens Joueurs"
 
 #: crtools/config.py:161
 #, fuzzy
 msgid "Joined clan"
-msgstr "Hors clan"
+msgstr "Arrivée dans le clan"
 
 #: crtools/config.py:162
 msgid "Changed role to {}"
-msgstr ""
+msgstr "Changer le rôle pour {}"
 
 #: crtools/config.py:163
 msgid "Departed clan"
-msgstr ""
+msgstr "Départ du clan"
 
 #: crtools/config.py:165
 msgid "Member Details"
@@ -323,39 +323,39 @@ msgstr "Voir sur RoyaleAPI"
 
 #: crtools/config.py:169
 msgid "Player History"
-msgstr ""
+msgstr "Historique du joueur"
 
 #: crtools/config.py:170
 msgid "Member is on the blacklist. Kick member immediately."
-msgstr ""
+msgstr "Le joueur est dans la liste noire. Kicker le joueur immédiatement."
 
 #: crtools/config.py:171
 msgid ""
 "Member has been tagged on the \"No Promote\" list for abusing privileges "
 "in the past. Never promote to Elder or higher."
-msgstr ""
+msgstr "Ce joueur a été tagué sur la liste "Pas de promotion" pour abus de privilèges dans le passé. Ne jamais promouvoir au rang d'Aîné ou supérieur."
 
 #: crtools/config.py:172
 #, fuzzy
 msgid "Former Members"
-msgstr "Nouveaux Membres"
+msgstr "Anciens Membres"
 
 #: crtools/config.py:173
 msgid "Name / tag"
-msgstr ""
+msgstr "Nom / tag"
 
 #: crtools/config.py:174
 msgid "Events"
-msgstr ""
+msgstr "Événements"
 
 #: crtools/config.py:175
 msgid "Links"
-msgstr ""
+msgstr "Liens"
 
 #: crtools/config.py:176
 #, fuzzy
 msgid "Close"
-msgstr "Score"
+msgstr "Fermé"
 
 #: crtools/config.py:178
 msgid "<strong>{name}</strong> was not in the clan at the time of this war."
@@ -423,13 +423,13 @@ msgid ""
 "elegible for promotion to <strong>Elder</strong> at the discretion of "
 "leadership."
 msgstr ""
-"Un membre ayant atteint {points} points est éligible à une promotion "
+"Un membre ayant atteint <strong class=\"good\">{points} points</strong> est éligible à une promotion "
 "d'Aîné à la discrétion du Chef."
 
 #: crtools/config.py:194
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
 msgstr ""
-"<strong>Recruiter de nouveaux membres!</strong> Le clan a besoin de sang "
+"<strong>Recruter de nouveaux membres!</strong> Le clan a besoin de sang "
 "neuf."
 
 #: crtools/config.py:195
@@ -551,11 +551,11 @@ msgstr "Inactif {days} jours"
 
 #: crtools/config.py:221
 msgid "Never Promote"
-msgstr ""
+msgstr "Jamais promouvoir"
 
 #: crtools/config.py:223
 msgid "Arena Unknown"
-msgstr ""
+msgstr "Arène inconnue"
 
 #: crtools/config.py:224
 msgid "Goblin Stadium"
