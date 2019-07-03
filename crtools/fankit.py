@@ -77,6 +77,7 @@ def get_fankit(tempdir, output_dir, download=False):
     """ Download fan kit if applicable """
     fankit_src_path = os.path.join(output_dir, FANKIT_DIR_NAME)
     if os.path.isdir(fankit_src_path):
+        logger.debug('Fan kit found in {}; copying to temp folder.'.format(fankit_src_path))
         shutil.copytree(fankit_src_path, os.path.join(tempdir, FANKIT_DIR_NAME))
     elif download:
         download_fan_kit(tempdir)
