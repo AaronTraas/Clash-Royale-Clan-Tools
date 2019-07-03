@@ -38,7 +38,7 @@ msgstr "Guerre en cours"
 
 #: crtools/config.py:96
 msgid "Standings"
-msgstr "Classements"
+msgstr "Classement"
 
 #: crtools/config.py:97
 msgid "Recent wars"
@@ -146,15 +146,15 @@ msgstr "Cartes acquises"
 
 #: crtools/config.py:124 crtools/config.py:217
 msgid "Member"
-msgstr "Membre"
+msgstr "Joueur"
 
 #: crtools/config.py:125
 msgid "Member Name"
-msgstr "Nom du membre"
+msgstr "Nom du Joueur"
 
 #: crtools/config.py:126
 msgid "Member Tag"
-msgstr "Tag du membre"
+msgstr "Tag du Joueur"
 
 #: crtools/config.py:127
 msgid "Join Date"
@@ -162,7 +162,7 @@ msgstr "Date d'arrivée"
 
 #: crtools/config.py:128
 msgid "Last Active"
-msgstr "Dernière fois vu"
+msgstr "Dernière activité"
 
 #: crtools/config.py:129
 msgid "Before recorded history"
@@ -355,7 +355,7 @@ msgstr "Liens"
 #: crtools/config.py:176
 #, fuzzy
 msgid "Close"
-msgstr "Fermé"
+msgstr "Fermer"
 
 #: crtools/config.py:178
 msgid "<strong>{name}</strong> was not in the clan at the time of this war."
