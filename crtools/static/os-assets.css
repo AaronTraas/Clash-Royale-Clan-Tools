@@ -27,3 +27,11 @@ h1, h2, h3, h4, h5, h6, .button, #clan-stats thead th, figure > figcaption {
 #member-table td.arena-league.master-3:before {
 	background-image: url(images/arena-league-master-3.svg);
 }
+
+#member-table tr[data-blacklist="true"] td.name:after {
+    background-image: url(images/angry.png);
+}
+
+#member-table tr[data-nopromote="true"] td.name:after {
+    background-image: url(images/sad.png);
+}

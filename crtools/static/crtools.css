@@ -594,13 +594,34 @@ body > header h1 em {
   padding-left: 0;
 }
 
+#member-table td.name {
+    position: relative;
+}
 
-#member-table tr[data-new="true"] td.name {
+#member-table tr[data-new="true"] td.name,
+#member-table tr[data-nopromote="true"] td.name,
+#member-table tr[data-blacklist="true"] td.name {
     padding-right: 44px;
-    background-image: url(images/new.svg);
+}
+
+#member-table tr[data-new="true"] td.name:after,
+#member-table tr[data-nopromote="true"] td.name:after,
+#member-table tr[data-blacklist="true"] td.name:after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 6px;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    height: auto;
     background-repeat: no-repeat;
-    background-position: right center;
+    background-position: center;
     background-size: 32px;
+}
+
+#member-table tr[data-new="true"] td.name:after {
+    background-image: url(images/new.svg);
 }
 
 #info table th {

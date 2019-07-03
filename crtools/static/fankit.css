@@ -129,9 +129,13 @@ figure.arena-league.arena-1 {
 	background-image: url(../fankit/ui/arenas/ui_icon_goblin.png);
 }
 
+#member-table tr[data-blacklist="true"] td.name:after {
+    background-image: url(../fankit/emotes/angry.png);
+}
 
-
-
+#member-table tr[data-nopromote="true"] td.name:after {
+    background-image: url(../fankit/emotes/crying.png);
+}
 
 
 
