@@ -1,4 +1,4 @@
-.tddialog-shadow {
+.dialog-shadow {
 	content: '';
 	position: fixed;
 	width: 100%;
@@ -14,9 +14,13 @@
 
 dialog {
 	position: fixed;
+	top: 44px;
+	bottom: 44px;
+
 	box-sizing: border-box;
 	max-width: 640px;
 	width: 100%;
+	height: auto;
 	left: 50%;
 	margin-left: -300px;
 	padding: 0;
@@ -30,13 +34,7 @@ dialog {
 	display: none;
 }
 
-dialog#member-detail {
-	top: 100px;
-}
-
 dialog#members-old {
-	top: 44px;
-	bottom: 44px;
 	height: auto;
 }
 
@@ -112,18 +110,15 @@ dialog .inner {
 	background-color: #e3eef4;
 	margin: 0 8px 8px 8px;
 	border-radius: 5px;
-	overflow: hidden;
-}
-
-dialog#members-old .inner {
-    position: absolute;
+    width: auto;
+    height: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
     top: 58px;
     bottom: 0;
     left: 0;
     right: 0;
-    height: auto;
-    width: auto;
-	overflow-y: scroll;
+    position: absolute;
 }
 
 body:not([data-active-dialog='none']) .dialog-shadow,
@@ -409,11 +404,17 @@ dialog h1 {
 	dialog {
 		max-width: none;
 		width: auto;
-        left: 15px;
-        right: 15px;
-        top: 44px;
+	    height: auto;
+        left: 12px;
+        right: 12px;
+        top: 12px;
+        bottom: 12px;
         margin-left: 0;
     }
+
+	dialog .inner {
+		top: 44px;
+	}
 
 	dialog [data-role='close'] {
 		width: 44px;
