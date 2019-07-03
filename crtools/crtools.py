@@ -600,8 +600,9 @@ def build_dashboard(config): # pragma: no coverage
                 }
             )
 
-        if config['paths']['use_fankit']:
-            fankit.get_fankit(tempdir, output_path)
+        # if fankit is previously downloaded, it will copy fankit. Otherwise,
+        # if fankit is enabled, it will download it.
+        fankit.get_fankit(tempdir, output_path, config['paths']['use_fankit'])
 
         io.copy_static_assets(tempdir, config['paths']['clan_logo'], config['paths']['favicon'])
 
