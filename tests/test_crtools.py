@@ -45,6 +45,27 @@ __fake_history__ = {
     "members": ""
 }
 
+__fake_history_old_member__ = {
+    "last_update": 0,
+    "members": {
+        "#ZZZZZZ": {
+            "join_date": 1549974720.0,
+            "status": "present",
+            "role": "leader",
+            "donations": 100,
+            "events": [
+                {
+                    "event": "join",
+                    "status": "new",
+                    "role": "leader",
+                    "date": 1549974720.0
+                }
+            ]
+        }
+    }
+
+}
+
 __fake_clan__ = {
     "tag": CLAN_TAG,
     "name": "Agrassar",
@@ -371,6 +392,18 @@ def test_get_suggestions_recruit(tmpdir):
 
     assert len(suggestions) == 1
     assert suggestions[0] == config['strings']['suggestionRecruit']
+
+def test_process_absent_members(tmpdir):
+    config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
+    config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
+    config = load_config_file(config_file.realpath())
+
+    h = history.get_member_history(__fake_clan__['memberList'], __fake_history_old_member__)
+
+    absent_members = crtools.process_absent_members(config, h['members'])
+
+    assert len(absent_members) == 1
+    assert absent_members[0]['tag'] == '#ZZZZZZ'
 
 def test_get_suggestions_nosuggestions(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
