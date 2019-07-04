@@ -49,7 +49,7 @@
                         <img src="static/images/cards.svg" />
                         <strong>{{member.donations}}</strong><br />
                         {% if member.donationsDaily > 0 %}
-                            <small>{{member.donationsDaily}}/day</small>
+                            <small>{{member.donationsDaily}}/{{strings.labelDay}}</small>
                         {% endif %}
                         <div class="tooltip">
                             <dl>
@@ -61,7 +61,7 @@
                         </div>
                     </td>
                     <td class="inactivity {{member.activity_status}}" data-sort="{{member.days_inactive}}" >
-                        <strong>{{member.days_inactive}}</strong><br /><small>days</small>
+                        <strong>{{member.days_inactive}}</strong><br /><small>{{strings.labelDays}}</small>
                     </td>
                     <td class="war current {{member.currentWar.status}}" data-tooltip="true">
                     {% if member.currentWar.battlesPlayed is defined %}
@@ -99,7 +99,7 @@
                     {% elif member.currentWar.status == 'not-in-clan' %}
                         {{strings.labelNotInClan}}
                         <div class="tooltip">
-                            <strong>{{member.name}}</strong> was not in the clan at the time of this war.
+                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
                             </dl>
@@ -109,7 +109,7 @@
                         <div class="tooltip">
                             {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>
-                                <div><dt>War score</dt><dd>N/A</dd></div>
+                                <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
                             </dl>
                             <br />
                             {{strings.tooltipCurrentWarNoScore}}

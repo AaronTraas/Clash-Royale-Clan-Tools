@@ -133,6 +133,8 @@ def __localize_strings(locale_id):
         'labelTrophies'             : _('Trophies'),
         'labelDonations'            : _('Dona&shy;tions'),
         'labelDaysInactive'         : _('Days Inactive'),
+        'labelDays'                 : _('Days'),
+        'labelDay'                  : _('Day'),
         'labelCurrentWar'           : _('Current War'),
         'labelNotInClan'            : _('Not in clan'),
         'labelNA'                   : _('N/A'),
