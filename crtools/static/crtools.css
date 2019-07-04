@@ -465,16 +465,16 @@ body > header h1 em {
     vertical-align: bottom;
 }
 
-#war-stats .date,
-#war-stats .rank {
+table td.date,
+table td.rank {
     text-align: center;
 }
 
-#war-stats .date,
-#war-stats .rank,
-#war-stats .wins,
-#war-stats .crowns,
-#war-stats .battles {
+table td.date,
+table td.rank,
+table td.wins,
+table td.crowns,
+table td.battles {
     font-weight: bold;
 }
 
@@ -494,17 +494,17 @@ body > header h1 em {
     padding-right: .5em;
 }
 
-#war-stats .rank.rank-1 span {
+table td.rank.rank-1 span {
     background-color: rgb(255, 212, 42);
 }
-#war-stats .rank.rank-2 span {
+table td.rank.rank-2 span {
     background-color: #ccc;
 }
-#war-stats .rank.rank-3 span {
+table td.rank.rank-3 span {
     background-color: rgb(218, 165, 32);
 }
 
-#war-stats .rank span {
+table td.rank span {
     display: inline-block;
     border-radius: 4px;
     background: rgba(192,192,192,.2);

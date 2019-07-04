@@ -99,6 +99,7 @@ def __localize_strings(locale_id):
         'sectionMemberTableMobile'  : _('Members'),
         'sectionSuggestions'        : _('Suggestions'),
         'sectionScoring'            : _('Score explanation'),
+        'sectionClanLeaderboard'    : _('Clan leaderboard'),
 
         'labelClanStats'            : _('Clan Stats'),
         'labelClanName'             : _('Clan Name'),
@@ -130,6 +131,7 @@ def __localize_strings(locale_id):
         'labelArena'                : _('Arena'),
         'labelXpLevel'              : _('XP Level'),
         'labelScore'                : _('Score'),
+        'labelRank'                 : _('Rank'),
         'labelTrophies'             : _('Trophies'),
         'labelDonations'            : _('Dona&shy;tions'),
         'labelDaysInactive'         : _('Days Inactive'),

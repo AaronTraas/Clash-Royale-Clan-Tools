@@ -122,6 +122,27 @@
                 </article>
 
                 <div class="row">
+                    <article>
+                        <header>
+                            <h3>{{strings.sectionClanLeaderboard}}:</h3>
+                        </header>
+                        <table class="war-standings" width="100%">
+                            <thead>
+                                <th>{{strings.labelRank}}</th>
+                                <th>{{strings.labelMember}}</th>
+                                <th>{{strings.labelScore}}</th>
+                            </thead>
+                            <tbody>
+                            {% for member in (members|sort(attribute='score', reverse=True))[:10] %}
+                                <tr>
+                                    <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
+                                    <td class="name"><strong>{{member.name}}</strong></td>
+                                    <td class="score"><strong class="{{member.status}}">{{member.score}}</strong></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </article>
                     <article id="suggestions">
                         <header>
                             <h3>{{strings.sectionSuggestions}}:</h3>
