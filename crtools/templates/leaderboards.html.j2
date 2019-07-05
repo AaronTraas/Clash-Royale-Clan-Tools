@@ -1,0 +1,49 @@
+<article id="leaderboards" data-filter="war">
+    <header>
+        <h3>{{strings.sectionClanLeaderboard}}:</h3>
+        <div class="filters">
+            <select id="leaderboard-filter">
+                <option value="war">{{strings.filterWar}}</option>
+                <option value="donations">{{strings.filterDonations}}</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="leaderboard"  data-filter="war">
+        <table class="war-standings" width="100%">
+            <thead>
+                <th>{{strings.labelRank}}</th>
+                <th>{{strings.labelMember}}</th>
+                <th>{{strings.labelWarScore}}</th>
+            </thead>
+            <tbody>
+            {% for member in (members|sort(attribute='warScore', reverse=True))[:10] %}
+                <tr>
+                    <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
+                    <td class="name"><strong>{{member.name}}</strong></td>
+                    <td class="score"><strong>{{member.warScore}}</strong></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="leaderboard"  data-filter="donations">
+        <table class="war-standings" width="100%" >
+            <thead>
+                <th>{{strings.labelRank}}</th>
+                <th>{{strings.labelMember}}</th>
+                <th>{{strings.labelDonations}}</th>
+            </thead>
+            <tbody>
+            {% for member in (members|sort(attribute='donationsDaily', reverse=True))[:10] %}
+                <tr>
+                    <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
+                    <td class="name"><strong>{{member.name}}</strong></td>
+                    <td class="score"><strong>{{member.donationsDaily}}</strong> / {{strings.labelDay}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</article>

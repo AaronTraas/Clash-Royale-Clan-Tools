@@ -6,34 +6,34 @@ function HashParamParser() {
         if(hashParamPieces.length == 2) {
             var hashParams = hashParamPieces[1].split('&');
 
-        	// build dictionary of parameters
+            // build dictionary of parameters
             var params = {};
             for( var index in hashParams ) {
-            	var parts = hashParams[index].split('=');
-            	var key = parts[0];
-            	var value = parts.length == 2 ? parts[1] : null;
-            	params[key] = value;
+                var parts = hashParams[index].split('=');
+                var key = parts[0];
+                var value = parts.length == 2 ? parts[1] : null;
+                params[key] = value;
             }
 
             // return dict of params
             return params;
         } else {
-        	// no params found; return empty dict
-        	return {};
+            // no params found; return empty dict
+            return {};
         }
     }
 
     function getHashParam(key) {
-    	var params = getHashParamList();
-    	if( key in params ) {
-    		return params[key];
-    	} else {
-    		return null;
-    	}
+        var params = getHashParamList();
+        if( key in params ) {
+            return params[key];
+        } else {
+            return null;
+        }
     }
 
     function setHashParam(key, newvalue) {
-    	var params = getHashParamList();
+        var params = getHashParamList();
 
         if( (newvalue == null) && (key in params) ) {
             delete params[key];
@@ -42,7 +42,7 @@ function HashParamParser() {
             params[key] = newvalue;
         }
 
-    	// build list of params and write to window.location.hash
+        // build list of params and write to window.location.hash
         if( Object.keys(params).length == 0 ) {
             if("pushState" in history) {
                 history.pushState("", document.title, window.location.pathname + window.location.search);
@@ -50,16 +50,16 @@ function HashParamParser() {
                 window.location.hash = '?';
             }
         } else {
-        	var paramStrings = [];
-        	for( var param_key in params ) {
-        		var value = params[param_key]
-        		if(value) {
-        			paramStrings.push(param_key + '=' + value);
-        		} else {
-        			paramStrings.push(param_key);
-        		}
-        	}
-        	window.location.hash = '?' + paramStrings.join('&');
+            var paramStrings = [];
+            for( var param_key in params ) {
+                var value = params[param_key]
+                if(value) {
+                    paramStrings.push(param_key + '=' + value);
+                } else {
+                    paramStrings.push(param_key);
+                }
+            }
+            window.location.hash = '?' + paramStrings.join('&');
         }
     }
 
@@ -165,12 +165,20 @@ function MemberTableFilter() {
     }
 
     function getFilterFromHash() {
-    	var filter = hashParams.get('filter');
-    	if(filter) {
-    		setFilter(filter);
-    		filter_dropdown.value = filter;
-    	}
+        var filter = hashParams.get('filter');
+        if(filter) {
+            setFilter(filter);
+            filter_dropdown.value = filter;
+        }
     }
+}
+
+function LeaderboardFilter() {
+    var leaderboard_container = document.getElementById('leaderboards');
+
+    document.getElementById('leaderboard-filter').addEventListener('change', function(e) {
+        leaderboard_container.dataset.filter = e.target.value;
+    });
 }
 
 function DialogHandler() {

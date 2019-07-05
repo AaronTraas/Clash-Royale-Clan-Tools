@@ -1,0 +1,56 @@
+#info header .filters {
+    white-space: nowrap;
+}
+@media (max-width: 700px) {
+    #info header .filters select {
+        height: 26px;
+    }
+}
+
+/* Member table filters
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#member-table[data-filter="leadership"] tbody tr[data-leadership="False"] {
+    display: none;
+}
+
+#member-table[data-filter="danger"] tbody tr[data-status="good"],
+#member-table[data-filter="danger"] tbody tr[data-status="ok"],
+#member-table[data-filter="danger"] tbody tr[data-status="normal"] {
+    display: none;
+}
+
+#member-table[data-filter="currentwar"] tbody tr[data-currentwar="na"],
+#member-table[data-filter="currentwar"] tbody tr[data-currentwar="not-in-clan"] {
+    display: none;
+}
+
+#member-table[data-filter="role-elder"] tbody tr:not([data-clanrole="elder"]) {
+    display: none;
+}
+
+#member-table[data-filter="role-member"] tbody tr:not([data-clanrole="member"]) {
+    display: none;
+}
+
+#member-table[data-filter="activity"] tbody tr[data-activity="normal"] {
+    display: none;
+}
+
+#member-table[data-filter="new"] tbody tr:not([data-new="true"]) {
+    display: none;
+}
+
+
+/* Leaderboard filters
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#leaderboards .leaderboard {
+    display: none;
+}
+
+#leaderboards[data-filter="war"] .leaderboard[data-filter="war"] {
+    display: unset;
+}
+
+#leaderboards[data-filter="donations"] .leaderboard[data-filter="donations"] {
+    display: unset;
+}

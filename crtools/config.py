@@ -99,7 +99,7 @@ def __localize_strings(locale_id):
         'sectionMemberTableMobile'  : _('Members'),
         'sectionSuggestions'        : _('Suggestions'),
         'sectionScoring'            : _('Score explanation'),
-        'sectionClanLeaderboard'    : _('Clan leaderboard'),
+        'sectionClanLeaderboard'    : _('Leaderboard'),
 
         'labelClanStats'            : _('Clan Stats'),
         'labelClanName'             : _('Clan Name'),
@@ -191,6 +191,8 @@ def __localize_strings(locale_id):
         'filterInCurrentWar'        : _('In current war'),
         'filterInactive'            : _('Inactive'),
         'filterDanger'              : _('In danger'),
+        'filterWar'                 : _('War'),
+        'filterDonations'           : _('Donations'),
 
         'suggestionKick'            : _('Members with a <strong class="bad">score below 0</strong> will be recommended for kicking or demotion.'),
         'suggestionInactive'        : _('Members inactive for <strong class="bad">{days_inactive} days</strong> will be kicked.'),

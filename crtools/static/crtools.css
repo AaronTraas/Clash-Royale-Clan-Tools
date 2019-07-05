@@ -539,15 +539,6 @@ table td.rank span {
     vertical-align: -1px;
 }
 
-#info header .filters {
-    white-space: nowrap;
-}
-@media (max-width: 700px) {
-    #info header .filters select {
-        height: 26px;
-    }
-}
-
 #info article {
     position: relative;
     background-color: #fff;
@@ -871,39 +862,6 @@ strong.na {
 
 strong.na {
     border: 1px dotted #999;
-}
-
-/* Member table filters
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#member-table[data-filter="leadership"] tbody tr[data-leadership="False"] {
-    display: none;
-}
-
-#member-table[data-filter="danger"] tbody tr[data-status="good"],
-#member-table[data-filter="danger"] tbody tr[data-status="ok"],
-#member-table[data-filter="danger"] tbody tr[data-status="normal"] {
-    display: none;
-}
-
-#member-table[data-filter="currentwar"] tbody tr[data-currentwar="na"],
-#member-table[data-filter="currentwar"] tbody tr[data-currentwar="not-in-clan"] {
-    display: none;
-}
-
-#member-table[data-filter="role-elder"] tbody tr:not([data-clanrole="elder"]) {
-    display: none;
-}
-
-#member-table[data-filter="role-member"] tbody tr:not([data-clanrole="member"]) {
-    display: none;
-}
-
-#member-table[data-filter="activity"] tbody tr[data-activity="normal"] {
-    display: none;
-}
-
-#member-table[data-filter="new"] tbody tr:not([data-new="true"]) {
-    display: none;
 }
 
 
