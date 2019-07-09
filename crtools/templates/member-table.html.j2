@@ -18,15 +18,15 @@
             <class="list">
             {% for member in members %}
                 <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}" data-nopromote="{{ 'true' if member.no_promote else 'false' }}" data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}" data-new="{{ 'true' if member.new else 'false' }}">
-                    <td class="id" data-sort="{{member.clanRank}}">
-                        {% if member.clanRank < member.previousClanRank %}
+                    <td class="id" data-sort="{{member.clan_rank}}">
+                        {% if member.clan_rank < member.previous_clan_rank %}
                         <span class="rank-up">
-                        {% elif member.clanRank > member.previousClanRank %}
+                        {% elif member.clan_rank > member.previous_clan_rank %}
                         <span class="rank-down">
                         {% else %}
                         <span>
                         {% endif %}
-                           <strong>{{member.clanRank}}</strong>
+                           <strong>{{member.clan_rank}}</strong>
                         </span>
                     </td>
                     <td class="name" data-sort="{{member.name}}" data-role="dialog-show" data-target="member-detail" data-member-tag="{{member.tag}}">
@@ -54,7 +54,7 @@
                         <div class="tooltip">
                             <dl>
                                 <div><dt>{{strings.labelCardsGiven}}</dt><dd>{{member.donations}}</dd></div>
-                                <div><dt>{{strings.labelCardRecieved}}</dt><dd>{{member.donationsReceived}}</dd></div>
+                                <div><dt>{{strings.labelCardRecieved}}</dt><dd>{{member.donations_received}}</dd></div>
                                 <div><dt>{{strings.labelDonationsLastWeek}}</dt><dd>{{member.donations_last_week}}</dd></div>
                                 <div><dt>{{strings.labelScoreDonations}}</dt><dd>{{"{0:+}".format(member.donationScore)}}</strong></dd></div>
                             </dl>
@@ -80,13 +80,13 @@
                             {% endif %}
                             </div>
                             <div class="war-cards">
-                                {{member.currentWar.cardsEarned}}
+                                {{member.currentWar.cards_earned}}
                             </div>
                         </div>
                         <div class="tooltip">
                             <dl>
                                 <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{member.currentWar.collectionDayBattlesPlayed}}</dd></div>
-                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{member.currentWar.cardsEarned}}</dd></div>
+                                <div><dt>{{strings.labelcards_earned}}</dt><dd>{{member.currentWar.cards_earned}}</dd></div>
                             {% if clan.currentWarState == 'warDay' %}
                                 <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{member.currentWar.battlesPlayed}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{member.currentWar.wins}}</dd></div>
@@ -121,7 +121,7 @@
                     {% if war.battlesPlayed is defined %}
                         <div data-role="war">
                             <div>
-                            {% if war.battlesPlayed > 0 %}
+                            {% if war.battles_played > 0 %}
                                 {% for battle in range(0, war.battlesPlayed) %}
                                     {% if war.wins >= battle+1 %}
                                     <img class="war-battle" src="static/images/war-battle-win.svg" />
@@ -134,7 +134,7 @@
                             {% endif %}
                             </div>
                             <div class="war-cards">
-                                {{war.cardsEarned}}
+                                {{war.cards_earned}}
                             </div>
                         </div>
                         <div class="tooltip">
@@ -142,7 +142,7 @@
                                 <div><dt>{{strings.labelWarLeague}}</dt><dd>{{war.warLeague}}</dd></div>
                                 <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
                                 <div><dt>{{strings.labelCollectionDayWins}}</dt><dd>{{war.collectionBattleWins}}</dd></div>
-                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{war.cardsEarned}}</dd></div>
+                                <div><dt>{{strings.labelcards_earned}}</dt><dd>{{war.cards_earned}}</dd></div>
                                 <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{war.battlesPlayed}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{war.wins}}</dd></div>
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>

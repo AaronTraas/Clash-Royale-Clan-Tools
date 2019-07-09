@@ -52,23 +52,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><th>{{strings.labelClanScore}}</th><td>{{clan.clanScore}}</td></tr>
+                                <tr><th>{{strings.labelClanScore}}</th><td>{{clan.clan_score}}</td></tr>
                                 <tr><th>{{strings.labelClanName}}</th><td>{{clan.name}}</td></tr>
                                 <tr>
                                     <th>{{strings.labelCountry}}</th>
-                                {% if clan.location.isCountry == true %}
+                                {% if clan.location.is_country == true %}
                                     <td>{{clan.location.name}}<img class="flag" src="static/images/flags/{{clan.location.countryCode|lower}}.png" /></td>
                                 {% else %}
                                     <td>{{strings.labelInternational}}<img class="flag" src="static/images/flags/international.png" /></td>
                                 {% endif %}
                                 </td></tr>
 
-                                <tr><th>{{strings.labelDonationsPerWeek}}</th><td>{{clan.donationsPerWeek}}</td></tr>
-                                <tr><th>{{strings.labelRequiredTrophies}}</th><td>{{clan.requiredTrophies}}</td></tr>
+                                <tr><th>{{strings.labelDonationsPerWeek}}</th><td>{{clan.donations_per_week}}</td></tr>
+                                <tr><th>{{strings.labelRequiredTrophies}}</th><td>{{clan.required_trophies}}</td></tr>
                                 <tr>
                                     <th>{{strings.labelWarTrophies}}</th>
                                     <td>
-                                        {{clan.clanWarTrophies}}
+                                        {{clan.clan_war_trophies}}
                                         <img class="war-league" title="{{clan.warLeagueName}}" src="static/images/war-league-{{clan.warLeague}}.svg" />
                                     </td>
                                 </tr>
@@ -223,7 +223,7 @@
 
                 var tooltip = new TooltipManager();
                 var memberFilter = new MemberTableFilter();
-                var leaderboarFilter = new LeaderboardFilter();
+                var leaderboardFilter = new LeaderboardFilter();
                 var dialogHandler = new DialogHandler();
 
                 new Tablesort(memberTable);

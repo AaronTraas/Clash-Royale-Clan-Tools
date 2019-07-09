@@ -10,6 +10,7 @@ import logging
 import math
 import os
 import pyroyale
+from pyroyale.rest import ApiException
 import shutil
 import tempfile
 
@@ -29,7 +30,7 @@ def get_war_league_from_war(war, clan_tag):
 
     clan_score = 0
     for clan in standing:
-        if clan['clan']['tag'] == clan_tag:
+        if clan['tag'] == clan_tag:
             clan_score = clan['clan']['clanScore']
 
     return leagueinfo.get_war_league_from_score(clan_score)
@@ -66,13 +67,13 @@ def get_war_date(war):
     date. What's returned is a timestamp. """
     if 'state' in war:
         if war['state'] == 'warDay':
-            war_date_raw = datetime.strptime(war['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            war_date_raw = datetime.strptime(war['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
             war_date_raw -= timedelta(days=2)
         elif war['state'] == 'collectionDay':
-            war_date_raw = datetime.strptime(war['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+            war_date_raw = datetime.strptime(war['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
             war_date_raw -= timedelta(days=1)
     else:
-        war_date_raw = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
+        war_date_raw = datetime.strptime(war['created_date'].split('.')[0], '%Y%m%dT%H%M%S')
         war_date_raw -= timedelta(days=1)
 
     return datetime.timestamp(war_date_raw)
@@ -104,17 +105,17 @@ def member_war(config, clan_member, war):
             if member['tag'] == member_tag:
                 participation = member.copy()
                 if 'state' in war:
-                    participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date, True, war['state']=='warDay')
+                    participation['status'] = get_member_war_status_class(participation['collection_day_battles_played'], participation['battles_played'], war_date, join_date, True, war['state']=='warDay')
                     participation['score'] = 0
                     continue;
 
-                participation['status'] = get_member_war_status_class(participation['collectionDayBattlesPlayed'], participation['battlesPlayed'], war_date, join_date)
+                participation['status'] = get_member_war_status_class(participation['collection_day_battles_played'], participation['battles_played'], war_date, join_date)
 
                 participation['warLeague'] = get_war_league_from_war(war, config['api']['clan_id'])
                 participation['collectionWinCards'] = leagueinfo.get_collection_win_cards(participation['warLeague'], clan_member['arena']['name'])
 
-                participation['collectionBattleWins'] = round(member['cardsEarned'] / participation['collectionWinCards'])
-                participation['collectionBattleLosses'] = participation['collectionDayBattlesPlayed'] - participation['collectionBattleWins']
+                participation['collectionBattleWins'] = round(member['cards_earned'] / participation['collectionWinCards'])
+                participation['collectionBattleLosses'] = participation['collection_day_battles_played'] - participation['collectionBattleWins']
                 participation['score'] = war_score(config, participation)
 
     return participation
@@ -122,7 +123,7 @@ def member_war(config, clan_member, war):
 def member_warlog(config, clan_member, warlog):
     """ Return war participation records for a given member by member tag. """
     member_warlog = []
-    for war in warlog:
+    for war in warlog['items']:
         participation = member_war(config, clan_member, war)
         member_warlog.append(participation)
 
@@ -152,21 +153,21 @@ def war_score(config, war):
     if war['status'] == 'not-in-clan':
         return 0;
 
-    if 'battlesPlayed' not in war:
+    if 'battles_played' not in war:
         return config['score']['war_non_participation']
 
     war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
     war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
-    war_score += war['collectionDayBattlesPlayed'] * config['score']['collect_battle_played']
-    war_score += (3-war['collectionDayBattlesPlayed']) * config['score']['collect_battle_incomplete']
+    war_score += war['collection_day_battles_played'] * config['score']['collect_battle_played']
+    war_score += (3-war['collection_day_battles_played']) * config['score']['collect_battle_incomplete']
 
-    if war['battlesPlayed'] < 1:
+    if war['battles_played'] < 1:
         war_score += config['score']['war_battle_incomplete']
         return war_score
 
-    war_score += war['battlesPlayed'] * config['score']['war_battle_played']
+    war_score += war['battles_played'] * config['score']['war_battle_played']
     war_score += war['wins'] * config['score']['war_battle_won']
-    war_score += (war['battlesPlayed'] - war['wins']) * config['score']['war_battle_lost']
+    war_score += (war['battles_played'] - war['wins']) * config['score']['war_battle_lost']
 
     return war_score
 
@@ -212,7 +213,7 @@ def get_suggestions(config, processed_members, clan_processed):
 
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        if not member['no_promote'] and not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member') and (member['trophies'] >= clan_processed['requiredTrophies']):
+        if not member['no_promote'] and not member['blacklist'] and (member['score'] >= config['score']['threshold_promote']) and (member['role'] == 'member') and (member['trophies'] >= clan_processed['required_trophies']):
             suggestions.append(config['strings']['suggestionPromoteScore'].format(name=member['name'], score=member['score']))
 
     # If there are no other suggestions, give some sort of message
@@ -389,7 +390,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         days_from_donation_reset = 1
 
     # grab importent fields from member list for dashboard
-    members = clan['memberList'].copy()
+    members = clan['member_list'].copy()
     members_processed = []
     for member_src in members:
         member = enrich_member_with_history(config, member_src, member_history['members'], days_from_donation_reset, now)
@@ -431,7 +432,7 @@ def process_members(config, clan, warlog, current_war, member_history):
 
         member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'], member['no_promote'])
 
-        if member['trophies'] >= clan['requiredTrophies']:
+        if member['trophies'] >= clan['required_trophies']:
             member['trophiesStatus'] = 'normal'
         else:
             member['trophiesStatus'] = 'ok'
@@ -465,10 +466,10 @@ def process_clan(config, clan, current_war):
     clan_processed = clan.copy()
 
     # remove memberlist from clan, as we're separating that out
-    del clan_processed['memberList']
+    del clan_processed['member_list']
 
     # figure out clan war league from clan score
-    league = leagueinfo.get_war_league_from_score(clan['clanWarTrophies'])
+    league = leagueinfo.get_war_league_from_score(clan['clan_war_trophies'])
 
     clan_processed['warLeague']      = league
     clan_processed['warLeagueName']  = config['strings']['war-league-' + league]
@@ -485,28 +486,28 @@ def process_current_war(config, current_war):
 
     cards = 0;
     for member in current_war_processed['participants']:
-        cards += member['cardsEarned']
+        cards += member['cards_earned']
     current_war_processed['cards'] = cards
 
     now = datetime.utcnow()
     if current_war_processed['state'] == 'collectionDay':
         current_war_processed['stateLabel'] = config['strings']['labelStateCollectionDay']
 
-        collection_end_time = datetime.strptime(current_war_processed['collectionEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+        collection_end_time = datetime.strptime(current_war_processed['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         collection_end_time_delta = math.floor((collection_end_time - now).seconds / 3600)
         current_war_processed['collectionEndTimeLabel'] = config['strings']['labelCollectionEndTime'].format(collection_end_time_delta)
         current_war_processed['endLabel'] = config['strings']['labelEndTime'].format(collection_end_time_delta)
     else:
         current_war_processed['stateLabel'] = config['strings']['labelStateWarDay']
 
-        end_time = datetime.strptime(current_war_processed['warEndTime'].split('.')[0], '%Y%m%dT%H%M%S')
+        end_time = datetime.strptime(current_war_processed['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         end_time_delta = math.floor((end_time - now).seconds / 3600)
         current_war_processed['collectionEndTimeLabel'] = config['strings']['labelCollectionComplete']
         current_war_processed['endLabel'] = config['strings']['labelCollectionEndTime'].format(end_time_delta)
 
         # calculate battles remaining for each clan
         for clan in current_war_processed['clans']:
-            clan['battlesRemaining'] = clan['participants'] - clan['battlesPlayed']
+            clan['battlesRemaining'] = clan['participants'] - clan['battles_played']
             if clan['battlesRemaining'] < 0:
                 clan['battlesRemaining'] = 0; # pragma: no coverage
 
@@ -517,14 +518,13 @@ def process_current_war(config, current_war):
 
 def process_recent_wars(config, warlog):
     wars = []
-    for war in warlog:
+    for war in warlog['items']:
         clan = None
         for rank, war_clan in enumerate(war['standings']):
-            if war_clan['clan']['tag'] == config['api']['clan_id']:
-                clan = war_clan['clan']
-                clan['trophyChange'] = war_clan['trophyChange']
+            if war_clan['tag'] == config['api']['clan_id']:
+                clan = war_clan
                 clan['rank'] = rank+1
-                date = datetime.strptime(war['createdDate'].split('.')[0], '%Y%m%dT%H%M%S')
+                date = datetime.strptime(war['created_date'].split('.')[0], '%Y%m%dT%H%M%S')
                 clan['date'] = config['strings']['labelWarDate'].format(month=date.month, day=date.day)
                 wars.append(clan)
 
@@ -545,7 +545,7 @@ def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))
-    logger.debug('pyroyale version v{}'.format(pyroyale.__version__))
+    #logger.debug('pyroyale version v{}'.format(pyroyale.__version__))
     logger.debug(config)
 
     # Create temporary directory. All file writes, until the very end,
@@ -553,21 +553,25 @@ def build_dashboard(config): # pragma: no coverage
     # won't hose existing stuff.
     tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
+    # get API instance
+    configuration = pyroyale.Configuration()
+    configuration.api_key['authorization'] = config['api']['api_key']
+    api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
+
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.
     try:
         output_path = os.path.expanduser(config['paths']['out'])
 
         # Get clan data and war log from API.
-        api = pyroyale.ClashRoyaleAPI(config['api']['api_key'], config['api']['clan_id'])
-        clan = api.clan.clan_info()
-        warlog = api.clan.warlog()
-        current_war = api.clan.current_war()
+        clan = api.get_clan(config['api']['clan_id']).to_dict()
+        warlog = api.get_clan_war_log(config['api']['clan_id']).to_dict()
+        current_war = api.get_current_war(config['api']['clan_id']).to_dict()
 
         # process data from API
         current_war_processed = process_current_war(config, current_war)
         clan_processed = process_clan(config, clan, current_war)
-        member_history = history.get_member_history(clan['memberList'], io.get_previous_history(output_path), current_war)
+        member_history = history.get_member_history(clan['member_list'], io.get_previous_history(output_path), current_war)
         members_processed = process_members(config, clan, warlog, current_war, member_history)
         recent_wars = process_recent_wars(config, warlog)
         former_members = process_absent_members(config, member_history['members'])
@@ -608,21 +612,7 @@ def build_dashboard(config): # pragma: no coverage
 
         io.move_temp_to_output_dir(tempdir, output_path)
 
-    except pyroyale.ClashRoyaleAPIAuthenticationError as e:
-        msg = 'developer.clashroyale.com authentication error: {}'.format(e)
-        if not config['api']['api_key']:
-            msg += '\n - API key not provided'
-        else:
-            msg += '\n - API key not valid'
-        logger.error(msg)
-
-    except pyroyale.ClashRoyaleAPIClanNotFound as e:
-        logger.error('developer.clashroyale.com: {}'.format(e))
-
-    except pyroyale.ClashRoyaleAPIError as e:
-        logger.error('developer.clashroyale.com error: {}'.format(e))
-
-    except pyroyale.ClashRoyaleAPIMissingFieldsError as e:
+    except ApiException as e:
         logger.error('error: {}'.format(e))
 
     finally:
