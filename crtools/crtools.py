@@ -30,8 +30,8 @@ def get_war_league_from_war(war, clan_tag):
 
     clan_score = 0
     for clan in standing:
-        if clan['tag'] == clan_tag:
-            clan_score = clan['clan']['clanScore']
+        if clan['clan']['tag'] == clan_tag:
+            clan_score = clan['clan']['clan_score']
 
     return leagueinfo.get_war_league_from_score(clan_score)
 
@@ -76,6 +76,7 @@ def get_war_date(war):
         war_date_raw = datetime.strptime(war['created_date'].split('.')[0], '%Y%m%dT%H%M%S')
         war_date_raw -= timedelta(days=1)
 
+    print(war_date_raw)
     return datetime.timestamp(war_date_raw)
 
 
@@ -521,7 +522,7 @@ def process_recent_wars(config, warlog):
     for war in warlog['items']:
         clan = None
         for rank, war_clan in enumerate(war['standings']):
-            if war_clan['tag'] == config['api']['clan_id']:
+            if war_clan['clan']['tag'] == config['api']['clan_id']:
                 clan = war_clan
                 clan['rank'] = rank+1
                 date = datetime.strptime(war['created_date'].split('.')[0], '%Y%m%dT%H%M%S')

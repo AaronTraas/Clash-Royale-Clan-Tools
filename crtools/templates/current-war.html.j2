@@ -56,10 +56,10 @@
                 {% if loop.index <= 5 %}
                 <tr>
                     <td class="date">{{war.date}}</td>
-                    <td class="battles">{{war.battlesPlayed}}</td>
-                    <td class="wins">{{war.wins}}</td>
+                    <td class="battles">{{war.clan.battles_played}}</td>
+                    <td class="wins">{{war.clan.wins}}</td>
                     <td class="rank rank-{{war.rank}}"><span>{{war.rank}}</span></td>
-                    <td class="trophies"><strong class="{{ 'good' if war.trophyChange > 0 else 'bad' }}">{{"{0:+}".format(war.trophyChange)}}</strong></td>
+                    <td class="trophies"><strong class="{{ 'good' if war.trophy_change > 0 else 'bad' }}">{{"{0:+}".format(war.trophy_change)}}</strong></td>
                 </tr>
                 {% endif %}
             {% endfor %}

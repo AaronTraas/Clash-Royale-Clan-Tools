@@ -179,7 +179,8 @@ def __localize_strings(locale_id):
         'dialogTitleFormerLinks'    : _('Links'),
         'dialogButtonClose'         : _('Close'),
 
-        'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
+        'tooltipMemberNotInWar'     : _('<strong>{name}</strong> was not in this war.'),
+        'tooltipMemberNotInClan'    : _('<strong>{name}</strong> was not in the clan at the time of this war.'),
         'tooltipCurrentWarNoScore'  : _('NOTE: current war <strong>does not</strong> affect score.'),
 
         'labelFilter'               : _('Filter'),

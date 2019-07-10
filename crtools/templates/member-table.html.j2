@@ -64,11 +64,11 @@
                         <strong>{{member.days_inactive}}</strong><br /><small>{{strings.labelDays}}</small>
                     </td>
                     <td class="war current {{member.currentWar.status}}" data-tooltip="true">
-                    {% if member.currentWar.battlesPlayed is defined %}
+                    {% if member.currentWar.battles_played is defined %}
                         <div data-role="war">
                             <div>
-                            {% if (clan.currentWarState == 'warDay') and (member.currentWar.battlesPlayed > 0) %}
-                                {% for battle in range(0, member.currentWar.battlesPlayed) %}
+                            {% if (clan.currentWarState == 'warDay') and (member.currentWar.battles_played > 0) %}
+                                {% for battle in range(0, member.currentWar.battles_played) %}
                                     {% if member.currentWar.wins >= battle+1 %}
                                     <img class="war-battle" src="static/images/war-battle-win.svg" />
                                     {% else %}
@@ -85,10 +85,10 @@
                         </div>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{member.currentWar.collectionDayBattlesPlayed}}</dd></div>
-                                <div><dt>{{strings.labelcards_earned}}</dt><dd>{{member.currentWar.cards_earned}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{member.currentWar.collection_day_battles_played}}</dd></div>
+                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{member.currentWar.cards_earned}}</dd></div>
                             {% if clan.currentWarState == 'warDay' %}
-                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{member.currentWar.battlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{member.currentWar.battles_played}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{member.currentWar.wins}}</dd></div>
                             {% endif %}
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
@@ -99,7 +99,7 @@
                     {% elif member.currentWar.status == 'not-in-clan' %}
                         {{strings.labelNotInClan}}
                         <div class="tooltip">
-                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
+                            {{strings.tooltipMemberNotInClan.format(name=member.name)}}
                             <dl>
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>N/A</dd></div>
                             </dl>
@@ -118,11 +118,11 @@
                     </td>
                 {% for war in member.warlog %}
                     <td class="war {{war.status}}" data-tooltip="true">
-                    {% if war.battlesPlayed is defined %}
+                    {% if war.battles_played is defined %}
                         <div data-role="war">
                             <div>
                             {% if war.battles_played > 0 %}
-                                {% for battle in range(0, war.battlesPlayed) %}
+                                {% for battle in range(0, war.battles_played) %}
                                     {% if war.wins >= battle+1 %}
                                     <img class="war-battle" src="static/images/war-battle-win.svg" />
                                     {% else %}
@@ -140,10 +140,10 @@
                         <div class="tooltip">
                             <dl>
                                 <div><dt>{{strings.labelWarLeague}}</dt><dd>{{war.warLeague}}</dd></div>
-                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{war.collectionDayBattlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{war.collection_day_battles_played}}</dd></div>
                                 <div><dt>{{strings.labelCollectionDayWins}}</dt><dd>{{war.collectionBattleWins}}</dd></div>
-                                <div><dt>{{strings.labelcards_earned}}</dt><dd>{{war.cards_earned}}</dd></div>
-                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{war.battlesPlayed}}</dd></div>
+                                <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{war.cards_earned}}</dd></div>
+                                <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{war.battles_played}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{war.wins}}</dd></div>
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
@@ -151,13 +151,13 @@
                     {% elif war.status == 'not-in-clan' %}
                         {{strings.labelNotInClan}}
                         <div class="tooltip">
-                            {{strings.tooltipMemberNotInWar.format(name=member.name)}}
+                            {{strings.tooltipMemberNotInClan.format(name=member.name)}}
                             <dl>
                                 <div><dt>{{strings.labelWarScore}}</dt><dd>{{"{0:+}".format(war.score)}}</strong></dd></div>
                             </dl>
                         </div>
                     {% else %}
-                        N/A
+                        {{strings.labelNA}}
                         <div class="tooltip">
                             {{strings.tooltipMemberNotInWar.format(name=member.name)}}
                             <dl>

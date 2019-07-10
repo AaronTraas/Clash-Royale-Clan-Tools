@@ -70,12 +70,12 @@ __fake_clan__ = {
     "tag": CLAN_TAG,
     "name": "Agrassar",
     "description": "Rules, stats, discord link, and info at https://agrassar.com",
-    "clanScore": 38803,
-    "clanWarTrophies": 1813,
-    "requiredTrophies": 3000,
-    "donationsPerWeek": 7540,
+    "clan_score": 38803,
+    "clan_war_trophies": 1813,
+    "required_trophies": 3000,
+    "donations_per_week": 7540,
     "members": 4,
-    "memberList": [
+    "member_list": [
         {
             "tag": "#AAAAAA",
             "name": "LeaderPerson",
@@ -144,91 +144,93 @@ __fake_clan__ = {
     ]
 }
 
-__fake_warlog__ = [
-    {
-        "createdDate": "20190203T163246.000Z",
-        "participants": [
-            {
-                "tag": "#AAAAAA",
-                "cardsEarned": 1120,
-                "battlesPlayed": 1,
-                "wins": 1,
-                "collectionDayBattlesPlayed": 3
-            }
-        ],
-        "standings": [
-            {
-                "clan": {
-                    "tag": CLAN_TAG,
-                    "clanScore": 1000
-                },
-                "trophyChange": 999
-            }
-        ]
-    }
-]
+__fake_warlog__ = {
+    "items": [
+        {
+            "created_date": "20190203T163246.000Z",
+            "participants": [
+                {
+                    "tag": "#AAAAAA",
+                    "cards_earned": 1120,
+                    "battles_played": 1,
+                    "wins": 1,
+                    "collection_day_battles_played": 3
+                }
+            ],
+            "standings": [
+                {
+                    "clan": {
+                        "tag": CLAN_TAG,
+                        "clan_score": 1000
+                    },
+                    "trophy_change": 999
+                }
+            ]
+        }
+    ]
+}
 
 __fake_war_base__ = {
     "clan": {
         "tag": CLAN_TAG,
         "name": "Agrassar",
-        "clanScore": 1813,
+        "clan_score": 1813,
         "participants": 17,
-        "battlesPlayed": 13,
+        "battles_played": 13,
         "wins": 1,
         "crowns": 5
     },
     "participants": [
         {
             "tag": "#AAAAAA",
-            "cardsEarned": 1120,
-            "battlesPlayed": 1,
+            "cards_earned": 1120,
+            "battles_played": 1,
             "wins": 1,
-            "collectionDayBattlesPlayed": 3
+            "collection_day_battles_played": 3
         },
         {
             "tag": "#BBBBBB",
-            "cardsEarned": 1120,
-            "battlesPlayed": 1,
+            "cards_earned": 1120,
+            "battles_played": 1,
             "wins": 1,
-            "collectionDayBattlesPlayed": 1
+            "collection_day_battles_played": 1
         },
         {
             "tag": "#CCCCCC",
-            "cardsEarned": 1120,
-            "battlesPlayed": 0,
+            "cards_earned": 1120,
+            "battles_played": 0,
             "wins": 1,
-            "collectionDayBattlesPlayed": 1
+            "collection_day_battles_played": 1
         }
     ]
 }
 
 __fake_war__ = __fake_war_base__.copy()
-__fake_war__['createdDate'] = '20190209T212846.354Z'
+__fake_war__['created_date'] = '20190209T212846.354Z'
 __fake_war__['standings'] = [
     {
         "clan": {
             "tag": CLAN_TAG,
-            "clanScore": 2428,
+            "clan_score": 2428,
             "participants": 19,
-            "battlesPlayed": 20,
+            "battles_played": 20,
             "wins": 11,
             "crowns": 22
         },
-        "trophyChange": 111
+        "trophy_change": 111
     }
 ]
 
 __fake_currentwar_warday__ = __fake_war_base__.copy()
 __fake_currentwar_warday__['state'] = 'warDay'
-__fake_currentwar_warday__['warEndTime'] = '20190209T212846.354Z'
+__fake_currentwar_warday__['war_end_time'] = '20190209T212846.354Z'
 __fake_currentwar_warday__['clans'] = [
     {
         "tag": CLAN_TAG,
         "name": "Agrassar",
-        "clanScore": 1813,
+        "clan_score": 1813,
         "participants": 17,
-        "battlesPlayed": 13,
+        "battles_played": 13,
         "wins": 5,
         "crowns": 12,
         "battlesRemaining": 4
@@ -237,7 +239,7 @@ __fake_currentwar_warday__['clans'] = [
 
 __fake_currentwar_collectionday__ = __fake_war_base__.copy()
 __fake_currentwar_collectionday__['state'] = 'collectionDay'
-__fake_currentwar_collectionday__['collectionEndTime'] = '20190209T212846.354Z'
+__fake_currentwar_collectionday__['collection_end_time'] = '20190209T212846.354Z'
 
 def test_get_member_war_status_class():
     assert crtools.get_member_war_status_class(0, 0, 0, 1) == 'not-in-clan'
@@ -254,9 +256,9 @@ def test_get_member_war_status_class():
 def test_get_war_date():
     raw_date_string = '20190213T000000.000Z'
     test_date = datetime.strptime(raw_date_string.split('.')[0], '%Y%m%dT%H%M%S')
-    assert crtools.get_war_date({'createdDate': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
-    assert crtools.get_war_date({'state': 'warDay', 'warEndTime': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=2))
-    assert crtools.get_war_date({'state': 'collectionDay', 'collectionEndTime': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
+    assert crtools.get_war_date({'created_date': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
+    assert crtools.get_war_date({'state': 'warDay', 'war_end_time': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=2))
+    assert crtools.get_war_date({'state': 'collectionDay', 'collection_end_time': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
 
 def test_member_war(tmpdir):
     config_file = tmpdir.mkdir('test_member_war').join('testfile')
@@ -265,7 +267,7 @@ def test_member_war(tmpdir):
 
     war_current_nowar = crtools.member_war(
         config,
-        __fake_clan__['memberList'][0],
+        __fake_clan__['member_list'][0],
         {'state': 'notInWar'}
     )
     assert war_current_nowar['status'] == 'na'
@@ -273,7 +275,7 @@ def test_member_war(tmpdir):
 
     war_current_isparticipating = crtools.member_war(
         config,
-        __fake_clan__['memberList'][0],
+        __fake_clan__['member_list'][0],
         __fake_currentwar_warday__
     )
     assert war_current_isparticipating['status'] == 'good'
@@ -281,7 +283,7 @@ def test_member_war(tmpdir):
 
     war_current_notparticipating = crtools.member_war(
         config,
-        __fake_clan__['memberList'][3],
+        __fake_clan__['member_list'][3],
         __fake_currentwar_warday__
     )
     assert war_current_notparticipating['status'] == 'na'
@@ -289,7 +291,7 @@ def test_member_war(tmpdir):
 
     war_isparticipating_good = crtools.member_war(
         config,
-        __fake_clan__['memberList'][0],
+        __fake_clan__['member_list'][0],
         __fake_war__
     )
     assert war_isparticipating_good['status'] == 'good'
@@ -297,16 +299,16 @@ def test_member_war(tmpdir):
 
     war_isparticipating_ok = crtools.member_war(
         config,
-        __fake_clan__['memberList'][1],
+        __fake_clan__['member_list'][1],
         __fake_war__
     )
-    print(__fake_clan__['memberList'][1]['arena'])
+    print(__fake_clan__['member_list'][1]['arena'])
     assert war_isparticipating_ok['status'] == 'ok'
     assert war_isparticipating_ok['score'] == 24
 
     war_isparticipating_bad = crtools.member_war(
         config,
-        __fake_clan__['memberList'][2],
+        __fake_clan__['member_list'][2],
         __fake_war__
     )
     assert war_isparticipating_bad['status'] == 'bad'
@@ -314,7 +316,7 @@ def test_member_war(tmpdir):
 
     war_notparticipating = crtools.member_war(
         config,
-        __fake_clan__['memberList'][3],
+        __fake_clan__['member_list'][3],
         __fake_war__
     )
     assert war_notparticipating['status'] == 'na'
@@ -325,10 +327,10 @@ def test_member_warlog(tmpdir):
     config_file.write(__config_file_score__)
     config = load_config_file(config_file.realpath())
 
-    warlog = crtools.member_warlog(config, __fake_clan__['memberList'][0], __fake_warlog__)
+    warlog = crtools.member_warlog(config, __fake_clan__['member_list'][0], __fake_warlog__)
     assert warlog[0]['status'] == 'good'
 
-    warlog = crtools.member_warlog(config, __fake_clan__['memberList'][1], __fake_warlog__)
+    warlog = crtools.member_warlog(config, __fake_clan__['member_list'][1], __fake_warlog__)
     assert warlog[0]['status'] == 'na'
 
 def test_donations_score(tmpdir):
@@ -338,12 +340,12 @@ def test_donations_score(tmpdir):
 
     date = datetime(2019, 2, 12, 7, 32, 1, 0)
     timestamp = datetime.timestamp(date)
-    members = history.get_member_history(__fake_clan__['memberList'], __fake_history__, None, date)["members"]
+    members = history.get_member_history(__fake_clan__['member_list'], __fake_history__, None, date)["members"]
 
-    member_tag_0 = __fake_clan__['memberList'][0]['tag']
-    member_6 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 6, date)
-    member_3 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 3, date)
-    member_0 = crtools.enrich_member_with_history(config, __fake_clan__['memberList'][0], members, 0, date)
+    member_tag_0 = __fake_clan__['member_list'][0]['tag']
+    member_6 = crtools.enrich_member_with_history(config, __fake_clan__['member_list'][0], members, 6, date)
+    member_3 = crtools.enrich_member_with_history(config, __fake_clan__['member_list'][0], members, 3, date)
+    member_0 = crtools.enrich_member_with_history(config, __fake_clan__['member_list'][0], members, 0, date)
 
     assert crtools.donations_score(config, member_6) == 11
     assert crtools.donations_score(config, member_3) == 18
@@ -382,7 +384,7 @@ def test_get_suggestions_recruit(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__['memberList'], None)
+    h = history.get_member_history(__fake_clan__['member_list'], None)
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
@@ -398,7 +400,7 @@ def test_process_absent_members(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__['memberList'], __fake_history_old_member__)
+    h = history.get_member_history(__fake_clan__['member_list'], __fake_history_old_member__)
 
     absent_members = crtools.process_absent_members(config, h['members'])
 
@@ -433,7 +435,7 @@ def test_get_suggestions_kick(tmpdir):
     config_file.write(__config_file_score__ + '\nmin_clan_size=1')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__['memberList'], None)
+    h = history.get_member_history(__fake_clan__['member_list'], None)
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
@@ -449,7 +451,7 @@ def test_get_suggestions_promote_demote(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_promote=10')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__['memberList'], None)
+    h = history.get_member_history(__fake_clan__['member_list'], None)
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, {"state": "notInWar"}, h)
 
@@ -469,7 +471,7 @@ def test_process_clan(tmpdir):
 
     processed_clan = crtools.process_clan(config, __fake_clan__, __fake_currentwar_warday__)
 
-    assert 'memberList' not in processed_clan
+    assert 'member_list' not in processed_clan
     assert processed_clan['warLeague'] == 'gold'
     assert processed_clan['warLeagueName'] == 'Gold League'
     assert processed_clan['currentWarState'] == 'warDay'
@@ -501,17 +503,17 @@ def test_process_current_war_warday():
 def test_war_score(tmpdir):
     # FIXME: should replace once we test crtools.process_members()
     war_complete = {
-        "battlesPlayed": 1,
+        "battles_played": 1,
         "wins": 1,
-        "collectionDayBattlesPlayed": 3,
+        "collection_day_battles_played": 3,
         "collectionBattleWins": 2,
         "collectionBattleLosses": 0,
         "status": "na"
     }
     war_incomplete = {
-        "battlesPlayed": 0,
+        "battles_played": 0,
         "wins": 0,
-        "collectionDayBattlesPlayed": 3,
+        "collection_day_battles_played": 3,
         "collectionBattleWins": 2,
         "collectionBattleLosses": 0,
         "status": "na"
@@ -536,10 +538,10 @@ def test_process_recent_wars(tmpdir):
 
     processed_warlog = crtools.process_recent_wars(config, __fake_warlog__)
 
-    assert processed_warlog[0]['tag'] == CLAN_TAG
+    assert processed_warlog[0]['clan']['tag'] == CLAN_TAG
     assert processed_warlog[0]['rank'] == 1
     assert processed_warlog[0]['date'] == '2/3'
-    assert processed_warlog[0]['trophyChange'] == 999
+    assert processed_warlog[0]['trophy_change'] == 999
 
 def test_calc_activity_status():
     config = load_config_file(False)
