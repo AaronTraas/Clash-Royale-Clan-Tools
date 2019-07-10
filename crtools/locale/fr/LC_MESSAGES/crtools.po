@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
 "Report-Msgid-Bugs-To: aaron@traas.org\n"
-"POT-Creation-Date: 2019-07-05 09:06-0400\n"
+"POT-Creation-Date: 2019-07-10 14:08-0400\n"
 "PO-Revision-Date: 2019-05-08 12:41+0000\n"
 "Last-Translator: Eagle334 <Eagle334@gmail.com>, 2019\n"
 "Language: fr\n"
@@ -148,7 +148,7 @@ msgstr "Victoires"
 msgid "Cards Earned"
 msgstr "Cartes acquises"
 
-#: crtools/config.py:125 crtools/config.py:223
+#: crtools/config.py:125 crtools/config.py:224
 msgid "Member"
 msgstr "Joueur"
 
@@ -376,62 +376,69 @@ msgid "Close"
 msgstr "Fermer"
 
 #: crtools/config.py:182
-msgid "<strong>{name}</strong> was not in the clan at the time of this war."
+#, fuzzy
+#| msgid "<strong>{name}</strong> was not in the clan at the time of this war."
+msgid "<strong>{name}</strong> was not in this war."
 msgstr ""
 "<strong>{name}</strong> n'était pas dans le clan au moment de cette "
 "guerre."
 
 #: crtools/config.py:183
+msgid "<strong>{name}</strong> was not in the clan at the time of this war."
+msgstr ""
+"<strong>{name}</strong> n'était pas dans le clan au moment de cette "
+"guerre."
+
+#: crtools/config.py:184
 msgid "NOTE: current war <strong>does not</strong> affect score."
 msgstr "NOTE: la guerre en cours <strong>n'affecte pas</strong> le score"
 
-#: crtools/config.py:185
+#: crtools/config.py:186
 msgid "Filter"
 msgstr "Filtre"
 
-#: crtools/config.py:186
+#: crtools/config.py:187
 msgid "None"
 msgstr "Aucun"
 
-#: crtools/config.py:187
+#: crtools/config.py:188
 msgid "Leadership"
 msgstr "Rôle: Adjoint"
 
-#: crtools/config.py:188
+#: crtools/config.py:189
 msgid "Role: Elder"
 msgstr "Rôle: Aîné"
 
-#: crtools/config.py:189
+#: crtools/config.py:190
 msgid "Role: Member"
 msgstr "Rôle: Membre"
 
-#: crtools/config.py:190
+#: crtools/config.py:191
 msgid "New Members"
 msgstr "Nouveaux Membres"
 
-#: crtools/config.py:191
+#: crtools/config.py:192
 msgid "In current war"
 msgstr "Dans la guerre actuelle"
 
-#: crtools/config.py:192
+#: crtools/config.py:193
 msgid "Inactive"
 msgstr "Inactif"
 
-#: crtools/config.py:193
+#: crtools/config.py:194
 msgid "In danger"
 msgstr "En danger"
 
-#: crtools/config.py:194
+#: crtools/config.py:195
 msgid "War"
 msgstr ""
 
-#: crtools/config.py:195
+#: crtools/config.py:196
 #, fuzzy
-#| msgid "Donations/week"
 msgid "Donations"
 msgstr "Donations/semaine"
 
-#: crtools/config.py:197
+#: crtools/config.py:198
 msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
@@ -439,13 +446,13 @@ msgstr ""
 "Les membres dont le score est inférieur à 0 seront recommandés pour "
 "exclusion ou rétrogradation."
 
-#: crtools/config.py:198
+#: crtools/config.py:199
 msgid ""
 "Members inactive for <strong class=\"bad\">{days_inactive} days</strong> "
 "will be kicked."
 msgstr "Les membres inactifs depuis {days_inactive} jours seront exclus."
 
-#: crtools/config.py:199
+#: crtools/config.py:200
 msgid ""
 "A member who achieves <strong class=\"good\">{points} points</strong> is "
 "elegible for promotion to <strong>Elder</strong> at the discretion of "
@@ -454,21 +461,21 @@ msgstr ""
 "Un membre ayant atteint <strong class=\"good\">{points} points</strong> "
 "est éligible à une promotion d'Aîné à la discrétion du Chef."
 
-#: crtools/config.py:200
+#: crtools/config.py:201
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
 msgstr ""
 "<strong>Recruter de nouveaux membres!</strong> Le clan a besoin de sang "
 "neuf."
 
-#: crtools/config.py:201
+#: crtools/config.py:202
 msgid "No suggestions at this time. The clan is in good order."
 msgstr "Aucune suggestion pour le moment. Tout est en ordre."
 
-#: crtools/config.py:202
+#: crtools/config.py:203
 msgid "Kick <strong>{name}</strong>. Member is blacklisted."
 msgstr "Exclure <strong>{name}</strong>. Le joueur sera en liste noire."
 
-#: crtools/config.py:203
+#: crtools/config.py:204
 msgid ""
 "Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
 "inactive</strong>"
@@ -476,20 +483,20 @@ msgstr ""
 "Exclure <strong>{name}</strong> : <strong class=\"bad\">{days} jours "
 "inactif</strong>"
 
-#: crtools/config.py:204
+#: crtools/config.py:205
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
 "Exclure <strong>{name}</strong> : <strong class=\"bad\">{score}</strong> "
 "points."
 
-#: crtools/config.py:205
+#: crtools/config.py:206
 #, fuzzy
 msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
 "Rétrograder <strong>{name}</strong> : <strong "
 "class=\"bad\">{score}</strong> points."
 
-#: crtools/config.py:206
+#: crtools/config.py:207
 #, fuzzy
 msgid ""
 "Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
@@ -498,7 +505,7 @@ msgstr ""
 "Promouvoir <strong>{name}</strong> : <strong>Aîné</strong> <strong "
 "class=\"good\">{score}</strong> points."
 
-#: crtools/config.py:208
+#: crtools/config.py:209
 msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
@@ -506,11 +513,11 @@ msgstr ""
 "Le score est basé sur deux aspects: le <strong>score de donation</strong>"
 " et le <strong>score de participation</strong>."
 
-#: crtools/config.py:209
+#: crtools/config.py:210
 msgid "Donation Score"
 msgstr "Score de Donation"
 
-#: crtools/config.py:210
+#: crtools/config.py:211
 msgid ""
 "You are expected to donate <strong>{min_donations_daily} cards per "
 "day</strong>, on average. If you make more, you will gain points. If you "
@@ -523,163 +530,163 @@ msgstr ""
 "perdrez des points. Si vous ne donnez pas vous serez pénalisé de <strong "
 "class=\"bad\">{donations_zero} points</strong>"
 
-#: crtools/config.py:212
+#: crtools/config.py:213
 msgid "War Participation Score"
 msgstr "Score de la particiation à la guerre"
 
-#: crtools/config.py:213
+#: crtools/config.py:214
 msgid "For each of the last 10 wars, did member..."
 msgstr "Pour chacune des 10 dernières guerres, est-ce que le joueur a..."
 
-#: crtools/config.py:214
+#: crtools/config.py:215
 msgid "...participate in the war?"
 msgstr "...participé à la guerre?"
 
-#: crtools/config.py:215
+#: crtools/config.py:216
 msgid "...complete each collection battle? (per battle)"
 msgstr "...fait chaque bataille du jour de collecte? (par bataille)"
 
-#: crtools/config.py:216
+#: crtools/config.py:217
 msgid "...win each collection battle? (per battle)"
 msgstr "...gagné chaque bataille du jour de collecte? (par bataille)"
 
-#: crtools/config.py:217
+#: crtools/config.py:218
 msgid "...complete war day battle?"
 msgstr "...fait la(les) bataille(s) de la guerre?"
 
-#: crtools/config.py:218
+#: crtools/config.py:219
 msgid "...win war day battle? (per battle)"
 msgstr "...gagné la(les) bataille(s) de la guerre?"
 
-#: crtools/config.py:220
+#: crtools/config.py:221
 msgid "Leader"
 msgstr "Chef"
 
-#: crtools/config.py:221
+#: crtools/config.py:222
 msgid "Co-Leader"
 msgstr "Chef-Adjoint"
 
-#: crtools/config.py:222
+#: crtools/config.py:223
 msgid "Elder"
 msgstr "Aîné"
 
-#: crtools/config.py:224
+#: crtools/config.py:225
 msgid "Blacklisted. Kick!"
 msgstr "Sur liste noire. Exclure !"
 
-#: crtools/config.py:225
+#: crtools/config.py:226
 msgid "On vacation"
 msgstr "En vacances"
 
-#: crtools/config.py:226
+#: crtools/config.py:227
 msgid "Inactive {days} days"
 msgstr "Inactif {days} jours"
 
-#: crtools/config.py:227
+#: crtools/config.py:228
 msgid "Never Promote"
 msgstr "Jamais promouvoir"
 
-#: crtools/config.py:229
+#: crtools/config.py:230
 msgid "Arena Unknown"
 msgstr "Arène inconnue"
 
-#: crtools/config.py:230
+#: crtools/config.py:231
 msgid "Goblin Stadium"
 msgstr "Gobelinarium"
 
-#: crtools/config.py:231
+#: crtools/config.py:232
 msgid "Bone Pit"
 msgstr "Fausse aux os"
 
-#: crtools/config.py:232
+#: crtools/config.py:233
 msgid "Barbarian Bowl"
 msgstr "Arène des barbares"
 
-#: crtools/config.py:233
+#: crtools/config.py:234
 msgid "P.E.K.K.A's Playhouse"
 msgstr "Parc P.E.K.K.Aland"
 
-#: crtools/config.py:234
+#: crtools/config.py:235
 msgid "Spell Valley"
 msgstr "Vallée des sorts"
 
-#: crtools/config.py:235
+#: crtools/config.py:236
 msgid "Builder's Workshop"
 msgstr "Atelier d’ouvriers"
 
-#: crtools/config.py:236
+#: crtools/config.py:237
 msgid "Royal Arena"
 msgstr "Arène royale"
 
-#: crtools/config.py:237
+#: crtools/config.py:238
 msgid "Frozen Peak"
 msgstr "Sommet Glacé"
 
-#: crtools/config.py:238
+#: crtools/config.py:239
 msgid "Jungle Arena"
 msgstr "Arène Sauvage"
 
-#: crtools/config.py:239
+#: crtools/config.py:240
 msgid "Hog Mountain"
 msgstr "Mont des Cochons"
 
-#: crtools/config.py:240
+#: crtools/config.py:241
 msgid "Electro Valley"
 msgstr "Vallée Electrique"
 
-#: crtools/config.py:241
+#: crtools/config.py:242
 msgid "Spooky Town"
 msgstr "Ville sinistre"
 
-#: crtools/config.py:242
+#: crtools/config.py:243
 msgid "Legendary Arena"
 msgstr "Arène Légendaire"
 
-#: crtools/config.py:243
+#: crtools/config.py:244
 msgid "Challenger II"
 msgstr "Combattant II"
 
-#: crtools/config.py:244
+#: crtools/config.py:245
 msgid "Challenger III"
 msgstr "Combattant III"
 
-#: crtools/config.py:245
+#: crtools/config.py:246
 msgid "Master I"
 msgstr "Maître I"
 
-#: crtools/config.py:246
+#: crtools/config.py:247
 msgid "Master II"
 msgstr "Maître II"
 
-#: crtools/config.py:247
+#: crtools/config.py:248
 msgid "Master III"
 msgstr "Maître III"
 
-#: crtools/config.py:248 crtools/config.py:249
+#: crtools/config.py:249 crtools/config.py:250
 msgid "Grand Champion"
 msgstr "Champion"
 
-#: crtools/config.py:250
+#: crtools/config.py:251
 msgid "Ultimate Champion"
 msgstr "Grand Champion"
 
-#: crtools/config.py:252
+#: crtools/config.py:253
 msgid "Bronze League"
 msgstr "Ligue Bronze"
 
-#: crtools/config.py:253
+#: crtools/config.py:254
 msgid "Silver League"
 msgstr "Ligue Argent"
 
-#: crtools/config.py:254
+#: crtools/config.py:255
 msgid "Gold League"
 msgstr "Ligue Or"
 
-#: crtools/config.py:255
+#: crtools/config.py:256
 msgid "Legendary League"
 msgstr "Ligue Légendaire"
 
-#: crtools/config.py:257
+#: crtools/config.py:258
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically"
 " approved by Supercell and Supercell is not responsible for it."
@@ -688,7 +695,7 @@ msgstr ""
 "approuvé par Supercell et Supercell refuse toute responsabilité à son "
 "sujet."
 
-#: crtools/config.py:258
+#: crtools/config.py:259
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr ""
 "Pour plus d'informations, veuillez consulter le règlement de Supercell "

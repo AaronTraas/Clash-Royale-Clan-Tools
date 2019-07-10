@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: crtools 2.5.1\n"
+"Project-Id-Version: crtools 2.6.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-07-05 09:06-0400\n"
+"POT-Creation-Date: 2019-07-10 14:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Cards Earned"
 msgstr ""
 
-#: crtools/config.py:125 crtools/config.py:223
+#: crtools/config.py:125 crtools/config.py:224
 msgid "Member"
 msgstr ""
 
@@ -364,119 +364,123 @@ msgid "Close"
 msgstr ""
 
 #: crtools/config.py:182
-msgid "<strong>{name}</strong> was not in the clan at the time of this war."
+msgid "<strong>{name}</strong> was not in this war."
 msgstr ""
 
 #: crtools/config.py:183
+msgid "<strong>{name}</strong> was not in the clan at the time of this war."
+msgstr ""
+
+#: crtools/config.py:184
 msgid "NOTE: current war <strong>does not</strong> affect score."
 msgstr ""
 
-#: crtools/config.py:185
+#: crtools/config.py:186
 msgid "Filter"
 msgstr ""
 
-#: crtools/config.py:186
+#: crtools/config.py:187
 msgid "None"
 msgstr ""
 
-#: crtools/config.py:187
+#: crtools/config.py:188
 msgid "Leadership"
 msgstr ""
 
-#: crtools/config.py:188
+#: crtools/config.py:189
 msgid "Role: Elder"
 msgstr ""
 
-#: crtools/config.py:189
+#: crtools/config.py:190
 msgid "Role: Member"
 msgstr ""
 
-#: crtools/config.py:190
+#: crtools/config.py:191
 msgid "New Members"
 msgstr ""
 
-#: crtools/config.py:191
+#: crtools/config.py:192
 msgid "In current war"
 msgstr ""
 
-#: crtools/config.py:192
+#: crtools/config.py:193
 msgid "Inactive"
 msgstr ""
 
-#: crtools/config.py:193
+#: crtools/config.py:194
 msgid "In danger"
 msgstr ""
 
-#: crtools/config.py:194
+#: crtools/config.py:195
 msgid "War"
 msgstr ""
 
-#: crtools/config.py:195
+#: crtools/config.py:196
 msgid "Donations"
 msgstr ""
 
-#: crtools/config.py:197
+#: crtools/config.py:198
 msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
 msgstr ""
 
-#: crtools/config.py:198
+#: crtools/config.py:199
 msgid ""
 "Members inactive for <strong class=\"bad\">{days_inactive} days</strong> will"
 " be kicked."
 msgstr ""
 
-#: crtools/config.py:199
+#: crtools/config.py:200
 msgid ""
 "A member who achieves <strong class=\"good\">{points} points</strong> is "
 "elegible for promotion to <strong>Elder</strong> at the discretion of "
 "leadership."
 msgstr ""
 
-#: crtools/config.py:200
+#: crtools/config.py:201
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
 msgstr ""
 
-#: crtools/config.py:201
+#: crtools/config.py:202
 msgid "No suggestions at this time. The clan is in good order."
 msgstr ""
 
-#: crtools/config.py:202
+#: crtools/config.py:203
 msgid "Kick <strong>{name}</strong>. Member is blacklisted."
 msgstr ""
 
-#: crtools/config.py:203
+#: crtools/config.py:204
 msgid ""
 "Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
 "inactive</strong>"
 msgstr ""
 
-#: crtools/config.py:204
+#: crtools/config.py:205
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
 
-#: crtools/config.py:205
+#: crtools/config.py:206
 msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
 
-#: crtools/config.py:206
+#: crtools/config.py:207
 msgid ""
 "Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
 "class=\"good\">{score}</strong>"
 msgstr ""
 
-#: crtools/config.py:208
+#: crtools/config.py:209
 msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr ""
 
-#: crtools/config.py:209
+#: crtools/config.py:210
 msgid "Donation Score"
 msgstr ""
 
-#: crtools/config.py:210
+#: crtools/config.py:211
 msgid ""
 "You are expected to donate <strong>{min_donations_daily} cards per "
 "day</strong>, on average. If you make more, you will gain points. If you make"
@@ -484,169 +488,169 @@ msgid ""
 " class=\"bad\">{donations_zero} points</strong>"
 msgstr ""
 
-#: crtools/config.py:212
+#: crtools/config.py:213
 msgid "War Participation Score"
 msgstr ""
 
-#: crtools/config.py:213
+#: crtools/config.py:214
 msgid "For each of the last 10 wars, did member..."
 msgstr ""
 
-#: crtools/config.py:214
+#: crtools/config.py:215
 msgid "...participate in the war?"
 msgstr ""
 
-#: crtools/config.py:215
+#: crtools/config.py:216
 msgid "...complete each collection battle? (per battle)"
 msgstr ""
 
-#: crtools/config.py:216
+#: crtools/config.py:217
 msgid "...win each collection battle? (per battle)"
 msgstr ""
 
-#: crtools/config.py:217
+#: crtools/config.py:218
 msgid "...complete war day battle?"
 msgstr ""
 
-#: crtools/config.py:218
+#: crtools/config.py:219
 msgid "...win war day battle? (per battle)"
 msgstr ""
 
-#: crtools/config.py:220
+#: crtools/config.py:221
 msgid "Leader"
 msgstr ""
 
-#: crtools/config.py:221
+#: crtools/config.py:222
 msgid "Co-Leader"
 msgstr ""
 
-#: crtools/config.py:222
+#: crtools/config.py:223
 msgid "Elder"
 msgstr ""
 
-#: crtools/config.py:224
+#: crtools/config.py:225
 msgid "Blacklisted. Kick!"
 msgstr ""
 
-#: crtools/config.py:225
+#: crtools/config.py:226
 msgid "On vacation"
 msgstr ""
 
-#: crtools/config.py:226
+#: crtools/config.py:227
 msgid "Inactive {days} days"
 msgstr ""
 
-#: crtools/config.py:227
+#: crtools/config.py:228
 msgid "Never Promote"
 msgstr ""
 
-#: crtools/config.py:229
+#: crtools/config.py:230
 msgid "Arena Unknown"
 msgstr ""
 
-#: crtools/config.py:230
+#: crtools/config.py:231
 msgid "Goblin Stadium"
 msgstr ""
 
-#: crtools/config.py:231
+#: crtools/config.py:232
 msgid "Bone Pit"
 msgstr ""
 
-#: crtools/config.py:232
+#: crtools/config.py:233
 msgid "Barbarian Bowl"
 msgstr ""
 
-#: crtools/config.py:233
+#: crtools/config.py:234
 msgid "P.E.K.K.A's Playhouse"
 msgstr ""
 
-#: crtools/config.py:234
+#: crtools/config.py:235
 msgid "Spell Valley"
 msgstr ""
 
-#: crtools/config.py:235
+#: crtools/config.py:236
 msgid "Builder's Workshop"
 msgstr ""
 
-#: crtools/config.py:236
+#: crtools/config.py:237
 msgid "Royal Arena"
 msgstr ""
 
-#: crtools/config.py:237
+#: crtools/config.py:238
 msgid "Frozen Peak"
 msgstr ""
 
-#: crtools/config.py:238
+#: crtools/config.py:239
 msgid "Jungle Arena"
 msgstr ""
 
-#: crtools/config.py:239
+#: crtools/config.py:240
 msgid "Hog Mountain"
 msgstr ""
 
-#: crtools/config.py:240
+#: crtools/config.py:241
 msgid "Electro Valley"
 msgstr ""
 
-#: crtools/config.py:241
+#: crtools/config.py:242
 msgid "Spooky Town"
 msgstr ""
 
-#: crtools/config.py:242
+#: crtools/config.py:243
 msgid "Legendary Arena"
 msgstr ""
 
-#: crtools/config.py:243
+#: crtools/config.py:244
 msgid "Challenger II"
 msgstr ""
 
-#: crtools/config.py:244
+#: crtools/config.py:245
 msgid "Challenger III"
 msgstr ""
 
-#: crtools/config.py:245
+#: crtools/config.py:246
 msgid "Master I"
 msgstr ""
 
-#: crtools/config.py:246
+#: crtools/config.py:247
 msgid "Master II"
 msgstr ""
 
-#: crtools/config.py:247
+#: crtools/config.py:248
 msgid "Master III"
 msgstr ""
 
-#: crtools/config.py:248 crtools/config.py:249
+#: crtools/config.py:249 crtools/config.py:250
 msgid "Grand Champion"
 msgstr ""
 
-#: crtools/config.py:250
+#: crtools/config.py:251
 msgid "Ultimate Champion"
 msgstr ""
 
-#: crtools/config.py:252
+#: crtools/config.py:253
 msgid "Bronze League"
 msgstr ""
 
-#: crtools/config.py:253
+#: crtools/config.py:254
 msgid "Silver League"
 msgstr ""
 
-#: crtools/config.py:254
+#: crtools/config.py:255
 msgid "Gold League"
 msgstr ""
 
-#: crtools/config.py:255
+#: crtools/config.py:256
 msgid "Legendary League"
 msgstr ""
 
-#: crtools/config.py:257
+#: crtools/config.py:258
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically "
 "approved by Supercell and Supercell is not responsible for it."
 msgstr ""
 
-#: crtools/config.py:258
+#: crtools/config.py:259
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr ""
 
