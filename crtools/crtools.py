@@ -76,7 +76,6 @@ def get_war_date(war):
         war_date_raw = datetime.strptime(war['created_date'].split('.')[0], '%Y%m%dT%H%M%S')
         war_date_raw -= timedelta(days=1)
 
-    print(war_date_raw)
     return datetime.timestamp(war_date_raw)
 
 
