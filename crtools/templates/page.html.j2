@@ -57,7 +57,7 @@
                                 <tr>
                                     <th>{{strings.labelCountry}}</th>
                                 {% if clan.location.is_country == true %}
-                                    <td>{{clan.location.name}}<img class="flag" src="static/images/flags/{{clan.location.countryCode|lower}}.png" /></td>
+                                    <td>{{clan.location.name}}<img class="flag" src="static/images/flags/{{clan.location.country_code|lower}}.png" /></td>
                                 {% else %}
                                     <td>{{strings.labelInternational}}<img class="flag" src="static/images/flags/international.png" /></td>
                                 {% endif %}
