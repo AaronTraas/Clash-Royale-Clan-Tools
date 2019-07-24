@@ -20,6 +20,7 @@ from crtools import history
 from crtools import leagueinfo
 from crtools import fankit
 from crtools import io
+from crtools import discord
 
 MAX_CLAN_SIZE = 50
 
@@ -647,6 +648,8 @@ def build_dashboard(config): # pragma: no coverage
         io.copy_static_assets(tempdir, config['paths']['clan_logo'], config['paths']['favicon'])
 
         io.move_temp_to_output_dir(tempdir, output_path)
+
+        discord.send_message(config, 'Test title', 'Test message')
 
     except ApiException as e:
         logger.error('error: {}'.format(e))
