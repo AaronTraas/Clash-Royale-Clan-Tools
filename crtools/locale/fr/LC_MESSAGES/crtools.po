@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
 "Report-Msgid-Bugs-To: aaron@traas.org\n"
-"POT-Creation-Date: 2019-07-24 14:35-0400\n"
+"POT-Creation-Date: 2019-07-24 14:57-0400\n"
 "PO-Revision-Date: 2019-05-08 12:41+0000\n"
 "Last-Translator: Eagle334 <Eagle334@gmail.com>, 2019\n"
 "Language: fr\n"
@@ -202,8 +202,7 @@ msgstr "Dons"
 
 #: crtools/config.py:151
 #, fuzzy
-#| msgid "Cards recieved"
-msgid "Donations recieved"
+msgid "Donations received"
 msgstr "Cartes reçues"
 
 #: crtools/config.py:152
@@ -251,7 +250,9 @@ msgid "Cards given"
 msgstr "Cartes données"
 
 #: crtools/config.py:163
-msgid "Cards recieved"
+#, fuzzy
+#| msgid "Cards recieved"
+msgid "Cards received"
 msgstr "Cartes reçues"
 
 #: crtools/config.py:164

@@ -22,7 +22,7 @@ MEMBER_TABLE_CSS_MAPPING = {
     'show_score'                : 'score',
     'show_trophies'             : 'trophies',
     'show_donations'            : 'donations',
-    'show_donations_recieved'   : 'donations-recieved',
+    'show_donations_received'   : 'donations-received',
     'show_last_seen'            : 'last-seen',
     'show_days_inactive'        : 'inactivity',
     'show_current_war'          : 'war.current',
