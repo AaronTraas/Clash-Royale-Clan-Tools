@@ -65,6 +65,16 @@ config_defaults = {
         'vacation'                      : [],
         'safe'                          : []
     },
+    'discord' : {
+        'webhook_default'               : '',
+        'leaderboard_war'               : True,
+        'leaderboard_donations'         : True,
+        'nag_war_battle'                : True,
+        'nag_collection_battle'         : True,
+        'warn_inactive'                 : True,
+        'scold_missed_war_battle'       : True,
+        'scold_missed_collection_battle': True
+    },
     'crtools' : {
         'debug'                         : False,
         'locale'                        : 'en',
