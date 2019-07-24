@@ -478,6 +478,11 @@ table td.battles {
     font-weight: bold;
 }
 
+td.last-seen {
+    font-size: 12px;
+    text-align: center;
+}
+
 #war-stats .wins,
 #war-stats .crowns,
 #war-stats .battles {
@@ -585,6 +590,10 @@ table td.rank span {
   padding-left: 0;
 }
 
+#member-table td.rank {
+    text-align: center;
+}
+
 #member-table td.name {
     position: relative;
 }
@@ -635,6 +644,7 @@ table td.rank span {
 #info table .score,
 #info table .inactivity,
 #info table .donations,
+#info table .donations-recieved,
 #info table .trophies {
     text-align: center;
 }
