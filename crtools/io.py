@@ -15,6 +15,20 @@ HISTORY_FILE_NAME = 'history.json'
 CLAN_LOG_FILENAME = 'clan_logo.png'
 FAVICON_FILENAME = 'favicon.ico'
 
+MEMBER_TABLE_CSS_MAPPING = {
+    'show_rank'                 : 'rank',
+    'show_rank_previous'        : 'rank.previous',
+    'show_name'                 : 'name',
+    'show_score'                : 'score',
+    'show_trophies'             : 'trophies',
+    'show_donations'            : 'donations',
+    'show_donations_recieved'   : 'donations-recieved',
+    'show_last_seen'            : 'last-seen',
+    'show_days_inactive'        : 'inactivity',
+    'show_current_war'          : 'war.current',
+    'show_warlog'               : 'war.previous'
+}
+
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
@@ -57,6 +71,11 @@ def parse_templates(config, history, tempdir, clan, members, former_members, cur
         undefined=StrictUndefined
     )
 
+    hidden_columns = []
+    for key, value in MEMBER_TABLE_CSS_MAPPING.items():
+        if config['member_table'][key] != True:
+            hidden_columns.append(value)
+
     dashboard_html = env.get_template('page.html.j2').render(
         version           = __version__,
         config            = config,
@@ -69,7 +88,8 @@ def parse_templates(config, history, tempdir, clan, members, former_members, cur
         recent_wars       = recent_wars,
         suggestions       = suggestions,
         scoring_rules     = scoring_rules,
-        former_members    = former_members
+        former_members    = former_members,
+        hidden_columns    = hidden_columns
     )
 
     write_object_to_file(os.path.join(tempdir, 'index.html'), dashboard_html)

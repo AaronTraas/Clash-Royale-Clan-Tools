@@ -260,6 +260,8 @@ def enrich_member_with_history(config, fresh_member, historical_members, days_fr
     enriched_member['donations_last_week'] = historical_member['donations_last_week']
     enriched_member['days_inactive'] = (now - datetime.fromtimestamp(enriched_member['last_activity_date'])).days
     enriched_member['days_inactive'] = enriched_member['days_inactive'] if enriched_member['days_inactive'] >= 0 else 0
+    enriched_member['last_seen'] = datetime.strptime(enriched_member['last_seen'].split('.')[0], '%Y%m%dT%H%M%S').strftime('%c')
+#collection_end_time = datetime.strptime(current_war_processed['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
 
     if enriched_member['join_date'] == 0:
         enriched_member['join_date_label'] = config['strings']['labelBeforeHistory']

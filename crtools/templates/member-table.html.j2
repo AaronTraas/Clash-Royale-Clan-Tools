@@ -3,22 +3,25 @@
         <table id="member-table" width="100%" data-filter="none">
             <thead>
                 <tr>
-                    <th data-sort-default>#</th>
-                    <th>{{strings.labelMember}}</th>
-                    <th>{{strings.labelScore}}</th>
-                    <th>{{strings.labelTrophies}}</th>
-                    <th>{{strings.labelDonations}}</th>
-                    <th>{{strings.labelDaysInactive}}</th>
-                    <th data-sort-method="none">{{strings.labelCurrentWar}}</th>
+                    <th class="rank" data-sort-default>#</th>
+                    <th class="rank previous">{{strings.labelRankPrevious}}</th>
+                    <th class="name">{{strings.labelMember}}</th>
+                    <th class="score">{{strings.labelScore}}</th>
+                    <th class="trophies">{{strings.labelTrophies}}</th>
+                    <th class="donations">{{strings.labelDonations}}</th>
+                    <th class="donations-recieved">{{strings.labelDonationsRecieved}}</th>
+                    <th class="inactivity">{{strings.labelDaysInactive}}</th>
+                    <th class="last-seen">{{strings.labelLastSeen}}</th>
+                    <th class="war current" data-sort-method="none">{{strings.labelCurrentWar}}</th>
                 {% for war in recent_wars %}
-                    <th data-sort-method="none">{{war.date}}</th>
+                    <th class="war" data-sort-method="none">{{war.date}}</th>
                 {% endfor %}
                 </tr>
             </thead>
             <class="list">
             {% for member in members %}
                 <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}" data-nopromote="{{ 'true' if member.no_promote else 'false' }}" data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.currentWar.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}" data-new="{{ 'true' if member.new else 'false' }}">
-                    <td class="id" data-sort="{{member.clan_rank}}">
+                    <td class="id rank" data-sort="{{member.clan_rank}}">
                         {% if member.clan_rank < member.previous_clan_rank %}
                         <span class="rank-up">
                         {% elif member.clan_rank > member.previous_clan_rank %}
@@ -28,6 +31,9 @@
                         {% endif %}
                            <strong>{{member.clan_rank}}</strong>
                         </span>
+                    </td>
+                    <td class="rank previous" data-sort="{{member.previous_clan_rank}}">
+                        <strong>{{member.previous_clan_rank}}</strong>
                     </td>
                     <td class="name" data-sort="{{member.name}}" data-role="dialog-show" data-target="member-detail" data-member-tag="{{member.tag}}">
                         <strong>{{member.name}}</strong><br />
@@ -60,8 +66,14 @@
                             </dl>
                         </div>
                     </td>
+                    <td class="donations-recieved" data-sort="{{member.donations_received}}">
+                        <strong>{{member.donations_received}}</strong><br />
+                    </td>
                     <td class="inactivity {{member.activity_status}}" data-sort="{{member.days_inactive}}" >
                         <strong>{{member.days_inactive}}</strong><br /><small>{{strings.labelDays}}</small>
+                    </td>
+                    <td class="last-seen" data-sort="{{member.last_seen}}" >
+                        {{member.last_seen}}
                     </td>
                     <td class="war current {{member.currentWar.status}}" data-tooltip="true">
                     {% if member.currentWar.battles_played is defined %}
@@ -117,7 +129,7 @@
                     {% endif %}
                     </td>
                 {% for war in member.warlog %}
-                    <td class="war {{war.status}}" data-tooltip="true">
+                    <td class="war previous {{war.status}}" data-tooltip="true">
                     {% if war.battles_played is defined %}
                         <div data-role="war">
                             <div>
@@ -173,3 +185,8 @@
         </table>
     </div>
 </div>
+<style>
+{% for selector in hidden_columns %}
+    #member-table tr .{{selector}} { display: none !important; }
+{% endfor %}
+</style>
