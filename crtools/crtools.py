@@ -260,8 +260,20 @@ def enrich_member_with_history(config, fresh_member, historical_members, days_fr
     enriched_member['donations_last_week'] = historical_member['donations_last_week']
     enriched_member['days_inactive'] = (now - datetime.fromtimestamp(enriched_member['last_activity_date'])).days
     enriched_member['days_inactive'] = enriched_member['days_inactive'] if enriched_member['days_inactive'] >= 0 else 0
-    enriched_member['last_seen'] = datetime.strptime(enriched_member['last_seen'].split('.')[0], '%Y%m%dT%H%M%S').strftime('%c')
-#collection_end_time = datetime.strptime(current_war_processed['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
+
+    last_seen = datetime.strptime(enriched_member['last_seen'].split('.')[0], '%Y%m%dT%H%M%S')
+    enriched_member['last_seen_formatted'] = last_seen.strftime('%c')
+
+    last_seen_delta = now - last_seen
+    enriched_member['last_seen_delta'] = ''
+    if last_seen_delta.days >= 1:
+        enriched_member['last_seen_delta'] = '{} {}, '.format(last_seen_delta.days, config['strings']['labelDays'])
+    hours = round(last_seen_delta.seconds/3600)
+    if hours < 1:
+        enriched_member['last_seen_delta'] += '{} {}'.format(round(last_seen_delta.seconds/60), config['strings']['labelMinutes'])
+    else:
+        enriched_member['last_seen_delta'] += '{} {}'.format(hours, config['strings']['labelHours'])
+
 
     if enriched_member['join_date'] == 0:
         enriched_member['join_date_label'] = config['strings']['labelBeforeHistory']

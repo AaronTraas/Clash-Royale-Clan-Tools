@@ -152,6 +152,8 @@ def __localize_strings(locale_id):
         'labelDaysInactive'         : _('Days Inactive'),
         'labelDays'                 : _('Days'),
         'labelDay'                  : _('Day'),
+        'labelMinutes'              : _('Minutes'),
+        'labelHours'                : _('Hours'),
         'labelLastSeen'             : _('Last Seen'),
         'labelCurrentWar'           : _('Current War'),
         'labelNotInClan'            : _('Not in clan'),

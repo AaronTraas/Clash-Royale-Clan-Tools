@@ -43,6 +43,21 @@
                             {% endif %}
                         </dd>
                     </dl>
+                    <dl>
+                        <dt>{{strings.labelLastSeen}}</dt>
+                        <dd>
+                            {{member.last_seen_formatted}}
+                            ({{member.last_seen_delta}})
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelDonations}}</dt>
+                        <dd>{{member.donations}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelDonationsRecieved}}</dt>
+                        <dd>{{member.donations_received}}</dd>
+                    </dl>
                 </div>
                 <div>
                     <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>{{config.strings.dialogMemberRoyaleApi}}</span></a>
