@@ -62,7 +62,7 @@ msgstr "Explication du score"
 
 #: crtools/config.py:115
 msgid "Leaderboard"
-msgstr ""
+msgstr "Tableau de classement"
 
 #: crtools/config.py:117
 msgid "Clan Stats"
@@ -150,19 +150,19 @@ msgstr "Cartes acquises"
 
 #: crtools/config.py:138 crtools/config.py:240
 msgid "Member"
-msgstr "Joueur"
+msgstr "Membre"
 
 #: crtools/config.py:139
 msgid "Previous"
-msgstr ""
+msgstr "Précédant"
 
 #: crtools/config.py:140
 msgid "Member Name"
-msgstr "Nom du Joueur"
+msgstr "Nom du Membre"
 
 #: crtools/config.py:141
 msgid "Member Tag"
-msgstr "Tag du Joueur"
+msgstr "Tag du Membre"
 
 #: crtools/config.py:142
 msgid "Join Date"
@@ -190,7 +190,7 @@ msgstr "Score"
 
 #: crtools/config.py:148
 msgid "Rank"
-msgstr ""
+msgstr "Niveau"
 
 #: crtools/config.py:149
 msgid "Trophies"
@@ -219,7 +219,7 @@ msgstr "Jour"
 
 #: crtools/config.py:155
 msgid "Last Seen"
-msgstr ""
+msgstr "Il y a"
 
 #: crtools/config.py:156
 msgid "Current War"
@@ -297,9 +297,7 @@ msgstr "{} heures"
 
 #: crtools/config.py:174
 msgid "Complete"
-msgstr ""
-"Terminée\"  #Don't know where it is used. I suppose a battle or war. "
-"Removed the terminal 'e' if it's for a male gender"
+msgstr "Terminée" 
 
 #: crtools/config.py:175
 msgid "1 day, {} hours"
@@ -315,12 +313,12 @@ msgstr "Jour de Guerre"
 
 #: crtools/config.py:178
 msgid "View List of Old Members"
-msgstr "Liste des anciens joueurs"
+msgstr "Liste des anciens Membres"
 
 #: crtools/config.py:179
 #, fuzzy
 msgid "Old Members"
-msgstr "Anciens Joueurs"
+msgstr "Anciens Membres"
 
 #: crtools/config.py:181
 #, fuzzy
@@ -337,11 +335,11 @@ msgstr "Départ du clan"
 
 #: crtools/config.py:185
 msgid "Member Details"
-msgstr "Détails du Joueur"
+msgstr "Détails du Membre"
 
 #: crtools/config.py:186
 msgid "Player Stats and Info"
-msgstr "Statistiques et Information du Joueur"
+msgstr "Statistiques et Information du Membre"
 
 #: crtools/config.py:187
 msgid "See on StatsRoyale"
@@ -445,7 +443,7 @@ msgstr "En danger"
 
 #: crtools/config.py:211
 msgid "War"
-msgstr ""
+msgstr "Guerre"
 
 #: crtools/config.py:212
 #, fuzzy
@@ -716,5 +714,5 @@ msgstr ""
 "sur les contenus créés par les fans."
 
 #~ msgid "Clan leaderboard"
-#~ msgstr ""
+#~ msgstr "Classement du clan"
 
