@@ -353,6 +353,20 @@ def calc_activity_status(config, days_inactive):
 
     return 'normal'
 
+def get_war_win_rate(warlog):
+    wins = 0
+    battles = 0
+    for war in warlog:
+        print(war)
+        if 'wins' in war:
+            wins += war['wins']
+            battles += war['number_of_battles']
+
+    if battles == 0:
+        return 0
+
+    return round((wins/battles) * 100)
+
 def get_role_label(config, member_role, days_inactive, activity_status, on_vacation, blacklisted, no_promote):
     """ Format roles in sane way """
 
@@ -456,6 +470,8 @@ def process_members(config, clan, warlog, current_war, member_history):
 
         # Figure out whether member is on the leadership team by role
         member['leadership'] = member['role'] == 'leader' or member['role'] == 'coLeader'
+
+        member['war_win_rate'] = get_war_win_rate(member['warlog'])
 
         members_processed.append(member)
 

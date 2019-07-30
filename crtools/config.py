@@ -75,6 +75,7 @@ config_defaults = {
         'show_donations_received'       : False,
         'show_last_seen'                : False,
         'show_days_inactive'            : True,
+        'show_war_win_rate'             : False,
         'show_current_war'              : True,
         'show_warlog'                   : True
     },
@@ -169,6 +170,7 @@ def __localize_strings(locale_id):
         'labelCardsEarned'          : _('Cards earned'),
         'labelWarDayBattles'        : _('War day battles'),
         'labelWarDayWins'           : _('War day wins'),
+        'labelWarWinRate'           : _('War win rate'),
         'labelWarScore'             : _('War score'),
         'labelWarLeague'            : _('War league'),
         'labelWarDate'              : _('{month}/{day}'),

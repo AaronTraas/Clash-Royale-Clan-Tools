@@ -12,6 +12,7 @@
                     <th class="donations-received">{{strings.labelDonationsRecieved}}</th>
                     <th class="inactivity">{{strings.labelDaysInactive}}</th>
                     <th class="last-seen">{{strings.labelLastSeen}}</th>
+                    <th class="war-win-rate">{{strings.labelWarWinRate}}</th>
                     <th class="war current" data-sort-method="none">{{strings.labelCurrentWar}}</th>
                 {% for war in recent_wars %}
                     <th class="war" data-sort-method="none">{{war.date}}</th>
@@ -74,6 +75,9 @@
                     </td>
                     <td class="last-seen" data-sort="{{member.last_seen}}" >
                         {{member.last_seen_delta}}
+                    </td>
+                    <td class="war-win-rate" data-sort="{{member.war_win_rate}}" >
+                        {{member.war_win_rate}}%
                     </td>
                     <td class="war current {{member.currentWar.status}}" data-tooltip="true">
                     {% if member.currentWar.battles_played is defined %}

@@ -58,6 +58,12 @@
                         <dt>{{strings.labelDonationsRecieved}}</dt>
                         <dd>{{member.donations_received}}</dd>
                     </dl>
+                    <dl>
+                        <dt>{{strings.labelWarWinRate}}</dt>
+                        <dd>
+                            <strong>{{member.war_win_rate}}%</strong><br>
+                        </dd>
+                    </dl>
                 </div>
                 <div>
                     <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>{{config.strings.dialogMemberRoyaleApi}}</span></a>

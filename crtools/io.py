@@ -25,6 +25,7 @@ MEMBER_TABLE_CSS_MAPPING = {
     'show_donations_received'   : 'donations-received',
     'show_last_seen'            : 'last-seen',
     'show_days_inactive'        : 'inactivity',
+    'show_war_win_rate'         : 'war-win-rate',
     'show_current_war'          : 'war.current',
     'show_warlog'               : 'war.previous'
 }
