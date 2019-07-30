@@ -357,7 +357,6 @@ def get_war_win_rate(warlog):
     wins = 0
     battles = 0
     for war in warlog:
-        print(war)
         if 'wins' in war:
             wins += war['wins']
             battles += war['number_of_battles']
