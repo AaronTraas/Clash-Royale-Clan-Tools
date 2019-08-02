@@ -779,10 +779,17 @@ table td.rank span {
     background-image: url(images/arrow-down.svg);
 }
 
-#info table tr[data-vacation="True"] {
+#info table tr[data-vacation="True"] td,
+#info table tr[data-vacation="True"] td:not(.bad) {
     background-color: #ddd;
     color: #999;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
+#info table tr[data-vacation="True"] td:first-child {
+    border-left: none;
+}
+
 #info table tr[data-vacation="True"] .bad {
     background-color: #d2b0ac;
     color: #999;
@@ -793,13 +800,6 @@ table td.rank span {
 #info table tr[data-vacation="True"] .good {
     background-color: #d8f3e6;
 }
-#info table tr[data-vacation="True"] .bad,
-#info table tr[data-vacation="True"] .ok,
-#info table tr[data-vacation="True"] .good {
-    border-left: none;
-    border-bottom: 1px solid #E1E1E1
-}
-
 #info table tr[data-vacation="True"] .donations,
 #info table tr[data-vacation="True"] .score {
     background-color: #ddd;
