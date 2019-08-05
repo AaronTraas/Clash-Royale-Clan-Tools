@@ -23,6 +23,8 @@ config_defaults = {
     'api' : {
         'api_key'                       : False,
         'clan_id'                       : False,
+        'proxy'                         : '',
+        'proxy_headers'                 : ''
     },
     'paths' : {
         'out'                           : './crtools-out',

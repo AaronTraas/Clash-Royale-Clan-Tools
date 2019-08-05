@@ -75,6 +75,12 @@ parameter: api_key. The file should look like:
   # Your clan tag
   clan_id=#JY8YVV
 
+  # Proxy URL -- URL for proxy server, if needed
+  #proxy=https://my-proxy.com
+
+  # Proxy headers -- custom headers for proxy if needed
+  #proxy_headers=https://my-proxy.com
+
   [Paths]
   # your output path. Where you want the static website to live.
   out=/var/www/html

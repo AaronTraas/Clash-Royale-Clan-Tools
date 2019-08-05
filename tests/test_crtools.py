@@ -87,7 +87,8 @@ __fake_clan__ = {
                 "id": 54000012,
                 "name": "Legendary Arena"
             },
-            "join_date": 0
+            "join_date": 0,
+            "last_seen": "20190802T154619.000Z"
         },
         {
             "tag": "#BBBBBB",
@@ -100,7 +101,9 @@ __fake_clan__ = {
                 "id": 54000013,
                 "name": "Arena 12"
             },
-            "join_date": 0
+            "join_date": 0,
+            "last_seen": "20190802T154619.000Z"
+
         },
         {
             "tag": "#CCCCCC",
@@ -113,7 +116,9 @@ __fake_clan__ = {
                 "id": 54000012,
                 "name": "Legendary Arena"
             },
-            "join_date": 0
+            "join_date": 0,
+            "last_seen": "20190802T154619.000Z"
+
         },
         {
             "tag": "#DDDDDD",
@@ -126,7 +131,9 @@ __fake_clan__ = {
                 "id": 54000008,
                 "name": "Arena 7"
             },
-            "join_date": 0
+            "join_date": 0,
+            "last_seen": "20190802T154619.000Z"
+
         },
         {
             "tag": "#EEEEEE",
@@ -139,7 +146,9 @@ __fake_clan__ = {
                 "id": 54000008,
                 "name": "Arena 7"
             },
-            "join_date": 0
+            "join_date": 0,
+            "last_seen": "20190802T154619.000Z"
+
         }
     ]
 }
@@ -154,6 +163,7 @@ __fake_warlog__ = {
                     "cards_earned": 1120,
                     "battles_played": 1,
                     "wins": 1,
+                    "number_of_battles": 1,
                     "collection_day_battles_played": 3
                 }
             ],
@@ -186,6 +196,7 @@ __fake_war_base__ = {
             "cards_earned": 1120,
             "battles_played": 1,
             "wins": 1,
+            "number_of_battles": 1,
             "collection_day_battles_played": 3
         },
         {
@@ -193,6 +204,7 @@ __fake_war_base__ = {
             "cards_earned": 1120,
             "battles_played": 1,
             "wins": 1,
+            "number_of_battles": 1,
             "collection_day_battles_played": 1
         },
         {
@@ -200,6 +212,7 @@ __fake_war_base__ = {
             "cards_earned": 1120,
             "battles_played": 0,
             "wins": 1,
+            "number_of_battles": 1,
             "collection_day_battles_played": 1
         }
     ]

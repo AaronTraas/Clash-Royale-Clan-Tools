@@ -585,6 +585,10 @@ def build_dashboard(config): # pragma: no coverage
     # get API instance
     configuration = pyroyale.Configuration()
     configuration.api_key['authorization'] = config['api']['api_key']
+    if config['api']['proxy']:
+        configuration.proxy = config['api']['proxy']
+    if config['api']['proxy_headers']:
+        configuration.proxy_headers = config['api']['proxy_headers']
     api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
 
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed

@@ -15,7 +15,7 @@ develop:
 	python3 setup.py develop
 
 test-depend:
-	pip3 install coverage pytest pytest-runner requests_mock
+	python3 -m pip install coverage pytest pytest-runner requests_mock
 
 test: test-depend
 	python3 setup.py test
@@ -41,4 +41,4 @@ dist: translate
 	python3 setup.py sdist bdist_wheel
 
 upload: dist
-	twine upload dist/*
+	python3 -m twine upload dist/*
