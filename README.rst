@@ -79,7 +79,7 @@ parameter: api_key. The file should look like:
   #proxy=https://my-proxy.com
 
   # Proxy headers -- custom headers for proxy if needed
-  #proxy_headers=https://my-proxy.com
+  #proxy_headers=headers
 
   [Paths]
   # your output path. Where you want the static website to live.
