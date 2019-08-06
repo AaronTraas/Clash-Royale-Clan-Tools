@@ -51,6 +51,10 @@
     display: unset;
 }
 
+#leaderboards[data-filter="war-win-rate"] .leaderboard[data-filter="war-win-rate"] {
+    display: unset;
+}
+
 #leaderboards[data-filter="donations"] .leaderboard[data-filter="donations"] {
     display: unset;
 }
