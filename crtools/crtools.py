@@ -6,6 +6,7 @@ __docformat__ = 'reStructuredText'
 
 import copy
 from datetime import datetime, date, timezone, timedelta
+from html import escape
 import logging
 import math
 import os
@@ -421,6 +422,8 @@ def process_members(config, clan, warlog, current_war, member_history):
     members_processed = []
     for member_src in members:
         member = enrich_member_with_history(config, member_src, member_history['members'], days_from_donation_reset, now)
+
+        member['name'] = escape(member['name'])
 
         # get special statuses.
         # vacation = member is on vacation. Don't reccomend demote or kick, dont show score
