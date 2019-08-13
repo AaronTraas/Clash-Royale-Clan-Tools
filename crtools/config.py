@@ -80,16 +80,18 @@ config_defaults = {
         'show_war_win_rate'             : False,
         'show_current_war'              : True,
         'show_warlog'                   : True
-    }
+    },
     'discord' : {
-        'webhook_default'               : '',
-        'leaderboard_war'               : True,
-        'leaderboard_donations'         : True,
-        'nag_war_battle'                : True,
-        'nag_collection_battle'         : True,
-        'warn_inactive'                 : True,
-        'scold_missed_war_battle'       : True,
-        'scold_missed_collection_battle': True
+        'webhook_default'                   : '',
+        'leaderboard_war'                   : False,
+        'leaderboard_donations'             : False,
+        'nag_war_battle'                    : False,
+        'nag_war_battle_hours_left'         : 4,
+        'nag_collection_battle'             : False,
+        'nag_collection_battle_hours_left'  : 4,
+        'warn_inactive'                     : False,
+        'scold_missed_war_battle'           : False,
+        'scold_missed_collection_battle'    : False
     },
     'crtools' : {
         'debug'                         : False,

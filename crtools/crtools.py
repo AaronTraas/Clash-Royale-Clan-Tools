@@ -649,7 +649,7 @@ def build_dashboard(config): # pragma: no coverage
 
         io.move_temp_to_output_dir(tempdir, output_path)
 
-        discord.send_message(config, 'Test title', 'Test message')
+        discord.trigger_webhooks(config, current_war)
 
     except ApiException as e:
         logger.error('error: {}'.format(e))
