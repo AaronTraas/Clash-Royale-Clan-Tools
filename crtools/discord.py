@@ -16,23 +16,28 @@ def trigger_webhooks(config, current_war):
     send_war_nag(config, app_url, current_war)
 
 def send_war_nag(config, app_url, current_war):
-    logger.debug('Sending nag webhook')
 
     now = datetime.utcnow()
     war_day_label = ''
     war_end_timestamp = 0
     nag_threshold = 0
     if current_war['state'] == 'collectionDay':
+        if config['discord']['nag_collection_battle'] == False:
+            return
         war_end_timestamp = datetime.strptime(current_war['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         nag_threshold = config['discord']['nag_collection_battle_hours_left']
         war_day_label = 'collection'
     elif current_war['state'] == 'warDay':
+        if config['discord']['nag_war_battle'] == False:
+            return
         war_end_timestamp = datetime.strptime(current_war['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         nag_threshold = config['discord']['nag_war_battle_hours_left']
         war_day_label = 'war'
     else:
         logger.debug('Not in war; no nagging')
         return
+
+    logger.debug('Sending nag webhook')
 
     war_end_time_delta = math.floor((war_end_timestamp - now).seconds / 3600)
     if war_end_time_delta > nag_threshold:
