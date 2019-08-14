@@ -3,6 +3,8 @@ from discord_webhook import DiscordEmbed, DiscordWebhook
 import logging
 import math
 
+from ._version import __version__
+
 logger = logging.getLogger(__name__)
 
 def trigger_webhooks(config, current_war):
@@ -56,9 +58,11 @@ def send_war_nag(config, app_url, current_war):
     embed = DiscordEmbed(
         title="Members have **not** completed all of their **{} day** battles:".format(war_day_label),
         description=naughty_member_list,
-        url=app_url,
         color = int('0xff5500', 16)
     )
+
+    embed.set_footer(text='crtools v{}'.format(__version__))
+    embed.set_timestamp()
 
     # add embed object to webhook
     webhook.add_embed(embed)

@@ -85,7 +85,7 @@ config_defaults = {
         'webhook_default'                   : '',
         'leaderboard_war'                   : False,
         'leaderboard_donations'             : False,
-        'webhook_war_nag':                  : '',
+        'webhook_war_nag'                   : '',
         'nag_war_battle'                    : False,
         'nag_war_battle_hours_left'         : 4,
         'nag_collection_battle'             : False,

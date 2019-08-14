@@ -578,8 +578,6 @@ def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
     logger.debug('crtools version v{}'.format(__version__))
-    #logger.debug('pyroyale version v{}'.format(pyroyale.__version__))
-    logger.debug(config)
 
     # Create temporary directory. All file writes, until the very end,
     # will happen in this directory, so that no matter what we do, it
