@@ -85,6 +85,7 @@ config_defaults = {
         'webhook_default'                   : '',
         'leaderboard_war'                   : False,
         'leaderboard_donations'             : False,
+        'webhook_war_nag':                  : '',
         'nag_war_battle'                    : False,
         'nag_war_battle_hours_left'         : 4,
         'nag_collection_battle'             : False,
@@ -403,8 +404,6 @@ def load_config_file(config_file_name=None, check_for_update=False, locale=None)
 
     if check_for_update:
         config = __get_version_info(config)
-
-    logger.debug(config)
 
     if locale:
         config['crtools']['locale'] = locale
