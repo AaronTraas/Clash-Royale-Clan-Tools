@@ -285,6 +285,10 @@ def __localize_strings(locale_id):
         'league-grand-champion'     : _('Grand Champion'),
         'league-ultimate-champion'  : _('Ultimate Champion'),
 
+        'discord-header-war-nag'    : _('**{} hours** left on {} day. Members have **not** completed all battles:'),
+        'discord-war-label'         : _('war'),
+        'discord-collection-label'  : _('collection'),
+
         'war-league-bronze'         : _('Bronze League'),
         'war-league-silver'         : _('Silver League'),
         'war-league-gold'           : _('Gold League'),

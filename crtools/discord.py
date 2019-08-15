@@ -26,13 +26,13 @@ def send_war_nag(config, app_url, current_war):
             return
         war_end_timestamp = datetime.strptime(current_war['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         nag_threshold = config['discord']['nag_collection_battle_hours_left']
-        war_day_label = 'collection'
+        war_day_label = config['strings']['discord-collection-label']
     elif current_war['state'] == 'warDay':
         if config['discord']['nag_war_battle'] == False:
             return
         war_end_timestamp = datetime.strptime(current_war['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
         nag_threshold = config['discord']['nag_war_battle_hours_left']
-        war_day_label = 'war'
+        war_day_label = config['strings']['discord-war-label']
     else:
         logger.debug('Not in war; no nagging')
         return
@@ -61,7 +61,7 @@ def send_war_nag(config, app_url, current_war):
 
     # create embed object for webhook
     embed = DiscordEmbed(
-        title="Members have **not** completed all of their **{} day** battles:".format(war_day_label),
+        title=config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label),
         description=naughty_member_list,
         color = int('0xff5500', 16)
     )
