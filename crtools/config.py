@@ -286,6 +286,7 @@ def __localize_strings(locale_id):
         'league-ultimate-champion'  : _('Ultimate Champion'),
 
         'discord-header-war-nag'    : _('**{} hours** left on {} day. Members have **not** completed all battles:'),
+        'discord-header-war-quit'   : _('Members who have quit the clan and are now blacklisted:'),
         'discord-war-label'         : _('war'),
         'discord-collection-label'  : _('collection'),
 

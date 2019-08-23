@@ -7,15 +7,15 @@ from ._version import __version__
 
 logger = logging.getLogger(__name__)
 
-def trigger_webhooks(config, current_war):
+def trigger_webhooks(config, current_war, member_list):
     if not config['discord']['webhook_default']:
         return
 
     app_url = config['www']['canonical_url']
 
-    send_war_nag(config, app_url, current_war)
+    send_war_nag(config, app_url, current_war, member_list)
 
-def send_war_nag(config, app_url, current_war):
+def send_war_nag(config, app_url, current_war, member_list):
 
     now = datetime.utcnow()
     war_day_label = ''
@@ -45,9 +45,14 @@ def send_war_nag(config, app_url, current_war):
         return
 
     naughty_member_list = ''
+    quit_member_list = ''
     for member in current_war['participants']:
         if member['battles_played'] < member['number_of_battles']:
-            naughty_member_list += '- **{}**\n'.format(member['name'])
+            member_bullet = '- **{}**\n'.format(escape_markdown(member['name']))
+            if is_member_in_clan(member_list, member['tag']):
+                naughty_member_list += member_bullet
+            else:
+                quit_member_list += member_bullet
 
     if naughty_member_list == '':
         logger.debug('No members need nagging')
@@ -59,17 +64,37 @@ def send_war_nag(config, app_url, current_war):
 
     webhook = DiscordWebhook(url=webhook_url)
 
-    # create embed object for webhook
+    # add list of naughty users as embed embed object to webhook
     embed = DiscordEmbed(
         title=config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label),
         description=naughty_member_list,
         color = int('0xff5500', 16)
     )
 
+    if quit_member_list:
+        webhook.add_embed(embed)
+        embed = DiscordEmbed(
+            title=config['strings']['discord-header-war-quit'].format(war_end_time_delta, war_day_label),
+            description=quit_member_list,
+            color = int('0x660000', 16)
+    )
+
     embed.set_footer(text='crtools v{}'.format(__version__))
     embed.set_timestamp()
 
-    # add embed object to webhook
     webhook.add_embed(embed)
 
     webhook.execute()
+
+def escape_markdown(s):
+    markdown_escape_map = {'_' : '\\_', '*' : '\\*'}
+    for search, replace in markdown_escape_map.items():
+        s = s.replace(search, replace)
+    return s
+
+def is_member_in_clan(member_list, member_tag):
+    for member in member_list:
+        if member['tag'] == member_tag:
+            return True
+    return False
+
