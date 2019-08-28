@@ -5,6 +5,9 @@ Contributors to this project:
 Eagle334 <Eagle334@gmail.com>
 	French translation and testing
 
+Roy Law <https://github.com/RoyLaw>
+	Chinese translation
+
 Theodore Kotz <ted@kotz.us>
 	Code reviews and brainstorming
 
