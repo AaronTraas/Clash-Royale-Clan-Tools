@@ -11,71 +11,87 @@ def trigger_webhooks(config, current_war, member_list):
     if not config['discord']['webhook_default']:
         return
 
-    app_url = config['www']['canonical_url']
+    send_war_nag(config, current_war, member_list)
 
-    send_war_nag(config, app_url, current_war, member_list)
+class WarNagConfig:
 
-def send_war_nag(config, app_url, current_war, member_list):
+    abort = False
+    nag_header = ''
+    webhook_url = ''
+    naughty_member_list = ''
+    quit_member_list = ''
 
-    now = datetime.utcnow()
-    war_day_label = ''
-    war_end_timestamp = 0
-    nag_threshold = 0
-    if current_war['state'] == 'collectionDay':
-        if config['discord']['nag_collection_battle'] == False:
+    def __init__(self, config, current_war, member_list):
+        if current_war['state'] == 'notInWar':
+            logger.debug('Not in war; no nagging')
+            self.abort = True
             return
-        war_end_timestamp = datetime.strptime(current_war['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
-        nag_threshold = config['discord']['nag_collection_battle_hours_left']
-        war_day_label = config['strings']['discord-collection-label']
-    elif current_war['state'] == 'warDay':
-        if config['discord']['nag_war_battle'] == False:
+
+        now = datetime.utcnow()
+        self.webhook_url = config['discord']['webhook_default']
+        if config['discord']['webhook_war_nag']:
+            self.webhook_url = config['discord']['webhook_war_nag']
+
+        if current_war['state'] == 'collectionDay':
+            if config['discord']['nag_collection_battle'] == False:
+                self.abort = True
+                return
+
+            war_end_timestamp = datetime.strptime(current_war['collection_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
+            nag_threshold = config['discord']['nag_collection_battle_hours_left']
+            war_day_label = config['strings']['discord-collection-label']
+
+        elif current_war['state'] == 'warDay':
+            if config['discord']['nag_war_battle'] == False:
+                self.abort = True
+                return
+            war_end_timestamp = datetime.strptime(current_war['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
+            nag_threshold = config['discord']['nag_war_battle_hours_left']
+            war_day_label = config['strings']['discord-war-label']
+
+        war_end_time_delta = math.floor((war_end_timestamp - now).seconds / 3600)
+        if war_end_time_delta > nag_threshold:
+            logger.debug('Nag threshold is {} hours, and there are {} hours left. Not nagging.'.format(nag_threshold, war_end_time_delta))
+            self.abort = True
             return
-        war_end_timestamp = datetime.strptime(current_war['war_end_time'].split('.')[0], '%Y%m%dT%H%M%S')
-        nag_threshold = config['discord']['nag_war_battle_hours_left']
-        war_day_label = config['strings']['discord-war-label']
-    else:
-        logger.debug('Not in war; no nagging')
+
+        logger.debug('Compiling list of users to nag')
+
+        self._war_nag_get_naughty_member_list(current_war['participants'], member_list)
+
+        nag_header = config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label)
+
+    def _war_nag_get_naughty_member_list(self, war_participants, member_list):
+        for member in war_participants:
+            if member['battles_played'] < member['number_of_battles']:
+                member_bullet = '- **{}**\n'.format(escape_markdown(member['name']))
+                if is_member_in_clan(member_list, member['tag']):
+                    self.naughty_member_list += member_bullet
+                else:
+                    self.quit_member_list += member_bullet
+
+def send_war_nag(config, current_war, member_list):
+
+    nagConfig = WarNagConfig(config, current_war, member_list)
+
+    if nagConfig.abort or nagConfig.naughty_member_list == '':
         return
 
     logger.debug('Sending nag webhook')
-
-    war_end_time_delta = math.floor((war_end_timestamp - now).seconds / 3600)
-    if war_end_time_delta > nag_threshold:
-        logger.debug('Nag threshold is {} hours, and there are {} hours left. Not nagging.'.format(nag_threshold, war_end_time_delta))
-        return
-
-    naughty_member_list = ''
-    quit_member_list = ''
-    for member in current_war['participants']:
-        if member['battles_played'] < member['number_of_battles']:
-            member_bullet = '- **{}**\n'.format(escape_markdown(member['name']))
-            if is_member_in_clan(member_list, member['tag']):
-                naughty_member_list += member_bullet
-            else:
-                quit_member_list += member_bullet
-
-    if naughty_member_list == '':
-        logger.debug('No members need nagging')
-        return
-
-    webhook_url = config['discord']['webhook_default']
-    if config['discord']['webhook_war_nag']:
-        webhook_url = config['discord']['webhook_war_nag']
-
-    webhook = DiscordWebhook(url=webhook_url)
+    webhook = DiscordWebhook(url=nagConfig.webhook_url)
 
     # add list of naughty users as embed embed object to webhook
     embed = DiscordEmbed(
-        title=config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label),
-        description=naughty_member_list,
+        title=nagConfig.nag_header,
+        description=nagConfig.naughty_member_list,
         color = int('0xff5500', 16)
     )
 
-    if quit_member_list:
+    if nagConfig.quit_member_list:
         webhook.add_embed(embed)
         embed = DiscordEmbed(
-            title=config['strings']['discord-header-war-quit'].format(war_end_time_delta, war_day_label),
-            description=quit_member_list,
+            title=config['strings']['discord-header-war-quit'].format(),
+            description=nagConfig.quit_member_list,
             color = int('0x660000', 16)
     )
 

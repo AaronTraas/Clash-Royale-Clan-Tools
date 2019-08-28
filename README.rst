@@ -127,12 +127,15 @@ If you have problems, you can manually install the fan kit. See
 Other languages/locales
 ==================================================
 
-Crtools currently supports English and French. If you'd like to use French,
-add the following switch on the command line:
+Crtools currently supports English (en), French (fr), and Chinese (cn). If
+you'd like to use a language other than English, add the following switch
+on the command line:
 
 .. code::
 
   --locale=fr
+
+The above example is French. Use "cn" for Chinese or "en" for English.
 
 If you wish for crtools to be available in another languages, reach out to
 me. I'm unable to do the translation myself (I speak only English), but I can

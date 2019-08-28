@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: crtools 2.8.2\n"
+"Project-Id-Version: crtools 2.8.4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-15 10:04-0400\n"
+"POT-Creation-Date: 2019-08-28 09:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -657,36 +657,40 @@ msgid "**{} hours** left on {} day. Members have **not** completed all battles:"
 msgstr ""
 
 #: crtools/config.py:289
-msgid "war"
+msgid "Members who have quit the clan and are now blacklisted:"
 msgstr ""
 
 #: crtools/config.py:290
+msgid "war"
+msgstr ""
+
+#: crtools/config.py:291
 msgid "collection"
 msgstr ""
 
-#: crtools/config.py:292
+#: crtools/config.py:293
 msgid "Bronze League"
 msgstr ""
 
-#: crtools/config.py:293
+#: crtools/config.py:294
 msgid "Silver League"
 msgstr ""
 
-#: crtools/config.py:294
+#: crtools/config.py:295
 msgid "Gold League"
 msgstr ""
 
-#: crtools/config.py:295
+#: crtools/config.py:296
 msgid "Legendary League"
 msgstr ""
 
-#: crtools/config.py:297
+#: crtools/config.py:298
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically "
 "approved by Supercell and Supercell is not responsible for it."
 msgstr ""
 
-#: crtools/config.py:298
+#: crtools/config.py:299
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr ""
 
