@@ -8,10 +8,10 @@ clean:
 	python3 setup.py clean
 	rm -rf build dist .pytest_cache *.egg-info $(SRCDIR)/__pycache__ $(TESTDIR)/__pycache__ MANIFEST
 
-install:
+install: translate
 	python3 setup.py install
 
-develop:
+develop: translate
 	python3 setup.py develop
 
 test-depend:
