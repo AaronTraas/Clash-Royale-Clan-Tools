@@ -44,7 +44,7 @@ Usage:
 
 optional arguments:
   -h, --help           show this help message and exit
-  --locale LOCALE      Locale if language other than English is desired. Currently, only "fr" is valid.
+  --locale LOCALE      Locale if language other than English is desired (see `Other languages/locales`_).
   --config FILE        configuration file for this app.
   --api_key KEY        API key for developer.clashroyale.com
   --clan CLAN          Clan ID from Clash Royale. If it starts with a '#', clan ID must be quoted.
