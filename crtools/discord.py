@@ -59,7 +59,7 @@ class WarNagConfig:
 
         self._war_nag_get_naughty_member_list(current_war['participants'], member_list)
 
-        nag_header = config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label)
+        self.nag_header = config['strings']['discord-header-war-nag'].format(war_end_time_delta, war_day_label)
 
     def _war_nag_get_naughty_member_list(self, war_participants, member_list):
         for member in war_participants:
@@ -72,26 +72,26 @@ class WarNagConfig:
 
 def send_war_nag(config, current_war, member_list):
 
-    nagConfig = WarNagConfig(config, current_war, member_list)
+    nag_config = WarNagConfig(config, current_war, member_list)
 
-    if nagConfig.abort or nagConfig.naughty_member_list == '':
+    if nag_config.abort or nag_config.naughty_member_list == '':
         return
 
     logger.debug('Sending nag webhook')
-    webhook = DiscordWebhook(url=nagConfig.webhook_url)
+    webhook = DiscordWebhook(url=nag_config.webhook_url)
 
     # add list of naughty users as embed embed object to webhook
     embed = DiscordEmbed(
-        title=nagConfig.nag_header,
-        description=nagConfig.naughty_member_list,
+        title=nag_config.nag_header,
+        description=nag_config.naughty_member_list,
         color = int('0xff5500', 16)
     )
 
-    if nagConfig.quit_member_list:
+    if nag_config.quit_member_list:
         webhook.add_embed(embed)
         embed = DiscordEmbed(
             title=config['strings']['discord-header-war-quit'].format(),
-            description=nagConfig.quit_member_list,
+            description=nag_config.quit_member_list,
             color = int('0x660000', 16)
     )
 

@@ -21,6 +21,7 @@ LOCALE_LIST = {
     'fr': 'French',
     'cn': 'Chinese'
 }
+
 LOCALE_NOT_FOUND_ERROR_TEMPLATE = 'Locale "{}" not defined. Please use one of the following:\n'
 for name, description in LOCALE_LIST.items():
     LOCALE_NOT_FOUND_ERROR_TEMPLATE += '  - {} : {}\n'.format(name, description)
