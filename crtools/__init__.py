@@ -18,7 +18,8 @@ def parse_args(argv):
                                              for a developer account and create an API key to use with this.''')
     parser.add_argument('--locale',
                         metavar  = 'LOCALE',
-                        help     = 'Locale if language other than English is desired. Currently, only "fr" is valid.')
+                        help     = 'Locale if language other than English is desired'
+                        )
     parser.add_argument('--config',
                         metavar  = 'CONFIG-FILE',
                         help     = 'configuration file for this app.')

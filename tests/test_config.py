@@ -1,3 +1,4 @@
+import pytest
 import requests_mock
 
 from crtools import load_config_file
@@ -188,12 +189,13 @@ def test_version_update_request_fail(requests_mock, tmpdir):
     assert config['crtools']['latest_version'] == config['crtools']['version']
     assert config['crtools']['update_available'] == False
 
-def test_bad_locale_defaults_to_default(tmpdir, capsys):
+def test_bad_locale_aborts_with_error(tmpdir, capsys):
     config_file = tmpdir.mkdir('test_bad_locale_defaults_to_default').join('config.ini')
     bad_locale = 'sdlkjfasldfjalsdfjalsdf'
     config_file.write('[crtools]\nlocale='+bad_locale)
 
-    config = load_config_file(config_file.realpath(), True)
+    with pytest.raises(SystemExit):
+        config = load_config_file(config_file.realpath(), True)
     out, err = capsys.readouterr()
     expected = LOCALE_NOT_FOUND_ERROR_TEMPLATE.format(bad_locale)
     assert expected in out
