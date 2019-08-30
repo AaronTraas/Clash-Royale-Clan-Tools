@@ -1,12 +1,12 @@
 # Define required macros here
 SHELL = /bin/sh
 
-SRCDIR = ./pyroyale
+SRCDIR = ./crtools
 TESTDIR = ./tests
 
 clean:
 	python3 setup.py clean
-	rm -rf build dist .pytest_cache *.egg-info $(SRCDIR)/__pycache__ $(TESTDIR)/__pycache__ MANIFEST
+	rm -rf build dist .coverage coverage.xml .eggs .scannerwork .pytest_cache *.egg-info $(SRCDIR)/__pycache__ $(TESTDIR)/__pycache__ MANIFEST
 
 install: translate
 	python3 setup.py install

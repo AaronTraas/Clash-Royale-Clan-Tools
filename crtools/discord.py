@@ -1,7 +1,8 @@
-from datetime import datetime #, date, timezone, timedelta
+from datetime import datetime
 from discord_webhook import DiscordEmbed, DiscordWebhook
 import logging
 import math
+from requests.exceptions import ConnectionError
 
 from ._version import __version__
 
@@ -9,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 def trigger_webhooks(config, current_war, member_list):
     if not config['discord']['webhook_default']:
-        return
+        return False
 
-    send_war_nag(config, current_war, member_list)
+    return send_war_nag(config, current_war, member_list)
 
 class WarNagConfig:
 
@@ -74,8 +75,8 @@ def send_war_nag(config, current_war, member_list):
 
     nag_config = WarNagConfig(config, current_war, member_list)
 
-    if nag_config.abort or nag_config.naughty_member_list == '':
-        return
+    if nag_config.abort or (nag_config.naughty_member_list == ''):
+        return True
 
     logger.debug('Sending nag webhook')
     webhook = DiscordWebhook(url=nag_config.webhook_url)
@@ -100,7 +101,13 @@ def send_war_nag(config, current_war, member_list):
 
     webhook.add_embed(embed)
 
-    webhook.execute()
+    try:
+        webhook.execute()
+    except ConnectionError as e:
+        logger.error('Connection to discord failed. Sending war nag webhook failed.')
+        return False
+
+    return True
 
 def escape_markdown(s):
     markdown_escape_map = {'_' : '\\_', '*' : '\\*'}
