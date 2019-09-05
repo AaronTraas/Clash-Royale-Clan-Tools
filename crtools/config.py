@@ -387,11 +387,11 @@ def __get_version_info(config):
             ver = parse(release)
             latest_version = max(latest_version, ver)
 
-    logger.info('crtools version: {}'.format(current_version))
+    print('crtools v{}'.format(current_version))
     if latest_version > current_version:
         config['crtools']['latest_version'] = '{}'.format(latest_version)
         config['crtools']['update_available'] = True
-        logger.info('*** update available: crtools {} ***'.format(latest_version))
+        print('*** update available: crtools v{} ***'.format(latest_version))
 
     return config
 

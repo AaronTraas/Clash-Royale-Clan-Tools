@@ -577,8 +577,6 @@ def process_recent_wars(config, warlog):
 def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
-    logger.debug('crtools version v{}'.format(__version__))
-
     # Create temporary directory. All file writes, until the very end,
     # will happen in this directory, so that no matter what we do, it
     # won't hose existing stuff.
@@ -593,6 +591,8 @@ def build_dashboard(config): # pragma: no coverage
         configuration.proxy_headers = config['api']['proxy_headers']
     api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
 
+    print('- requesting info for clan id: {}'.format(config['api']['clan_id']))
+
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.
     try:
@@ -602,6 +602,8 @@ def build_dashboard(config): # pragma: no coverage
         clan = api.get_clan(config['api']['clan_id']).to_dict()
         warlog = api.get_clan_war_log(config['api']['clan_id']).to_dict()
         current_war = api.get_current_war(config['api']['clan_id']).to_dict()
+
+        print('- clan: {} ({})'.format(clan['name'], clan['tag']))
 
         # process data from API
         current_war_processed = process_current_war(config, current_war)
