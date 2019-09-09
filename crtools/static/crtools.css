@@ -600,13 +600,13 @@ table td.rank span {
 
 #member-table tr[data-new="true"] td.name,
 #member-table tr[data-nopromote="true"] td.name,
-#member-table tr[data-blacklist="true"] td.name {
+table tr[data-blacklist="true"] td.name {
     padding-right: 44px;
 }
 
 #member-table tr[data-new="true"] td.name:after,
 #member-table tr[data-nopromote="true"] td.name:after,
-#member-table tr[data-blacklist="true"] td.name:after {
+table tr[data-blacklist="true"] td.name:after {
     content: "";
     display: block;
     position: absolute;
@@ -698,14 +698,14 @@ table td.rank span {
 }
 
 #member-table tr[data-activity=bad] td,
-#member-table tr[data-blacklist=true] td,
+table tr[data-blacklist=true] td,
 #member-table tr[data-activity=ok] td:not(.bad) {
     border-left: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
 }
 
 #member-table tr[data-activity=bad] td,
-#member-table tr[data-blacklist=true] td {
+table tr[data-blacklist=true] td {
     background-color: #c13525;
     color: #fff;
 }

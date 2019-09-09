@@ -78,7 +78,6 @@ def send_war_nag(config, current_war, member_list):
     if nag_config.abort or (nag_config.naughty_member_list == ''):
         return True
 
-    logger.debug('Sending nag webhook')
     webhook = DiscordWebhook(url=nag_config.webhook_url)
 
     # add list of naughty users as embed embed object to webhook
@@ -102,6 +101,7 @@ def send_war_nag(config, current_war, member_list):
     webhook.add_embed(embed)
 
     try:
+        logger.info('Sending war nag to Discord')
         webhook.execute()
     except ConnectionError as e:
         logger.error('Connection to discord failed. Sending war nag webhook failed.')

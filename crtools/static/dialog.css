@@ -193,10 +193,6 @@ dialog [data-member-id] > section > * {
 	margin: 0 12px;
 }
 
-dialog#members-old table {
-	margin: 0 8px;
-}
-
 dialog#member-details tr:last-child td,
 dialog#member-details tr:last-child th {
 	border-bottom: none;

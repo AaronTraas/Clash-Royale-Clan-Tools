@@ -12,9 +12,13 @@
             </thead>
             <tbody>
             {% for member in former_members %}
-                <tr class="member-start">
+                <tr class="member-start" data-blacklist="{{ 'true' if member.blacklist else 'false' }}">
                     <td rowspan="{{member.events|length}}">
-                        <strong>{{member.name}}</strong><br/>
+                        <strong>{{member.name}}</strong>
+                        {% if member.blacklist %}
+                        &mdash; blacklisted
+                        {% endif %}
+                        <br/>
                         {{member.tag}}
                     </td>
                     <td>{{member.events[0].date}} &ndash; {{member.events[0].message}}</td>
@@ -24,7 +28,7 @@
                     </td>
                 </tr>
                 {% for event in member.events[1:] %}
-                <tr>
+                <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}">
                     <td>{{event.date}} &ndash; {{event.message}}</td>
                 </tr>
                 {% endfor %}

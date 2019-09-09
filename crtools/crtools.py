@@ -489,6 +489,7 @@ def process_absent_members(config, historical_members):
             absent_members.append({
                 'name'      : member['name'],
                 'tag'       : tag,
+                'blacklist' : tag in config['members']['blacklist'],
                 'events'    : events,
                 'timestamp' : events[len(events)-1]['timestamp']
             })
