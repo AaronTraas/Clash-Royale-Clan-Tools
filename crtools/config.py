@@ -12,6 +12,7 @@ except ImportError:  # pragma: no coverage
     from pip._vendor.packaging.version import parse
 
 from ._version import __version__
+from crtools import gdoc
 
 logger = logging.getLogger(__name__)
 
@@ -101,6 +102,10 @@ config_defaults = {
         'warn_inactive'                     : False,
         'scold_missed_war_battle'           : False,
         'scold_missed_collection_battle'    : False
+    },
+    'google_docs' : {
+        'api_key'                           : '',
+        'sheet_id'                          : ''
     },
     'crtools' : {
         'debug'                         : False,
@@ -415,6 +420,9 @@ def load_config_file(config_file_name=None, check_for_update=False, locale=None)
 
     config = __validate_paths(config)
     config = __validate_crtools_settings(config)
+
+    if config['google_docs']['api_key'] and config['google_docs']['sheet_id']:
+        config = gdoc.get_member_data_from_sheets(config)
 
     if check_for_update:
         config = __get_version_info(config)
