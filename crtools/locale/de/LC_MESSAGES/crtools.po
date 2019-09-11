@@ -1,16 +1,16 @@
 # Translations template for crtools.
 # Copyright (C) 2019 ORGANIZATION
 # This file is distributed under the same license as the crtools project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <pasmero@gmail.com>, 2019.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.8.4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-28 09:57-0400\n"
+"POT-Creation-Date: 2019-09-2811 16:48-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Pas Mero <pasmero@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: crtools/config.py:119
 msgid "{clan_name} Clan Dashboard"
-msgstr ""
+msgstr "Clan Dashboard"
 
 #: crtools/config.py:121
 msgid "Looking for a clan?"
@@ -67,15 +67,15 @@ msgstr "Clanstatistiken"
 
 #: crtools/config.py:134
 msgid "Clan Name"
-msgstr ""
+msgstr "Clanname"
 
 #: crtools/config.py:135
-msgid "Clanpunkte"
-msgstr ""
+msgid "Clan Score"
+msgstr "Clanpunkte"
 
 #: crtools/config.py:136
-msgid "Land"
-msgstr ""
+msgid "Country"
+msgstr "Land"
 
 #: crtools/config.py:137
 msgid "International"
