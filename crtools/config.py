@@ -120,11 +120,14 @@ config_defaults = {
 def __localize_strings(locale_id):
 
     logger.debug('specified locale: "{}"'.format(locale_id))
+    if locale_id not in LOCALE_LIST:
+        print(LOCALE_NOT_FOUND_ERROR_TEMPLATE.format(locale_id))
+        exit()
+
     try:
         locale.setlocale(locale.LC_TIME, (locale_id, 'UTF-8'))
     except locale.Error:
-        print(LOCALE_NOT_FOUND_ERROR_TEMPLATE.format(locale_id))
-        exit()
+        print('Locale time setting not found in your os for "{}"'.format(locale_id))
 
     localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
     translate = gettext.translation('crtools', localedir, languages=[locale_id], fallback=True)
