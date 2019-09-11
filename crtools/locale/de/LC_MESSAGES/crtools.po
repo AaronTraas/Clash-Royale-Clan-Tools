@@ -120,7 +120,7 @@ msgstr "Keine Kriege im Kriegslog"
 
 #: crtools/config.py:162
 msgid "State"
-msgstr "Staat"
+msgstr "Status"
 
 #: crtools/config.py:163
 msgid "Collection Day End"
@@ -497,13 +497,13 @@ msgstr ""
 #: crtools/config.py:255
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
-"<strong>{name}</strong> wegen <strong class=\"bad\">{score}</strong> "
+"<strong>{name}</strong> wegen <strong class=\"bad\">{score} Punkten</strong> "
 "kicken."
 
 #: crtools/config.py:256
 msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr ""
-"strong>{name}</strong> wegen <strong class=\"bad\">{score}</strong> "
+"<strong>{name}</strong> wegen <strong class=\"bad\">{score} Punkten</strong> "
 "degradieren."
 
 #: crtools/config.py:257
@@ -519,7 +519,7 @@ msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr ""
-"Die Punkte werden aus zwei Komponenten berechnet: strong>Punkte durch "
+"Die Punkte werden aus zwei Komponenten berechnet: <strong>Punkte durch "
 "Spenden</strong> und <strong>Punkte durch Kriegsteilnahme</strong>."
 
 #: crtools/config.py:260
@@ -533,11 +533,11 @@ msgid ""
 "make fewer, you will lose points. If you have zero, you will be penalized"
 " <strong class=\"bad\">{donations_zero} points</strong>"
 msgstr ""
-"Es wird vorausgesetzt, dass <strong>{min_donations_daily} Karten pro "
-"Tag</strong>, im durschnitt gespendet werden sollten. Wenn du mehr "
+"Es wird vorausgesetzt, dass von dir durchschnittlich <strong>{min_donations_daily} Karten pro "
+"Tag</strong> gespendet werden. Wenn du mehr "
 "spendest, kannst du dir Punkte verdienen. Wenn du weniger spendest , "
-"verlierst du Punkte. Wenn du nicht spendest, wirst du bestraft. <strong "
-"class=\"bad\">{donations_zero} points</strong>"
+"verlierst du Punkte. Wenn du nicht spendest, wirst du mit <strong "
+"class=\"bad\">{donations_zero} Punkten</strong> bestraft."
 
 #: crtools/config.py:263
 msgid "War Participation Score"
@@ -719,7 +719,7 @@ msgid ""
 " approved by Supercell and Supercell is not responsible for it."
 msgstr ""
 "Dieser Inhalt ist nicht zugehörig, befürwortet, oder spezifisch genehmigt"
-"  von Supercell und supercell ist dafür nicht verantwortlich."
+" von Supercell und Supercell ist dafür nicht verantwortlich."
 
 #: crtools/config.py:314
 msgid "For more information see Supercell's Fan Content Policy."
