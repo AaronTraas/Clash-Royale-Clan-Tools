@@ -53,7 +53,7 @@ def parse_args(argv):
 
     return parser.parse_args(argv)
 
-def get_config_from_args(args):
+def get_config_from_args(args, check_config_file=True, config_default='~/.crtools'):
     if args.version:
         print(__version__)
         exit(0)
@@ -65,13 +65,13 @@ def get_config_from_args(args):
             logger.error('Config file specified {} not found'.format(config_file_name) )
             exit(1)
     else:
-        config_file_name = os.path.expanduser('~/.crtools')
+        config_file_name = os.path.expanduser(config_default)
 
     locale = None
     if args.locale:
         locale = args.locale
 
-    config = load_config_file(config_file_name, True, locale)
+    config = load_config_file(config_file_name, check_config_file, locale)
 
     # grab API key and clan ID from arguments if applicable
     if args.api_key:

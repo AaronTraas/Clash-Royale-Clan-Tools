@@ -15,7 +15,7 @@ def test_parse_args_config_file(tmpdir):
         '--config', str(config_file.realpath())
     ]
 
-    config = crtools.get_config_from_args(crtools.parse_args(argv))
+    config = crtools.get_config_from_args(crtools.parse_args(argv), False)
 
     assert config['crtools']['debug'] == True
 
@@ -66,7 +66,7 @@ def test_parse_args_all(tmpdir):
         '--locale',         'fr',
         '--debug'
     ]
-    config = crtools.get_config_from_args(crtools.parse_args(argv))
+    config = crtools.get_config_from_args(crtools.parse_args(argv), False, '~/fake/path/that/does/not/exist')
     assert config['api']['api_key'] == argv[1]
     assert config['api']['clan_id'] == argv[3]
     assert config['paths']['out'] == argv[5]

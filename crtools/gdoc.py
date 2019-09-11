@@ -1,30 +1,25 @@
 from datetime import datetime
 import logging
-import pickle
-import os.path
 
 from googleapiclient.discovery import build
-#from google.auth.transport.requests import Request
-#from google_auth_oauthlib.flow import InstalledAppFlow
 
 logger = logging.getLogger(__name__)
-
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 DEMERIT_RANGE = 'Demerits!A2:G'
 VACATION_RANGE = 'Vacation!A2:E'
 
 def get_member_data_from_sheets(config):
 
+    if not config['google_docs']['api_key'] or not config['google_docs']['sheet_id']:
+        return config
+
     sheet_id = config['google_docs']['sheet_id']
 
     logging.info('Grabbing blacklist/vacation data from Google Sheet {}'.format(sheet_id))
 
     try:
-        service = build('sheets', 'v4', cache_discovery=False, developerKey=config['google_docs']['api_key'])
-
         # Call the Sheets API
-        sheet = service.spreadsheets()
+        sheet = get_sheet(config['google_docs']['api_key'])
 
         (config['members']['blacklist'], config['members']['no_promote']) = get_demerit_data_from_sheet(sheet, sheet_id, config['members']['blacklist'], config['members']['no_promote'])
         config['members']['vacation'] = get_vacation_data_from_sheet(sheet, sheet_id, config['members']['vacation'])
@@ -33,8 +28,11 @@ def get_member_data_from_sheets(config):
         logging.error(e)
         logging.error('Unable to get data from Google Sheet {}'.format(sheet_id))
 
-
     return config
+
+def get_sheet(api_key):
+    return build('sheets', 'v4', cache_discovery=False, developerKey=api_key).spreadsheets()
+
 
 def get_demerit_data_from_sheet(sheet, sheet_id, blacklist=[], no_promote_list=[]):
 
@@ -43,27 +41,16 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist=[], no_promote_list=[
                   .execute() \
                   .get('values', [])
 
-
     current_name = current_tag = ''
-    blacklist_names = []
-    no_promote_names = []
 
     for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
         if member_tag:
             current_tag = member_tag
-            current_name = member_name
 
-        if member_status == 'blacklist':
-            if current_tag not in blacklist:
-                blacklist.append(current_tag)
-                blacklist_names.append(current_name)
-        elif member_status == 'no-promote list':
-            if current_tag not in no_promote_list:
-                no_promote_list.append(current_tag)
-                no_promote_names.append(current_name)
-
-    logger.debug('Blacklist: {}'.format(blacklist_names))
-    logger.debug('No-promote list: {}'.format(no_promote_names))
+        if member_status == 'blacklist' and current_tag not in blacklist:
+            blacklist.append(current_tag)
+        elif member_status == 'no-promote list' and current_tag not in no_promote_list:
+            no_promote_list.append(current_tag)
 
     return (blacklist, no_promote_list)
 
@@ -75,20 +62,11 @@ def get_vacation_data_from_sheet(sheet, sheet_id, vacation=[]):
                   .get('values', [])
 
     current_name = current_tag = ''
-    vacation_names = []
     now = datetime.utcnow().date()
 
     for (member_name, member_tag, start_date, end_date, notes) in values:
-        if member_tag:
-            current_tag = member_tag
-            current_name = member_name
-
         vacation_end = datetime.strptime(end_date, '%m/%d/%Y').date()
-        if vacation_end >= now:
-            if current_tag not in vacation:
-                vacation.append(current_tag)
-                vacation_names.append(current_name)
-
-    logger.debug('Vacation list: {}'.format(vacation_names))
+        if vacation_end >= now and member_tag not in vacation:
+            vacation.append(member_tag)
 
     return vacation

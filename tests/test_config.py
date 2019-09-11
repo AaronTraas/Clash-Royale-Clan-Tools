@@ -195,7 +195,7 @@ def test_bad_locale_aborts_with_error(tmpdir, capsys):
     config_file.write('[crtools]\nlocale='+bad_locale)
 
     with pytest.raises(SystemExit):
-        config = load_config_file(config_file.realpath(), True)
+        config = load_config_file(config_file.realpath())
     out, err = capsys.readouterr()
     expected = LOCALE_NOT_FOUND_ERROR_TEMPLATE.format(bad_locale)
     assert expected in out
