@@ -104,6 +104,28 @@ parameter: api_key. The file should look like:
 For more details, see `samples/crtools.ini <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/samples/crtools.ini>`_
 
 ==================================================
+Optional blacklist and vacation management using Google Sheets
+==================================================
+
+You can optionally use a Google Sheets log to keep track of demerits
+and vacations. If you want that info to be integrated with crtools, you
+need to copy the
+`crtools member log template <https://docs.google.com/spreadsheets/d/1_8YKfJf-2HVZOgtuosVaGM_50kB8q7YYR3H2d8p0Wzw>`_
+to your Google Docs account and use that. Fill in with info about your
+clan. Be sure not to re-name any of the tabs, or add/remove any columns.
+
+You will also need to sign up for a `Google Cloud API key <https://developers.google.com/sheets/api/guides/authorizing#APIKey>`_.
+
+Once you have that, find the sheet ID from your spreadsheet URL, add
+the following to your config file:
+
+.. code:: ini
+
+  [google_docs]
+  api_key=<YOUR-API-KEY>
+  sheet_id=<YOUR-SHEET-ID>
+
+==================================================
 Using the ClashRoyale Official Fan Kit
 ==================================================
 

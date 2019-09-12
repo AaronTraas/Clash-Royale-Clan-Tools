@@ -9,6 +9,11 @@ DEMERIT_RANGE = 'Demerits!A2:G'
 VACATION_RANGE = 'Vacation!A2:E'
 
 def get_member_data_from_sheets(config):
+    """ If API key and Sheet ID are provided in config, use the Google Sheets API to
+    grab blacklist, no-promote list, and vacation data.
+
+    Template found here: https://docs.google.com/spreadsheets/d/1_8YKfJf-2HVZOgtuosVaGM_50kB8q7YYR3H2d8p0Wzw
+    """
 
     if not config['google_docs']['api_key'] or not config['google_docs']['sheet_id']:
         return config
@@ -24,7 +29,11 @@ def get_member_data_from_sheets(config):
 
     return config
 
+# no coverage of this function because this is the function we're mocking to get mock
+# results for unit tests
 def get_sheet(api_key): # pragma: no coverage
+    """ Returns authenticated Google Sheet API wrapper using API key """
+
     try:
         return build('sheets', 'v4', cache_discovery=False, developerKey=api_key).spreadsheets()
     except Exception as e:
@@ -39,7 +48,7 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist=[], no_promote_list=[
                       .execute() \
                       .get('values', [])
 
-        current_name = current_tag = ''
+        current_tag = ''
 
         for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
             if member_tag:
@@ -63,7 +72,6 @@ def get_vacation_data_from_sheet(sheet, sheet_id, vacation=[]):
                       .execute() \
                       .get('values', [])
 
-        current_name = current_tag = ''
         now = datetime.utcnow().date()
 
         for (member_name, member_tag, start_date, end_date, notes) in values:
