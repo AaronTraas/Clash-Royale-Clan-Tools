@@ -103,9 +103,9 @@ parameter: api_key. The file should look like:
 
 For more details, see `samples/crtools.ini <https://github.com/AaronTraas/Clash-Royale-Clan-Tools/blob/master/samples/crtools.ini>`_
 
-==================================================
+===================================================================
 Optional blacklist and vacation management using Google Sheets
-==================================================
+===================================================================
 
 You can optionally use a Google Sheets log to keep track of demerits
 and vacations. If you want that info to be integrated with crtools, you
