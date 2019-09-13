@@ -64,10 +64,27 @@
                             <strong>{{member.war_win_rate}}%</strong><br>
                         </dd>
                     </dl>
+                    <dl>
+                        <dt>{{strings.labelCollectionWinRate}}</dt>
+                        <dd>
+                            <strong>{{member.war_collection_win_rate}}%</strong><br>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelCollectionCardsWon}}</dt>
+                        <dd>
+                            <strong>{{member.war_collection_cards_average}} cards/war</strong><br>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{strings.labelWarScoreAverage}}</dt>
+                        <dd>
+                            <strong>{{member.war_score_average}} points</strong><br>
+                        </dd>
+                    </dl>
                 </div>
                 <div>
                     <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi"><span>{{config.strings.dialogMemberRoyaleApi}}</span></a>
-                    <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale"><span>{{config.strings.dialogMemberStatsRoyale}}</span></a>
                 </div>
             </section>
             <h3><span>{{strings.dialogLabelPlayerHistory}}</span></h3>

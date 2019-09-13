@@ -355,18 +355,31 @@ def calc_activity_status(config, days_inactive):
 
     return 'normal'
 
-def get_war_win_rate(warlog):
-    wins = 0
-    battles = 0
-    for war in warlog:
+def calc_recent_war_stats(member):
+    war_wins = 0
+    war_battles = 0
+    collection_wins = 0
+    collection_cards = 0
+    for war in member['warlog']:
         if 'wins' in war:
-            wins += war['wins']
-            battles += war['number_of_battles']
+            war_wins += war['wins']
+            war_battles += war['number_of_battles']
+        if 'collectionBattleWins' in war:
+            collection_wins += war['collectionBattleWins']
+        if 'collectionWinCards' in war:
+            collection_cards += war['collectionWinCards']
 
-    if battles == 0:
-        return 0
+    if war_battles > 0:
+        member['war_win_rate'] = round((war_wins/war_battles) * 100)
+    else:
+        member['war_win_rate'] = 0
 
-    return round((wins/battles) * 100)
+    member['war_collection_win_rate'] = round(((collection_wins / 10) / 3) * 100)
+    member['war_collection_cards_average'] = round(collection_cards / 10)
+    member['war_score_average'] = round(member['warScore'] / 10)
+
+    return member
+
 
 def get_role_label(config, member_role, days_inactive, activity_status, on_vacation, blacklisted, no_promote):
     """ Format roles in sane way """
@@ -407,6 +420,62 @@ def process_member_events(config, events):
     return processed_events
 
 
+def calc_derived_member_stats(config, clan, warlog, current_war, member, days_from_donation_reset):
+    member['name'] = escape(member['name'])
+
+    # get special statuses.
+    # vacation = member is on vacation. Don't reccomend demote or kick, dont show score
+    # safe = member marked as safe. Don't reccomend demote or kick
+    # blacklist = member on blacklist. Recommend kick immediately.
+    member['vacation'] = member['tag'] in config['members']['vacation']
+    member['safe'] = member['tag'] in config['members']['safe']
+    member['no_promote'] = member['tag'] in config['members']['no_promote']
+    member['blacklist'] = member['tag'] in config['members']['blacklist']
+
+    # Automatically add inactive 'safe' members to vacation
+    if member['safe'] and (member['days_inactive'] >= config['activity']['threshold_warn']):
+        member['vacation'] = True
+
+    # get member warlog and add it to the record
+    member['currentWar'] = member_war(config, member, current_war)
+    member['warlog'] = member_warlog(config, member, warlog)
+
+    member['donationScore'] = donations_score(config, member)
+
+    # calculate score based on war participation
+    member['warScore'] = 0
+    for war in member['warlog']:
+        member['warScore'] += war['score']
+
+    # get member score
+    member['score'] = member['warScore'] + member['donationScore']
+
+    # calculate the number of daily donations, and the donation status
+    # based on threshold set in config
+    member['donationStatus'] = calc_donation_status(config, member['donationScore'], member['donationsDaily'], days_from_donation_reset)
+
+    member['status'] = calc_member_status(config, member['score'], member['no_promote'])
+
+    member['activity_status'] = calc_activity_status(config, member['days_inactive'])
+
+    member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'], member['no_promote'])
+
+    if member['trophies'] >= clan['required_trophies']:
+        member['trophiesStatus'] = 'normal'
+    else:
+        member['trophiesStatus'] = 'ok'
+
+    member['arenaLeague'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
+    member['arenaLeagueLabel'] = config['strings']['league-' + member['arenaLeague']]
+
+    # Figure out whether member is on the leadership team by role
+    member['leadership'] = member['role'] == 'leader' or member['role'] == 'coLeader'
+
+    member = calc_recent_war_stats(member)
+
+    return member
+
+
 def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
@@ -424,57 +493,7 @@ def process_members(config, clan, warlog, current_war, member_history):
     for member_src in members:
         member = enrich_member_with_history(config, member_src, member_history['members'], days_from_donation_reset, now)
 
-        member['name'] = escape(member['name'])
-
-        # get special statuses.
-        # vacation = member is on vacation. Don't reccomend demote or kick, dont show score
-        # safe = member marked as safe. Don't reccomend demote or kick
-        # blacklist = member on blacklist. Recommend kick immediately.
-        member['vacation'] = member['tag'] in config['members']['vacation']
-        member['safe'] = member['tag'] in config['members']['safe']
-        member['no_promote'] = member['tag'] in config['members']['no_promote']
-        member['blacklist'] = member['tag'] in config['members']['blacklist']
-
-        # Automatically add inactive 'safe' members to vacation
-        if member['safe'] and (member['days_inactive'] >= config['activity']['threshold_warn']):
-            member['vacation'] = True
-
-        # get member warlog and add it to the record
-        member['currentWar'] = member_war(config, member, current_war)
-        member['warlog'] = member_warlog(config, member, warlog)
-
-        member['donationScore'] = donations_score(config, member)
-
-        # calculate score based on war participation
-        member['warScore'] = 0
-        for war in member['warlog']:
-            member['warScore'] += war['score']
-
-        # get member score
-        member['score'] = member['warScore'] + member['donationScore']
-
-        # calculate the number of daily donations, and the donation status
-        # based on threshold set in config
-        member['donationStatus'] = calc_donation_status(config, member['donationScore'], member['donationsDaily'], days_from_donation_reset)
-
-        member['status'] = calc_member_status(config, member['score'], member['no_promote'])
-
-        member['activity_status'] = calc_activity_status(config, member['days_inactive'])
-
-        member['role_label'] = get_role_label(config, member['role'], member['days_inactive'], member['activity_status'], member['vacation'], member['blacklist'], member['no_promote'])
-
-        if member['trophies'] >= clan['required_trophies']:
-            member['trophiesStatus'] = 'normal'
-        else:
-            member['trophiesStatus'] = 'ok'
-
-        member['arenaLeague'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
-        member['arenaLeagueLabel'] = config['strings']['league-' + member['arenaLeague']]
-
-        # Figure out whether member is on the leadership team by role
-        member['leadership'] = member['role'] == 'leader' or member['role'] == 'coLeader'
-
-        member['war_win_rate'] = get_war_win_rate(member['warlog'])
+        member = calc_derived_member_stats(config, clan, warlog, current_war, member, days_from_donation_reset)
 
         members_processed.append(member)
 

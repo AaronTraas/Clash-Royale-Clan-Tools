@@ -24,7 +24,6 @@
                     <td>{{member.events[0].date}} &ndash; {{member.events[0].message}}</td>
                     <td rowspan="{{member.events|length}}" class="buttons">
                         <a href="https://royaleapi.com/player/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button royaleapi" title="{{config.strings.dialogMemberRoyaleApi}}"><span></span></a>
-                        <a href="https://statsroyale.com/profile/{{member.tag | replace('#', '')}}" rel="external" target="_blank" class="button statsroyale" title="{{config.strings.dialogMemberStatsRoyale}}"><span></span></a>
                     </td>
                 </tr>
                 {% for event in member.events[1:] %}
