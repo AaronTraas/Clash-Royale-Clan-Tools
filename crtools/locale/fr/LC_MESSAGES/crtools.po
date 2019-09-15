@@ -288,7 +288,7 @@ msgstr "Victoires jour de guerre"
 
 #: crtools/config.py:206
 msgid "War win rate"
-msgstr ""
+msgstr "% victoire"
 
 #: crtools/config.py:207
 #, fuzzy
@@ -713,11 +713,11 @@ msgstr "Grand Champion"
 
 #: crtools/config.py:309
 msgid "**{} hours** left on {} day. Members have **not** completed all battles:"
-msgstr ""
+msgstr "Il reste **{} heures** sur {} jour. Membres n'ayant **pas** terminé toutes les batailles :"
 
 #: crtools/config.py:310
 msgid "Members who have quit the clan and are now blacklisted:"
-msgstr ""
+msgstr "Membres ayant quitté le clan et maintenant sur liste noire :"
 
 #: crtools/config.py:311
 #, fuzzy
