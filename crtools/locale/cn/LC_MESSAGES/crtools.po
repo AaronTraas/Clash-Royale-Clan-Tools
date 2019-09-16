@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: crtools 2.8.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-09-13 11:46-0400\n"
-"PO-Revision-Date: 2019-08-28 21:29+0800\n"
+"PO-Revision-Date: 2019-09-14 09:52+0800\n"
 "Last-Translator: \n"
 "Language: zh_CN\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: crtools/config.py:137
 msgid "{clan_name} Clan Dashboard"
@@ -232,7 +233,7 @@ msgstr "当前"
 
 #: crtools/config.py:193
 msgid "Not in clan"
-msgstr "不在部落中"
+msgstr "未在部落"
 
 #: crtools/config.py:194
 msgid "N/A"
@@ -287,22 +288,16 @@ msgid "War win rate"
 msgstr "部落战胜率"
 
 #: crtools/config.py:207
-#, fuzzy
-#| msgid "collection"
 msgid "Collection win rate"
-msgstr "集卡战"
+msgstr "集卡战胜率"
 
 #: crtools/config.py:208
-#, fuzzy
-#| msgid "Collection day wins"
 msgid "Collection cards won"
-msgstr "集卡日获胜"
+msgstr "集卡数量"
 
 #: crtools/config.py:209
-#, fuzzy
-#| msgid "War score"
 msgid "War score average"
-msgstr "部落战积分"
+msgstr "部落战平均获分"
 
 #: crtools/config.py:210
 msgid "War score"
@@ -382,8 +377,8 @@ msgstr "成员处于黑名单中，请尽快踢出部落。"
 
 #: crtools/config.py:231
 msgid ""
-"Member has been tagged on the \"No Promote\" list for abusing privileges "
-"in the past. Never promote to Elder or higher."
+"Member has been tagged on the \"No Promote\" list for abusing privileges in "
+"the past. Never promote to Elder or higher."
 msgstr "成员因有过违例行为，被标记为“不可晋升”。请勿晋升其为长者或更高身份。"
 
 #: crtools/config.py:232
@@ -470,9 +465,10 @@ msgstr "积分 <strong class=\"bad\">低于 0</strong> 的成员将被建议踢�
 
 #: crtools/config.py:255
 msgid ""
-"Members inactive for <strong class=\"bad\">{days_inactive} days</strong> "
-"will be kicked."
-msgstr "超过 <strong class=\"bad\">{days_inactive} 天</strong> 未活跃的成员将被踢出。"
+"Members inactive for <strong class=\"bad\">{days_inactive} days</strong> will "
+"be kicked."
+msgstr ""
+"超过 <strong class=\"bad\">{days_inactive} 天</strong> 未活跃的成员将被踢出。"
 
 #: crtools/config.py:256
 msgid ""
@@ -497,9 +493,10 @@ msgstr "踢出 <strong>{name}</strong>。该成员在黑名单中。"
 
 #: crtools/config.py:260
 msgid ""
-"Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
-"inactive</strong>"
-msgstr "踢出 <strong>{name}</strong> <strong class=\"bad\">{days} 天未活跃</strong>"
+"Kick <strong>{name}</strong> <strong class=\"bad\">{days} days inactive</"
+"strong>"
+msgstr ""
+"踢出 <strong>{name}</strong> <strong class=\"bad\">{days} 天未活跃</strong>"
 
 #: crtools/config.py:261
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
@@ -511,17 +508,19 @@ msgstr "降职 <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 
 #: crtools/config.py:263
 msgid ""
-"Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
-"class=\"good\">{score}</strong>"
+"Promote <strong>{name}</strong> to <strong>Elder</strong> <strong class=\"good"
+"\">{score}</strong>"
 msgstr ""
-"晋升 <strong>{name}</strong> 为 <strong>长老</strong> <strong "
-"class=\"good\">{score}</strong>"
+"晋升 <strong>{name}</strong> 为 <strong>长老</strong> <strong class=\"good"
+"\">{score}</strong>"
 
 #: crtools/config.py:265
 msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
-msgstr "成员积分由 <strong>捐赠积分</strong> 和 <strong>部落战积分</strong> 两部分组成。"
+msgstr ""
+"成员积分由 <strong>捐赠积分</strong> 和 <strong>部落战积分</strong> 两部分组"
+"成。"
 
 #: crtools/config.py:266
 msgid "Donation Score"
@@ -529,14 +528,15 @@ msgstr "捐赠积分"
 
 #: crtools/config.py:267
 msgid ""
-"You are expected to donate <strong>{min_donations_daily} cards per "
-"day</strong>, on average. If you make more, you will gain points. If you "
-"make fewer, you will lose points. If you have zero, you will be penalized"
-" <strong class=\"bad\">{donations_zero} points</strong>"
+"You are expected to donate <strong>{min_donations_daily} cards per day</"
+"strong>, on average. If you make more, you will gain points. If you make "
+"fewer, you will lose points. If you have zero, you will be penalized <strong "
+"class=\"bad\">{donations_zero} points</strong>"
 msgstr ""
-"每位成员应至少 <strong>平均每天捐赠 {min_donations_daily} "
-"张卡牌</strong>。如果捐赠数量超过该数量将得到额外积分奖励，如果捐赠数量未达该数量将有相应积分惩罚。如果没有卡牌捐赠则会被惩罚扣除 "
-"<strong class=\"bad\">{donations_zero} 积分</strong>。"
+"每位成员应至少 <strong>平均每天捐赠 {min_donations_daily} 张卡牌</strong>。如"
+"果捐赠数量超过该数量将得到额外积分奖励，如果捐赠数量未达该数量将有相应积分惩"
+"罚。如果没有卡牌捐赠则会被惩罚扣除 <strong class=\"bad\">{donations_zero} 积分"
+"</strong>。"
 
 #: crtools/config.py:269
 msgid "War Participation Score"
@@ -684,7 +684,7 @@ msgstr "**{} 小时** 后  {} 日即将结束。 成员仍**未完成**所有战
 
 #: crtools/config.py:310
 msgid "Members who have quit the clan and are now blacklisted:"
-msgstr ""
+msgstr "已离开部落且处在黑名单中的成员:"
 
 #: crtools/config.py:311
 msgid "war"
@@ -712,11 +712,11 @@ msgstr "传奇联赛"
 
 #: crtools/config.py:319
 msgid ""
-"This content is not affiliated with, endorsed, sponsored, or specifically"
-" approved by Supercell and Supercell is not responsible for it."
-msgstr "本站点所含内容与 Supercell 公司没有任何联系，该公司对本站内容不负任何责任。"
+"This content is not affiliated with, endorsed, sponsored, or specifically "
+"approved by Supercell and Supercell is not responsible for it."
+msgstr ""
+"本站点所含内容与 Supercell 公司没有任何联系，该公司对本站内容不负任何责任。"
 
 #: crtools/config.py:320
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr "更多内容请查看 Supercell 的玩家内容政策。"
-
