@@ -21,9 +21,9 @@ from crtools import leagueinfo
 from crtools import fankit
 from crtools import io
 from crtools import discord
-from crtools.clan import ProcessedClan
+from crtools.models.clan import ProcessedClan
 #from crtools.member import ProcessedClanMember
-from crtools.war import ProcessedCurrentWar
+from crtools.models.war import ProcessedCurrentWar
 
 MAX_CLAN_SIZE = 50
 

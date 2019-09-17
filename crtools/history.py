@@ -67,7 +67,7 @@ def cleanup_member_history(member, history, timestamp):
     if now == 0:
         now = datetime.timestamp(datetime.now())
     if 'name' not in history or history['name'] == NAME_UNKNOWN:
-        history['name'] = member['name']
+        history['name'] = member.name
     if 'join_date' not in history:
         history['join_date'] = timestamp
     if 'last_activity_date' not in history:
@@ -75,18 +75,18 @@ def cleanup_member_history(member, history, timestamp):
     if 'last_donation_date' not in history:
         history['last_donation_date'] = timestamp
     if 'role' not in history:
-        history['role'] = member['role']
+        history['role'] = member.role
     if 'status' not in history:
         history['status'] = 'present'
     if 'donations' not in history:
-        history['donations'] = member['donations']
+        history['donations'] = member.donations
     if 'donations_last_week' not in history:
         history['donations_last_week'] = 0
     if 'events' not in history:
         history['events'] = [{
                                 'event': 'join',
                                 'type':  'new',
-                                'role':  member['role'],
+                                'role':  member.role,
                                 'date':  timestamp
                             }]
     return history
@@ -99,10 +99,10 @@ def member_rejoin(historical_member, member, timestamp):
     updated_member['events'].append({
         'event': 'join',
         'type':  're-join',
-        'role':  member['role'],
+        'role':  member.role,
         'date':  timestamp
     })
-    updated_member['role'] = member['role']
+    updated_member['role'] = member.role
     updated_member['status'] = 'present'
     updated_member['last_activity_date'] = timestamp
 
@@ -112,32 +112,32 @@ def member_role_change(historical_member, member, timestamp):
     updated_member = copy.deepcopy(historical_member)
     updated_member['events'].append({
             'event': 'role change',
-            'type':  get_role_change_status(updated_member['role'], member['role']),
-            'role':  member['role'],
+            'type':  get_role_change_status(updated_member['role'], member.role),
+            'role':  member.role,
             'date':  timestamp
         })
-    updated_member['role'] = member['role']
+    updated_member['role'] = member.role
 
     return updated_member
 
 def process_missing_members(historical_mambers, member_tags, timestamp):
     """ Look for missing members. If they're missing, they quit """
-    members = copy.deepcopy(historical_mambers)
+    missing_members = copy.deepcopy(historical_mambers)
 
-    for tag, member in members.items():
+    for tag, missing_member in missing_members.items():
         if tag not in member_tags:
-            if member['status'] != 'absent':
-                member['events'].append({
+            if missing_member['status'] != 'absent':
+                missing_member['events'].append({
                     'event': 'quit',
                     'type':  'left',
-                    'role':  member['role'],
+                    'role':  missing_member['role'],
                     'date':  timestamp
                 })
-                member['status'] = 'absent'
-            if 'name' not in member:
-                member['name'] = NAME_UNKNOWN
+                missing_member['status'] = 'absent'
+            if 'name' not in missing_member:
+                missing_member['name'] = NAME_UNKNOWN
 
-    return members
+    return missing_members
 
 
 def get_member_history(members, old_history=None, current_war=None, date=datetime.now()):
@@ -186,7 +186,7 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
                 history['members'][tag] = member_role_change(historical_member, member, timestamp)
             if member.donations < historical_member['donations']:
                 historical_member['donations_last_week'] = historical_member['donations']
-                historical_member['donations'] = member['donations']
+                historical_member['donations'] = member.donations
             if member.donations > historical_member['donations']:
                 historical_member['donations'] = member.donations
                 historical_member['last_donation_date'] = timestamp
