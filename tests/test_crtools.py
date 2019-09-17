@@ -285,15 +285,15 @@ def test_member_war(tmpdir):
 
     war_current_notparticipating = crtools.member_war(
         config,
-        __fake_clan__.member_list[3],
+        __fake_clan__.member_list[3].to_dict(),
         __fake_currentwar_warday__
     )
-    assert war_current_notparticipating['status'] == 'na'
+    assert war_current_notparticipating['status'] == 'ok incomplete'
     assert war_current_notparticipating['score'] == 0
 
     war_isparticipating_good = crtools.member_war(
         config,
-        __fake_clan__.member_list[0],
+        __fake_clan__.member_list[0].to_dict(),
         __fake_war__
     )
     assert war_isparticipating_good['status'] == 'good'
@@ -301,28 +301,28 @@ def test_member_war(tmpdir):
 
     war_isparticipating_ok = crtools.member_war(
         config,
-        __fake_clan__.member_list[1],
+        __fake_clan__.member_list[1].to_dict(),
         __fake_war__
     )
-    print(__fake_clan__.member_list[1]['arena'])
+    print(__fake_clan__.member_list[1].arena)
     assert war_isparticipating_ok['status'] == 'ok'
     assert war_isparticipating_ok['score'] == 24
 
     war_isparticipating_bad = crtools.member_war(
         config,
-        __fake_clan__.member_list[2],
+        __fake_clan__.member_list[2].to_dict(),
         __fake_war__
     )
-    assert war_isparticipating_bad['status'] == 'bad'
-    assert war_isparticipating_bad['score'] == -26
+    assert war_isparticipating_bad['status'] == 'ok'
+    assert war_isparticipating_bad['score'] == 24
 
     war_notparticipating = crtools.member_war(
         config,
-        __fake_clan__.member_list[3],
+        __fake_clan__.member_list[3].to_dict(),
         __fake_war__
     )
-    assert war_notparticipating['status'] == 'na'
-    assert war_notparticipating['score'] == -1
+    assert war_notparticipating['status'] == 'bad'
+    assert war_notparticipating['score'] == -18
 
 def test_member_warlog(tmpdir):
     config_file = tmpdir.mkdir('test_member_warlog').join('testfile')
@@ -333,7 +333,7 @@ def test_member_warlog(tmpdir):
     assert warlog[0]['status'] == 'good'
 
     warlog = crtools.member_warlog(config, __fake_clan__.member_list[1].to_dict(), __fake_warlog__)
-    assert warlog[0]['status'] == 'na'
+    assert warlog[0]['status'] == 'ok'
 
 def test_donations_score(tmpdir):
     config_file = tmpdir.mkdir('test_donations_score').join('testfile')
