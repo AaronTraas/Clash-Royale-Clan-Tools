@@ -83,7 +83,7 @@
                     {% if member.currentWar.battles_played is defined %}
                         <div data-role="war">
                             <div>
-                            {% if (clan.currentWarState == 'warDay') and (member.currentWar.battles_played > 0) %}
+                            {% if (clan.current_war_state == 'warDay') and (member.currentWar.battles_played > 0) %}
                                 {% for battle in range(0, member.currentWar.battles_played) %}
                                     {% if member.currentWar.wins >= battle+1 %}
                                     <img class="war-battle" src="static/images/war-battle-win.svg" />
@@ -103,7 +103,7 @@
                             <dl>
                                 <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{member.currentWar.collection_day_battles_played}}</dd></div>
                                 <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{member.currentWar.cards_earned}}</dd></div>
-                            {% if clan.currentWarState == 'warDay' %}
+                            {% if clan.current_war_state == 'warDay' %}
                                 <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{member.currentWar.battles_played}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{member.currentWar.wins}}</dd></div>
                             {% endif %}

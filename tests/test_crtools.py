@@ -3,6 +3,7 @@ import copy
 import os
 import shutil
 
+import pyroyale
 from crtools import crtools, load_config_file, history
 
 CLAN_TAG = '#FakeClanTag'
@@ -269,9 +270,12 @@ def test_get_member_war_status_class():
 def test_get_war_date():
     raw_date_string = '20190213T000000.000Z'
     test_date = datetime.strptime(raw_date_string.split('.')[0], '%Y%m%dT%H%M%S')
-    assert crtools.get_war_date({'created_date': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
-    assert crtools.get_war_date({'state': 'warDay', 'war_end_time': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=2))
-    assert crtools.get_war_date({'state': 'collectionDay', 'collection_end_time': raw_date_string}) == datetime.timestamp(test_date - timedelta(days=1))
+
+    assert crtools.get_war_date(pyroyale.War(created_date=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=1))
+
+    assert crtools.get_war_date(pyroyale.WarCurrent(state='warDay', war_end_time=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=2))
+
+    assert crtools.get_war_date(pyroyale.WarCurrent(state='collectionDay', collection_end_time=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=1))
 
 def test_member_war(tmpdir):
     config_file = tmpdir.mkdir('test_member_war').join('testfile')
@@ -281,7 +285,7 @@ def test_member_war(tmpdir):
     war_current_nowar = crtools.member_war(
         config,
         __fake_clan__['member_list'][0],
-        {'state': 'notInWar'}
+        pyroyale.WarCurrent(state='notInWar')
     )
     assert war_current_nowar['status'] == 'na'
     assert war_current_nowar['score'] == 0

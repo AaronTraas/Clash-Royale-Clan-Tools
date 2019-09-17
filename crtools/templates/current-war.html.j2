@@ -5,12 +5,12 @@
         </header>
 
         <dl>
-            <div><dt>{{strings.labelWarState}}</dt><dd>{{current_war.stateLabel}}</dd></div>
+            <div><dt>{{strings.labelWarState}}</dt><dd>{{current_war.state_label}}</dd></div>
         {% if current_war.state in ['collectionDay', 'warDay'] %}
             {% if current_war.state == 'collectionDay' %}
-            <div><dt>{{strings.labelCollectionDayEnd}}</dt><dd>{{current_war.collectionEndTimeLabel}}</dd></div>
+            <div><dt>{{strings.labelCollectionDayEnd}}</dt><dd>{{current_war.collection_end_time_label}}</dd></div>
             {% else %}
-            <div><dt>{{strings.labelWarEnd}}</dt><dd>{{current_war.endLabel}}</dd></div>
+            <div><dt>{{strings.labelWarEnd}}</dt><dd>{{current_war.end_label}}</dd></div>
             {% endif %}
             <div><dt>{{strings.labelNumWarParticipants}}</dt><dd>{{current_war.clan.participants}}</dd></div>
             {% if current_war.state == 'warDay' %}
@@ -36,7 +36,7 @@
             {% endif %}
                 <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
                 <td class="name">{{war_clan.name}}</td>
-                <td class="battles">{{war_clan.battlesRemaining}}</td>
+                <td class="battles">{{war_clan.battles_remaining}}</td>
                 <td class="crowns">{{war_clan.crowns}}</td>
                 <td class="wins">{{war_clan.wins}}</td>
             </tr>

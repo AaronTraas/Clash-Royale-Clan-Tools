@@ -162,14 +162,14 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
     history, timestamp = validate_history(old_history, datetime.timestamp(date))
 
     war_participants = []
-    if current_war and current_war['state'] != 'notInWar':
-        for participant in current_war['participants']:
-            war_participants.append(participant['tag'])
+    if current_war and current_war.state != 'notInWar':
+        for participant in current_war.participants:
+            war_participants.append(participant.tag)
 
     member_tags = []
     for member in members:
-        tag = member['tag']
-        member['role'] = 'coLeader' if member['role'] == 'co-leader' else member['role']
+        tag = member.tag
+        member.role = 'coLeader' if member.role == 'co-leader' else member.role
         member_tags.append(tag)
         if tag not in history['members']:
             # No history of this member, therefore they are new.
@@ -181,14 +181,14 @@ def get_member_history(members, old_history=None, current_war=None, date=datetim
                 # If member exists, but is absent in history, the
                 # member has re-joined
                 history['members'][tag] = member_rejoin(historical_member, member, timestamp)
-            elif historical_member['role'] != member['role']:
+            elif historical_member['role'] != member.role:
                 # Member's role has changed
                 history['members'][tag] = member_role_change(historical_member, member, timestamp)
-            if member['donations'] < historical_member['donations']:
+            if member.donations < historical_member['donations']:
                 historical_member['donations_last_week'] = historical_member['donations']
                 historical_member['donations'] = member['donations']
-            if member['donations'] > historical_member['donations']:
-                historical_member['donations'] = member['donations']
+            if member.donations > historical_member['donations']:
+                historical_member['donations'] = member.donations
                 historical_member['last_donation_date'] = timestamp
                 historical_member['last_activity_date'] = timestamp
             if tag in war_participants:
