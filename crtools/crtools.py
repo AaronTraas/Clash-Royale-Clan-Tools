@@ -96,7 +96,7 @@ def member_war(config, clan_member, war):
 
     member_tag = clan_member['tag']
     war_date = get_war_date(war)
-    join_date = clan_member['join_date']
+    join_date = clan_member['join_date'] if 'join_date' in clan_member else 0
 
     participation = {
         'status': get_member_war_status_class(0, 0, war_date, join_date),
