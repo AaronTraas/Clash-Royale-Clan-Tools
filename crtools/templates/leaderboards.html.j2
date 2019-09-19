@@ -18,11 +18,11 @@
                 <th>{{strings.labelWarScore}}</th>
             </thead>
             <tbody>
-            {% for member in (members|sort(attribute='warScore', reverse=True))[:10] %}
+            {% for member in (members|sort(attribute='war_score', reverse=True))[:10] %}
                 <tr>
                     <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
                     <td class="name"><strong>{{member.name}}</strong></td>
-                    <td class="score"><strong>{{member.warScore}}</strong></td>
+                    <td class="score"><strong>{{member.war_score}}</strong></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -56,11 +56,11 @@
                 <th>{{strings.labelDonations}}</th>
             </thead>
             <tbody>
-            {% for member in (members|sort(attribute='donationsDaily', reverse=True))[:10] %}
+            {% for member in (members|sort(attribute='donations_daily', reverse=True))[:10] %}
                 <tr>
                     <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
                     <td class="name"><strong>{{member.name}}</strong></td>
-                    <td class="score"><strong>{{member.donationsDaily}}</strong> / {{strings.labelDay}}</td>
+                    <td class="score"><strong>{{member.donations_daily}}</strong> / {{strings.labelDay}}</td>
                 </tr>
             {% endfor %}
             </tbody>

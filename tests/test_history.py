@@ -3,7 +3,7 @@ import copy
 
 import pyroyale
 from crtools import history, load_config_file
-from crtools.models.war import ProcessedCurrentWar
+from crtools.models import ProcessedCurrentWar
 
 __fake_members__ = [
     pyroyale.ClanMember(

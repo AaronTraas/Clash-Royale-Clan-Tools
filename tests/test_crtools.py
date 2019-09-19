@@ -335,24 +335,6 @@ def test_member_warlog(tmpdir):
     warlog = crtools.member_warlog(config, __fake_clan__.member_list[1].to_dict(), __fake_warlog__)
     assert warlog[0]['status'] == 'ok'
 
-def test_donations_score(tmpdir):
-    config_file = tmpdir.mkdir('test_donations_score').join('testfile')
-    config_file.write(__config_file_score__)
-    config = load_config_file(config_file.realpath())
-
-    date = datetime(2019, 2, 12, 7, 32, 1, 0)
-    timestamp = datetime.timestamp(date)
-    members = history.get_member_history(__fake_clan__.member_list, __fake_history__, None, date)["members"]
-
-    member_tag_0 = __fake_clan__.member_list[0].tag
-    member_6 = crtools.enrich_member_with_history(config, __fake_clan__.member_list[0].to_dict(), members, 6, date)
-    member_3 = crtools.enrich_member_with_history(config, __fake_clan__.member_list[0].to_dict(), members, 3, date)
-    member_0 = crtools.enrich_member_with_history(config, __fake_clan__.member_list[0].to_dict(), members, 0, date)
-
-    assert crtools.donations_score(config, member_6) == 11
-    assert crtools.donations_score(config, member_3) == 18
-    assert crtools.donations_score(config, member_0) == 31
-
 def test_get_scoring_rules(tmpdir):
     config_file = tmpdir.mkdir('test_get_scoring_rules').join('testfile')
     config_file.write(__config_file_score__)
@@ -466,35 +448,6 @@ def test_get_suggestions_promote_demote(tmpdir):
     assert suggestions[1].startswith('Promote') or suggestions[2].startswith('Promote')
     assert members[4]['name'] in suggestions[1] or members[4]['name'] in suggestions[2]
 
-def test_war_score(tmpdir):
-    # FIXME: should replace once we test crtools.process_members()
-    war_complete = {
-        "battles_played": 1,
-        "wins": 1,
-        "collection_day_battles_played": 3,
-        "collectionBattleWins": 2,
-        "collectionBattleLosses": 0,
-        "status": "na"
-    }
-    war_incomplete = {
-        "battles_played": 0,
-        "wins": 0,
-        "collection_day_battles_played": 3,
-        "collectionBattleWins": 2,
-        "collectionBattleLosses": 0,
-        "status": "na"
-    }
-    war_na = {"status": "na"}
-    war_new = {"status": "not-in-clan"}
-
-    config_file = tmpdir.mkdir('test_war_score').join('testfile')
-    config_file.write(__config_file_score__)
-    config = load_config_file(config_file.realpath())
-
-    assert crtools.war_score(config, war_complete)   == 24
-    assert crtools.war_score(config, war_incomplete) == -26
-    assert crtools.war_score(config, war_na)         == -1
-    assert crtools.war_score(config, war_new)        == 0
 
 def test_process_recent_wars(tmpdir):
     config_file = tmpdir.mkdir('test_process_recent_wars').join('config.ini')

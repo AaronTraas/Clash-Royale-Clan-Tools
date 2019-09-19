@@ -139,6 +139,22 @@ def process_missing_members(historical_mambers, member_tags, timestamp):
 
     return missing_members
 
+def process_member_events(config, events):
+    processed_events = []
+    for event in events:
+        if event['date'] == 0:
+            continue
+        processed_events.append({
+            'date'      : datetime.fromtimestamp(event['date']).strftime('%x'),
+            'timestamp' : event['date'],
+            'message'   : {
+                'join'        : config['strings']['memberEventJoinedClan'],
+                'role change' : config['strings']['memberEventRoleChange'].format(event['role']),
+                'quit'        : config['strings']['memberEventExitClan']
+            }[event['event']]
+        })
+    return processed_events
+
 
 def get_member_history(members, old_history=None, current_war=None, date=datetime.now()):
     """ Generates user history. Takes as inputs the list of members

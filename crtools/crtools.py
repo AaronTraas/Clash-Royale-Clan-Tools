@@ -21,9 +21,10 @@ from crtools import leagueinfo
 from crtools import fankit
 from crtools import io
 from crtools import discord
-from crtools.models.clan import ProcessedClan
-#from crtools.member import ProcessedClanMember
-from crtools.models.war import ProcessedCurrentWar
+from crtools.scorecalc import ScoreCalculator
+from crtools.models import ProcessedClan
+#from crtools.models import ProcessedClanMember
+from crtools.models import ProcessedCurrentWar
 
 MAX_CLAN_SIZE = 50
 
@@ -101,7 +102,7 @@ def member_war(config, clan_member, war):
     participation = {
         'status': get_member_war_status_class(0, 0, war_date, join_date),
     }
-    participation['score'] = war_score(config, participation)
+    participation['score'] = ScoreCalculator(config).get_war_score(participation)
     if hasattr(war, 'state') :
         participation['score'] = 0
 
@@ -120,7 +121,7 @@ def member_war(config, clan_member, war):
 
             participation['collectionBattleWins'] = round(member.cards_earned / participation['collectionWinCards'])
             participation['collectionBattleLosses'] = participation['collection_day_battles_played'] - participation['collectionBattleWins']
-            participation['score'] = war_score(config, participation)
+            participation['score'] = ScoreCalculator(config).get_war_score(participation)
 
     return participation
 
@@ -132,48 +133,6 @@ def member_warlog(config, clan_member, warlog):
         member_warlog.append(participation)
 
     return member_warlog
-
-def donations_score(config, member):
-    """ Calculate the score for a given member's daily donations. """
-
-    donation_score = member['donationsDaily'] - config['score']['min_donations_daily']
-
-    donation_score = donation_score if donation_score <= config['score']['max_donations_bonus'] else config['score']['max_donations_bonus']
-
-    if member['totalDonations'] == 0:
-        donation_score += config['score']['donations_zero']
-
-    if member['new'] and donation_score <= 0:
-        donation_score = 0
-
-    #logger.debug('{:20}:\tdays: {:2}\tdonations: {:4}\n'.format(member['name'], days_from_donation_reset, member['donations']))
-
-    return donation_score
-
-def war_score(config, war):
-    """ Tally the score for a given war """
-
-    war_score = 0
-    if war['status'] == 'not-in-clan':
-        return 0;
-
-    if 'battles_played' not in war:
-        return config['score']['war_non_participation']
-
-    war_score += war['collectionBattleWins'] * config['score']['collect_battle_won']
-    war_score += war['collectionBattleLosses'] * config['score']['collect_battle_lost']
-    war_score += war['collection_day_battles_played'] * config['score']['collect_battle_played']
-    war_score += (3-war['collection_day_battles_played']) * config['score']['collect_battle_incomplete']
-
-    if war['battles_played'] < 1:
-        war_score += config['score']['war_battle_incomplete']
-        return war_score
-
-    war_score += war['battles_played'] * config['score']['war_battle_played']
-    war_score += war['wins'] * config['score']['war_battle_won']
-    war_score += (war['battles_played'] - war['wins']) * config['score']['war_battle_lost']
-
-    return war_score
 
 def get_suggestions(config, processed_members, required_trophies):
     """ Returns list of suggestions for the clan leadership to perform.
@@ -196,7 +155,7 @@ def get_suggestions(config, processed_members, required_trophies):
 
         # if member on the 'safe' or 'vacation' list, don't make
         # recommendations to kick or demote
-        if not (member['safe'] or member['vacation']) and member['currentWar']['status'] == 'na':
+        if not (member['safe'] or member['vacation']) and member['current_war']['status'] == 'na':
             # suggest kick if inactive for the set threshold
             if member['days_inactive'] >= config['activity']['threshold_kick']:
                 suggestion = config['strings']['suggestionKickInactivity'].format(name=member['name'], days=member['days_inactive'])
@@ -304,13 +263,13 @@ def enrich_member_with_history(config, fresh_member, historical_members, days_fr
         days_from_donation_reset += 7
         total_donations += enriched_member['donations_last_week']
 
-    enriched_member['totalDonations'] = total_donations
+    enriched_member['total_donations'] = total_donations
     if(days_from_donation_reset > 0):
-        enriched_member['donationsDaily'] = round(total_donations / days_from_donation_reset)
+        enriched_member['donations_daily'] = round(total_donations / days_from_donation_reset)
     else:
-        enriched_member['donationsDaily'] = total_donations
+        enriched_member['donations_daily'] = total_donations
 
-    enriched_member['events'] = process_member_events(config, historical_member['events'])
+    enriched_member['events'] = history.process_member_events(config, historical_member['events'])
 
     return enriched_member
 
@@ -378,7 +337,7 @@ def calc_recent_war_stats(member):
 
     member['war_collection_win_rate'] = round(((collection_wins / 10) / 3) * 100)
     member['war_collection_cards_average'] = round(collection_cards / 10)
-    member['war_score_average'] = round(member['warScore'] / 10)
+    member['war_score_average'] = round(member['war_score'] / 10)
 
     return member
 
@@ -405,23 +364,6 @@ def get_role_label(config, member_role, days_inactive, activity_status, on_vacat
         'member'   : config['strings']['roleMember'],
     }[member_role]
 
-def process_member_events(config, events):
-    processed_events = []
-    for event in events:
-        if event['date'] == 0:
-            continue
-        processed_events.append({
-            'date'      : datetime.fromtimestamp(event['date']).strftime('%x'),
-            'timestamp' : event['date'],
-            'message'   : {
-                'join'        : config['strings']['memberEventJoinedClan'],
-                'role change' : config['strings']['memberEventRoleChange'].format(event['role']),
-                'quit'        : config['strings']['memberEventExitClan']
-            }[event['event']]
-        })
-    return processed_events
-
-
 def calc_derived_member_stats(config, clan, warlog, current_war, member, days_from_donation_reset):
     member['name'] = escape(member['name'])
 
@@ -438,23 +380,25 @@ def calc_derived_member_stats(config, clan, warlog, current_war, member, days_fr
     if member['safe'] and (member['days_inactive'] >= config['activity']['threshold_warn']):
         member['vacation'] = True
 
+    calc = ScoreCalculator(config)
+
     # get member warlog and add it to the record
-    member['currentWar'] = member_war(config, member, current_war)
+    member['current_war'] = member_war(config, member, current_war)
     member['warlog'] = member_warlog(config, member, warlog)
 
-    member['donationScore'] = donations_score(config, member)
+    member['donation_score'] = calc.get_member_donations_score(member)
 
     # calculate score based on war participation
-    member['warScore'] = 0
+    member['war_score'] = 0
     for war in member['warlog']:
-        member['warScore'] += war['score']
+        member['war_score'] += war['score']
 
     # get member score
-    member['score'] = member['warScore'] + member['donationScore']
+    member['score'] = member['war_score'] + member['donation_score']
 
     # calculate the number of daily donations, and the donation status
     # based on threshold set in config
-    member['donationStatus'] = calc_donation_status(config, member['donationScore'], member['donationsDaily'], days_from_donation_reset)
+    member['donation_status'] = calc_donation_status(config, member['donation_score'], member['donations_daily'], days_from_donation_reset)
 
     member['status'] = calc_member_status(config, member['score'], member['no_promote'])
 
@@ -467,8 +411,8 @@ def calc_derived_member_stats(config, clan, warlog, current_war, member, days_fr
     else:
         member['trophiesStatus'] = 'ok'
 
-    member['arenaLeague'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
-    member['arenaLeagueLabel'] = config['strings']['league-' + member['arenaLeague']]
+    member['arena_league'] = leagueinfo.get_arena_league_from_name(member['arena']['name'])['id']
+    member['arena_league_label'] = config['strings']['league-' + member['arena_league']]
 
     # Figure out whether member is on the leadership team by role
     member['leadership'] = member['role'] == 'leader' or member['role'] == 'coLeader'
@@ -505,7 +449,7 @@ def process_absent_members(config, historical_members):
 
     for tag, member in historical_members.items():
         if member['status'] == 'absent':
-            events = process_member_events(config, member['events'])
+            events = history.process_member_events(config, member['events'])
             absent_members.append({
                 'name'      : member['name'],
                 'tag'       : tag,
@@ -602,10 +546,10 @@ def build_dashboard(config): # pragma: no coverage
                 {
                     'clan'                  : clan.to_dict(),
                     'warlog'                : warlog.to_dict(),
-                    'currentwar'            : current_war.to_dict(),
+                    'current_war'            : current_war.to_dict(),
                     'clan-processed'        : clan_processed.to_dict(),
                     'members-processed'     : members_processed,
-                    'currentwar-processed'  : current_war_processed.to_dict(),
+                    'current_war-processed'  : current_war_processed.to_dict(),
                     'recentwars-processed'  : list(map(lambda war: war.to_dict(), recent_wars))
                 }
             )
