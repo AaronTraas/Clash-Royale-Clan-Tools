@@ -116,7 +116,11 @@ clan. Be sure not to re-name any of the tabs, or add/remove any columns.
 
 You will also need to sign up for a `Google Cloud API key <https://developers.google.com/sheets/api/guides/authorizing#APIKey>`_.
 
-Once you have that, find the sheet ID from your spreadsheet URL, add
+Then you will have to go to the `Google Developer API library page<https://console.developers.google.com/apis/library/sheets.googleapis.com>`_, and enable the Google Sheets library for your account.
+
+You will then need to go the the `Google credential management page, <https://console.developers.google.com/apis/credentials>`_ edit the API key you created, giving it access to the Sheets API.
+
+Once you have created a key that you can use for this purpose, find the sheet ID from your spreadsheet URL, add
 the following to your config file:
 
 .. code:: ini
