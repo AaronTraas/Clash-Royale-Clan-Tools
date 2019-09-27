@@ -3,6 +3,8 @@
 from datetime import datetime
 import copy
 
+from crtools.models import MemberEvent
+
 """Functions for maintaining a historical record of the clan."""
 
 ROLE_MEMBER     = 'member'
@@ -141,18 +143,11 @@ def process_missing_members(historical_mambers, member_tags, timestamp):
 
 def process_member_events(config, events):
     processed_events = []
-    for event in events:
-        if event['date'] == 0:
-            continue
-        processed_events.append({
-            'date'      : datetime.fromtimestamp(event['date']).strftime('%x'),
-            'timestamp' : event['date'],
-            'message'   : {
-                'join'        : config['strings']['memberEventJoinedClan'],
-                'role change' : config['strings']['memberEventRoleChange'].format(event['role']),
-                'quit'        : config['strings']['memberEventExitClan']
-            }[event['event']]
-        })
+    for event_dict in events:
+        event = MemberEvent(config=config, event_dict=event_dict)
+        if(event.timestamp != 0):
+            processed_events.append(event)
+
     return processed_events
 
 

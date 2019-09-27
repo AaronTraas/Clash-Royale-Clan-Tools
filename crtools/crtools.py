@@ -22,9 +22,7 @@ from crtools import fankit
 from crtools import io
 from crtools import discord
 from crtools.scorecalc import ScoreCalculator
-from crtools.models import ProcessedClan
-#from crtools.models import ProcessedClanMember
-from crtools.models import ProcessedCurrentWar
+from crtools.models import FormerMember, ProcessedClan, ProcessedCurrentWar
 
 MAX_CLAN_SIZE = 50
 
@@ -449,16 +447,9 @@ def process_absent_members(config, historical_members):
 
     for tag, member in historical_members.items():
         if member['status'] == 'absent':
-            events = history.process_member_events(config, member['events'])
-            absent_members.append({
-                'name'      : member['name'],
-                'tag'       : tag,
-                'blacklist' : tag in config['members']['blacklist'],
-                'events'    : events,
-                'timestamp' : events[len(events)-1]['timestamp']
-            })
+            absent_members.append(FormerMember(config=config, historical_member=member, player_tag=tag))
 
-    return sorted(absent_members, key=lambda k: k['timestamp'], reverse=True)
+    return sorted(absent_members, key=lambda k: k.timestamp, reverse=True)
 
 def process_recent_wars(config, warlog):
     wars = []

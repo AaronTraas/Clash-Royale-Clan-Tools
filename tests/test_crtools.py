@@ -389,7 +389,7 @@ def test_process_absent_members(tmpdir):
     absent_members = crtools.process_absent_members(config, h['members'])
 
     assert len(absent_members) == 1
-    assert absent_members[0]['tag'] == '#ZZZZZZ'
+    assert absent_members[0].tag == '#ZZZZZZ'
 
 def test_get_suggestions_nosuggestions(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')

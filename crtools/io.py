@@ -30,6 +30,12 @@ MEMBER_TABLE_CSS_MAPPING = {
     'show_warlog'               : 'war.previous'
 }
 
+def json_dumper(obj):
+    try:
+        return obj.to_dict()
+    except:
+        return obj.__dict__
+
 def write_object_to_file(file_path, obj):
     """ Writes contents of object to file. If object is a string, write it
     directly. Otherwise, convert it to JSON first """
@@ -39,7 +45,7 @@ def write_object_to_file(file_path, obj):
         if isinstance(obj, str):
             string = obj
         else:
-            string = json.dumps(obj, indent=4)
+            string = json.dumps(obj, default=json_dumper, indent=4)
         f.write(string)
 
 def get_previous_history(output_dir):
