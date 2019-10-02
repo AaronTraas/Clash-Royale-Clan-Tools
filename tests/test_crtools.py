@@ -5,6 +5,7 @@ import shutil
 
 import pyroyale
 from crtools import crtools, load_config_file, history
+from crtools.models import ProcessedMember
 
 CLAN_TAG = '#FakeClanTag'
 
@@ -27,18 +28,6 @@ collect_battle_won=2
 collect_battle_lost=0
 war_participation=0
 war_non_participation=-1
-'''
-
-__config_file_score_thresholds__ = '''
-[Score]
-threshold_promote=100
-threshold_warn=10
-'''
-
-__config_file_score_donations__ = '''
-[Score]
-max_donations_bonus=40
-min_donations_daily=10
 '''
 
 __fake_history__ = {
@@ -145,8 +134,6 @@ __fake_clan__ = pyroyale.Clan(
 
     ]
 )
-
-
 
 __fake_war_clan__ = pyroyale.WarClan(
         tag = CLAN_TAG,
@@ -262,79 +249,6 @@ def test_get_war_date():
 
     assert crtools.get_war_date(pyroyale.WarCurrent(state='collectionDay', collection_end_time=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=1))
 
-def test_member_war(tmpdir):
-    config_file = tmpdir.mkdir('test_member_war').join('testfile')
-    config_file.write(__config_file_score__)
-    config = load_config_file(config_file.realpath())
-
-    war_current_nowar = crtools.member_war(
-        config,
-        __fake_clan__.member_list[0],
-        pyroyale.WarCurrent(state='notInWar')
-    )
-    assert war_current_nowar['status'] == 'na'
-    assert war_current_nowar['score'] == 0
-
-    war_current_isparticipating = crtools.member_war(
-        config,
-        __fake_clan__.member_list[0].to_dict(),
-        __fake_currentwar_warday__
-    )
-    assert war_current_isparticipating['status'] == 'good'
-    assert war_current_isparticipating['score'] == 0
-
-    war_current_notparticipating = crtools.member_war(
-        config,
-        __fake_clan__.member_list[3].to_dict(),
-        __fake_currentwar_warday__
-    )
-    assert war_current_notparticipating['status'] == 'ok incomplete'
-    assert war_current_notparticipating['score'] == 0
-
-    war_isparticipating_good = crtools.member_war(
-        config,
-        __fake_clan__.member_list[0].to_dict(),
-        __fake_war__
-    )
-    assert war_isparticipating_good['status'] == 'good'
-    assert war_isparticipating_good['score'] == 34
-
-    war_isparticipating_ok = crtools.member_war(
-        config,
-        __fake_clan__.member_list[1].to_dict(),
-        __fake_war__
-    )
-    print(__fake_clan__.member_list[1].arena)
-    assert war_isparticipating_ok['status'] == 'ok'
-    assert war_isparticipating_ok['score'] == 24
-
-    war_isparticipating_bad = crtools.member_war(
-        config,
-        __fake_clan__.member_list[2].to_dict(),
-        __fake_war__
-    )
-    assert war_isparticipating_bad['status'] == 'ok'
-    assert war_isparticipating_bad['score'] == 24
-
-    war_notparticipating = crtools.member_war(
-        config,
-        __fake_clan__.member_list[3].to_dict(),
-        __fake_war__
-    )
-    assert war_notparticipating['status'] == 'bad'
-    assert war_notparticipating['score'] == -18
-
-def test_member_warlog(tmpdir):
-    config_file = tmpdir.mkdir('test_member_warlog').join('testfile')
-    config_file.write(__config_file_score__)
-    config = load_config_file(config_file.realpath())
-
-    warlog = crtools.member_warlog(config, __fake_clan__.member_list[0].to_dict(), __fake_warlog__)
-    assert warlog[0]['status'] == 'good'
-
-    warlog = crtools.member_warlog(config, __fake_clan__.member_list[1].to_dict(), __fake_warlog__)
-    assert warlog[0]['status'] == 'ok'
-
 def test_get_scoring_rules(tmpdir):
     config_file = tmpdir.mkdir('test_get_scoring_rules').join('testfile')
     config_file.write(__config_file_score__)
@@ -397,17 +311,15 @@ def test_get_suggestions_nosuggestions(tmpdir):
     config = load_config_file(config_file.realpath())
 
     members = []
+    member = ProcessedMember(pyroyale.ClanMember(
+        name='FakeName',
+        role='leader',
+        trophies=9999,
+        donations=999
+    ))
+    member.safe = True
     for i in range(0, crtools.MAX_CLAN_SIZE):
-        members.append({
-            "role": "leader",
-            "trophies": 9999,
-            "donations": 999,
-            "score": 999,
-            "vacation": False,
-            "safe": True,
-            "blacklist": False,
-            "no_promote": False
-        })
+        members.append(member)
 
     suggestions = crtools.get_suggestions(config, members, __fake_clan__)
 
@@ -428,7 +340,7 @@ def test_get_suggestions_kick(tmpdir):
     print(suggestions)
 
     assert suggestions[0].startswith('Kick')
-    assert members[3]['name'] in suggestions[0]
+    assert members[3].name in suggestions[0]
 
 def test_get_suggestions_promote_demote(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
@@ -444,9 +356,9 @@ def test_get_suggestions_promote_demote(tmpdir):
     print(suggestions)
 
     assert suggestions[0].startswith('Demote')
-    assert members[2]['name'] in suggestions[0]
+    assert members[2].name in suggestions[0]
     assert suggestions[1].startswith('Promote') or suggestions[2].startswith('Promote')
-    assert members[4]['name'] in suggestions[1] or members[4]['name'] in suggestions[2]
+    assert members[4].name in suggestions[1] or members[4].name in suggestions[2]
 
 
 def test_process_recent_wars(tmpdir):
@@ -461,50 +373,4 @@ def test_process_recent_wars(tmpdir):
     assert processed_warlog[0].rank == 1
     assert processed_warlog[0].date == '2/9'
     assert processed_warlog[0].trophy_change == 111
-
-def test_calc_activity_status():
-    config = load_config_file(False)
-
-    assert crtools.calc_activity_status(config, 0) == 'good'
-    assert crtools.calc_activity_status(config, -1) == 'good'
-    assert crtools.calc_activity_status(config, 1) == 'na'
-    assert crtools.calc_activity_status(config, 3) == 'normal'
-    assert crtools.calc_activity_status(config, 7) == 'ok'
-    assert crtools.calc_activity_status(config, 400) == 'bad'
-
-def test_calc_member_status(tmpdir):
-    config_file = tmpdir.mkdir('test_calc_member_status').join('config.ini')
-    config_file.write(__config_file_score_thresholds__)
-    config = load_config_file(config_file.realpath())
-
-    assert crtools.calc_member_status(config, -1, False)  == 'bad'
-    assert crtools.calc_member_status(config, 5, False)   == 'ok'
-    assert crtools.calc_member_status(config, 10, False)  == 'normal'
-    assert crtools.calc_member_status(config, 100, False) == 'good'
-    assert crtools.calc_member_status(config, 100, True)  == 'normal'
-
-def test_calc_donation_status(tmpdir):
-    config_file = tmpdir.mkdir('test_calc_donation_status').join('config.ini')
-    config_file.write(__config_file_score_donations__)
-    config = load_config_file(config_file.realpath())
-
-    assert crtools.calc_donation_status(config, 1000, 100, 6) == 'good'
-    assert crtools.calc_donation_status(config, 0, 0, 6) == 'bad'
-    assert crtools.calc_donation_status(config, 0, 5, 6) == 'ok'
-    assert crtools.calc_donation_status(config, 0, 0, 0) == 'normal'
-
-def test_get_role_label():
-    config = load_config_file(False)
-
-    assert crtools.get_role_label(config, 'member', 0, 'good', False, True, False) == config['strings']['roleBlacklisted']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, True, False) == config['strings']['roleBlacklisted']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', True, False, False) == config['strings']['roleVacation']
-    assert crtools.get_role_label(config, 'leader', 100, 'bad', False, False, False) == config['strings']['roleInactive'].format(days=100)
-
-    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False, False) == config['strings']['roleLeader']
-    assert crtools.get_role_label(config, 'coLeader', 0, 'good', False, False, False) == config['strings']['roleCoLeader']
-    assert crtools.get_role_label(config, 'elder', 0, 'good', False, False, False) == config['strings']['roleElder']
-    assert crtools.get_role_label(config, 'member', 0, 'good', False, False, False) == config['strings']['roleMember']
-
-    assert crtools.get_role_label(config, 'leader', 0, 'good', False, False, True) == config['strings']['roleNoPromote']
 

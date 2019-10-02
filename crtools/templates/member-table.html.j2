@@ -49,7 +49,7 @@
                             </dl>
                         </div>
                     </td>
-                    <td class="trophies {{member.trophiesStatus}} {{ 'arena-league' if 'arena-' not in member.arena_league else '' }} {{member.arena_league}}" data-sort="{{member.trophies}}">
+                    <td class="trophies {{member.trophies_status}} {{ 'arena-league' if 'arena-' not in member.arena_league else '' }} {{member.arena_league}}" data-sort="{{member.trophies}}">
                         <strong>{{member.trophies}}</strong>
                     </td>
                     <td class="donations {{member.donation_status}}" data-sort="{{member.donations}}" data-tooltip="true">
@@ -80,7 +80,7 @@
                         {{member.war_win_rate}}%
                     </td>
                     <td class="war current {{member.current_war.status}}" data-tooltip="true">
-                    {% if member.current_war.battles_played is defined %}
+                    {% if member.current_war.in_war == True %}
                         <div data-role="war">
                             <div>
                             {% if (clan.current_war_state == 'warDay') and (member.current_war.battles_played > 0) %}
@@ -134,7 +134,7 @@
                     </td>
                 {% for war in member.warlog %}
                     <td class="war previous {{war.status}}" data-tooltip="true">
-                    {% if war.battles_played is defined %}
+                    {% if war.in_war == True %}
                         <div data-role="war">
                             <div>
                             {% if war.battles_played > 0 %}
@@ -155,9 +155,9 @@
                         </div>
                         <div class="tooltip">
                             <dl>
-                                <div><dt>{{strings.labelWarLeague}}</dt><dd>{{war.warLeague}}</dd></div>
+                                <div><dt>{{strings.labelWarLeague}}</dt><dd>{{war.war_league}}</dd></div>
                                 <div><dt>{{strings.labelCollectionDayBattles}}</dt><dd>{{war.collection_day_battles_played}}</dd></div>
-                                <div><dt>{{strings.labelCollectionDayWins}}</dt><dd>{{war.collectionBattleWins}}</dd></div>
+                                <div><dt>{{strings.labelCollectionDayWins}}</dt><dd>{{war.collection_battle_wins}}</dd></div>
                                 <div><dt>{{strings.labelCardsEarned}}</dt><dd>{{war.cards_earned}}</dd></div>
                                 <div><dt>{{strings.labelWarDayBattles}}</dt><dd>{{war.battles_played}}</dd></div>
                                 <div><dt>{{strings.labelWarDayWins}}</dt><dd>{{war.wins}}</dd></div>
