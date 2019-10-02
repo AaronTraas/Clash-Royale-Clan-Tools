@@ -64,3 +64,14 @@ def get_war_league_from_score(clan_score):
             league = lookup_table
 
     return league
+
+def get_war_league_from_war(war, clan_tag):
+    """ Figure out which war league a clan was in during a given war. """
+    standing = war.standings
+
+    clan_score = 0
+    for clan in standing:
+        if clan.clan.tag == clan_tag:
+            clan_score = clan.clan.clan_score
+
+    return get_war_league_from_score(clan_score)

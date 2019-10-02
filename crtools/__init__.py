@@ -7,6 +7,8 @@ import sys
 from ._version import __version__
 from .crtools import build_dashboard
 from .config import load_config_file
+from .memberfactory import MemberFactory
+from .scorecalc import ScoreCalculator
 
 logger = logging.getLogger(__name__)
 
