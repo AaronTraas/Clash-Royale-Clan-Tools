@@ -19,7 +19,7 @@ class ProcessedCurrentWar(WarCurrent):
         self.collection_end_time_label = ''
         self.end_label = ''
 
-        self.openapi_types = current_war.openapi_types.copy()
+        self.openapi_types = self.openapi_types.copy()
         self.openapi_types['cards'] = 'int'
         self.openapi_types['state_label'] = 'str'
         self.openapi_types['collection_end_time_label'] = 'str'

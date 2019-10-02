@@ -28,7 +28,7 @@ class ProcessedClan(Clan):
         self.war_league_name = config['strings']['war-league-' + self.war_league]
         self.current_war_state = current_war.state
 
-        self.openapi_types = clan.openapi_types.copy()
+        self.openapi_types = self.openapi_types.copy()
         self.openapi_types['war_league'] = 'str'
         self.openapi_types['war_league_name'] = 'str'
         self.openapi_types['current_war_state'] = 'str'

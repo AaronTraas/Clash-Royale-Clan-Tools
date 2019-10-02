@@ -35,7 +35,7 @@ class ProcessedMember(ClanMember):
         self.no_promote = False
 
         # Piggybacking on the serialization in the pyroyale API objects. We're adding to the list of properties to export
-        self.openapi_types = member.openapi_types.copy()
+        self.openapi_types = self.openapi_types.copy()
         self.openapi_types['arena_league'] = 'string'
         self.openapi_types['arena_league_label'] = 'string'
         self.openapi_types['role_label'] = 'string'
