@@ -129,7 +129,6 @@ class MemberFactory:
         else:
             member.trophies_status = 'ok'
 
-        member.arena_league = leagueinfo.get_arena_league_from_name(member.arena.name)['id']
         member.arena_league_label = self.config['strings']['league-' + member.arena_league]
 
         # Figure out whether member is on the leadership team by role

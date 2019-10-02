@@ -4,73 +4,26 @@
 __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
-import copy
-from datetime import datetime, date, timezone, timedelta
-from html import escape
+from datetime import datetime #, date, timezone, timedelta
 import logging
-import math
 import os
-import pyroyale
-from pyroyale.rest import ApiException
 import shutil
 import tempfile
 
+import pyroyale
+from pyroyale.rest import ApiException
+
 from ._version import __version__
 from crtools import history
-from crtools import leagueinfo
 from crtools import fankit
 from crtools import io
 from crtools import discord
 from crtools.memberfactory import MemberFactory
-from crtools.scorecalc import ScoreCalculator
 from crtools.models import FormerMember, ProcessedClan, ProcessedCurrentWar
 
 MAX_CLAN_SIZE = 50
 
 logger = logging.getLogger(__name__)
-
-def get_member_war_status_class(collection_day_battles, war_day_battles, war_date, join_date, current_war=False, war_day=False):
-    """ returns CSS class(es) for a war log entry for a given member """
-    if war_date < join_date:
-        return 'not-in-clan'
-
-    status = 'normal'
-    if current_war:
-        if collection_day_battles < 3:
-            status = 'ok'
-        elif war_day and war_day_battles > 0:
-            status = 'good'
-
-        if war_day == False or war_day_battles == 0:
-            status += ' incomplete'
-    else:
-        if collection_day_battles == 0:
-            status = 'na'
-        elif war_day_battles == 0:
-            status = 'bad'
-        elif collection_day_battles < 3:
-            status = 'ok'
-        else:
-            status = 'good'
-    return status
-
-def get_war_date(war):
-    """ returns the datetime this war was created. If it's an ongoing
-    war, calculate based on the dates given when the war started.
-    If it's a previous war fromt he warlog, we retrieve the creation
-    date. What's returned is a timestamp. """
-    if hasattr(war, 'state') :
-        if war.state == 'warDay':
-            war_date_raw = datetime.strptime(war.war_end_time.split('.')[0], '%Y%m%dT%H%M%S')
-            war_date_raw -= timedelta(days=2)
-        elif war.state == 'collectionDay':
-            war_date_raw = datetime.strptime(war.collection_end_time.split('.')[0], '%Y%m%dT%H%M%S')
-            war_date_raw -= timedelta(days=1)
-    else:
-        war_date_raw = datetime.strptime(war.created_date.split('.')[0], '%Y%m%dT%H%M%S')
-        war_date_raw -= timedelta(days=1)
-
-    return datetime.timestamp(war_date_raw)
 
 def get_suggestions(config, processed_members, required_trophies):
     """ Returns list of suggestions for the clan leadership to perform.
@@ -151,31 +104,6 @@ def get_scoring_rules(config):
 
     return rules
 
-def calc_recent_war_stats(member):
-    war_wins = 0
-    war_battles = 0
-    collection_wins = 0
-    collection_cards = 0
-    for war in member['warlog']:
-        if 'wins' in war:
-            war_wins += war['wins']
-            war_battles += war['number_of_battles']
-        if 'collectionBattleWins' in war:
-            collection_wins += war['collectionBattleWins']
-        if 'collectionWinCards' in war:
-            collection_cards += war['collectionWinCards']
-
-    if war_battles > 0:
-        member['war_win_rate'] = round((war_wins/war_battles) * 100)
-    else:
-        member['war_win_rate'] = 0
-
-    member['war_collection_win_rate'] = round(((collection_wins / 10) / 3) * 100)
-    member['war_collection_cards_average'] = round(collection_cards / 10)
-    member['war_score_average'] = round(member['war_score'] / 10)
-
-    return member
-
 def process_members(config, clan, warlog, current_war, member_history):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
@@ -188,7 +116,14 @@ def process_members(config, clan, warlog, current_war, member_history):
         days_from_donation_reset = 1
 
     # process members with results from the API
-    factory = MemberFactory(config=config, clan=clan, current_war=current_war, warlog=warlog, member_history=member_history, days_from_donation_reset=days_from_donation_reset, now=now)
+    factory = MemberFactory(
+        config=config,
+        clan=clan,
+        current_war=current_war,
+        warlog=warlog,
+        member_history=member_history,
+        days_from_donation_reset=days_from_donation_reset,
+        now=now)
     members_processed = []
     for member_src in clan.member_list:
         members_processed.append(factory.get_processed_member(member_src))

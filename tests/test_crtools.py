@@ -5,7 +5,8 @@ import shutil
 
 import pyroyale
 from crtools import crtools, load_config_file, history
-from crtools.models import ProcessedMember
+from crtools.models import ProcessedMember, ProcessedCurrentWar
+from crtools.memberfactory import MemberFactory
 
 CLAN_TAG = '#FakeClanTag'
 
@@ -135,17 +136,6 @@ __fake_clan__ = pyroyale.Clan(
     ]
 )
 
-__fake_war_clan__ = pyroyale.WarClan(
-        tag = CLAN_TAG,
-        name = "Agrassar",
-        clan_score = 1813,
-        participants = 17,
-        battles_played = 13,
-        battles_remaining = 0,
-        wins = 1,
-        crowns = 5
-    )
-
 __fake_war_participants__ = [
     pyroyale.WarParticipant(
         tag                           =  '#AAAAAA',
@@ -205,49 +195,11 @@ __fake_warlog__ = pyroyale.WarLog(
     ]
 )
 
-__fake_currentwar_warday__ = pyroyale.WarCurrent(
-    state        = 'warDay',
-    war_end_time = '20190209T212846.354Z',
-    clan         = __fake_war_clan__,
-    participants = __fake_war_participants__,
-    clans        = [__fake_war_clan__]
-)
-
-__fake_currentwar_collectionday__ = pyroyale.WarCurrent(
-    state               = 'collectionDay',
-    collection_end_time = '20190209T212846.354Z',
-    clan                = __fake_war_clan__,
-    participants        = __fake_war_participants__
-)
-
 __fake_currentwar_notinwar__ = pyroyale.WarCurrent(
     state='notInWar',
     participants=[],
-#    clan=__fake_clan__,
     clans=[]
 )
-
-def test_get_member_war_status_class():
-    assert crtools.get_member_war_status_class(0, 0, 0, 1) == 'not-in-clan'
-    assert crtools.get_member_war_status_class(0, 0, 0, 0) == 'na'
-    assert crtools.get_member_war_status_class(3, 0, 0, 0) == 'bad'
-    assert crtools.get_member_war_status_class(2, 1, 0, 0) == 'ok'
-    assert crtools.get_member_war_status_class(3, 1, 0, 0) == 'good'
-    assert crtools.get_member_war_status_class(3, 0, 0, 0, True) == 'normal incomplete'
-    assert crtools.get_member_war_status_class(2, 0, 0, 0, True) == 'ok incomplete'
-    assert crtools.get_member_war_status_class(2, 0, 0, 0, True, True) == 'ok incomplete'
-    assert crtools.get_member_war_status_class(2, 1, 0, 0, True, True) == 'ok'
-    assert crtools.get_member_war_status_class(3, 1, 0, 0, True, True) == 'good'
-
-def test_get_war_date():
-    raw_date_string = '20190213T000000.000Z'
-    test_date = datetime.strptime(raw_date_string.split('.')[0], '%Y%m%dT%H%M%S')
-
-    assert crtools.get_war_date(pyroyale.War(created_date=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=1))
-
-    assert crtools.get_war_date(pyroyale.WarCurrent(state='warDay', war_end_time=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=2))
-
-    assert crtools.get_war_date(pyroyale.WarCurrent(state='collectionDay', collection_end_time=raw_date_string)) == datetime.timestamp(test_date - timedelta(days=1))
 
 def test_get_scoring_rules(tmpdir):
     config_file = tmpdir.mkdir('test_get_scoring_rules').join('testfile')
@@ -310,21 +262,37 @@ def test_get_suggestions_nosuggestions(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999\nmin_clan_size={}'.format(crtools.MAX_CLAN_SIZE))
     config = load_config_file(config_file.realpath())
 
+    war = ProcessedCurrentWar(config=config, current_war=pyroyale.WarCurrent(state='notInWar'))
+    factory = MemberFactory(
+        config=config,
+        member_history=history.get_member_history(__fake_clan__.member_list, '{}', war),
+        current_war=war,
+        clan=__fake_clan__,
+        warlog=pyroyale.WarLog(items=[])
+    )
+
     members = []
-    member = ProcessedMember(pyroyale.ClanMember(
-        name='FakeName',
-        role='leader',
-        trophies=9999,
-        donations=999
-    ))
-    member.safe = True
     for i in range(0, crtools.MAX_CLAN_SIZE):
+        member = factory.get_processed_member(pyroyale.ClanMember(
+            tag       = "#AAAAAA",
+            name      = "LeaderPerson",
+            role      = "leader",
+            exp_level = 13,
+            trophies  = 9999,
+            donations = 9999,
+            arena     = pyroyale.Arena(
+                id    = 54000012,
+                name  = 'Legendary Arena'
+            ),
+            last_seen = "20190802T154619.000Z"
+        ))
+        member.safe = True
         members.append(member)
 
-    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__.required_trophies)
 
     assert len(suggestions) == 1
-    assert suggestions[0] == config['strings']['suggestionNone']
+    assert suggestions[-1] == config['strings']['suggestionNone']
 
 def test_get_suggestions_kick(tmpdir):
     config_file = tmpdir.mkdir('test_get_suggestions').join('testfile')
@@ -335,7 +303,7 @@ def test_get_suggestions_kick(tmpdir):
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, __fake_currentwar_notinwar__, h)
 
-    suggestions = crtools.get_suggestions(config, members, __fake_clan__)
+    suggestions = crtools.get_suggestions(config, members, __fake_clan__.required_trophies)
 
     print(suggestions)
 

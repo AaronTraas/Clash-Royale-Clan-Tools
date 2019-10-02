@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from crtools import leagueinfo
 from crtools.scorecalc import ScoreCalculator
 
-def get_war_date(war):
+def _get_war_date(war):
     """ returns the datetime this war was created. If it's an ongoing
     war, calculate based on the dates given when the war started.
     If it's a previous war fromt he warlog, we retrieve the creation
@@ -22,7 +22,7 @@ def get_war_date(war):
     return datetime.timestamp(war_date_raw)
 
 
-def get_member_war_status_class(collection_day_battles, war_day_battles, war_date, join_date, current_war=False, war_day=False):
+def _get_member_war_status_class(collection_day_battles, war_day_battles, war_date, join_date, current_war=False, war_day=False):
     """ returns CSS class(es) for a war log entry for a given member """
     if war_date < join_date:
         return 'not-in-clan'
@@ -68,7 +68,7 @@ class WarParticipation():
             return
 
         member_tag = member.tag
-        war_date = get_war_date(war)
+        war_date = _get_war_date(war)
         join_date = member.join_date if hasattr(member, 'join_date') else 0
 
         if hasattr(war, 'state') :
@@ -79,6 +79,7 @@ class WarParticipation():
 
         for participant in war.participants:
             if participant.tag == member_tag:
+                self.in_war = True
                 self.cards_earned = participant.cards_earned
                 self.battles_played = participant.battles_played
                 self.collection_day_battles_played = participant.collection_day_battles_played
@@ -86,11 +87,10 @@ class WarParticipation():
                 self.number_of_battles = participant.number_of_battles
 
                 if hasattr(war, 'state'):
-                    self.status = get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date, True, war.state=='warDay')
+                    self.status = _get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date, True, war.state=='warDay')
                     continue;
 
-                self.in_war = True
-                self.status = get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date)
+                self.status = _get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date)
 
                 self.war_league = leagueinfo.get_war_league_from_war(war, config['api']['clan_id'])
                 self.collection_win_cards = leagueinfo.get_collection_win_cards(self.war_league, member.arena.name)
