@@ -48,8 +48,6 @@ def get_demerit_list(sheet, sheet_id):
                       .execute() \
                       .get('values', [])
 
-        current_tag = ''
-
         demerits = []
         for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
             demerits.append(Demerit(tag=member_tag, action=action, status=member_status, date=date, notes=notes))
