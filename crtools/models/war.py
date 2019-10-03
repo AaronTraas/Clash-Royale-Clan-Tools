@@ -4,7 +4,12 @@ import math
 
 from pyroyale import WarCurrent
 
-class ProcessedCurrentWar(WarCurrent):
+class ProcessedCurrentWar:
+
+    cards = 0
+    state_label = ''
+    collection_end_time_label = ''
+    end_label = ''
 
     def __init__(self, current_war, config):
         self.state = current_war.state
@@ -18,12 +23,6 @@ class ProcessedCurrentWar(WarCurrent):
         self.state_label = ''
         self.collection_end_time_label = ''
         self.end_label = ''
-
-        self.openapi_types = self.openapi_types.copy()
-        self.openapi_types['cards'] = 'int'
-        self.openapi_types['state_label'] = 'str'
-        self.openapi_types['collection_end_time_label'] = 'str'
-        self.openapi_types['end_label'] = 'str'
 
         self.process(config)
 

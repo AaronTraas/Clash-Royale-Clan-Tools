@@ -6,7 +6,7 @@ from pyroyale import Clan
 
 from crtools import leagueinfo
 
-class ProcessedClan(Clan):
+class ProcessedClan():
     def __init__(self, clan, current_war, config):
         self.tag = clan.tag
         self.name = clan.name
@@ -27,10 +27,4 @@ class ProcessedClan(Clan):
         self.war_league = leagueinfo.get_war_league_from_score(self.clan_war_trophies)
         self.war_league_name = config['strings']['war-league-' + self.war_league]
         self.current_war_state = current_war.state
-
-        self.openapi_types = self.openapi_types.copy()
-        self.openapi_types['war_league'] = 'str'
-        self.openapi_types['war_league_name'] = 'str'
-        self.openapi_types['current_war_state'] = 'str'
-        del self.openapi_types['member_list']
 

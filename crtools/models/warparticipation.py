@@ -58,6 +58,7 @@ class WarParticipation():
         self.collection_win_cards = 0
         self.collection_day_battles_played = 0
         self.collection_battle_wins = 0
+        self.collection_battle_losses = 0
         self.wins = 0
         self.war_league = 'na'
         self.number_of_battles = 0
@@ -73,9 +74,14 @@ class WarParticipation():
 
         if hasattr(war, 'state') :
             self.score = 0
+            return
         elif war_date < join_date:
+            # member is not in this war
             self.status = 'not-in-clan'
             return
+        else:
+            # member is not in this war
+            self.score = ScoreCalculator(config).get_war_score(self)
 
         for participant in war.participants:
             if participant.tag == member_tag:
@@ -93,7 +99,7 @@ class WarParticipation():
                 self.status = _get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date)
 
                 self.war_league = leagueinfo.get_war_league_from_war(war, config['api']['clan_id'])
-                self.collection_win_cards = leagueinfo.get_collection_win_cards(self.war_league, member.arena.name)
+                self.collection_win_cards = leagueinfo.get_collection_win_cards(self.war_league, member.arena_league)
 
                 self.collection_battle_wins = round(self.cards_earned / self.collection_win_cards)
                 self.collection_battle_losses = self.collection_day_battles_played - self.collection_battle_wins

@@ -3,6 +3,8 @@ import logging
 
 from googleapiclient.discovery import build
 
+from crtools.models import Demerit, MemberVacation
+
 logger = logging.getLogger(__name__)
 
 DEMERIT_RANGE = 'Demerits!A2:G'
@@ -33,15 +35,13 @@ def get_member_data_from_sheets(config):
 # results for unit tests
 def get_sheet(api_key): # pragma: no coverage
     """ Returns authenticated Google Sheet API wrapper using API key """
-
     try:
         return build('sheets', 'v4', cache_discovery=False, developerKey=api_key).spreadsheets()
     except Exception as e:
         logging.error(e)
         logging.error('Unable to connect to Google Sheets API')
 
-def get_demerit_data_from_sheet(sheet, sheet_id, blacklist=[], no_promote_list=[]):
-
+def get_demerit_list(sheet, sheet_id):
     try:
         values = sheet.values() \
                       .get(spreadsheetId=sheet_id, range=DEMERIT_RANGE) \
@@ -50,22 +50,17 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist=[], no_promote_list=[
 
         current_tag = ''
 
+        demerits = []
         for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
-            if member_tag:
-                current_tag = member_tag
+            demerits.append(Demerit(tag=member_tag, action=action, status=member_status, date=date, notes=notes))
 
-            if member_status == 'blacklist' and current_tag not in blacklist:
-                blacklist.append(current_tag)
-            elif member_status == 'no-promote list' and current_tag not in no_promote_list:
-                no_promote_list.append(current_tag)
+        return demerits
+
     except Exception as e:
         logging.error(e)
         logging.error('Unable to get blacklist data from Google Sheets {}'.format(sheet_id))
 
-    return (blacklist, no_promote_list)
-
-def get_vacation_data_from_sheet(sheet, sheet_id, vacation=[]):
-
+def get_vacation_list(sheet, sheet_id):
     try:
         values = sheet.values() \
                       .get(spreadsheetId=sheet_id, range=VACATION_RANGE) \
@@ -74,12 +69,42 @@ def get_vacation_data_from_sheet(sheet, sheet_id, vacation=[]):
 
         now = datetime.utcnow().date()
 
+        vacations = []
         for (member_name, member_tag, start_date, end_date, notes) in values:
             vacation_end = datetime.strptime(end_date, '%m/%d/%Y').date()
-            if vacation_end >= now and member_tag not in vacation:
-                vacation.append(member_tag)
+
+            if vacation_end >= now:
+                vacations.append(MemberVacation(tag=member_tag, start_date=start_date, end_date=end_date, notes=notes))
+
+        return vacations
     except Exception as e:
         logging.error(e)
         logging.error('Unable to get vacation data from Google Sheets {}'.format(sheet_id))
 
-    return vacation
+def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={}):
+
+    demerits = get_demerit_list(sheet, sheet_id)
+
+    if demerits:
+        current_tag = ''
+
+        for demerit in demerits:
+            if demerit.tag:
+                current_tag = demerit.tag
+
+            if demerit.status == 'blacklist':
+                blacklist[current_tag] = demerit
+            elif demerit.status == 'no-promote list':
+                no_promote_list[current_tag] = demerit
+
+    return (blacklist, no_promote_list)
+
+def get_vacation_data_from_sheet(sheet, sheet_id, vacation_list={}):
+
+    vacations = get_vacation_list(sheet, sheet_id)
+
+    if vacations:
+        for vacation in vacations:
+            vacation_list[vacation.tag] = vacation
+
+    return vacation_list

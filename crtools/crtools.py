@@ -225,10 +225,10 @@ def build_dashboard(config): # pragma: no coverage
                 {
                     'clan'                  : clan.to_dict(),
                     'warlog'                : warlog.to_dict(),
-                    'current_war'            : current_war.to_dict(),
-                    'clan-processed'        : clan_processed.to_dict(),
+                    'current_war'           : current_war.to_dict(),
+                    'clan-processed'        : clan_processed,
                     'members-processed'     : members_processed,
-                    'current_war-processed'  : current_war_processed.to_dict(),
+                    'current_war-processed' : current_war_processed,
                     'recentwars-processed'  : list(map(lambda war: war.to_dict(), recent_wars))
                 }
             )

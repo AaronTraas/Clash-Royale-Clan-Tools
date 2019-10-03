@@ -24,7 +24,7 @@ class ScoreCalculator:
         if war.status == 'not-in-clan':
             return 0;
 
-        if not hasattr(war, 'battles_played'):
+        if hasattr(war, 'in_war') and not war.in_war:
             return self.config['score']['war_non_participation']
 
         war_score = 0
