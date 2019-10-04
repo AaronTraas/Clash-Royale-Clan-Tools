@@ -464,8 +464,8 @@ msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
 msgstr ""
-"Membros com uma pontuação <strong class=\"bad\"> abaixo de 0 </strong> terão "
-"recomendado para chutes ou rebaixamentos."
+"Membros com uma pontuação <strong class=\"bad\"> abaixo de 0 </strong> serão "
+"recomendados para explusões ou rebaixamentos."
 
 #: crtools/config.py:256
 msgid ""
@@ -526,7 +526,7 @@ msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr ""
-"A pontuação é composta de dois componentes: <strong>pontuação da doação</strong> e"
+"A pontuação é composta de dois componentes: <strong>pontuação da doação</strong> e "
 "<strong>pontuação de participação na guerra</strong>."
 
 #: crtools/config.py:267
