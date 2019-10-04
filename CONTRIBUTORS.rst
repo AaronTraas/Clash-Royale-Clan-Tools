@@ -8,6 +8,9 @@ Eagle334 <Eagle334@gmail.com>
 Roy Law <https://github.com/RoyLaw>
 	Chinese translation
 
+Rikmaeda <https://github.com/rikmaeda>
+	Contributed Portuguese translation
+
 Theodore Kotz <ted@kotz.us>
 	Code reviews and brainstorming
 
