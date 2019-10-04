@@ -162,6 +162,7 @@ de      German
 en      English (default)
 fr      French
 cn      Chinese
+pt      Portugese
 ======= =================
 
 If you'd like to use a language other than English, add the following switch
