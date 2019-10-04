@@ -49,7 +49,6 @@ class MemberFactory:
         else:
             member.last_seen_delta += '{} {}'.format(hours, self.config['strings']['labelHours'])
 
-
         if member.join_date == 0:
             member.join_date_label = self.config['strings']['labelBeforeHistory']
         else:

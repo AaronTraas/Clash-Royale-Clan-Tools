@@ -74,7 +74,6 @@ class WarParticipation():
 
         if hasattr(war, 'state') :
             self.score = 0
-            return
         elif war_date < join_date:
             # member is not in this war
             self.status = 'not-in-clan'
@@ -94,7 +93,7 @@ class WarParticipation():
 
                 if hasattr(war, 'state'):
                     self.status = _get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date, True, war.state=='warDay')
-                    continue;
+                    return;
 
                 self.status = _get_member_war_status_class(self.collection_day_battles_played, self.battles_played, war_date, join_date)
 
