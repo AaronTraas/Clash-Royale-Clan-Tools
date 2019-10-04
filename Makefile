@@ -42,3 +42,6 @@ dist: translate
 
 upload: dist
 	python3 -m twine upload dist/*
+
+check: dist
+	python3 -m twine upload dist/*
