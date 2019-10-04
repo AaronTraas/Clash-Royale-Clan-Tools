@@ -152,6 +152,12 @@ __fake_current_war__ = pyroyale.WarCurrent(
         clans        = [__fake_war_clan__]
     )
 
+__fake_war__ = pyroyale.War(
+        created_date = '20190209T212846.354Z',
+        participants = __fake_war_participants__,
+        standings = []
+    )
+
 def test_war_score(tmpdir):
 
     config_file = tmpdir.mkdir('test_war_score').join('testfile')
@@ -178,11 +184,10 @@ def test_war_score(tmpdir):
     war_incomplete.collection_battle_losses = 0
     assert calc.get_war_score(war_incomplete) == -26
 
-    war_na = WarParticipation(config=config, member=__fake_war_participants__[0], war=__fake_current_war__)
-    war_na.status = 'na'
+    war_na = WarParticipation(config=config, member=ProcessedMember(__fake_member_list__[4]), war=__fake_war__)
     assert calc.get_war_score(war_na)         == -1
 
-    war_new = WarParticipation(config=config, member=__fake_war_participants__[0], war=__fake_current_war__)
+    war_new = WarParticipation(config=config, member=ProcessedMember(__fake_member_list__[4]), war=__fake_war__)
     war_new.status = 'not-in-clan'
     assert calc.get_war_score(war_new)        == 0
 
