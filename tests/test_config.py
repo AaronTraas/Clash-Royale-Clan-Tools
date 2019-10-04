@@ -93,11 +93,12 @@ def test_config_list(tmpdir):
     assert type(config['api']['api_key']) == type('')
 
     # Parsed ['members']['blacklist'] in config as a list, because the template was a list
-    assert config['members']['blacklist'][0] == 'Foo'
-    assert type(config['members']['blacklist']) == type([])
+    assert type(config['members']['blacklist']) == type({})
+    assert config['members']['blacklist']['Foo'].tag == 'Foo'
 
     # Properly stripped whitespace from list element
-    assert config['members']['vacation'][1] == 'Baz'
+    assert config['members']['vacation']['Baz'].tag == 'Baz'
+    assert config['members']['vacation']['Baz'].start_date == 0
 
 
 def test_config_paths_empty(tmpdir):

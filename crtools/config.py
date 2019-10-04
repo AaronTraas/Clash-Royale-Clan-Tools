@@ -13,6 +13,7 @@ except ImportError:  # pragma: no coverage
 
 from ._version import __version__
 from crtools import gdoc
+from crtools.models import Demerit, MemberVacation
 
 logger = logging.getLogger(__name__)
 
@@ -280,6 +281,7 @@ def __localize_strings(locale_id):
         'roleMember'                : _('Member'),
         'roleBlacklisted'           : _('Blacklisted. Kick!'),
         'roleVacation'              : _('On vacation'),
+        'roleVacationUntil'         : _('Vacation until {}'),
         'roleInactive'              : _('Inactive {days} days'),
         'roleNoPromote'             : _('Never Promote'),
 
@@ -407,6 +409,20 @@ def __get_version_info(config):
 
     return config
 
+def __process_special_status(config):
+    for demerit_type in ['blacklist', 'no_promote']:
+        demerits = {}
+        for tag in config['members'][demerit_type]:
+            demerits[tag] = Demerit(tag=tag, status=demerit_type)
+        config['members'][demerit_type] = demerits
+
+    vacations = {}
+    for tag in config['members']['vacation']:
+        vacations[tag] = MemberVacation(tag=tag)
+    config['members']['vacation'] = vacations
+
+    return config
+
 def load_config_file(config_file_name=None, check_for_update=False, locale=None):
     """ Look for config file. If config file exists, load it, and try to
     extract config from config file"""
@@ -427,6 +443,7 @@ def load_config_file(config_file_name=None, check_for_update=False, locale=None)
 
     config = __validate_paths(config)
     config = __validate_crtools_settings(config)
+    config = __process_special_status(config)
 
     # Augment from Google Sheet
     config = gdoc.get_member_data_from_sheets(config)

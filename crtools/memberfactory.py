@@ -2,7 +2,7 @@ from datetime import datetime
 import logging
 
 from crtools.models import ProcessedMember, WarParticipation
-from crtools import history, leagueinfo
+from crtools import history
 from crtools.scorecalc import ScoreCalculator
 
 logger = logging.getLogger(__name__)
@@ -87,7 +87,10 @@ class MemberFactory:
         # vacation = member is on vacation. Don't reccomend demote or kick, dont show score
         # safe = member marked as safe. Don't reccomend demote or kick
         # blacklist = member on blacklist. Recommend kick immediately.
-        member.vacation = member.tag in self.config['members']['vacation']
+        member.vacation = False
+        if member.tag in self.config['members']['vacation']:
+            member.vacation = self.config['members']['vacation'][member.tag]
+
         member.safe = member.tag in self.config['members']['safe']
         member.no_promote = member.tag in self.config['members']['no_promote']
         member.blacklist = member.tag in self.config['members']['blacklist']
@@ -129,21 +132,24 @@ class MemberFactory:
         else:
             member.trophies_status = 'ok'
 
-        member.arena_league_label = self.config['strings']['league-' + member.arena_league]
+        member.arena_league_label = self.config['strings']['league-' + member.arena_league['id']]
 
         # Figure out whether member is on the leadership team by role
         member.leadership = member.role == 'leader' or member.role == 'coLeader'
 
         self.calc_recent_war_stats(member)
 
-    def get_role_label(self, member_role, days_inactive, activity_status, on_vacation, blacklisted, no_promote):
+    def get_role_label(self, member_role, days_inactive, activity_status, vacation, blacklisted, no_promote):
         """ Format roles in sane way """
 
         if blacklisted:
             return self.config['strings']['roleBlacklisted']
 
-        if on_vacation:
-            return self.config['strings']['roleVacation']
+        if vacation:
+            if vacation.end_date == 0:
+                return self.config['strings']['roleVacation']
+            else:
+                return self.config['strings']['roleVacationUntil'].format(vacation.end_date)
 
         if activity_status in ['bad', 'ok']:
             return self.config['strings']['roleInactive'].format(days=days_inactive)

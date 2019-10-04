@@ -21,7 +21,7 @@
             </thead>
             <class="list">
             {% for member in members %}
-                <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}" data-nopromote="{{ 'true' if member.no_promote else 'false' }}" data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.current_war.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation}}" data-new="{{ 'true' if member.new else 'false' }}">
+                <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}" data-nopromote="{{ 'true' if member.no_promote else 'false' }}" data-score="{{member.score}}" data-activity="{{member.activity_status}}" data-status="{{member.status}}" data-clanrole="{{member.role}}" data-currentwar="{{member.current_war.status}}" data-leadership="{{member.leadership}}" data-vacation="{{member.vacation != False}}" data-new="{{ 'true' if member.new else 'false' }}">
                     <td class="id rank" data-sort="{{member.clan_rank}}">
                         {% if member.clan_rank < member.previous_clan_rank %}
                         <span class="rank-up">
@@ -49,7 +49,7 @@
                             </dl>
                         </div>
                     </td>
-                    <td class="trophies {{member.trophies_status}} {{ 'arena-league' if 'arena-' not in member.arena_league else '' }} {{member.arena_league}}" data-sort="{{member.trophies}}">
+                    <td class="trophies {{member.trophies_status}} {{ 'arena-league' if 'arena-' not in member.arena_league else '' }} {{member.arena_league.id}}" data-sort="{{member.trophies}}">
                         <strong>{{member.trophies}}</strong>
                     </td>
                     <td class="donations {{member.donation_status}}" data-sort="{{member.donations}}" data-tooltip="true">

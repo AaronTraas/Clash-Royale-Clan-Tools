@@ -45,9 +45,9 @@ def test_get_member_data_from_sheets_no_google_doc_config_does_nothing():
 
     config = gdoc.get_member_data_from_sheets(config)
 
-    assert config['members']['blacklist'] == []
-    assert config['members']['no_promote'] == []
-    assert config['members']['vacation'] == []
+    assert config['members']['blacklist'] == {}
+    assert config['members']['no_promote'] == {}
+    assert config['members']['vacation'] == {}
 
 def test_get_member_data_from_sheets_no_api_key_does_nothing(tmpdir, capsys):
     """ Sections and properties in INI files should never be added to
@@ -66,15 +66,15 @@ debug=True
 
     config = gdoc.get_member_data_from_sheets(config)
 
-    assert config['members']['blacklist'] == []
-    assert config['members']['no_promote'] == []
-    assert config['members']['vacation'] == []
+    assert config['members']['blacklist'] == {}
+    assert config['members']['no_promote'] == {}
+    assert config['members']['vacation'] == {}
 
 def test_get_member_data_from_sheets_no_sheet_id_does_nothing(tmpdir, capsys):
     """ Sections and properties in INI files should never be added to
     config object if they aren't in the template """
 
-    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_no_api_key_does_nothing').join('config.ini')
+    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_no_sheet_id_does_nothing').join('config.ini')
     config_file.write("""
 [google_docs]
 sheet_id=FAKE_SHEET_ID
@@ -87,9 +87,9 @@ debug=True
 
     config = gdoc.get_member_data_from_sheets(config)
 
-    assert config['members']['blacklist'] == []
-    assert config['members']['no_promote'] == []
-    assert config['members']['vacation'] == []
+    assert config['members']['blacklist'] == {}
+    assert config['members']['no_promote'] == {}
+    assert config['members']['vacation'] == {}
 
 def test_get_member_data_from_sheets_mock_data(tmpdir, monkeypatch):
     def mock_get_sheet(*args, **kwargs):
@@ -97,17 +97,16 @@ def test_get_member_data_from_sheets_mock_data(tmpdir, monkeypatch):
 
     monkeypatch.setattr(gdoc, "get_sheet", mock_get_sheet)
 
-    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_no_api_key_does_nothing').join('config.ini')
+    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_mock_data').join('config.ini')
     config_file.write(__config_file__)
 
     config = load_config_file(config_file.realpath())
 
-
     config = gdoc.get_member_data_from_sheets(config)
 
-    assert config['members']['blacklist'] == ['#AAA']
-    assert config['members']['no_promote'] == ['#BBB']
-    assert config['members']['vacation'] == ['#CCC']
+    assert config['members']['blacklist']['#AAA'].tag == '#AAA'
+    assert config['members']['no_promote']['#BBB'].tag == '#BBB'
+    assert config['members']['vacation']['#CCC'].tag == '#CCC'
 
 def test_get_member_data_from_sheets_null_sheets_object(tmpdir, monkeypatch):
     def mock_get_sheet(*args, **kwargs):
@@ -115,13 +114,13 @@ def test_get_member_data_from_sheets_null_sheets_object(tmpdir, monkeypatch):
 
     monkeypatch.setattr(gdoc, "get_sheet", mock_get_sheet)
 
-    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_no_api_key_does_nothing').join('config.ini')
+    config_file = tmpdir.mkdir('test_get_member_data_from_sheets_null_sheets_object').join('config.ini')
     config_file.write(__config_file__)
 
     config = load_config_file(config_file.realpath())
 
     config = gdoc.get_member_data_from_sheets(config)
 
-    assert config['members']['blacklist'] == []
-    assert config['members']['no_promote'] == []
-    assert config['members']['vacation'] == []
+    assert config['members']['blacklist'] == {}
+    assert config['members']['no_promote'] == {}
+    assert config['members']['vacation'] == {}
