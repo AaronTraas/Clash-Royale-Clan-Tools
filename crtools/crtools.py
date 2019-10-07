@@ -11,7 +11,7 @@ import shutil
 import tempfile
 
 import pyroyale
-from pyroyale.rest import ApiException
+import json
 
 from ._version import __version__
 from crtools import history
@@ -153,6 +153,43 @@ def process_recent_wars(config, warlog):
 
     return wars
 
+def get_data_from_api(config): # pragma: no coverage
+    # get API instance
+    configuration = pyroyale.Configuration()
+    configuration.api_key['authorization'] = config['api']['api_key']
+    if config['api']['proxy']:
+        configuration.proxy = config['api']['proxy']
+    if config['api']['proxy_headers']:
+        configuration.proxy_headers = config['api']['proxy_headers']
+
+    api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
+
+    try:
+        # Get clan data and war log from API.
+        clan = api.get_clan(config['api']['clan_id'])
+        warlog = api.get_clan_war_log(config['api']['clan_id'])
+        current_war = api.get_current_war(config['api']['clan_id'])
+
+        print('- clan: {} ({})'.format(clan.name, clan.tag))
+
+        return (clan, warlog, current_war)
+    except pyroyale.ApiException as e:
+        if e.body:
+            body = json.loads(e.body)
+            if body['reason'] == 'accessDenied':
+                logger.error('developer.clashroyale.com claims that your API key is invalid. Please make sure you are setting up crtools with a valid key.')
+            elif body['reason'] == 'accessDenied.invalidIp':
+                logger.error('developer.clashroyale.com says: {}'.format(body['message']))
+            else:
+                logger.error('error: {}'.format(body))
+        else:
+            logger.error('error: {}'.format(e))
+    except pyroyale.OpenApiException as e:
+        logger.error('error: {}'.format(e))
+
+    # If we've gotten here, something has gone wrong. We need to abort the application.
+    exit(0)
+
 # NOTE: we're not testing this function because this is where we're
 # isolating all of the I/O for the application here. The real "work"
 # here is done in all of the calls to functions in this file, or in the
@@ -167,33 +204,19 @@ def process_recent_wars(config, warlog):
 def build_dashboard(config): # pragma: no coverage
     """Compile and render clan dashboard."""
 
+    print('- requesting info for clan id: {}'.format(config['api']['clan_id']))
+
+    clan, warlog, current_war = get_data_from_api(config)
+
     # Create temporary directory. All file writes, until the very end,
     # will happen in this directory, so that no matter what we do, it
     # won't hose existing stuff.
     tempdir = tempfile.mkdtemp(config['paths']['temp_dir_name'])
 
-    # get API instance
-    configuration = pyroyale.Configuration()
-    configuration.api_key['authorization'] = config['api']['api_key']
-    if config['api']['proxy']:
-        configuration.proxy = config['api']['proxy']
-    if config['api']['proxy_headers']:
-        configuration.proxy_headers = config['api']['proxy_headers']
-    api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
-
-    print('- requesting info for clan id: {}'.format(config['api']['clan_id']))
-
     # Putting everything in a `try`...`finally` to ensure `tempdir` is removed
     # when we're done. We don't want to pollute the user's disk.
     try:
         output_path = os.path.expanduser(config['paths']['out'])
-
-        # Get clan data and war log from API.
-        clan = api.get_clan(config['api']['clan_id'])
-        warlog = api.get_clan_war_log(config['api']['clan_id'])
-        current_war = api.get_current_war(config['api']['clan_id'])
-
-        print('- clan: {} ({})'.format(clan.name, clan.tag))
 
         # process data from API
         current_war_processed = ProcessedCurrentWar(current_war, config)
@@ -243,7 +266,7 @@ def build_dashboard(config): # pragma: no coverage
 
         discord.trigger_webhooks(config, current_war, members_processed)
 
-    except ApiException as e:
+    except Exception as e:
         logger.error('error: {}'.format(e))
 
     finally:
