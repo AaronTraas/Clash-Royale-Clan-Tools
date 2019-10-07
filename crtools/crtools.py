@@ -241,7 +241,7 @@ def build_dashboard(config): # pragma: no coverage
 
         io.move_temp_to_output_dir(tempdir, output_path)
 
-        discord.trigger_webhooks(config, current_war.to_dict(), members_processed)
+        discord.trigger_webhooks(config, current_war, members_processed)
 
     except ApiException as e:
         logger.error('error: {}'.format(e))
