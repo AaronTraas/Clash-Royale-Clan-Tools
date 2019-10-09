@@ -285,11 +285,11 @@ msgstr "Vitórias do dia de guerra"
 
 #: crtools/config.py:207
 msgid "War win rate"
-msgstr "% de vitória do dia de guerra"
+msgstr "% vitória na guerra"
 
 #: crtools/config.py:208
 msgid "Collection win rate"
-msgstr "% de vitória do dia de coleta"
+msgstr "% vitória na coleta"
 
 #: crtools/config.py:209
 msgid "Collection cards won"
@@ -297,7 +297,7 @@ msgstr "Cartas coletadas"
 
 #: crtools/config.py:210
 msgid "War score average"
-msgstr "Média de pontuação de guerra"
+msgstr "Média de pontos na guerra"
 
 #: crtools/config.py:211
 msgid "War score"
@@ -357,7 +357,7 @@ msgstr "Detalhes do Membro"
 
 #: crtools/config.py:227
 msgid "Player Stats and Info"
-msgstr "Estatísticas e Informações do Jogador"
+msgstr "Informações do Jogador"
 
 #: crtools/config.py:228
 msgid "See on StatsRoyale"
