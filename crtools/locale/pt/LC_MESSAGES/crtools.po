@@ -285,11 +285,11 @@ msgstr "Vitórias do dia de guerra"
 
 #: crtools/config.py:207
 msgid "War win rate"
-msgstr "% de vitória do dia de guerra"
+msgstr "% vitória na guerra"
 
 #: crtools/config.py:208
 msgid "Collection win rate"
-msgstr "% de vitória do dia de coleta"
+msgstr "% vitória na coleta"
 
 #: crtools/config.py:209
 msgid "Collection cards won"
@@ -297,7 +297,7 @@ msgstr "Cartas coletadas"
 
 #: crtools/config.py:210
 msgid "War score average"
-msgstr "Média de pontuação de guerra"
+msgstr "Média de pontos na guerra"
 
 #: crtools/config.py:211
 msgid "War score"
@@ -357,7 +357,7 @@ msgstr "Detalhes do Membro"
 
 #: crtools/config.py:227
 msgid "Player Stats and Info"
-msgstr "Estatísticas e Informações do Jogador"
+msgstr "Informações do Jogador"
 
 #: crtools/config.py:228
 msgid "See on StatsRoyale"
@@ -464,8 +464,8 @@ msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
 msgstr ""
-"Membros com uma pontuação <strong class=\"bad\"> abaixo de 0 </strong> terão "
-"recomendado para chutes ou rebaixamentos."
+"Membros com uma pontuação <strong class=\"bad\"> abaixo de 0 </strong> serão "
+"recomendados para explusões ou rebaixamentos."
 
 #: crtools/config.py:256
 msgid ""
@@ -526,7 +526,7 @@ msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr ""
-"A pontuação é composta de dois componentes: <strong>pontuação da doação</strong> e"
+"A pontuação é composta de dois componentes: <strong>pontuação da doação</strong> e "
 "<strong>pontuação de participação na guerra</strong>."
 
 #: crtools/config.py:267
