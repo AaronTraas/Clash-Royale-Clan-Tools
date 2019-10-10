@@ -47,7 +47,8 @@ config_defaults = {
         'use_fankit'                    : False
     },
     'www' : {
-        'canonical_url'                 : False
+        'canonical_url'                 : False,
+        'google_analytics_tag'          : False
     },
     'activity': {
         'threshold_warn'                : 7,

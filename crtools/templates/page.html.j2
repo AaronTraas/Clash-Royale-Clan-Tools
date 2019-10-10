@@ -10,6 +10,17 @@
 
     <title>{{clan.name}} Clan Dashboard | crtools</title>
 
+{% if config.www.google_analytics_tag != False %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{config.www.google_analytics_tag}}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{config.www.google_analytics_tag}}');
+    </script>
+{% endif %}
+
     <link rel="icon" href="favicon.ico"/>
 {% if config.www.canonical_url != False %}
     <link rel="canonical" href="{{config.www.canonical_url}}" />
