@@ -145,6 +145,7 @@ function TooltipManager() {
 
 function MemberTableFilter() {
     var filter_dropdown = document.getElementById('member-filter');
+    var show_hidden_checkbox = document.getElementById('show-hidden-columns')
     var member_table = document.getElementById('member-table');
 
     var hashParams = HashParamParser();
@@ -157,6 +158,11 @@ function MemberTableFilter() {
             hashParams.set('filter', e.target.value);
         }
     });
+
+    show_hidden_checkbox.addEventListener('change', function(e) {
+        console.log(e.target.checked)
+        document.body.dataset.columndetails = e.target.checked
+    })
 
     getFilterFromHash();
 

@@ -3,12 +3,13 @@ import logging
 
 from googleapiclient.discovery import build
 
-from crtools.models import Demerit, MemberVacation
+from crtools.models import Demerit, MemberVacation, MemberCustomRecord
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('gdoc')
 
 DEMERIT_RANGE = 'Demerits!A2:G'
 VACATION_RANGE = 'Vacation!A2:E'
+CUSTOM_RANGE = 'Custom!A2:D'
 
 def get_member_data_from_sheets(config):
     """ If API key and Sheet ID are provided in config, use the Google Sheets API to
@@ -28,6 +29,7 @@ def get_member_data_from_sheets(config):
 
     (config['members']['blacklist'], config['members']['no_promote']) = get_demerit_data_from_sheet(sheet, sheet_id, config['members']['blacklist'], config['members']['no_promote'])
     config['members']['vacation'] = get_vacation_data_from_sheet(sheet, sheet_id, config['members']['vacation'])
+    config['members']['custom'] = get_custom_data_from_sheet(sheet, sheet_id)
 
     return config
 
@@ -58,6 +60,8 @@ def get_demerit_list(sheet, sheet_id):
         logging.error(e)
         logging.error('Unable to get blacklist data from Google Sheets {}'.format(sheet_id))
 
+    return []
+
 def get_vacation_list(sheet, sheet_id):
     try:
         values = sheet.values() \
@@ -78,6 +82,29 @@ def get_vacation_list(sheet, sheet_id):
     except Exception as e:
         logging.error(e)
         logging.error('Unable to get vacation data from Google Sheets {}'.format(sheet_id))
+
+    return []
+
+def get_custom_record_list(sheet, sheet_id):
+    try:
+        values = sheet.values() \
+                      .get(spreadsheetId=sheet_id, range=CUSTOM_RANGE) \
+                      .execute() \
+                      .get('values', [])
+
+        now = datetime.utcnow().date()
+
+        vacations = []
+        for (member_name, member_tag, custom_role, notes) in values:
+            vacations.append(MemberCustomRecord(tag=member_tag, role=custom_role, notes=notes))
+
+        return vacations
+    except Exception as e:
+        logging.error(e)
+        logging.error('Unable to get custom data from Google Sheets {}'.format(sheet_id))
+
+    return []
+
 
 def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={}):
 
@@ -106,3 +133,13 @@ def get_vacation_data_from_sheet(sheet, sheet_id, vacation_list={}):
             vacation_list[vacation.tag] = vacation
 
     return vacation_list
+
+def get_custom_data_from_sheet(sheet, sheet_id, custom_list={}):
+
+    custom = get_custom_record_list(sheet, sheet_id)
+
+    if custom:
+        for record in custom:
+            custom_list[record.tag] = record
+
+    return custom_list

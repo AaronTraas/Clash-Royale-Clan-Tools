@@ -58,3 +58,28 @@
 #leaderboards[data-filter="donations"] .leaderboard[data-filter="donations"] {
     display: unset;
 }
+
+/* Hidden columns
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+body[data-columndetails="true"] #member-table tr > td,
+body[data-columndetails="true"] #member-table tr > th {
+    display: table-cell !important;
+}
+
+input.toggle-button {
+    display: none;
+}
+
+input.toggle-button + label {
+    display: inline-block;
+    border: 1px solid #ccc;
+    background: #eee;
+    padding: 0 8px;
+    margin: 0 12px;
+    line-height: 32px;
+    border-radius: 4px;
+}
+
+input.toggle-button:checked + label {
+    background: #ddd;
+}

@@ -77,7 +77,8 @@ config_defaults = {
         'blacklist'                     : [],
         'no_promote'                    : [],
         'vacation'                      : [],
-        'safe'                          : []
+        'safe'                          : [],
+        'custom'                        : {}
     },
     'member_table': {
         'show_rank'                     : True,

@@ -124,7 +124,7 @@ class MemberFactory:
 
         member.activity_status = self.calc_activity_status(member.days_inactive)
 
-        member.role_label = self.get_role_label(member.role, member.days_inactive, member.activity_status, member.vacation, member.blacklist, member.no_promote)
+        member.role_label = self.get_role_label(member.tag, member.role, member.days_inactive, member.activity_status, member.vacation, member.blacklist, member.no_promote)
 
         if member.trophies >= self.clan.required_trophies:
             member.trophies_status = 'normal'
@@ -138,8 +138,11 @@ class MemberFactory:
 
         self.calc_recent_war_stats(member)
 
-    def get_role_label(self, member_role, days_inactive, activity_status, vacation, blacklisted, no_promote):
+    def get_role_label(self, member_tag, member_role, days_inactive, activity_status, vacation, blacklisted, no_promote):
         """ Format roles in sane way """
+
+        if member_tag in self.config['members']['custom']:
+            return self.config['members']['custom'][member_tag].role
 
         if blacklisted:
             return self.config['strings']['roleBlacklisted']

@@ -54,15 +54,15 @@ def test_get_role_label():
 
     vacation_end = 999999999999999999
 
-    assert factory.get_role_label('member', 0, 'good', MemberVacation(tag='#AAA'), True, False) == config['strings']['roleBlacklisted']
-    assert factory.get_role_label('leader', 100, 'bad', MemberVacation(tag='#AAA'), True, False) == config['strings']['roleBlacklisted']
-    assert factory.get_role_label('leader', 100, 'bad', MemberVacation(tag='#AAA'), False, False) == config['strings']['roleVacation']
-    assert factory.get_role_label('leader', 100, 'bad', None, False, False) == config['strings']['roleInactive'].format(days=100)
+    assert factory.get_role_label('#fff', 'member', 0, 'good', MemberVacation(tag='#AAA'), True, False) == config['strings']['roleBlacklisted']
+    assert factory.get_role_label('#fff', 'leader', 100, 'bad', MemberVacation(tag='#AAA'), True, False) == config['strings']['roleBlacklisted']
+    assert factory.get_role_label('#fff', 'leader', 100, 'bad', MemberVacation(tag='#AAA'), False, False) == config['strings']['roleVacation']
+    assert factory.get_role_label('#fff', 'leader', 100, 'bad', None, False, False) == config['strings']['roleInactive'].format(days=100)
 
-    assert factory.get_role_label('leader', 0, 'good', None, False, False) == config['strings']['roleLeader']
-    assert factory.get_role_label('coLeader', 0, 'good', None, False, False) == config['strings']['roleCoLeader']
-    assert factory.get_role_label('elder', 0, 'good', None, False, False) == config['strings']['roleElder']
-    assert factory.get_role_label('member', 0, 'good', None, False, False) == config['strings']['roleMember']
+    assert factory.get_role_label('#fff', 'leader', 0, 'good', None, False, False) == config['strings']['roleLeader']
+    assert factory.get_role_label('#fff', 'coLeader', 0, 'good', None, False, False) == config['strings']['roleCoLeader']
+    assert factory.get_role_label('#fff', 'elder', 0, 'good', None, False, False) == config['strings']['roleElder']
+    assert factory.get_role_label('#fff', 'member', 0, 'good', None, False, False) == config['strings']['roleMember']
 
-    assert factory.get_role_label('leader', 0, 'good', None, False, True) == config['strings']['roleNoPromote']
+    assert factory.get_role_label('#fff', 'leader', 0, 'good', None, False, True) == config['strings']['roleNoPromote']
 
