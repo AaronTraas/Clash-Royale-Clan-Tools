@@ -8,6 +8,8 @@ def _get_war_date(war):
     war, calculate based on the dates given when the war started.
     If it's a previous war fromt he warlog, we retrieve the creation
     date. What's returned is a timestamp. """
+    war_date_raw = 0
+
     if hasattr(war, 'state') :
         if war.state == 'warDay':
             war_date_raw = datetime.strptime(war.war_end_time.split('.')[0], '%Y%m%dT%H%M%S')
