@@ -37,7 +37,7 @@ class ScoreCalculator:
             war_score += self.config['score']['war_battle_incomplete']
             return war_score
 
-        war_score += war.battles_played * self.config['score']['war_battle_played']
+        war_score += self.config['score']['war_battle_played'] if war.battles_played > 0 else 0
         war_score += war.wins * self.config['score']['war_battle_won']
         war_score += (war.battles_played - war.wins) * self.config['score']['war_battle_lost']
 
