@@ -1,7 +1,7 @@
 from datetime import datetime
 import logging
 
-from crtools.models import ProcessedMember, WarParticipation
+from crtools.models import Demerit, ProcessedMember, WarParticipation
 from crtools import history
 from crtools.scorecalc import ScoreCalculator
 
@@ -93,6 +93,17 @@ class MemberFactory:
         member.safe = member.tag in self.config['members']['safe']
         member.no_promote = member.tag in self.config['members']['no_promote']
         member.blacklist = member.tag in self.config['members']['blacklist']
+        member.notes = ''
+
+        if member.tag in self.config['members']['no_promote']:
+            demerit = self.config['members']['no_promote'][member.tag]
+            if type(demerit) is Demerit:
+                member.notes = demerit.notes
+
+        if member.tag in self.config['members']['blacklist']:
+            demerit = self.config['members']['blacklist'][member.tag]
+            if type(demerit) is Demerit:
+                member.notes = demerit.notes
 
         # Automatically add inactive 'safe' members to vacation
         if member.safe and (member.days_inactive >= self.config['activity']['threshold_warn']):

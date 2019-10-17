@@ -27,7 +27,7 @@ def get_member_data_from_sheets(config):
 
     sheet = get_sheet(config['google_docs']['api_key'])
 
-    (config['members']['blacklist'], config['members']['no_promote']) = get_demerit_data_from_sheet(sheet, sheet_id, config['members']['blacklist'], config['members']['no_promote'])
+    (config['members']['blacklist'], config['members']['no_promote'], config['members']['kicked'], config['members']['warned']) = get_demerit_data_from_sheet(sheet, sheet_id, config['members']['blacklist'], config['members']['no_promote'])
     config['members']['vacation'] = get_vacation_data_from_sheet(sheet, sheet_id, config['members']['vacation'])
     config['members']['custom'] = get_custom_data_from_sheet(sheet, sheet_id)
 
@@ -106,7 +106,7 @@ def get_custom_record_list(sheet, sheet_id):
     return []
 
 
-def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={}):
+def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={}, kicked_list={}, warned_list={}):
 
     demerits = get_demerit_list(sheet, sheet_id)
 
@@ -116,13 +116,17 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={
         for demerit in demerits:
             if demerit.tag:
                 current_tag = demerit.tag
-
+            if demerit.action == 'kicked':
+                kicked_list[current_tag] = demerit
+            elif demerit.action == 'warning':
+                warned_list[current_tag] = demerit
             if demerit.status == 'blacklist':
                 blacklist[current_tag] = demerit
             elif demerit.status == 'no-promote list':
+
                 no_promote_list[current_tag] = demerit
 
-    return (blacklist, no_promote_list)
+    return (blacklist, no_promote_list, kicked_list, warned_list)
 
 def get_vacation_data_from_sheet(sheet, sheet_id, vacation_list={}):
 

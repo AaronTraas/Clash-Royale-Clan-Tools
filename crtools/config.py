@@ -76,6 +76,8 @@ config_defaults = {
     'members': {
         'blacklist'                     : [],
         'no_promote'                    : [],
+        'kicked'                        : [],
+        'warned'                        : [],
         'vacation'                      : [],
         'safe'                          : [],
         'custom'                        : {}

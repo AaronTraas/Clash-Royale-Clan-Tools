@@ -31,6 +31,11 @@
                     <td>{{event.date}} &ndash; {{event.message}}</td>
                 </tr>
                 {% endfor %}
+                {% if member.notes %}
+                <tr data-blacklist="{{ 'true' if member.blacklist else 'false' }}">
+                    <td colspan="3"><strong>{{member.reason}} because:</strong> {{member.notes}}</td>
+                </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

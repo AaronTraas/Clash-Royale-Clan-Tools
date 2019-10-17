@@ -96,10 +96,10 @@
                 </ul>
             </section>
             {% if member.blacklist %}
-            <h3 class="blacklist"><span>{{strings.dialogMemberBlacklist}}</span></h3>
+            <h3 class="blacklist"><span>{{strings.dialogMemberBlacklist}}<br>Reason: {{member.notes}}</span></h3>
             {% endif %}
             {% if member.no_promote %}
-            <h3 class="no-promote"><span>{{strings.dialogMemberNoPromote}}</span></h3>
+            <h3 class="no-promote"><span>{{strings.dialogMemberNoPromote}}<br>Reason: {{member.notes}}</span></h3>
             {% endif %}
         </div>
     {% endfor %}
