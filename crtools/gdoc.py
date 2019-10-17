@@ -51,8 +51,13 @@ def get_demerit_list(sheet, sheet_id):
                       .get('values', [])
 
         demerits = []
+        current_tag = ''
         for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
-            demerits.append(Demerit(tag=member_tag, action=action, status=member_status, date=date, notes=notes))
+            if member_tag:
+                current_tag = member_tag
+            else:
+                print(member_name, member_tag, action, member_status, reporter, date, notes)
+            demerits.append(Demerit(tag=current_tag, action=action, status=member_status, date=date, notes=notes))
 
         return demerits
 
@@ -111,20 +116,18 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={
     demerits = get_demerit_list(sheet, sheet_id)
 
     if demerits:
-        current_tag = ''
-
         for demerit in demerits:
-            if demerit.tag:
-                current_tag = demerit.tag
             if demerit.action == 'kicked':
-                kicked_list[current_tag] = demerit
+                kicked_list[demerit.tag] = demerit
             elif demerit.action == 'warning':
-                warned_list[current_tag] = demerit
-            if demerit.status == 'blacklist':
-                blacklist[current_tag] = demerit
-            elif demerit.status == 'no-promote list':
+                warned_list[demerit.tag] = demerit
 
-                no_promote_list[current_tag] = demerit
+            if demerit.status == 'blacklist':
+                if demerit.tag in blacklist:
+                    demerit.merge(blacklist[demerit.tag])
+                blacklist[demerit.tag] = demerit
+            elif demerit.status == 'no-promote list':
+                no_promote_list[demerit.tag] = demerit
 
     return (blacklist, no_promote_list, kicked_list, warned_list)
 
