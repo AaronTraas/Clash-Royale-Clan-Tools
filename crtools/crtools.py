@@ -135,7 +135,12 @@ def process_absent_members(config, historical_members):
 
     for tag, member in historical_members.items():
         if member['status'] == 'absent':
-            absent_members.append(FormerMember(config=config, historical_member=member, player_tag=tag))
+            absent_members.append(FormerMember(
+                config=config,
+                historical_member=member,
+                player_tag=tag,
+                processed_events=history.process_member_events(config, member['events'])
+            ))
 
     return sorted(absent_members, key=lambda k: k.timestamp, reverse=True)
 

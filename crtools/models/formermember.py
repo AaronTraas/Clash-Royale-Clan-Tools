@@ -1,15 +1,14 @@
 from pyroyale import Clan
 
-from crtools import history
 from crtools.models import Demerit
 
 class FormerMember():
 
-    def __init__(self, config, historical_member, player_tag):
+    def __init__(self, config, historical_member, player_tag, processed_events):
         self.name          = historical_member['name']
         self.tag           = player_tag
         self.blacklist     = False
-        self.events        = history.process_member_events(config, historical_member['events'])
+        self.events        = processed_events
         self.timestamp     = self.events[-1].timestamp
         self.reason        = 'Quit'
         self.notes         = ''
