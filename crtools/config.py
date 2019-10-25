@@ -51,7 +51,8 @@ config_defaults = {
     },
     'activity': {
         'threshold_warn'                : 7,
-        'threshold_kick'                : 21
+        'threshold_kick'                : 21,
+        'min_days_to_promote'           : 0
     },
     'score' : {
         'min_clan_size' :               46,
@@ -259,6 +260,7 @@ def __localize_strings(locale_id):
         'suggestionKick'            : _('Members with a <strong class="bad">score below 0</strong> will be recommended for kicking or demotion.'),
         'suggestionInactive'        : _('Members inactive for <strong class="bad">{days_inactive} days</strong> will be kicked.'),
         'suggestionPromote'         : _('A member who achieves <strong class="good">{points} points</strong> is elegible for promotion to <strong>Elder</strong> at the discretion of leadership.'),
+        'suggestionPromoteMinDays'  : _('Members must be in the clan for a at least <strong>{} days</strong> to be promoted.'),
         'suggestionRecruit'         : _('<strong>Recruit new members!</strong> The team needs some fresh blood.'),
         'suggestionNone'            : _('No suggestions at this time. The clan is in good order.'),
         'suggestionKickBlacklist'   : _('Kick <strong>{name}</strong>. Member is blacklisted.'),

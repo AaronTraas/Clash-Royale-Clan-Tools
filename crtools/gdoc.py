@@ -54,9 +54,8 @@ def get_demerit_list(sheet, sheet_id):
         current_tag = ''
         for (member_name, member_tag, action, member_status, reporter, date, notes) in values:
             if member_tag:
-                current_tag = member_tag
-            else:
-                print(member_name, member_tag, action, member_status, reporter, date, notes)
+                current_tag = member_tag.strip()
+
             demerits.append(Demerit(tag=current_tag, action=action, status=member_status, date=date, notes=notes))
 
         return demerits

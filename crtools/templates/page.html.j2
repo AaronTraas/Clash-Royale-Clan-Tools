@@ -141,7 +141,12 @@
                             <div class="info">
                                 <p>{{strings.suggestionKick}}</p>
                                 <p>{{strings.suggestionInactive.format(days_inactive=config.activity.threshold_kick)}}</p>
-                                <p>{{strings.suggestionPromote.format(points=config.score.threshold_promote)}}</p>
+                                <p>
+                                    {{strings.suggestionPromote.format(points=config.score.threshold_promote)}}
+                                {% if config.activity.min_days_to_promote > 0 %}
+                                    {{ strings.suggestionPromoteMinDays.format(config.activity.min_days_to_promote) }}
+                                {% endif %}
+                                </p>
                             </div>
                         </div>
                     </article>

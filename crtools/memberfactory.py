@@ -56,21 +56,21 @@ class MemberFactory:
         member.activity_date_label = datetime.fromtimestamp(member.last_activity_date).strftime('%x')
 
         join_datetime = datetime.fromtimestamp(member.join_date)
-        days_from_join = (self.now - join_datetime).days
-        if days_from_join <= 10:
+        member.days_from_join = (self.now - join_datetime).days
+        if member.days_from_join <= 10:
             member.new = True
             logger.debug('New member {}'.format(member.name))
         else:
             member.new = False
 
-        if days_from_donation_reset > days_from_join:
-            days_from_donation_reset = days_from_join
+        if days_from_donation_reset > member.days_from_join:
+            days_from_donation_reset = member.days_from_join
 
         if member.days_inactive > 7:
             member.donations_last_week = 0
 
         member.total_donations = member.donations
-        if days_from_join > days_from_donation_reset + 7:
+        if member.days_from_join > days_from_donation_reset + 7:
             days_from_donation_reset += 7
             member.total_donations += member.donations_last_week
 

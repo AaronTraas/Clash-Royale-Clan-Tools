@@ -67,7 +67,7 @@ def get_suggestions(config, processed_members, required_trophies):
 
         # if user is above the threshold, and has not been promoted to
         # Elder or higher, recommend promotion.
-        if not member.no_promote and not member.blacklist and (member.score >= config['score']['threshold_promote']) and (member.role == 'member') and (member.trophies >= required_trophies):
+        if not member.no_promote and not member.blacklist and (member.score >= config['score']['threshold_promote']) and (member.role == 'member') and (member.trophies >= required_trophies) and (member.days_from_join > config['activity']['min_days_to_promote']):
             suggestions.append(config['strings']['suggestionPromoteScore'].format(name=member.name, score=member.score))
 
     # If there are no other suggestions, give some sort of message
