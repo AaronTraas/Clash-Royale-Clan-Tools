@@ -36,8 +36,13 @@ class MemberFactory:
         member.days_inactive = (self.now - datetime.fromtimestamp(member.last_activity_date)).days
         member.days_inactive = member.days_inactive if member.days_inactive >= 0 else 0
 
-        last_seen = datetime.strptime(member.last_seen.split('.')[0], '%Y%m%dT%H%M%S')
+        if member.last_seen:
+            last_seen = datetime.strptime(member.last_seen.split('.')[0], '%Y%m%dT%H%M%S')
+        else:
+            last_seen = datetime.utcnow()
+
         member.last_seen_formatted = last_seen.strftime('%c')
+
 
         last_seen_delta = self.now - last_seen
         member.last_seen_delta = ''
@@ -126,6 +131,10 @@ class MemberFactory:
 
         # get member score
         member.score = member.war_score + member.donation_score
+
+        # members on the safe list can't have a score below zero
+        if member.safe and member.score < 0:
+            member.score = 0
 
         # calculate the number of daily donations, and the donation status
         # based on threshold set in config
