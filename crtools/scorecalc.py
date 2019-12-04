@@ -13,7 +13,7 @@ class ScoreCalculator:
         if member.total_donations == 0:
             donation_score += self.config['score']['donations_zero']
 
-        if member.new and donation_score <= 0:
+        if member.days_from_join <= self.config['score']['new_member_grace_period_days'] and donation_score <= 0:
             donation_score = 0
 
         return donation_score

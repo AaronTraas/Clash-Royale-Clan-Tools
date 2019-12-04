@@ -72,7 +72,8 @@ config_defaults = {
         'threshold_promote' :           160,
         'threshold_demote' :            0,
         'threshold_kick' :              0,
-        'threshold_warn' :              30
+        'threshold_warn' :              30,
+        'new_member_grace_period_days': 3
     },
     'members': {
         'blacklist'                     : [],
