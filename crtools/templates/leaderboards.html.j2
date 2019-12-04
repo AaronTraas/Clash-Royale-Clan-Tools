@@ -37,7 +37,7 @@
                 <th>{{strings.labelWarWinRate}}</th>
             </thead>
             <tbody>
-            {% for member in (members|sort(attribute='war_win_rate', reverse=True))[:10] %}
+            {% for member in (members|rejectattr('war_battles', 'lessthan', 3)|sort(attribute='war_win_rate', reverse=True))[:10] %}
                 <tr>
                     <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
                     <td class="name"><strong>{{member.name}}</strong></td>

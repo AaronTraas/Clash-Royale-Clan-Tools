@@ -205,6 +205,7 @@ class MemberFactory:
         else:
             member.war_win_rate = 0
 
+        member.war_battles = war_battles
         member.war_collection_win_rate = round(((collection_wins / 10) / 3) * 100)
         member.war_collection_cards_average = round(collection_cards / 10)
         member.war_score_average = round(member.war_score / 10)
