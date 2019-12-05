@@ -73,7 +73,11 @@ config_defaults = {
         'threshold_demote' :            0,
         'threshold_kick' :              0,
         'threshold_warn' :              30,
-        'new_member_grace_period_days': 3
+        'new_member_grace_period_days': 3,
+        'war_win_rate_leaderboard_min_battles': 3
+    },
+    'history': {
+        'num_wars_to_track':            10
     },
     'members': {
         'blacklist'                     : [],
@@ -211,6 +215,7 @@ def __localize_strings(locale_id):
         'labelWarDayBattles'        : _('War day battles'),
         'labelWarDayWins'           : _('War day wins'),
         'labelWarWinRate'           : _('War win rate'),
+        'labelWarWinRateDisclaimer' : _('Must complete at least %d battles of the last %d'),
         'labelCollectionWinRate'    : _('Collection win rate'),
         'labelCollectionCardsWon'   : _('Collection cards won'),
         'labelWarScoreAverage'      : _('War score average'),

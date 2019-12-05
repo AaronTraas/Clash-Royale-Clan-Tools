@@ -381,6 +381,13 @@ body > header h1 em {
     }
 }
 
+/* leaderboards
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#leaderboards .disclaimer {
+    font-size: 80%;
+    text-align: center;
+}
+
 /* Current war region
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #info article#current-war {

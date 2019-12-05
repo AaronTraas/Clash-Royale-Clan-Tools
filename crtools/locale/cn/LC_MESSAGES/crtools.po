@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.8.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-25 10:55-0400\n"
+"POT-Creation-Date: 2019-12-05 09:50-0500\n"
 "PO-Revision-Date: 2019-09-14 09:52+0800\n"
 "Last-Translator: \n"
 "Language: zh_CN\n"
@@ -18,457 +18,462 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: crtools/config.py:143
+#: crtools/config.py:148
 msgid "{clan_name} Clan Dashboard"
 msgstr "{clan_name} 部落情报板"
 
-#: crtools/config.py:145
+#: crtools/config.py:150
 msgid "Looking for a clan?"
 msgstr "正在寻找合适的部落？"
 
-#: crtools/config.py:146
+#: crtools/config.py:151
 msgid "Join us!"
 msgstr "加入我们"
 
-#: crtools/config.py:148
+#: crtools/config.py:153
 msgid "Current war"
 msgstr "当前部落战"
 
-#: crtools/config.py:149
+#: crtools/config.py:154
 msgid "Standings"
 msgstr "战绩"
 
-#: crtools/config.py:150
+#: crtools/config.py:155
 msgid "Recent wars"
 msgstr "近期战绩"
 
-#: crtools/config.py:151
+#: crtools/config.py:156
 msgid "Member list and stats"
 msgstr "成员列表及统计数据"
 
-#: crtools/config.py:152
+#: crtools/config.py:157
 msgid "Members"
 msgstr "成员"
 
-#: crtools/config.py:153
+#: crtools/config.py:158
 msgid "Suggestions"
 msgstr "操作建议"
 
-#: crtools/config.py:154
+#: crtools/config.py:159
 msgid "Score explanation"
 msgstr "计分说明"
 
-#: crtools/config.py:155
+#: crtools/config.py:160
 msgid "Leaderboard"
 msgstr "排行榜"
 
-#: crtools/config.py:157
+#: crtools/config.py:162
 msgid "Clan Stats"
 msgstr "部落详情"
 
-#: crtools/config.py:158
+#: crtools/config.py:163
 msgid "Clan Name"
 msgstr "部落名称"
 
-#: crtools/config.py:159
+#: crtools/config.py:164
 msgid "Clan Score"
 msgstr "部落积分"
 
-#: crtools/config.py:160
+#: crtools/config.py:165
 msgid "Country"
 msgstr "位置"
 
-#: crtools/config.py:161
+#: crtools/config.py:166
 msgid "International"
 msgstr "国际"
 
-#: crtools/config.py:162
+#: crtools/config.py:167
 msgid "Donations/week"
 msgstr "每周捐赠"
 
-#: crtools/config.py:163
+#: crtools/config.py:168
 msgid "Required Trophies"
 msgstr "所需奖杯"
 
-#: crtools/config.py:164
+#: crtools/config.py:169
 msgid "War Trophies"
 msgstr "部落战奖杯"
 
-#: crtools/config.py:165
+#: crtools/config.py:170
 msgid "Clan Tag"
 msgstr "部落标签"
 
-#: crtools/config.py:166
+#: crtools/config.py:171
 msgid "Clan Role"
 msgstr "部落身份"
 
-#: crtools/config.py:167
+#: crtools/config.py:172
 msgid "Last update"
 msgstr "最近更新"
 
-#: crtools/config.py:168
+#: crtools/config.py:173
 msgid "Yes"
 msgstr "是"
 
-#: crtools/config.py:169
+#: crtools/config.py:174
 msgid "No"
 msgstr "否"
 
-#: crtools/config.py:170
+#: crtools/config.py:175
 msgid "No wars in war log"
 msgstr "没有部落战记录"
 
-#: crtools/config.py:171
+#: crtools/config.py:176
 msgid "State"
 msgstr "状态"
 
-#: crtools/config.py:172
+#: crtools/config.py:177
 msgid "Collection Day End"
 msgstr "集卡日剩余"
 
-#: crtools/config.py:173
+#: crtools/config.py:178
 msgid "War End"
 msgstr "终极战剩余"
 
-#: crtools/config.py:174
+#: crtools/config.py:179
 msgid "Participants"
 msgstr "参战"
 
-#: crtools/config.py:175
+#: crtools/config.py:180
 msgid "Crowns"
 msgstr "皇冠"
 
-#: crtools/config.py:176
+#: crtools/config.py:181
 msgid "Victories"
 msgstr "胜场"
 
-#: crtools/config.py:177
+#: crtools/config.py:182
 msgid "Cards Earned"
 msgstr "获得卡牌"
 
-#: crtools/config.py:178 crtools/config.py:287
+#: crtools/config.py:183 crtools/config.py:293
 msgid "Member"
 msgstr "成员"
 
-#: crtools/config.py:179
+#: crtools/config.py:184
 msgid "Previous"
 msgstr "之前"
 
-#: crtools/config.py:180
+#: crtools/config.py:185
 msgid "Member Name"
 msgstr "成员名称"
 
-#: crtools/config.py:181
+#: crtools/config.py:186
 msgid "Member Tag"
 msgstr "成员标签"
 
-#: crtools/config.py:182
+#: crtools/config.py:187
 msgid "Join Date"
 msgstr "加入日期"
 
-#: crtools/config.py:183
+#: crtools/config.py:188
 msgid "Last Active"
 msgstr "最近活动"
 
-#: crtools/config.py:184
+#: crtools/config.py:189
 msgid "Before recorded history"
 msgstr "在系统启用前加入"
 
-#: crtools/config.py:185
+#: crtools/config.py:190
 msgid "Arena"
 msgstr "竞技场"
 
-#: crtools/config.py:186
+#: crtools/config.py:191
 msgid "XP Level"
 msgstr "经验级别"
 
-#: crtools/config.py:187
+#: crtools/config.py:192
 msgid "Score"
 msgstr "积分"
 
-#: crtools/config.py:188
+#: crtools/config.py:193
 msgid "Rank"
 msgstr "排名"
 
-#: crtools/config.py:189
+#: crtools/config.py:194
 msgid "Trophies"
 msgstr "奖杯"
 
-#: crtools/config.py:190
+#: crtools/config.py:195
 msgid "Dona&shy;tions"
 msgstr "捐赠"
 
-#: crtools/config.py:191
+#: crtools/config.py:196
 msgid "Donations received"
 msgstr "接受捐赠"
 
-#: crtools/config.py:192
+#: crtools/config.py:197
 msgid "Days Inactive"
 msgstr "未活跃"
 
-#: crtools/config.py:193
+#: crtools/config.py:198
 msgid "Days"
 msgstr "天"
 
-#: crtools/config.py:194
+#: crtools/config.py:199
 msgid "Day"
 msgstr "天"
 
-#: crtools/config.py:195
+#: crtools/config.py:200
 msgid "Minutes"
 msgstr "分钟"
 
-#: crtools/config.py:196
+#: crtools/config.py:201
 msgid "Hours"
 msgstr "小时"
 
-#: crtools/config.py:197
+#: crtools/config.py:202
 msgid "Last Seen"
 msgstr "最近上线"
 
-#: crtools/config.py:198
+#: crtools/config.py:203
 msgid "Current War"
 msgstr "当前"
 
-#: crtools/config.py:199
+#: crtools/config.py:204
 msgid "Not in clan"
 msgstr "未在部落"
 
-#: crtools/config.py:200
+#: crtools/config.py:205
 msgid "N/A"
 msgstr "N/A"
 
-#: crtools/config.py:201
+#: crtools/config.py:206
 msgid "The clan is not currently engaged in a war."
 msgstr "当前未参加部落战。"
 
-#: crtools/config.py:202
+#: crtools/config.py:207
 msgid "Score from donations"
 msgstr "捐赠积分"
 
-#: crtools/config.py:203
+#: crtools/config.py:208
 msgid "Score from war participation"
 msgstr "部落战积分"
 
-#: crtools/config.py:204
+#: crtools/config.py:209
 msgid "Cards given"
 msgstr "捐赠卡牌"
 
-#: crtools/config.py:205
+#: crtools/config.py:210
 msgid "Cards received"
 msgstr "接收卡牌"
 
-#: crtools/config.py:206
+#: crtools/config.py:211
 msgid "Cards given last week"
 msgstr "上周捐赠"
 
-#: crtools/config.py:207
+#: crtools/config.py:212
 msgid "Collection day battles"
 msgstr "集卡日对战"
 
-#: crtools/config.py:208
+#: crtools/config.py:213
 msgid "Collection day wins"
 msgstr "集卡日获胜"
 
-#: crtools/config.py:209
+#: crtools/config.py:214
 msgid "Cards earned"
 msgstr "获得卡牌"
 
-#: crtools/config.py:210
+#: crtools/config.py:215
 msgid "War day battles"
 msgstr "终极战对战"
 
-#: crtools/config.py:211
+#: crtools/config.py:216
 msgid "War day wins"
 msgstr "终极战获胜"
 
-#: crtools/config.py:212
+#: crtools/config.py:217
 msgid "War win rate"
 msgstr "部落战胜率"
 
-#: crtools/config.py:213
+#: crtools/config.py:218
+#, python-format
+msgid "Must complete at least %d battles of the last %d"
+msgstr ""
+
+#: crtools/config.py:219
 msgid "Collection win rate"
 msgstr "集卡战胜率"
 
-#: crtools/config.py:214
+#: crtools/config.py:220
 msgid "Collection cards won"
 msgstr "集卡数量"
 
-#: crtools/config.py:215
+#: crtools/config.py:221
 msgid "War score average"
 msgstr "部落战平均获分"
 
-#: crtools/config.py:216
+#: crtools/config.py:222
 msgid "War score"
 msgstr "部落战积分"
 
-#: crtools/config.py:217
+#: crtools/config.py:223
 msgid "War league"
 msgstr "部落战联赛"
 
-#: crtools/config.py:218
+#: crtools/config.py:224
 msgid "{month}/{day}"
 msgstr "{month}/{day}"
 
-#: crtools/config.py:219
+#: crtools/config.py:225
 msgid "{} hours"
 msgstr "{} 小时"
 
-#: crtools/config.py:220
+#: crtools/config.py:226
 msgid "Complete"
 msgstr "完成"
 
-#: crtools/config.py:221
+#: crtools/config.py:227
 msgid "1 day, {} hours"
 msgstr "1 天, {} 小时"
 
-#: crtools/config.py:222
+#: crtools/config.py:228
 msgid "Collection Day"
 msgstr "集卡日"
 
-#: crtools/config.py:223
+#: crtools/config.py:229
 msgid "War Day"
 msgstr "终极战"
 
-#: crtools/config.py:224
+#: crtools/config.py:230
 msgid "View List of Old Members"
 msgstr "过往成员列表"
 
-#: crtools/config.py:225
+#: crtools/config.py:231
 msgid "Old Members"
 msgstr "过往成员"
 
-#: crtools/config.py:227
+#: crtools/config.py:233
 msgid "Joined clan"
 msgstr "加入部落"
 
-#: crtools/config.py:228
+#: crtools/config.py:234
 msgid "Changed role to {}"
 msgstr "身份变更为 {}"
 
-#: crtools/config.py:229
+#: crtools/config.py:235
 msgid "Departed clan"
 msgstr "离开部落"
 
-#: crtools/config.py:231
+#: crtools/config.py:237
 msgid "Member Details"
 msgstr "成员详情"
 
-#: crtools/config.py:232
+#: crtools/config.py:238
 msgid "Player Stats and Info"
 msgstr "玩家信息"
 
-#: crtools/config.py:233
+#: crtools/config.py:239
 msgid "See on StatsRoyale"
 msgstr "在 StatsRoyale 查询"
 
-#: crtools/config.py:234
+#: crtools/config.py:240
 msgid "See on RoyaleAPI"
 msgstr "在 RoyaleAPI 查询"
 
-#: crtools/config.py:235
+#: crtools/config.py:241
 msgid "Player History"
 msgstr "玩家历史"
 
-#: crtools/config.py:236
+#: crtools/config.py:242
 msgid "Member is on the blacklist. Kick member immediately."
 msgstr "成员处于黑名单中，请尽快踢出部落。"
 
-#: crtools/config.py:237
+#: crtools/config.py:243
 msgid ""
 "Member has been tagged on the \"No Promote\" list for abusing privileges "
 "in the past. Never promote to Elder or higher."
 msgstr "成员因有过违例行为，被标记为“不可晋升”。请勿晋升其为长者或更高身份。"
 
-#: crtools/config.py:238
+#: crtools/config.py:244
 msgid "Former Members"
 msgstr "过往成员"
 
-#: crtools/config.py:239
+#: crtools/config.py:245
 msgid "Name / tag"
 msgstr "名称/标签"
 
-#: crtools/config.py:240
+#: crtools/config.py:246
 msgid "Events"
 msgstr "事件"
 
-#: crtools/config.py:241
+#: crtools/config.py:247
 msgid "Links"
 msgstr "链接"
 
-#: crtools/config.py:242
+#: crtools/config.py:248
 msgid "Close"
 msgstr "关闭"
 
-#: crtools/config.py:244
+#: crtools/config.py:250
 msgid "<strong>{name}</strong> was not in this war."
 msgstr "<strong>{name}</strong> 未参与本战。"
 
-#: crtools/config.py:245
+#: crtools/config.py:251
 msgid "<strong>{name}</strong> was not in the clan at the time of this war."
 msgstr "<strong>{name}</strong> 本战时未在部落。"
 
-#: crtools/config.py:246
+#: crtools/config.py:252
 msgid "NOTE: current war <strong>does not</strong> affect score."
 msgstr "注：当前部落战尚未影响积分。"
 
-#: crtools/config.py:248
+#: crtools/config.py:254
 msgid "Filter"
 msgstr "过滤"
 
-#: crtools/config.py:249
+#: crtools/config.py:255
 msgid "None"
 msgstr "无"
 
-#: crtools/config.py:250
+#: crtools/config.py:256
 msgid "Leadership"
 msgstr "首领"
 
-#: crtools/config.py:251
+#: crtools/config.py:257
 msgid "Role: Elder"
 msgstr "长者"
 
-#: crtools/config.py:252
+#: crtools/config.py:258
 msgid "Role: Member"
 msgstr "成员"
 
-#: crtools/config.py:253
+#: crtools/config.py:259
 msgid "New Members"
 msgstr "新成员"
 
-#: crtools/config.py:254
+#: crtools/config.py:260
 msgid "In current war"
 msgstr "当前部落战"
 
-#: crtools/config.py:255
+#: crtools/config.py:261
 msgid "Inactive"
 msgstr "不活跃"
 
-#: crtools/config.py:256
+#: crtools/config.py:262
 msgid "In danger"
 msgstr "危险状态"
 
-#: crtools/config.py:257
+#: crtools/config.py:263
 msgid "War"
 msgstr "部落战"
 
-#: crtools/config.py:258
+#: crtools/config.py:264
 msgid "Donations"
 msgstr "捐赠"
 
-#: crtools/config.py:260
+#: crtools/config.py:266
 msgid ""
 "Members with a <strong class=\"bad\">score below 0</strong> will be "
 "recommended for kicking or demotion."
 msgstr "积分 <strong class=\"bad\">低于 0</strong> 的成员将被建议踢出或降职。"
 
-#: crtools/config.py:261
+#: crtools/config.py:267
 msgid ""
 "Members inactive for <strong class=\"bad\">{days_inactive} days</strong> "
 "will be kicked."
 msgstr "超过 <strong class=\"bad\">{days_inactive} 天</strong> 未活跃的成员将被踢出。"
 
-#: crtools/config.py:262
+#: crtools/config.py:268
 msgid ""
 "A member who achieves <strong class=\"good\">{points} points</strong> is "
 "elegible for promotion to <strong>Elder</strong> at the discretion of "
@@ -477,39 +482,39 @@ msgstr ""
 "获取 <strong class=\"good\">{points} 及以上积分</strong> 的成员将被建议晋升为 "
 "<strong>长者</strong> 身份。"
 
-#: crtools/config.py:263
+#: crtools/config.py:269
 msgid ""
 "Members must be in the clan for a at least <strong>{} days</strong> to be"
 " promoted."
 msgstr ""
 
-#: crtools/config.py:264
+#: crtools/config.py:270
 msgid "<strong>Recruit new members!</strong> The team needs some fresh blood."
 msgstr "<strong>招募新成员吧！</strong> 团队需要新鲜血液。"
 
-#: crtools/config.py:265
+#: crtools/config.py:271
 msgid "No suggestions at this time. The clan is in good order."
 msgstr "当前没有操作建议。部落运作正常。"
 
-#: crtools/config.py:266
+#: crtools/config.py:272
 msgid "Kick <strong>{name}</strong>. Member is blacklisted."
 msgstr "踢出 <strong>{name}</strong>。该成员在黑名单中。"
 
-#: crtools/config.py:267
+#: crtools/config.py:273
 msgid ""
 "Kick <strong>{name}</strong> <strong class=\"bad\">{days} days "
 "inactive</strong>"
 msgstr "踢出 <strong>{name}</strong> <strong class=\"bad\">{days} 天未活跃</strong>"
 
-#: crtools/config.py:268
+#: crtools/config.py:274
 msgid "Kick <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr "踢出 <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 
-#: crtools/config.py:269
+#: crtools/config.py:275
 msgid "Demote <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 msgstr "降职 <strong>{name}</strong> <strong class=\"bad\">{score}</strong>"
 
-#: crtools/config.py:270
+#: crtools/config.py:276
 msgid ""
 "Promote <strong>{name}</strong> to <strong>Elder</strong> <strong "
 "class=\"good\">{score}</strong>"
@@ -517,17 +522,17 @@ msgstr ""
 "晋升 <strong>{name}</strong> 为 <strong>长老</strong> <strong "
 "class=\"good\">{score}</strong>"
 
-#: crtools/config.py:272
+#: crtools/config.py:278
 msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr "成员积分由 <strong>捐赠积分</strong> 和 <strong>部落战积分</strong> 两部分组成。"
 
-#: crtools/config.py:273
+#: crtools/config.py:279
 msgid "Donation Score"
 msgstr "捐赠积分"
 
-#: crtools/config.py:274
+#: crtools/config.py:280
 msgid ""
 "You are expected to donate <strong>{min_donations_daily} cards per "
 "day</strong>, on average. If you make more, you will gain points. If you "
@@ -538,189 +543,189 @@ msgstr ""
 "张卡牌</strong>。如果捐赠数量超过该数量将得到额外积分奖励，如果捐赠数量未达该数量将有相应积分惩罚。如果没有卡牌捐赠则会被惩罚扣除 "
 "<strong class=\"bad\">{donations_zero} 积分</strong>。"
 
-#: crtools/config.py:276
+#: crtools/config.py:282
 msgid "War Participation Score"
 msgstr "部落战积分"
 
-#: crtools/config.py:277
+#: crtools/config.py:283
 msgid "For each of the last 10 wars, did member..."
 msgstr "最近的10场部落战中，如果成员"
 
-#: crtools/config.py:278
+#: crtools/config.py:284
 msgid "...participate in the war?"
 msgstr "参与部落战"
 
-#: crtools/config.py:279
+#: crtools/config.py:285
 msgid "...complete each collection battle? (per battle)"
 msgstr "每完成单场集卡战"
 
-#: crtools/config.py:280
+#: crtools/config.py:286
 msgid "...win each collection battle? (per battle)"
 msgstr "每赢得单场集卡战"
 
-#: crtools/config.py:281
+#: crtools/config.py:287
 msgid "...complete war day battle?"
 msgstr "完成终极战"
 
-#: crtools/config.py:282
+#: crtools/config.py:288
 msgid "...win war day battle? (per battle)"
 msgstr "每赢得单场终极战"
 
-#: crtools/config.py:284
+#: crtools/config.py:290
 msgid "Leader"
 msgstr "首领"
 
-#: crtools/config.py:285
+#: crtools/config.py:291
 msgid "Co-Leader"
 msgstr "副首领"
 
-#: crtools/config.py:286
+#: crtools/config.py:292
 msgid "Elder"
 msgstr "长老"
 
-#: crtools/config.py:288
+#: crtools/config.py:294
 msgid "Blacklisted. Kick!"
 msgstr "黑名单，踢出！"
 
-#: crtools/config.py:289
+#: crtools/config.py:295
 msgid "On vacation"
 msgstr "请假中"
 
-#: crtools/config.py:290
+#: crtools/config.py:296
 msgid "Vacation until {}"
 msgstr ""
 
-#: crtools/config.py:291
+#: crtools/config.py:297
 msgid "Inactive {days} days"
 msgstr "{days} 天未活跃"
 
-#: crtools/config.py:292
+#: crtools/config.py:298
 msgid "Never Promote"
 msgstr "永不晋升"
 
-#: crtools/config.py:294
+#: crtools/config.py:300
 msgid "Arena Unknown"
 msgstr "未知竞技场"
 
-#: crtools/config.py:295
+#: crtools/config.py:301
 msgid "Goblin Stadium"
 msgstr "哥布林竞技场"
 
-#: crtools/config.py:296
+#: crtools/config.py:302
 msgid "Bone Pit"
 msgstr "埋骨深渊"
 
-#: crtools/config.py:297
+#: crtools/config.py:303
 msgid "Barbarian Bowl"
 msgstr "野蛮人擂台"
 
-#: crtools/config.py:298
+#: crtools/config.py:304
 msgid "P.E.K.K.A's Playhouse"
 msgstr "皮卡超人乐园"
 
-#: crtools/config.py:299
+#: crtools/config.py:305
 msgid "Spell Valley"
 msgstr "法术幽谷"
 
-#: crtools/config.py:300
+#: crtools/config.py:306
 msgid "Builder's Workshop"
 msgstr "建筑工人工坊"
 
-#: crtools/config.py:301
+#: crtools/config.py:307
 msgid "Royal Arena"
 msgstr "皇家竞技场"
 
-#: crtools/config.py:302
+#: crtools/config.py:308
 msgid "Frozen Peak"
 msgstr "冰封之巅"
 
-#: crtools/config.py:303
+#: crtools/config.py:309
 msgid "Jungle Arena"
 msgstr "丛林竞技场"
 
-#: crtools/config.py:304
+#: crtools/config.py:310
 msgid "Hog Mountain"
 msgstr "野猪山脉"
 
-#: crtools/config.py:305
+#: crtools/config.py:311
 msgid "Electro Valley"
 msgstr "电磁峡谷"
 
-#: crtools/config.py:306
+#: crtools/config.py:312
 msgid "Spooky Town"
 msgstr "惊魂小镇"
 
-#: crtools/config.py:307
+#: crtools/config.py:313
 msgid "Legendary Arena"
 msgstr "传奇竞技场"
 
-#: crtools/config.py:308
+#: crtools/config.py:314
 msgid "Challenger II"
 msgstr "挑战者联赛 II"
 
-#: crtools/config.py:309
+#: crtools/config.py:315
 msgid "Challenger III"
 msgstr "挑战者联赛 III"
 
-#: crtools/config.py:310
+#: crtools/config.py:316
 msgid "Master I"
 msgstr "大师联赛 I"
 
-#: crtools/config.py:311
+#: crtools/config.py:317
 msgid "Master II"
 msgstr "大师联赛 II"
 
-#: crtools/config.py:312
+#: crtools/config.py:318
 msgid "Master III"
 msgstr "大师联赛 III"
 
-#: crtools/config.py:313 crtools/config.py:314
+#: crtools/config.py:319 crtools/config.py:320
 msgid "Grand Champion"
 msgstr "超级冠军联赛"
 
-#: crtools/config.py:315
+#: crtools/config.py:321
 msgid "Ultimate Champion"
 msgstr "终极冠军联赛"
 
-#: crtools/config.py:317
+#: crtools/config.py:323
 msgid "**{} hours** left on {} day. Members have **not** completed all battles:"
 msgstr "**{} 小时** 后  {} 日即将结束。 成员仍**未完成**所有战斗:"
 
-#: crtools/config.py:318
+#: crtools/config.py:324
 msgid "Members who have quit the clan and are now blacklisted:"
 msgstr "已离开部落且处在黑名单中的成员:"
 
-#: crtools/config.py:319
+#: crtools/config.py:325
 msgid "war"
 msgstr "终极战"
 
-#: crtools/config.py:320
+#: crtools/config.py:326
 msgid "collection"
 msgstr "集卡战"
 
-#: crtools/config.py:322
+#: crtools/config.py:328
 msgid "Bronze League"
 msgstr "青铜联赛"
 
-#: crtools/config.py:323
+#: crtools/config.py:329
 msgid "Silver League"
 msgstr "白银联赛"
 
-#: crtools/config.py:324
+#: crtools/config.py:330
 msgid "Gold League"
 msgstr "黄金联赛"
 
-#: crtools/config.py:325
+#: crtools/config.py:331
 msgid "Legendary League"
 msgstr "传奇联赛"
 
-#: crtools/config.py:327
+#: crtools/config.py:333
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically"
 " approved by Supercell and Supercell is not responsible for it."
 msgstr "本站点所含内容与 Supercell 公司没有任何联系，该公司对本站内容不负任何责任。"
 
-#: crtools/config.py:328
+#: crtools/config.py:334
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr "更多内容请查看 Supercell 的玩家内容政策。"
 

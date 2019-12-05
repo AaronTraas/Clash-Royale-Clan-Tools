@@ -37,7 +37,7 @@
                 <th>{{strings.labelWarWinRate}}</th>
             </thead>
             <tbody>
-            {% for member in (members|rejectattr('war_battles', 'lessthan', 3)|sort(attribute='war_win_rate', reverse=True))[:10] %}
+            {% for member in (members|rejectattr('war_battles', 'lessthan', config.score.war_win_rate_leaderboard_min_battles)|sort(attribute='war_win_rate', reverse=True))[:10] %}
                 <tr>
                     <td class="rank rank-{{loop.index}}"><span>{{loop.index}}</span></td>
                     <td class="name"><strong>{{member.name}}</strong></td>
@@ -46,7 +46,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <small>* Must complete at least 3 battles of the last 10</small>
+        <p class="disclaimer">* {{ strings.labelWarWinRateDisclaimer|format(config.score.war_win_rate_leaderboard_min_battles, config.history.num_wars_to_track) }}</p>
     </div>
 
     <div class="leaderboard"  data-filter="donations">
