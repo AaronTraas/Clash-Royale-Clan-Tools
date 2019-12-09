@@ -74,10 +74,11 @@ class MemberFactory:
         if member.days_inactive > 7:
             member.donations_last_week = 0
 
-        member.total_donations = member.donations
+        member.total_donations = member.donations + member.donations_last_week
         if member.days_from_join > days_from_donation_reset + 7:
             days_from_donation_reset += 7
-            member.total_donations += member.donations_last_week
+        else:
+            days_from_donation_reset = member.days_from_join
 
         if(days_from_donation_reset > 0):
             member.donations_daily = round(member.total_donations / days_from_donation_reset)
