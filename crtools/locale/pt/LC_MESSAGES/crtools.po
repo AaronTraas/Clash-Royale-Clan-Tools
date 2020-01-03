@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.0.17\n"
 "Report-Msgid-Bugs-To: aaron@traas.org\n"
-"POT-Creation-Date: 2019-12-05 09:50-0500\n"
+"POT-Creation-Date: 2020-01-03 10:22-0500\n"
 "PO-Revision-Date: 2019-05-08 12:41+0000\n"
 "Last-Translator: rikmaeda <rikmaeda@gmail.com>, 2019\n"
 "Language: pt\n"
@@ -692,49 +692,61 @@ msgstr "Mestre II"
 msgid "Master III"
 msgstr "Mestre III"
 
-#: crtools/config.py:319 crtools/config.py:320
+#: crtools/config.py:319
+#, fuzzy
+#| msgid "Grand Champion"
+msgid "Champion"
+msgstr "Grande Campeão"
+
+#: crtools/config.py:320
 msgid "Grand Champion"
 msgstr "Grande Campeão"
 
 #: crtools/config.py:321
+#, fuzzy
+#| msgid "Grand Champion"
+msgid "Royal Champion"
+msgstr "Grande Campeão"
+
+#: crtools/config.py:322
 msgid "Ultimate Champion"
 msgstr "Maior Campeão"
 
-#: crtools/config.py:323
+#: crtools/config.py:324
 msgid "**{} hours** left on {} day. Members have **not** completed all battles:"
 msgstr ""
 "**{} hours** restantes no dia {}. Membros que **não** concluíram todas as"
 " batalhas:"
 
-#: crtools/config.py:324
+#: crtools/config.py:325
 msgid "Members who have quit the clan and are now blacklisted:"
 msgstr "Membros que deixaram o clã e agora estão na blacklist:"
 
-#: crtools/config.py:325
+#: crtools/config.py:326
 msgid "war"
 msgstr "guerra"
 
-#: crtools/config.py:326
+#: crtools/config.py:327
 msgid "collection"
 msgstr "coleta"
 
-#: crtools/config.py:328
+#: crtools/config.py:329
 msgid "Bronze League"
 msgstr "Liga de Bronze"
 
-#: crtools/config.py:329
+#: crtools/config.py:330
 msgid "Silver League"
 msgstr "Liga de Prata"
 
-#: crtools/config.py:330
+#: crtools/config.py:331
 msgid "Gold League"
 msgstr "Liga de Ouro"
 
-#: crtools/config.py:331
+#: crtools/config.py:332
 msgid "Legendary League"
 msgstr "Liga de Lendária"
 
-#: crtools/config.py:333
+#: crtools/config.py:334
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically"
 " approved by Supercell and Supercell is not responsible for it."
@@ -742,7 +754,7 @@ msgstr ""
 "Este conteúdo não é afiliado, endossado, patrocinado ou especificamente "
 "aprovado pela Supercell e a Supercell não é responsável por isso."
 
-#: crtools/config.py:334
+#: crtools/config.py:335
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr "Para mais informações veja Política de Conteúdo para Fans da Supercell."
 

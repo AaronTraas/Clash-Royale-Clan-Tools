@@ -316,8 +316,9 @@ def __localize_strings(locale_id):
         'league-master-1'           : _('Master I'),
         'league-master-2'           : _('Master II'),
         'league-master-3'           : _('Master III'),
-        'league-champion'           : _('Grand Champion'),
+        'league-champion'           : _('Champion'),
         'league-grand-champion'     : _('Grand Champion'),
+        'league-royal-champion'     : _('Royal Champion'),
         'league-ultimate-champion'  : _('Ultimate Champion'),
 
         'discord-header-war-nag'    : _('**{} hours** left on {} day. Members have **not** completed all battles:'),

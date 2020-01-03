@@ -1,14 +1,14 @@
 # Translations template for crtools.
-# Copyright (C) 2019 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the crtools project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: crtools 2.12.12\n"
+"Project-Id-Version: crtools 2.12.14\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-05 09:50-0500\n"
+"POT-Creation-Date: 2020-01-03 10:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -671,53 +671,61 @@ msgstr ""
 msgid "Master III"
 msgstr ""
 
-#: crtools/config.py:319 crtools/config.py:320
+#: crtools/config.py:319
+msgid "Champion"
+msgstr ""
+
+#: crtools/config.py:320
 msgid "Grand Champion"
 msgstr ""
 
 #: crtools/config.py:321
+msgid "Royal Champion"
+msgstr ""
+
+#: crtools/config.py:322
 msgid "Ultimate Champion"
 msgstr ""
 
-#: crtools/config.py:323
+#: crtools/config.py:324
 msgid "**{} hours** left on {} day. Members have **not** completed all battles:"
 msgstr ""
 
-#: crtools/config.py:324
+#: crtools/config.py:325
 msgid "Members who have quit the clan and are now blacklisted:"
 msgstr ""
 
-#: crtools/config.py:325
+#: crtools/config.py:326
 msgid "war"
 msgstr ""
 
-#: crtools/config.py:326
+#: crtools/config.py:327
 msgid "collection"
 msgstr ""
 
-#: crtools/config.py:328
+#: crtools/config.py:329
 msgid "Bronze League"
 msgstr ""
 
-#: crtools/config.py:329
+#: crtools/config.py:330
 msgid "Silver League"
 msgstr ""
 
-#: crtools/config.py:330
+#: crtools/config.py:331
 msgid "Gold League"
 msgstr ""
 
-#: crtools/config.py:331
+#: crtools/config.py:332
 msgid "Legendary League"
 msgstr ""
 
-#: crtools/config.py:333
+#: crtools/config.py:334
 msgid ""
 "This content is not affiliated with, endorsed, sponsored, or specifically "
 "approved by Supercell and Supercell is not responsible for it."
 msgstr ""
 
-#: crtools/config.py:334
+#: crtools/config.py:335
 msgid "For more information see Supercell's Fan Content Policy."
 msgstr ""
 
