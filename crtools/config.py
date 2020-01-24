@@ -23,7 +23,8 @@ LOCALE_LIST = {
     'en': 'English (default)',
     'fr': 'French',
     'cn': 'Chinese',
-    'pt': 'Portuguese'
+    'pt': 'Portuguese',
+    'ru': 'Russian'
 }
 
 LOCALE_NOT_FOUND_ERROR_TEMPLATE = 'Locale "{}" not defined. Please use one of the following:\n'
