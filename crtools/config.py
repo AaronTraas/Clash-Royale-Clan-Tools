@@ -406,20 +406,23 @@ def __parse_value(new_value, template_value):
 def __get_version_info(config):
     logger.debug('Grabbing current version from PyPI')
 
-    req = requests.get(PYPI_URL)
-    latest_version = current_version = parse(config['crtools']['version'])
-    if req.status_code == requests.codes.ok:
-        j = json.loads(req.text)
-        releases = j.get('releases', [])
-        for release in releases:
-            ver = parse(release)
-            latest_version = max(latest_version, ver)
+    try:
+        req = requests.get(PYPI_URL)
+        latest_version = current_version = parse(config['crtools']['version'])
+        if req.status_code == requests.codes.ok:
+            j = json.loads(req.text)
+            releases = j.get('releases', [])
+            for release in releases:
+                ver = parse(release)
+                latest_version = max(latest_version, ver)
 
-    print('crtools v{}'.format(current_version))
-    if latest_version > current_version:
-        config['crtools']['latest_version'] = '{}'.format(latest_version)
-        config['crtools']['update_available'] = True
-        print('*** update available: crtools v{} ***'.format(latest_version))
+        print('crtools v{}'.format(current_version))
+        if latest_version > current_version:
+            config['crtools']['latest_version'] = '{}'.format(latest_version)
+            config['crtools']['update_available'] = True
+            print('*** update available: crtools v{} ***'.format(latest_version))
+    except:
+        logger.debug('Could not contact PyPI. Continuing as normal.')
 
     return config
 
