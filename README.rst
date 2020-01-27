@@ -163,6 +163,7 @@ en      English (default)
 fr      French
 cn      Chinese
 pt      Portugese
+ru      Russian
 ======= =================
 
 If you'd like to use a language other than English, add the following switch

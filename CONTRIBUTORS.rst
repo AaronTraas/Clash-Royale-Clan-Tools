@@ -19,3 +19,6 @@ Snyviper
 
 Anis Jolly <anisjolly@gmail.com>
 	Debugging Windows-specific path issues, documentation, and current war state
+
+Sando <metatronishe@gmail.com>
+	Russian translation
