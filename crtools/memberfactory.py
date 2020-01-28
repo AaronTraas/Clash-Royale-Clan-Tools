@@ -169,7 +169,7 @@ class MemberFactory:
             return self.config['strings']['roleBlacklisted']
 
         if vacation:
-            if vacation.end_date == 0:
+            if not hasattr(vacation, 'end_date') or vacation.end_date == 0:
                 return self.config['strings']['roleVacation']
             else:
                 return self.config['strings']['roleVacationUntil'].format(vacation.end_date)
