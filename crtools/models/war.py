@@ -35,7 +35,7 @@ class ProcessedCurrentWar:
         for member in self.participants:
             self.cards += member.cards_earned
 
-        now = datetime.utcnow()
+        now = config['crtools']['timestamp']
         if self.state == 'collectionDay':
             self.state_label = config['strings']['labelStateCollectionDay']
 

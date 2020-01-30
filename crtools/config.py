@@ -1,5 +1,6 @@
 from configparser import SafeConfigParser
 import copy
+from datetime import datetime
 import gettext
 import json
 import locale
@@ -122,6 +123,7 @@ config_defaults = {
     },
     'crtools' : {
         'debug'                         : False,
+        'timestamp'                     : datetime.utcnow(),
         'locale'                        : 'en',
         'version'                       : __version__,
         'latest_version'                : __version__,

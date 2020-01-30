@@ -8,14 +8,14 @@ from crtools.scorecalc import ScoreCalculator
 logger = logging.getLogger(__name__)
 
 class MemberFactory:
-    def __init__(self, config, clan, member_history, current_war, warlog=[], days_from_donation_reset=0, now=datetime.utcnow()):
+    def __init__(self, config, clan, member_history, current_war, warlog=[], days_from_donation_reset=0):
         self.config = config
         self.clan = clan
         self.current_war = current_war
         self.warlog = warlog
         self.member_history = member_history
         self.days_from_donation_reset = days_from_donation_reset
-        self.now = now
+        self.now = config['crtools']['timestamp']
 
     def get_processed_member(self, member):
         processed_member = ProcessedMember(member)
@@ -39,7 +39,7 @@ class MemberFactory:
         if member.last_seen:
             last_seen = datetime.strptime(member.last_seen.split('.')[0], '%Y%m%dT%H%M%S')
         else:
-            last_seen = datetime.utcnow()
+            last_seen = config['crtools']['timestamp']
 
         member.last_seen_formatted = last_seen.strftime('%c')
 

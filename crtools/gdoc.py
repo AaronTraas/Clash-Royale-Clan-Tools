@@ -28,7 +28,7 @@ def get_member_data_from_sheets(config):
     sheet = get_sheet(config['google_docs']['api_key'])
 
     (config['members']['blacklist'], config['members']['no_promote'], config['members']['kicked'], config['members']['warned']) = get_demerit_data_from_sheet(sheet, sheet_id, config['members']['blacklist'], config['members']['no_promote'])
-    config['members']['vacation'] = get_vacation_data_from_sheet(sheet, sheet_id, config['members']['vacation'])
+    config['members']['vacation'] = get_vacation_data_from_sheet(sheet, sheet_id, config['crtools']['timestamp'], config['members']['vacation'])
     config['members']['custom'] = get_custom_data_from_sheet(sheet, sheet_id)
 
     return config
@@ -66,20 +66,19 @@ def get_demerit_list(sheet, sheet_id):
 
     return []
 
-def get_vacation_list(sheet, sheet_id):
+def get_vacation_list(sheet, sheet_id, now):
     try:
         values = sheet.values() \
                       .get(spreadsheetId=sheet_id, range=VACATION_RANGE) \
                       .execute() \
                       .get('values', [])
 
-        now = datetime.utcnow().date()
-
         vacations = []
+        now_date = now.date()
         for (member_name, member_tag, start_date, end_date, notes) in values:
             vacation_end = datetime.strptime(end_date, '%m/%d/%Y').date()
 
-            if vacation_end >= now:
+            if vacation_end >= now_date:
                 vacations.append(MemberVacation(tag=member_tag, start_date=start_date, end_date=end_date, notes=notes))
 
         return vacations
@@ -95,8 +94,6 @@ def get_custom_record_list(sheet, sheet_id):
                       .get(spreadsheetId=sheet_id, range=CUSTOM_RANGE) \
                       .execute() \
                       .get('values', [])
-
-        now = datetime.utcnow().date()
 
         vacations = []
         for (member_name, member_tag, custom_role, notes) in values:
@@ -130,9 +127,9 @@ def get_demerit_data_from_sheet(sheet, sheet_id, blacklist={}, no_promote_list={
 
     return (blacklist, no_promote_list, kicked_list, warned_list)
 
-def get_vacation_data_from_sheet(sheet, sheet_id, vacation_list={}):
+def get_vacation_data_from_sheet(sheet, sheet_id, now, vacation_list={}):
 
-    vacations = get_vacation_list(sheet, sheet_id)
+    vacations = get_vacation_list(sheet, sheet_id, now)
 
     if vacations:
         for vacation in vacations:

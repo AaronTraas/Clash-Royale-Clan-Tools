@@ -4,7 +4,7 @@
 __license__   = 'LGPLv3'
 __docformat__ = 'reStructuredText'
 
-from datetime import datetime #, date, timezone, timedelta
+from datetime import datetime
 import logging
 import os
 import shutil
@@ -110,8 +110,7 @@ def process_members(config, clan, warlog, current_war, member_history):
 
     # calculate the number of days since the donation last sunday, for
     # donation tracking purposes:
-    now = datetime.utcnow()
-    days_from_donation_reset = now.isoweekday()
+    days_from_donation_reset = config['crtools']['timestamp'].isoweekday()
     if days_from_donation_reset > 7 or days_from_donation_reset <= 0:
         days_from_donation_reset = 1
 
@@ -122,8 +121,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         current_war=current_war,
         warlog=warlog,
         member_history=member_history,
-        days_from_donation_reset=days_from_donation_reset,
-        now=now)
+        days_from_donation_reset=days_from_donation_reset)
     members_processed = []
     for member_src in clan.member_list:
         members_processed.append(factory.get_processed_member(member_src))
@@ -227,7 +225,7 @@ def build_dashboard(config): # pragma: no coverage
         current_war_processed = ProcessedCurrentWar(current_war, config)
         clan_processed = ProcessedClan(clan, current_war_processed, config)
 
-        member_history = history.get_member_history(clan.member_list, io.get_previous_history(output_path), current_war_processed)
+        member_history = history.get_member_history(clan.member_list, config['crtools']['timestamp'], io.get_previous_history(output_path), current_war_processed)
 
         members_processed = process_members(config, clan, warlog, current_war_processed, member_history)
         recent_wars = process_recent_wars(config, warlog)

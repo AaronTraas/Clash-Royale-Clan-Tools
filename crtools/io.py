@@ -105,7 +105,7 @@ def parse_templates(config, history, tempdir, clan, members, former_members, cur
     # If canonical URL is provided, also render the robots.txt and
     # sitemap.xml
     if config['www']['canonical_url'] != False:
-        lastmod = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
+        lastmod = config['crtools']['timestamp'].replace(tzinfo=timezone.utc).isoformat()
         sitemap_xml = env.get_template('sitemap.xml.j2').render(
                 url     = config['www']['canonical_url'],
                 lastmod = lastmod

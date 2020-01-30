@@ -67,7 +67,7 @@ def cleanup_member_history(member, history, timestamp):
     This is here to make upgrades smooth """
     now = timestamp
     if now == 0:
-        now = datetime.timestamp(datetime.now())
+        now = timestamp
     if 'name' not in history or history['name'] == NAME_UNKNOWN:
         history['name'] = member.name
     if 'join_date' not in history:
@@ -151,7 +151,7 @@ def process_member_events(config, events):
     return processed_events
 
 
-def get_member_history(members, old_history=None, current_war=None, date=datetime.now()):
+def get_member_history(members, date, old_history=None, current_war=None):
     """ Generates user history. Takes as inputs the list of members
     from the API, as well as optionally the old history, and a date
     object for synchronization and testing.

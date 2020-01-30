@@ -28,7 +28,6 @@ class WarNagConfig:
             self.abort = True
             return
 
-        now = datetime.utcnow()
         self.webhook_url = config['discord']['webhook_default']
         if config['discord']['webhook_war_nag']:
             self.webhook_url = config['discord']['webhook_war_nag']
@@ -50,7 +49,7 @@ class WarNagConfig:
             nag_threshold = config['discord']['nag_war_battle_hours_left']
             war_day_label = config['strings']['discord-war-label']
 
-        war_end_time_delta = math.floor((war_end_timestamp - now).seconds / 3600)
+        war_end_time_delta = math.floor((war_end_timestamp - config['crtools']['timestamp']).seconds / 3600)
         if war_end_time_delta > nag_threshold:
             logger.debug('Nag threshold is {} hours, and there are {} hours left. Not nagging.'.format(nag_threshold, war_end_time_delta))
             self.abort = True

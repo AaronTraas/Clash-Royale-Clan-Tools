@@ -199,12 +199,12 @@ def test_donations_score(tmpdir):
     calc = ScoreCalculator(config)
 
     war = ProcessedCurrentWar(config=config, current_war=pyroyale.WarCurrent(state='notInWar'))
-    member_history = history.get_member_history(__fake_member_list__, '{}', war)
+    member_history = history.get_member_history(__fake_member_list__, config['crtools']['timestamp'], '{}', war)
     date = datetime(2019, 2, 12, 7, 32, 1, 0)
 
-    member_6 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=6, now=date).get_processed_member(__fake_member_list__[0])
-    member_3 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=3, now=date).get_processed_member(__fake_member_list__[0])
-    member_0 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=0, now=date).get_processed_member(__fake_member_list__[0])
+    member_6 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=6).get_processed_member(__fake_member_list__[0])
+    member_3 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=3).get_processed_member(__fake_member_list__[0])
+    member_0 = MemberFactory(config=config, current_war=war, clan=__fake_clan__, member_history=member_history, warlog=pyroyale.WarLog(items=[]), days_from_donation_reset=0).get_processed_member(__fake_member_list__[0])
 
     assert calc.get_member_donations_score(member_6) == 11
     assert calc.get_member_donations_score(member_3) == 18

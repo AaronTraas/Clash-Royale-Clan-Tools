@@ -234,7 +234,7 @@ def test_get_suggestions_recruit(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__.member_list, None)
+    h = history.get_member_history(__fake_clan__.member_list, config['crtools']['timestamp'])
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, __fake_currentwar_notinwar__, h)
 
@@ -250,7 +250,7 @@ def test_process_absent_members(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_demote=-999999\nthreshold_promote=9999999')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__.member_list, __fake_history_old_member__)
+    h = history.get_member_history(__fake_clan__.member_list, config['crtools']['timestamp'], __fake_history_old_member__)
 
     absent_members = crtools.process_absent_members(config, h['members'])
 
@@ -265,7 +265,7 @@ def test_get_suggestions_nosuggestions(tmpdir):
     war = ProcessedCurrentWar(config=config, current_war=pyroyale.WarCurrent(state='notInWar'))
     factory = MemberFactory(
         config=config,
-        member_history=history.get_member_history(__fake_clan__.member_list, '{}', war),
+        member_history=history.get_member_history(__fake_clan__.member_list, config['crtools']['timestamp'], '{}', war),
         current_war=war,
         clan=__fake_clan__,
         warlog=pyroyale.WarLog(items=[])
@@ -299,7 +299,7 @@ def test_get_suggestions_kick(tmpdir):
     config_file.write(__config_file_score__ + '\nmin_clan_size=1')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__.member_list, None)
+    h = history.get_member_history(__fake_clan__.member_list, config['crtools']['timestamp'])
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, __fake_currentwar_notinwar__, h)
 
@@ -315,7 +315,7 @@ def test_get_suggestions_promote_demote(tmpdir):
     config_file.write(__config_file_score__ + '\nthreshold_promote=10')
     config = load_config_file(config_file.realpath())
 
-    h = history.get_member_history(__fake_clan__.member_list, None)
+    h = history.get_member_history(__fake_clan__.member_list, config['crtools']['timestamp'])
 
     members = crtools.process_members(config, __fake_clan__, __fake_warlog__, __fake_currentwar_notinwar__, h)
 
