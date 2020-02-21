@@ -14,7 +14,7 @@ import pyroyale
 import json
 
 from ._version import __version__
-from crtools import api_wrapper
+from crtools.api_wrapper import ApiWrapper
 from crtools import history
 from crtools import fankit
 from crtools import io
@@ -105,7 +105,7 @@ def get_scoring_rules(config):
 
     return rules
 
-def process_members(config, clan, warlog, current_war, member_history):
+def process_members(config, clan, warlog, current_war, member_history, war_readiness_map={}):
     """ Process member list, adding calculated meta-data for rendering of
     status in the clan member table. """
 
@@ -125,10 +125,7 @@ def process_members(config, clan, warlog, current_war, member_history):
         days_from_donation_reset=days_from_donation_reset)
     members_processed = []
     for member_src in clan.member_list:
-        war_readiness = None
-        if config['member_table']['calc_war_readiness'] == True:
-            war_readiness = api_wrapper.get_war_readiness_for_member(config, member_src.tag, clan.clan_war_trophies)
-            logger.debug("{} war readiness: {}%".format(member_src.name, war_readiness))
+        war_readiness = war_readiness_map.get(member_src.tag)
         members_processed.append(factory.get_processed_member(member_src, war_readiness))
 
     return members_processed
@@ -177,7 +174,13 @@ def build_dashboard(config): # pragma: no coverage
 
     print('- requesting info for clan id: {}'.format(config['api']['clan_id']))
 
-    clan, warlog, current_war = api_wrapper.get_data_from_api(config)
+    api = ApiWrapper(config)
+
+    clan, warlog, current_war = api.get_data_from_api()
+
+    war_readiness_map = {}
+    if config['member_table']['calc_war_readiness'] == True:
+        war_readiness_map = api.get_war_readiness_map(clan.member_list, clan.clan_war_trophies)
 
     # Create temporary directory. All file writes, until the very end,
     # will happen in this directory, so that no matter what we do, it
@@ -195,7 +198,7 @@ def build_dashboard(config): # pragma: no coverage
 
         member_history = history.get_member_history(clan.member_list, config['crtools']['timestamp'], io.get_previous_history(output_path), current_war_processed)
 
-        members_processed = process_members(config, clan, warlog, current_war_processed, member_history)
+        members_processed = process_members(config, clan, warlog, current_war_processed, member_history, war_readiness_map)
         recent_wars = process_recent_wars(config, warlog)
         former_members = process_absent_members(config, member_history['members'])
 
