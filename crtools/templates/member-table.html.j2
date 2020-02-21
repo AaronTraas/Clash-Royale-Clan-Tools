@@ -13,6 +13,9 @@
                     <th class="inactivity">{{strings.labelDaysInactive}}</th>
                     <th class="last-seen">{{strings.labelLastSeen}}</th>
                     <th class="war-win-rate">{{strings.labelWarWinRate}}</th>
+                {% if config.member_table.calc_war_readiness %}
+                    <th class="war-win-readiness">{{strings.labelWarReadiness}}</th>
+                {% endif %}
                     <th class="war current" data-sort-method="none">{{strings.labelCurrentWar}}</th>
                 {% for war in recent_wars %}
                     <th class="war" data-sort-method="none">{{war.date}}</th>
@@ -79,6 +82,11 @@
                     <td class="war-win-rate" data-sort="{{member.war_win_rate}}" >
                         {{member.war_win_rate}}%
                     </td>
+                {% if config.member_table.calc_war_readiness %}
+                    <td class="war-readiness {{member.war_readiness_status}}" data-sort="{{member.war_readiness}}" >
+                        {{member.war_readiness|round|int}}%
+                    </td>
+                {% endif %}
                     <td class="war current {{member.current_war.status}}" data-tooltip="true">
                     {% if member.current_war.in_war == True %}
                         <div data-role="war">

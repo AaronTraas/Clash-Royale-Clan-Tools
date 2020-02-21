@@ -58,6 +58,14 @@
                         <dt>{{strings.labelDonationsRecieved}}</dt>
                         <dd>{{member.donations_received}}</dd>
                     </dl>
+                {% if config.member_table.calc_war_readiness %}
+                    <dl>
+                        <dt>{{strings.labelWarReadiness}}</dt>
+                        <dd>
+                            <strong>{{member.war_readiness|round|int}}%</strong><br>
+                        </dd>
+                    </dl>
+                {% endif %}
                     <dl>
                         <dt>{{strings.labelWarWinRate}}</dt>
                         <dd>

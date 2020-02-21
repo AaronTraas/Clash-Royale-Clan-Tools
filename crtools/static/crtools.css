@@ -754,6 +754,11 @@ table tr[data-blacklist=true] td {
     font-weight: normal;
 }
 
+#info table .war-readiness,
+#info table .war-win-rate {
+    text-align: center;
+}
+
 #member-table td.war.current.normal {
     border: 3px dashed #BB89CC;
     background-color: #F1EAF4;

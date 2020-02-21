@@ -12,7 +12,7 @@ from crtools.models.warparticipation import WarParticipation
 logger = logging.getLogger(__name__)
 
 class ProcessedMember():
-    def __init__(self, member, member_history=[]):
+    def __init__(self, member, war_readiness=None):
         self.tag = member.tag
         self.name = escape(member.name)
         self.exp_level = member.exp_level
@@ -24,6 +24,15 @@ class ProcessedMember():
         self.donations = member.donations
         self.donations_received = member.donations_received
         self.clan_chest_points = member.clan_chest_points
+
+        self.war_readiness = war_readiness
+
+        self.war_readiness_status = 'normal'
+        if war_readiness:
+            if war_readiness > 75:
+                self.war_readiness_status = 'good'
+            elif war_readiness < 33:
+                self.war_readiness_status = 'bad'
 
         self.arena_league = leagueinfo.get_arena_league_from_trophies(self.trophies)
 

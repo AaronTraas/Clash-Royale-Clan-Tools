@@ -14,6 +14,7 @@ import pyroyale
 import json
 
 from ._version import __version__
+from crtools import api_wrapper
 from crtools import history
 from crtools import fankit
 from crtools import io
@@ -124,7 +125,11 @@ def process_members(config, clan, warlog, current_war, member_history):
         days_from_donation_reset=days_from_donation_reset)
     members_processed = []
     for member_src in clan.member_list:
-        members_processed.append(factory.get_processed_member(member_src))
+        war_readiness = None
+        if config['member_table']['calc_war_readiness'] == True:
+            war_readiness = api_wrapper.get_war_readiness_for_member(config, member_src.tag, clan.clan_war_trophies)
+            logger.debug("{} war readiness: {}%".format(member_src.name, war_readiness))
+        members_processed.append(factory.get_processed_member(member_src, war_readiness))
 
     return members_processed
 
@@ -156,43 +161,6 @@ def process_recent_wars(config, warlog):
 
     return wars
 
-def get_data_from_api(config): # pragma: no coverage
-    # get API instance
-    configuration = pyroyale.Configuration()
-    configuration.api_key['authorization'] = config['api']['api_key']
-    if config['api']['proxy']:
-        configuration.proxy = config['api']['proxy']
-    if config['api']['proxy_headers']:
-        configuration.proxy_headers = config['api']['proxy_headers']
-
-    api = pyroyale.ClansApi(pyroyale.ApiClient(configuration))
-
-    try:
-        # Get clan data and war log from API.
-        clan = api.get_clan(config['api']['clan_id'])
-        warlog = api.get_clan_war_log(config['api']['clan_id'])
-        current_war = api.get_current_war(config['api']['clan_id'])
-
-        print('- clan: {} ({})'.format(clan.name, clan.tag))
-
-        return (clan, warlog, current_war)
-    except pyroyale.ApiException as e:
-        if e.body:
-            body = json.loads(e.body)
-            if body['reason'] == 'accessDenied':
-                logger.error('developer.clashroyale.com claims that your API key is invalid. Please make sure you are setting up crtools with a valid key.')
-            elif body['reason'] == 'accessDenied.invalidIp':
-                logger.error('developer.clashroyale.com says: {}'.format(body['message']))
-            else:
-                logger.error('error: {}'.format(body))
-        else:
-            logger.error('error: {}'.format(e))
-    except pyroyale.OpenApiException as e:
-        logger.error('error: {}'.format(e))
-
-    # If we've gotten here, something has gone wrong. We need to abort the application.
-    exit(0)
-
 # NOTE: we're not testing this function because this is where we're
 # isolating all of the I/O for the application here. The real "work"
 # here is done in all of the calls to functions in this file, or in the
@@ -209,7 +177,7 @@ def build_dashboard(config): # pragma: no coverage
 
     print('- requesting info for clan id: {}'.format(config['api']['clan_id']))
 
-    clan, warlog, current_war = get_data_from_api(config)
+    clan, warlog, current_war = api_wrapper.get_data_from_api(config)
 
     # Create temporary directory. All file writes, until the very end,
     # will happen in this directory, so that no matter what we do, it

@@ -102,7 +102,9 @@ config_defaults = {
         'show_days_inactive'            : True,
         'show_war_win_rate'             : False,
         'show_current_war'              : True,
-        'show_warlog'                   : True
+        'show_warlog'                   : True,
+        'show_war_readiness'            : False,
+        'calc_war_readiness'            : False
     },
     'discord' : {
         'webhook_default'                   : '',
@@ -218,6 +220,7 @@ def __localize_strings(locale_id):
         'labelWarDayBattles'        : _('War day battles'),
         'labelWarDayWins'           : _('War day wins'),
         'labelWarWinRate'           : _('War win rate'),
+        'labelWarReadiness'         : _('War readiness'),
         'labelWarWinRateDisclaimer' : _('Must complete at least %d battles of the last %d'),
         'labelCollectionWinRate'    : _('Collection win rate'),
         'labelCollectionCardsWon'   : _('Collection cards won'),

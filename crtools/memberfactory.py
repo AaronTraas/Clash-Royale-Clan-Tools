@@ -17,8 +17,8 @@ class MemberFactory:
         self.days_from_donation_reset = days_from_donation_reset
         self.now = config['crtools']['timestamp']
 
-    def get_processed_member(self, member):
-        processed_member = ProcessedMember(member)
+    def get_processed_member(self, member, war_readiness=None):
+        processed_member = ProcessedMember(member, war_readiness)
 
         self.enrich_member_with_history(processed_member, self.member_history['members'][processed_member.tag])
         self.calc_special_status(processed_member)
