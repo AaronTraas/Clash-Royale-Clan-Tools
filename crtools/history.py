@@ -14,6 +14,24 @@ ROLE_LEADER     = 'leader'
 
 NAME_UNKNOWN = '[unknown]'
 
+def min_date(date1, date2):
+    if date2 > 0 and date2 < date1:
+        return date2
+    return date1
+
+def find_oldest_date(members):
+    oldest_date = 99999999999
+    for tag, member in members.items():
+        oldest_date = min_date(oldest_date, member['join_date'])
+        if 'last_activity_date' in member:
+            oldest_date = min_date(oldest_date, member['last_activity_date'])
+        if 'last_donation_date' in member:
+            oldest_date = min_date(oldest_date, member['last_donation_date'])
+        for event in member['events']:
+            oldest_date = min_date(oldest_date, event['date'])
+
+    return oldest_date
+
 def validate_role(role):
     """ Returns whether or not the role string is a valid role """
     return role in [ROLE_MEMBER, ROLE_ELDER, ROLE_COLEADER, ROLE_LEADER]
@@ -28,9 +46,13 @@ def validate_history(old_history, timestamp):
         history = copy.deepcopy(old_history)
 
         history['last_update'] = timestamp
+        if 'history_start' not in history:
+            history['history_start'] = find_oldest_date(history['members'])
+
         return history, timestamp
     else:
         history = {
+            'history_start': timestamp,
             'last_update': timestamp,
             'members': {}
         }

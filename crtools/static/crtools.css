@@ -491,7 +491,8 @@ table td.battles {
     font-weight: bold;
 }
 
-td.last-seen {
+td.last-seen,
+td.time-in-clan {
     font-size: 12px;
     text-align: center;
 }

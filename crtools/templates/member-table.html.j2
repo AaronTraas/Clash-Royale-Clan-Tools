@@ -11,6 +11,7 @@
                     <th class="donations">{{strings.labelDonations}}</th>
                     <th class="donations-received">{{strings.labelDonationsRecieved}}</th>
                     <th class="inactivity">{{strings.labelDaysInactive}}</th>
+                    <th class="time-in-clan">{{strings.labelTimeInClan}}</th>
                     <th class="last-seen">{{strings.labelLastSeen}}</th>
                     <th class="war-win-rate">{{strings.labelWarWinRate}}</th>
                 {% if config.member_table.calc_war_readiness %}
@@ -75,6 +76,9 @@
                     </td>
                     <td class="inactivity {{member.activity_status}}" data-sort="{{member.days_inactive}}" >
                         <strong>{{member.days_inactive}}</strong><br /><small>{{strings.labelDays}}</small>
+                    </td>
+                    <td class="time-in-clan" data-sort="{{member.days_from_join}}" >
+                        {{member.time_in_clan}}
                     </td>
                     <td class="last-seen" data-sort="{{member.last_seen}}" >
                         {{member.last_seen_delta}}

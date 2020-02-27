@@ -27,6 +27,7 @@ MEMBER_TABLE_CSS_MAPPING = {
     'show_days_inactive'        : 'inactivity',
     'show_war_win_rate'         : 'war-win-rate',
     'show_war_readiness'        : 'war-readiness',
+    'show_time_in_clan'         : 'time-in-clan',
     'show_current_war'          : 'war.current',
     'show_warlog'               : 'war.previous'
 }

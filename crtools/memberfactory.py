@@ -16,6 +16,9 @@ class MemberFactory:
         self.member_history = member_history
         self.days_from_donation_reset = days_from_donation_reset
         self.now = config['crtools']['timestamp']
+        self.history_start_timestamp = member_history['history_start']
+        self.max_days_from_join = (self.now - datetime.fromtimestamp(self.history_start_timestamp)).days
+
 
     def get_processed_member(self, member, war_readiness=None):
         processed_member = ProcessedMember(member, war_readiness)
@@ -43,7 +46,6 @@ class MemberFactory:
 
         member.last_seen_formatted = last_seen.strftime('%c')
 
-
         last_seen_delta = self.now - last_seen
         member.last_seen_delta = ''
         if last_seen_delta.days >= 1:
@@ -67,6 +69,17 @@ class MemberFactory:
             logger.debug('New member {}'.format(member.name))
         else:
             member.new = False
+        if member.days_from_join > self.max_days_from_join:
+            member.days_from_join = self.max_days_from_join + 1
+
+        if member.days_from_join > 560:
+            member.time_in_clan = "{} {}".format(round(member.days_from_join/365), self.config['strings']['labelYears'])
+        elif member.days_from_join > 60:
+            member.time_in_clan = "{} {}".format(round(member.days_from_join/30), self.config['strings']['labelMonths'])
+        else:
+            member.time_in_clan = "{} {}".format(member.days_from_join, self.config['strings']['labelDays'])
+        if member.days_from_join > self.max_days_from_join:
+            member.time_in_clan = "> " + member.time_in_clan
 
         if days_from_donation_reset > member.days_from_join:
             days_from_donation_reset = member.days_from_join
