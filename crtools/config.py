@@ -94,6 +94,7 @@ config_defaults = {
         'show_rank'                     : True,
         'show_rank_previous'            : False,
         'show_name'                     : True,
+        'show_xp_level'                 : False,
         'show_score'                    : True,
         'show_trophies'                 : True,
         'show_donations'                : True,

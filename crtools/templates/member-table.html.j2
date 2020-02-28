@@ -6,6 +6,7 @@
                     <th class="rank" data-sort-default>#</th>
                     <th class="rank previous">{{strings.labelRankPrevious}}</th>
                     <th class="name">{{strings.labelMember}}</th>
+                    <th class="xp-level">{{strings.labelXpLevel}}</th>
                     <th class="score">{{strings.labelScore}}</th>
                     <th class="trophies">{{strings.labelTrophies}}</th>
                     <th class="donations">{{strings.labelDonations}}</th>
@@ -43,6 +44,9 @@
                     <td class="name" data-sort="{{member.name}}" data-role="dialog-show" data-target="member-detail" data-member-tag="{{member.tag}}">
                         <strong>{{member.name}}</strong><br />
                         <small class="member-role">{{member.role_label}}</small>
+                    </td>
+                    <td class="xp-level" data-sort="{{member.exp_level}}">
+                        <strong>{{member.exp_level}}</strong>
                     </td>
                     <td class="score {{member.status}}" data-sort="{{member.score}}" data-tooltip="true">
                         <strong>{{member.score}}</strong>

@@ -19,6 +19,7 @@ MEMBER_TABLE_CSS_MAPPING = {
     'show_rank'                 : 'rank',
     'show_rank_previous'        : 'rank.previous',
     'show_name'                 : 'name',
+    'show_xp_level'             : 'xp-level',
     'show_score'                : 'score',
     'show_trophies'             : 'trophies',
     'show_donations'            : 'donations',
