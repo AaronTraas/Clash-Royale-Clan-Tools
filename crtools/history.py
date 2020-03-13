@@ -49,7 +49,7 @@ def validate_history(old_history, timestamp):
         if 'history_start' not in history:
             history['history_start'] = find_oldest_date(history['members'])
 
-        return history, timestamp
+        return history, False
     else:
         history = {
             'history_start': timestamp,
@@ -59,7 +59,7 @@ def validate_history(old_history, timestamp):
         # if history is new, we want all members to have a join
         # date of 0, implying that they've joined before recorded
         # history
-        return history, 0
+        return history, True
 
 
 def get_role_change_status(old_role, new_role):
@@ -84,18 +84,18 @@ def get_role_change_status(old_role, new_role):
 
     return False
 
-def cleanup_member_history(member, history, timestamp):
+def cleanup_member_history(member, history, timestamp, new_clan=False):
     """ make sure member history entry has all the necessary fields.
     This is here to make upgrades smooth """
     now = timestamp
-    if now == 0:
-        now = timestamp
+    if new_clan == True:
+        now = 0
     if 'name' not in history or history['name'] == NAME_UNKNOWN:
         history['name'] = member.name
     if 'join_date' not in history:
-        history['join_date'] = timestamp
+        history['join_date'] = now
     if 'last_activity_date' not in history:
-        history['last_activity_date'] = now
+        history['last_activity_date'] = timestamp
     if 'last_donation_date' not in history:
         history['last_donation_date'] = timestamp
     if 'role' not in history:
@@ -111,12 +111,12 @@ def cleanup_member_history(member, history, timestamp):
                                 'event': 'join',
                                 'type':  'new',
                                 'role':  member.role,
-                                'date':  timestamp
+                                'date':  now
                             }]
     return history
 
-def create_new_member(member, timestamp):
-    return cleanup_member_history(member, {}, timestamp)
+def create_new_member(member, timestamp, new_clan):
+    return cleanup_member_history(member, {}, timestamp, new_clan)
 
 def member_rejoin(historical_member, member, timestamp):
     updated_member = copy.deepcopy(historical_member)
@@ -192,7 +192,8 @@ def get_member_history(members, date, old_history=None, current_war=None):
     """
     # validate that old history is formatted properly. If not, return new
     # hitory object and reset the timestamp to 0
-    history, timestamp = validate_history(old_history, datetime.timestamp(date))
+    timestamp = datetime.timestamp(date)
+    history, new_clan = validate_history(old_history, timestamp)
 
     war_participants = []
     if current_war and current_war.state != 'notInWar':
@@ -207,7 +208,7 @@ def get_member_history(members, date, old_history=None, current_war=None):
         if tag not in history['members']:
             # No history of this member, therefore they are new.
             # Create record for user.
-            history['members'][tag] = create_new_member(member, timestamp)
+            history['members'][tag] = create_new_member(member, timestamp, new_clan)
         else:
             historical_member = cleanup_member_history(member, history['members'][tag], timestamp)
             if historical_member['status'] == 'absent':
