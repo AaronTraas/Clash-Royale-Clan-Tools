@@ -2,8 +2,6 @@
 # Copyright (C) 2020 Aaron Traas
 # This file is distributed under the same license as the crtools project.
 # FIRST AUTHOR <m.minischetti@gmail.com>, 2020.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.15.0\n"

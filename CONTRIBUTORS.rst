@@ -22,3 +22,6 @@ Anis Jolly <anisjolly@gmail.com>
 
 Sando <metatronishe@gmail.com>
 	Russian translation
+
+m.minischetti@gmail.com
+	Italian translation
