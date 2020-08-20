@@ -24,7 +24,7 @@ LOCALE_LIST = {
     'de': 'German',
     'en': 'English (default)',
     'fr': 'French',
-    'it': 'Italian'
+    'it': 'Italian',
     'pt': 'Portuguese',
     'ru': 'Russian'
 }
