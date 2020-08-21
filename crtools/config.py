@@ -20,10 +20,11 @@ logger = logging.getLogger(__name__)
 
 PYPI_URL = 'https://pypi.org/pypi/crtools/json'
 LOCALE_LIST = {
+    'cn': 'Chinese',
     'de': 'German',
     'en': 'English (default)',
     'fr': 'French',
-    'cn': 'Chinese',
+    'it': 'Italian',
     'pt': 'Portuguese',
     'ru': 'Russian'
 }

@@ -2,8 +2,9 @@
 # Copyright (C) 2020 Aaron Traas
 # This file is distributed under the same license as the crtools project.
 # FIRST AUTHOR <m.minischetti@gmail.com>, 2020.
+
 #
-#, fuzzy
+
 msgid ""
 msgstr ""
 "Project-Id-Version: crtools 2.15.0\n"
@@ -547,6 +548,7 @@ msgid ""
 "Score is made of two components: <strong>donation score</strong> and "
 "<strong>war participation score</strong>."
 msgstr ""
+
 "Il punteggio è calcolato su due componenti: <strong>Donazioni</strong> e "
 "<strong>partecipazione alla guerra</strong>."
 #: crtools/config.py:289
@@ -561,6 +563,7 @@ msgid ""
 " class=\"bad\">{donations_zero} points</strong>"
 msgstr ""
 "Ci aspettiamo che doniate mediamente <strong>{min_donations_daily} carte al "
+
 "giorno</strong>. Se ne donate di più,guadagnerete punti. Se ne donate di"
 " meno, perderete punti. A zero punti sarete penalizzati <strong"
 " class=\"bad\">{donations_zero} punti</strong>"

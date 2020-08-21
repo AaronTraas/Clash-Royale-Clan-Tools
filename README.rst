@@ -158,10 +158,11 @@ Crtools currently supports the following languages:
 ======= =================
 locale  language
 ======= =================
+cn      Chinese
 de      German
 en      English (default)
 fr      French
-cn      Chinese
+it      Italian
 pt      Portugese
 ru      Russian
 ======= =================
