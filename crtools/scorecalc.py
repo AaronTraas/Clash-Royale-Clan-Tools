@@ -21,6 +21,8 @@ class ScoreCalculator:
     def get_war_score(self, war):
         """ Tally the score for a given war """
 
+        return 0;
+
         if war.status == 'not-in-clan':
             return 0;
 

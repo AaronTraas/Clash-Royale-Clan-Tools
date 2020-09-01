@@ -131,8 +131,9 @@ class MemberFactory:
     def calc_derived_member_stats(self, member):
         member.current_war = WarParticipation(self.config, member, self.current_war)
         member.warlog = []
-        for war in self.warlog.items:
-            member.warlog.append(WarParticipation(self.config, member, war))
+
+        #for war in self.warlog.items:
+        #    member.warlog.append(WarParticipation(self.config, member, war))
 
         score_calc = ScoreCalculator(self.config)
 

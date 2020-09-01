@@ -70,12 +70,12 @@ class ApiWrapper:
         try:
             # Get clan data and war log from API.
             clan = self.clans.get_clan(self.config['api']['clan_id'])
-            warlog = self.clans.get_clan_war_log(self.config['api']['clan_id'])
-            current_war = self.clans.get_current_war(self.config['api']['clan_id'])
+            #warlog = self.clans.get_clan_war_log(self.config['api']['clan_id'])
+            #current_war = self.clans.get_current_war(self.config['api']['clan_id'])
 
             logger.info('- clan: {} ({})'.format(clan.name, clan.tag))
 
-            return (clan, warlog, current_war)
+            return clan
         except pyroyale.ApiException as e:
             if e.body:
                 body = json.loads(e.body)

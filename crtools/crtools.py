@@ -9,6 +9,7 @@ import logging
 import os
 import shutil
 import tempfile
+import traceback
 
 import pyroyale
 import json
@@ -99,6 +100,10 @@ def get_scoring_rules(config):
         {'name': config['strings']['ruleWarDayWin'],          'yes': config['score']['war_battle_won'],           'no': config['score']['war_battle_lost']}
     ]
 
+    rules = [
+        {'name': config['strings']['ruleParticipate'],         'yes': config['score']['war_participation'],        'no': config['score']['war_non_participation'] }
+    ]
+
     for rule in rules:
         rule['yes_status'] = get_score_rule_status(rule['yes'])
         rule['no_status'] = get_score_rule_status(rule['no'])
@@ -176,7 +181,10 @@ def build_dashboard(config): # pragma: no coverage
 
     api = ApiWrapper(config)
 
-    clan, warlog, current_war = api.get_data_from_api()
+    clan = api.get_data_from_api()
+
+    warlog = pyroyale.WarLog(items=[])
+    current_war = pyroyale.WarCurrent(state='notInWar')
 
     war_readiness_map = {}
     if config['member_table']['calc_war_readiness'] == True:
@@ -242,6 +250,9 @@ def build_dashboard(config): # pragma: no coverage
 
     except Exception as e:
         logger.error('error: {}'.format(e))
+        
+        if(config['crtools']['debug'] == True):
+            logger.error(traceback.format_exc())
 
     finally:
         # Ensure that temporary directory gets deleted no matter what
