@@ -1,3 +1,5 @@
+# NOTE - this project is no longer maintained. If you are a crtools user, and wish to take over maintaintainership of this project, please contact me.
+
 ==================================================
 crtools - Clash Royale Clan Dashboard generator
 ==================================================
@@ -210,18 +212,6 @@ Development links
 This project uses SonarQube for static analysis. The results of analysis
 are at `SonarCloud <https://sonarcloud.io/dashboard?id=AaronTraas_Clash-Royale-Clan-Tools>`_.
 The code quality and test coverage are a work in progress.
-
-==================================================
-Support
-==================================================
-
-If you need help getting this up and running, feel free to hop on the
-`crtools discord <https://discord.gg/K2UDCXU>`_.
-
-Keep in mind, this is a command-line utility that expects a working Python 3
-environment. It also assumes you will know how to configure a web server to
-serve up HTML, as well as cron or similar on your given platform. There is no
-install wizard, GUI of any kind, etc.
 
 ==================================================
 Contributors
