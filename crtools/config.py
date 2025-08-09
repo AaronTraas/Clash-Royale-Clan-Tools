@@ -1,4 +1,4 @@
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 import copy
 from datetime import datetime
 import gettext
